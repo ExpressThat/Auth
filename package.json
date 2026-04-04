@@ -1,0 +1,25 @@
+{
+  "name": "expressthat-auth",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format-and-lint": "biome check .",
+    "format-and-lint:fix": "biome check . --write",
+    "check-types": "turbo run check-types",
+    "db:generate": "turbo run db:generate",
+    "db:migrate": "turbo run db:migrate",
+    "db:deploy": "turbo run db:deploy"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "turbo": "^2.8.20",
+    "typescript": "5.9.2"
+  },
+  "dependencies": {},
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=18"
+  }
+}
