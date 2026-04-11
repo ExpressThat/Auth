@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Api</RootNamespace>
@@ -20,6 +20,16 @@
   -->
   <ItemGroup>
     <ProjectReference Include="$(MSBuildThisFileDirectory)node_modules/@expressthat-auth/**/*.csproj" />
+  </ItemGroup>
+
+  <!--
+    dotnet watch tracks files under node_modules symlink paths by default. On
+    Windows, edits made in the real workspace package path may not always raise
+    change events on the symlinked path, so watch the source package tree too.
+  -->
+  <ItemGroup>
+    <Watch Include="$(MSBuildThisFileDirectory)..\..\packages\**\*.cs" Exclude="$(MSBuildThisFileDirectory)..\..\packages\**\bin\**;$(MSBuildThisFileDirectory)..\..\packages\**\obj\**" />
+    <Watch Include="$(MSBuildThisFileDirectory)..\..\packages\**\*.csproj" />
   </ItemGroup>
 
 </Project>

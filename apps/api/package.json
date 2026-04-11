@@ -5,7 +5,7 @@
   "description": "ExpressThat Auth API – ASP.NET Core Web API",
   "scripts": {
     "build": "dotnet publish --configuration Release --output publish",
-    "dev": "dotnet watch run --launch-profile Development",
+    "dev": "dotnet watch --no-hot-reload run --launch-profile Development",
     "check-types": "dotnet build",
     "start": "dotnet publish/Api.dll"
   },

@@ -36,4 +36,6 @@ app.UseSwaggerUI(c =>
 
 app.MapControllers();
 
+Console.WriteLine($"Starting ExpressThat Auth API on port {port}..., http://localhost:{port}/api/docs");
+
 await app.RunAsync();

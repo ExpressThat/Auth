@@ -29,6 +29,8 @@ public class AppController : ControllerBase
     /// <param name="name">The name to greet.</param>
     [HttpGet("example")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-    public string GetExample([FromQuery] string name = "World") =>
-        Greeter.Greet(name);
+    public string GetExample([FromQuery] string name = "World") {
+        return Greeter.Greet(name);
+    }
+        
 }
