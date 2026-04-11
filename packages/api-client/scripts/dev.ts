@@ -1,8 +1,7 @@
 /**
  * Dev watch script for @expressthat-auth/api-client.
  *
- * Monitors all C# source files under packages/ (packages/api and its
- * sub-dependencies) for changes.  On any change it:
+ * Monitors all files in packages/api for changes.  On any change it:
  *   1. Rebuilds packages/api   (dotnet build via pnpm gen:spec)
  *   2. Re-generates swagger.json from the built DLL
  *   3. Re-generates src/schema.gen.ts via openapi-typescript
@@ -21,6 +20,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = path.join(__dirname, "..");
 // Root of the monorepo packages/ directory
 const packagesRoot = path.join(packageRoot, "..");
+// The API package directory to watch
+const apiRoot = path.join(packagesRoot, "api");
 
 let building = false;
 let pendingRebuild = false;
@@ -65,19 +66,13 @@ async function triggerRebuild() {
   }
 }
 
-// Watch patterns: all C# source and project files under packages/
-// (covers packages/api itself plus any workspace packages it depends on)
-const watchPatterns = [
-  path.join(packagesRoot, "**", "*.cs"),
-  path.join(packagesRoot, "**", "*.csproj"),
-];
-
+// Watch all files in packages/api (excluding build artifacts and dotfiles)
 const ignored = [
-  /(^|[/\\])\../, // dotfiles
+  /(^|[/\\])\../, // dotfiles / hidden directories
   /[/\\](bin|obj|node_modules)[/\\]/,
 ];
 
-const watcher = chokidar.watch(watchPatterns, {
+const watcher = chokidar.watch(apiRoot, {
   ignored,
   persistent: true,
   ignoreInitial: true,
@@ -86,20 +81,20 @@ const watcher = chokidar.watch(watchPatterns, {
 
 watcher
   .on("change", (filePath) => {
-    console.log(`[api-client] Changed: ${path.relative(packagesRoot, filePath)}`);
+    console.log(`[api-client] Changed: ${path.relative(apiRoot, filePath)}`);
     void triggerRebuild();
   })
   .on("add", (filePath) => {
-    console.log(`[api-client] Added:   ${path.relative(packagesRoot, filePath)}`);
+    console.log(`[api-client] Added:   ${path.relative(apiRoot, filePath)}`);
     void triggerRebuild();
   })
   .on("unlink", (filePath) => {
-    console.log(`[api-client] Removed: ${path.relative(packagesRoot, filePath)}`);
+    console.log(`[api-client] Removed: ${path.relative(apiRoot, filePath)}`);
     void triggerRebuild();
   });
 
 // Initial build on start
 console.log("[api-client] Starting – performing initial build...");
 triggerRebuild().then(() => {
-  console.log("[api-client] Watching packages/ for C# changes...");
+  console.log(`[api-client] Watching ${path.relative(packagesRoot, apiRoot)} for changes...`);
 });

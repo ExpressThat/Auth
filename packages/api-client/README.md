@@ -46,8 +46,7 @@ const { data, error } = await api.GET("/api/name", {
 Runs `scripts/dev.ts` via `tsx`.  The script:
 
 1. Performs an initial `pnpm build`.
-2. Watches all `*.cs` and `*.csproj` files under `packages/` (covering
-   `packages/api` and any workspace packages it depends on) using
-   [chokidar](https://github.com/paulmillr/chokidar).
+2. Watches **all files inside `packages/api/`** (excluding `bin/`, `obj/`, and
+   `node_modules/`) using [chokidar](https://github.com/paulmillr/chokidar).
 3. On any change, triggers a fresh `pnpm build` (debounced – in-flight builds
    are coalesced into a single follow-up run).
