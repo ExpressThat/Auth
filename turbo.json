@@ -12,8 +12,7 @@
         "!.next/cache/**",
         "dist/**",
         "publish/**",
-        "bin/**",
-        "!bin/Debug/**",
+        "bin/Release/**",
         "obj/**/ref/**"
       ]
     },

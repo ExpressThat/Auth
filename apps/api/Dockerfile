@@ -9,15 +9,15 @@ EXPOSE 3001
 FROM mcr.microsoft.com/dotnet/sdk:9.0-alpine AS builder
 WORKDIR /src
 
-# Restore dependencies first (layer-cache friendly)
+# Copy project files first for layer-cache-friendly restore.
+# Add a COPY line for each C# workspace package you add to package.json dependencies:
 COPY apps/api/Api.csproj apps/api/
-# If you have local C# packages in packages/, copy their .csproj files here too, e.g.:
-#   COPY packages/my-lib/MyLib.csproj packages/my-lib/
+COPY packages/example-lib/ExampleLib.csproj packages/example-lib/
 RUN dotnet restore apps/api/Api.csproj
 
-# Copy full source and publish
+# Copy source and publish
 COPY apps/api/ apps/api/
-# COPY packages/ packages/   ← uncomment when local C# packages are added
+COPY packages/example-lib/ packages/example-lib/
 RUN dotnet publish apps/api/Api.csproj \
     --configuration Release \
     --no-restore \
