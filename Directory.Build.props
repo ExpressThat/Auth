@@ -1,0 +1,30 @@
+<Project>
+  <!--
+    Shared MSBuild properties for every C# project in this monorepo.
+
+    C# class-library packages live in packages/<name>/ and are consumed by apps
+    via pnpm workspace references (just like JS packages).  When pnpm installs,
+    it creates symlinks under node_modules/@expressthat-auth/<name>/ that MSBuild
+    automatically picks up through ProjectReference globs in each app .csproj.
+
+    See apps/api/Api.csproj for an example of how to wire up the references.
+  -->
+
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Treat all warnings as suggestions during local dev; CI can tighten this -->
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <!--
+      Disable reference-assembly generation for all monorepo projects.
+      Reference assemblies are helpful when distributing NuGet packages; for
+      internal workspace packages they only cause build-state issues when MSBuild
+      builds a library both standalone (via its own turbo task) and again as a
+      ProjectReference inside a consuming app.  Disabling them causes the compiler
+      to use the full implementation DLL from bin/ instead, which is safe and fast
+      for internal packages.
+    -->
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+  </PropertyGroup>
+
+</Project>

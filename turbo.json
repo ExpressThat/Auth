@@ -7,7 +7,14 @@
     "build": {
       "dependsOn": ["^build", "^db:generate"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "dist/**",
+        "publish/**",
+        "bin/Release/**",
+        "obj/**/ref/**"
+      ]
     },
     "lint": {
       "dependsOn": ["^lint"]

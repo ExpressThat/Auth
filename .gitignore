@@ -27,6 +27,14 @@ out/
 build
 dist
 
+# .NET build outputs
+bin/
+obj/
+publish/
+*.user
+*.suo
+.vs/
+
 # Prisma generated client
 packages/database/generated
 
