@@ -8,10 +8,10 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "build": "pnpm gen:spec && pnpm gen:types",
-    "dev": "tsx scripts/dev.ts",
-    "gen:spec": "pnpm --filter @expressthat-auth/api gen:spec",
-    "gen:types": "openapi-typescript ../api/swagger.json -o src/schema.gen.ts",
+    "build": "pnpm gen:types:release",
+    "dev": "wait-on -t 300000 http-get://localhost:3001/api/swagger/v1/swagger.json && nodemon --watch ../api/bin/Debug/net10.0/swagger.json --ext json --exec \"pnpm gen:types:dev\"",
+    "gen:types:release": "openapi-typescript ../api/bin/Release/net10.0/swagger.json -o src/schema.gen.ts",
+    "gen:types:dev": "openapi-typescript ../api/bin/Debug/net10.0/swagger.json -o src/schema.gen.ts",
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
@@ -21,9 +21,9 @@
   "devDependencies": {
     "@expressthat-auth/typescript-config": "workspace:*",
     "@types/node": "^22.15.3",
-    "chokidar": "^5.0.0",
+    "nodemon": "^3.1.10",
     "openapi-typescript": "^7.13.0",
-    "tsx": "^4.21.0",
-    "typescript": "5.9.2"
+    "typescript": "5.9.2",
+    "wait-on": "^9.0.5"
   }
 }

@@ -5,7 +5,7 @@
   "globalPassThroughEnv": ["AUTH_SECRET", "AUTH_GITHUB_ID", "AUTH_GITHUB_SECRET"],
   "tasks": {
     "build": {
-      "dependsOn": ["^build", "^db:generate"],
+      "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [
         ".next/**",
@@ -21,30 +21,16 @@
       "dependsOn": ["^lint"]
     },
     "check-types": {
-      "dependsOn": ["^check-types", "^db:generate"]
+      "dependsOn": ["^check-types"]
     },
     "//#format-and-lint": {},
     "//#format-and-lint:fix": {
       "cache": false
     },
     "dev": {
-      "dependsOn": ["^db:generate"],
+      "dependsOn": [],
       "cache": false,
       "persistent": true
-    },
-    "gen:spec": {
-      "dependsOn": ["^build"],
-      "outputs": ["swagger.json"],
-      "cache": false
-    },
-    "db:generate": {
-      "cache": false
-    },
-    "db:migrate": {
-      "cache": false
-    },
-    "db:deploy": {
-      "cache": false
     }
   }
 }

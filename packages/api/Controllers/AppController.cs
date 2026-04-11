@@ -29,8 +29,8 @@ public class AppController : ControllerBase
     /// <param name="name">The name to greet.</param>
     [HttpGet("example")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-    public string GetExample([FromQuery] string name = "World") {
-        return Greeter.Greet(name);
+    public string GetExample([FromQuery] string name = "World", [FromQuery] bool useLib = false) {
+        return Greeter.Greet(name) + $" (from {(useLib ? "@expressthat-auth/example-lib" : "API controller")})";
     }
         
 }

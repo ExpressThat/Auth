@@ -34,16 +34,20 @@ pnpm build
 
 ## OpenAPI spec generation
 
-The `gen:spec` script builds the project and uses the Swashbuckle CLI dotnet
-tool to emit `swagger.json` alongside the package:
+Swagger generation is wired into the API project build target, so every build
+and every `dotnet watch` rebuild emits `swagger.json` alongside the package.
+`gen:spec` is now a convenience alias to `build`.
 
 ```sh
+pnpm tools:restore
 pnpm gen:spec
 # or directly:
 dotnet tool restore
 dotnet build --configuration Release
-dotnet swagger tofile --output swagger.json bin/Release/net10.0/Api.dll v1
 ```
+
+`pnpm build`/`pnpm gen:spec` does not perform tool restore, so restore tools at
+least once with `pnpm tools:restore`.
 
 `packages/api-client` calls this script automatically when generating the
 TypeScript client.
