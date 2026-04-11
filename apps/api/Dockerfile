@@ -1,12 +1,12 @@
 # syntax=docker/dockerfile:1.7
 
 # ── runtime base ─────────────────────────────────────────────────────────────
-FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine AS base
+FROM mcr.microsoft.com/dotnet/aspnet:10.0-alpine AS base
 WORKDIR /app
 EXPOSE 3001
 
 # ── build stage ───────────────────────────────────────────────────────────────
-FROM mcr.microsoft.com/dotnet/sdk:9.0-alpine AS builder
+FROM mcr.microsoft.com/dotnet/sdk:10.0-alpine AS builder
 WORKDIR /src
 
 # Copy project files first for layer-cache-friendly restore.
@@ -21,7 +21,8 @@ COPY packages/example-lib/ packages/example-lib/
 RUN dotnet publish packages/api/Api.csproj \
     --configuration Release \
     --no-restore \
-    --output /app/publish
+    --output /app/publish \
+    /p:GenerateSwaggerOnBuild=false
 
 # ── final image ───────────────────────────────────────────────────────────────
 FROM base AS runner
