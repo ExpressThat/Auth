@@ -71,19 +71,7 @@ At a high level, the platform direction is:
 
 `next-auth -> top-level workspace -> workspace users and organizations -> apps -> authenticated users`
 
-## Current Authentication Bootstrap
-
-For now, NextAuth provides the top-level login to the web application, including the internal admin surface.
-
-The organization layer is temporarily hardcoded while the internal admin capabilities are still gaining enough features to manage and authenticate organizations directly.
-
-This is temporary bootstrap infrastructure, not the final platform model.
-
 ## Planned Internal Control Plane Model
-
-Once ExpressThat Auth has enough capability to authenticate and administer itself safely, the internal admin experience in the web application will stop depending on NextAuth and will use ExpressThat Auth directly.
-
-At that point, the platform will continue to use its own internal tenant structure:
 
 - A default internal workspace for ExpressThat Auth itself
 - A default internal app for ExpressThat Auth itself
@@ -168,5 +156,4 @@ pnpm format-and-lint:fix
 - Define how workspace users, organizations, apps, and authenticated users relate to each other
 - Expand enterprise authentication support
 - Add MFA flows and management
-- Move the internal admin experience off NextAuth once the platform can authenticate itself
 - Preserve the hidden internal workspace/app model for self-management in multi-workspace deployments
