@@ -28,8 +28,8 @@
     change events on the symlinked path, so watch the source package tree too.
   -->
   <ItemGroup>
-    <Watch Include="$(MSBuildThisFileDirectory)..\..\packages\**\*.cs" Exclude="$(MSBuildThisFileDirectory)..\..\packages\**\bin\**;$(MSBuildThisFileDirectory)..\..\packages\**\obj\**" />
-    <Watch Include="$(MSBuildThisFileDirectory)..\..\packages\**\*.csproj" />
+    <Watch Include="$(MSBuildThisFileDirectory)..\**\*.cs" Exclude="$(MSBuildThisFileDirectory)..\**\bin\**;$(MSBuildThisFileDirectory)..\**\obj\**" />
+    <Watch Include="$(MSBuildThisFileDirectory)..\**\*.csproj" />
   </ItemGroup>
 
 </Project>

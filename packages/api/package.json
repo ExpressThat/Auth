@@ -1,0 +1,14 @@
+{
+  "name": "@expressthat-auth/api",
+  "version": "0.0.1",
+  "private": true,
+  "description": "ExpressThat Auth API – ASP.NET Core Web API",
+  "scripts": {
+    "build": "dotnet build --configuration Release",
+    "check-types": "dotnet build",
+    "gen:spec": "dotnet tool restore && dotnet build --configuration Release && dotnet swagger tofile --output swagger.json bin/Release/net10.0/Api.dll v1"
+  },
+  "dependencies": {
+    "@expressthat-auth/example-lib": "workspace:*"
+  }
+}

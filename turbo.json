@@ -13,7 +13,8 @@
         "dist/**",
         "publish/**",
         "bin/Release/**",
-        "obj/**/ref/**"
+        "obj/**/ref/**",
+        "swagger.json"
       ]
     },
     "lint": {
@@ -30,6 +31,11 @@
       "dependsOn": ["^db:generate"],
       "cache": false,
       "persistent": true
+    },
+    "gen:spec": {
+      "dependsOn": ["^build"],
+      "outputs": ["swagger.json"],
+      "cache": false
     },
     "db:generate": {
       "cache": false

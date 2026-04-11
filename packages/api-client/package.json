@@ -1,0 +1,29 @@
+{
+  "name": "@expressthat-auth/api-client",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Generated TypeScript client for the ExpressThat Auth API",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "pnpm gen:spec && pnpm gen:types",
+    "dev": "tsx scripts/dev.ts",
+    "gen:spec": "pnpm --filter @expressthat-auth/api gen:spec",
+    "gen:types": "openapi-typescript ../api/swagger.json -o src/schema.gen.ts",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@expressthat-auth/api": "workspace:*",
+    "openapi-fetch": "^0.17.0"
+  },
+  "devDependencies": {
+    "@expressthat-auth/typescript-config": "workspace:*",
+    "@types/node": "^22.15.3",
+    "chokidar": "^5.0.0",
+    "openapi-typescript": "^7.13.0",
+    "tsx": "^4.21.0",
+    "typescript": "5.9.2"
+  }
+}
