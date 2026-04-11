@@ -1,75 +1,34 @@
-# `api` – ExpressThat Auth API
+# `api` – ExpressThat Auth API (App Wrapper)
 
-ASP.NET Core (.NET 9) Web API for the ExpressThat Auth platform.
+This package is the deployable entry-point for the ExpressThat Auth API.
+The actual API source lives in [`packages/api`](../../packages/api/README.md);
+this wrapper holds:
+
+- **Scripts** that forward `dev`, `build`, `check-types`, and `start` to the
+  `packages/api` project.
+- **`Dockerfile`** for containerised builds (built from the repo root).
+- **`publish/`** output directory (gitignored) produced by `pnpm build`.
 
 ## Development
 
-Run the API in watch mode (rebuilds and restarts on file changes):
-
 ```sh
 pnpm dev
-# or directly: dotnet watch run --launch-profile Development
+# or from repo root: pnpm dev
 ```
 
 The API starts at **http://localhost:3001** (override with the `PORT` env var).
-
-- `GET /api` → `Hello World!`
-- `GET /api/name?name=<X>` → `Hello, <X>!`
-- `GET /api/example?name=<X>` → demo of the `@expressthat-auth/example-lib` workspace package
-- Swagger UI → **http://localhost:3001/api/docs**
 
 ## Build
 
 ```sh
 pnpm build
-# or directly: dotnet publish --configuration Release --output publish
 ```
 
-## C# workspace packages
+Publishes the ASP.NET Core app to `apps/api/publish/`.
 
-C# class libraries can live in `packages/<name>/` alongside JavaScript packages.
-A C# package just needs:
+## Docker
 
-1. A `package.json` with a scoped name and dotnet scripts:
-
-```json
-{
-  "name": "@expressthat-auth/<name>",
-  "scripts": { "build": "dotnet build --configuration Release" }
-}
+```sh
+# from repo root:
+docker build -f apps/api/Dockerfile -t auth-api .
 ```
-
-2. A `.csproj` (class library):
-
-```xml
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-  </PropertyGroup>
-</Project>
-```
-
-3. C# source files.
-
-### Consuming a package
-
-Add it to the API's `package.json` `dependencies` (using the pnpm workspace protocol):
-
-```json
-{
-  "dependencies": {
-    "@expressthat-auth/my-lib": "workspace:*"
-  }
-}
-```
-
-Run `pnpm install` – pnpm will symlink the package into
-`node_modules/@expressthat-auth/my-lib`.  The API's `Api.csproj` contains a
-wildcard `ProjectReference` that automatically discovers any `.csproj` under
-`node_modules/@expressthat-auth/`, so **no manual project-file edits are
-needed**.
-
-Turbo's `^build` dependency ordering ensures the library is always built before
-the API, and turbo caching keeps subsequent builds fast.
-
-See `packages/example-lib/` for a working example.

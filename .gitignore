@@ -35,6 +35,10 @@ publish/
 *.suo
 .vs/
 
+# Generated API spec and TypeScript client
+packages/api/swagger.json
+packages/api-client/src/schema.gen.ts
+
 # Prisma generated client
 packages/database/generated
 

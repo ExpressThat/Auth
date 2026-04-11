@@ -28,6 +28,8 @@
       "dist",
       ".turbo",
       "packages/database/generated/**",
+      "packages/api/swagger.json",
+      "packages/api-client/src/schema.gen.ts",
       "**/*.cs",
       "**/*.csproj",
       "**/*.props",

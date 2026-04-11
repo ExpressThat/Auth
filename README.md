@@ -108,7 +108,7 @@ That separation is intentional so the control plane experience, end-user experie
 ### Apps
 
 - `apps/web` - the shared web interface that includes both the internal admin/control-plane experience and end-user authentication flows
-- `apps/api` - the shared backend API used by the web app for admin actions, end-user logins, password resets, and related authentication flows
+- `apps/api` - thin wrapper around `packages/api`; entry-point for running and deploying the API
 
 ## Runtime Responsibilities
 
@@ -121,6 +121,8 @@ This split allows each surface to be deployed and scaled separately while still 
 
 ### Packages
 
+- `packages/api` - ASP.NET Core Web API (source for the ExpressThat Auth API)
+- `packages/api-client` - auto-generated TypeScript client for the API (openapi-typescript + openapi-fetch)
 - `packages/database` - Prisma schema, generated client, and database access
 - `packages/models` - shared domain models
 - `packages/utils` - shared utilities
