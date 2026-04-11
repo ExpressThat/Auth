@@ -1,20 +1,16 @@
-import createClient from "openapi-fetch";
-import type { paths } from "./schema.gen.js";
+import { Api } from "./generated/Api";
+export type * from "./generated/Api";
 
-export type { paths };
-export { createClient };
+export type ExpressThatAuthClient = InstanceType<typeof Api<string>>;
 
-/**
- * Creates a type-safe fetch client for the ExpressThat Auth API.
- *
- * @example
- * ```ts
- * import { createApiClient } from "@expressthat-auth/api-client";
- *
- * const api = createApiClient("http://localhost:3001");
- * const { data } = await api.GET("/api");
- * ```
- */
-export function createApiClient(baseUrl: string) {
-  return createClient<paths>({ baseUrl });
+export function createExpressThatAuthClient(
+  baseUrl: string,
+  token?: string,
+): ExpressThatAuthClient {
+  const client = new Api<string>({
+    baseUrl,
+    securityWorker: (t) => (t ? { headers: { Authorization: `Bearer ${t}` } } : {}),
+  });
+  if (token) client.setSecurityData(token);
+  return client;
 }

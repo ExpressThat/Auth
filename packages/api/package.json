@@ -4,7 +4,7 @@
   "private": true,
   "description": "ExpressThat Auth API – ASP.NET Core Web API",
   "scripts": {
-    "build": "dotnet build --configuration Release",
+    "build": "dotnet tool restore && dotnet build --configuration Release",
     "check-types": "dotnet build"
   },
   "dependencies": {

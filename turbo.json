@@ -13,8 +13,7 @@
         "dist/**",
         "publish/**",
         "bin/Release/**",
-        "obj/**/ref/**",
-        "swagger.json"
+        "obj/**/ref/**"
       ]
     },
     "lint": {

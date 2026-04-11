@@ -29,7 +29,7 @@
       ".turbo",
       "packages/database/generated/**",
       "packages/api/swagger.json",
-      "packages/api-client/src/schema.gen.ts",
+      "packages/api-client/src/generated/**",
       "**/*.cs",
       "**/*.csproj",
       "**/*.props",

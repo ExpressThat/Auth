@@ -25,7 +25,38 @@ The API starts at **http://localhost:3001** (override with the `PORT` env var).
 - `GET /api/example?name=<X>` → demo of the `@expressthat-auth/example-lib` workspace package
 - Swagger UI → **http://localhost:3001/api/docs**
 
-## Build
+## Protecting endpoints
+
+Add `[Authorize]` to any controller or action to mark it as requiring authentication. The
+`AuthorizeOperationFilter` (registered in `Program.cs`) detects this attribute and adds the Bearer
+security requirement to that operation in the generated OpenAPI spec — giving it the lock 🔒 icon
+in Swagger UI and ensuring the generated client automatically injects the `Authorization: Bearer`
+header.
+
+```csharp
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+[ApiController]
+[Route("api/[controller]")]
+public class ExampleController : ControllerBase
+{
+    // Public — no token required
+    [HttpGet]
+    public IActionResult List() => Ok();
+
+    // Protected — requires a valid Bearer token
+    [Authorize]
+    [HttpPost]
+    public IActionResult Create() => Ok();
+}
+```
+
+On the client side, call `api.setSecurityData("your-jwt-token")` once after login — the client
+will automatically include `Authorization: Bearer <token>` on every protected request. See
+[`packages/api-client/README.md`](../../packages/api-client/README.md) for details.
+
+
 
 ```sh
 pnpm build

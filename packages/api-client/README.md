@@ -1,52 +1,91 @@
 # `@expressthat-auth/api-client`
 
-Auto-generated, type-safe TypeScript client for the ExpressThat Auth API.
+Auto-generated, type-safe TypeScript client for the ExpressThat Auth API, with **zero runtime dependencies**.
 
-Types are generated from the OpenAPI spec produced by `packages/api` using
-[openapi-typescript](https://github.com/openapi-ts/openapi-typescript) and
-served via [openapi-fetch](https://github.com/openapi-ts/openapi-typescript/tree/main/packages/openapi-fetch).
+The client is generated from the OpenAPI spec produced by `packages/api` using
+[swagger-typescript-api](https://github.com/acacode/swagger-typescript-api). The generated code
+uses native `fetch` with no external runtime dependencies — everything needed is inlined into the
+build output.
 
-> **`src/schema.gen.ts` is generated** – do not edit it manually.  Run
-> `pnpm build` to regenerate.
+> **`src/generated/` is generated** – do not edit it manually. Run `pnpm build` to regenerate.
 
 ## Usage
 
 ```ts
-import { createApiClient } from "@expressthat-auth/api-client";
+import { createExpressThatAuthClient } from "@expressthat-auth/api-client";
 
-const api = createApiClient("http://localhost:3001");
+const api = createExpressThatAuthClient("http://localhost:3001");
 
-const { data, error } = await api.GET("/api/name", {
-  params: { query: { name: "World" } },
-});
+// People
+const people = await api.people.listPeople();
+const person = await api.people.getPersonById({ id: 1 });
+await api.people.createPerson({ body: { name: "Alice", email: "alice@example.com" } });
+await api.people.updatePerson({ id: 1, body: { name: "Alice Smith" } });
+await api.people.deletePerson({ id: 1 });
+
+// Todos
+const todos = await api.todos.listTodos();
+await api.todos.createTodo({ body: { title: "Buy milk", completed: false } });
+await api.todos.updateTodo({ id: 1, body: { completed: true } });
+await api.todos.deleteTodo({ id: 1 });
 ```
+
+Use the `ExpressThatAuthClient` type for type annotations:
+
+```ts
+import { createExpressThatAuthClient, type ExpressThatAuthClient } from "@expressthat-auth/api-client";
+
+let client: ExpressThatAuthClient;
+client = createExpressThatAuthClient("http://localhost:3001");
+```
+
+## Authentication
+
+Endpoints decorated with `[Authorize]` in the API are documented in the OpenAPI spec with a
+Bearer security requirement. You can supply the JWT token at creation time or set it afterwards:
+
+```ts
+// Option 1 — pass token at creation
+const api = createExpressThatAuthClient("http://localhost:3001", "your-jwt-token");
+
+// Option 2 — set it later (e.g. after login)
+const api = createExpressThatAuthClient("http://localhost:3001");
+api.setSecurityData("your-jwt-token");
+
+// Secured endpoints now automatically include: Authorization: Bearer your-jwt-token
+const todos = await api.todos.listTodos();
+
+// On logout, clear the token:
+api.setSecurityData(null);
+```
+
+Unsecured endpoints are unaffected — the header is only added when `setSecurityData` has a
+non-null value.
 
 ## Scripts
 
-| Script | Description |
-|--------|-------------|
-| `pnpm build` | Generate `swagger.json` from `packages/api`, then generate `src/schema.gen.ts` |
-| `pnpm dev` | Watch all C# files in `packages/` and rebuild + regenerate on every change |
-| `pnpm gen:spec` | Build `packages/api` and emit `packages/api/swagger.json` |
-| `pnpm gen:types` | Convert `packages/api/swagger.json` → `src/schema.gen.ts` |
-| `pnpm check-types` | TypeScript type-check (requires a prior `pnpm build`) |
+| Script                    | Description                                                                  |
+| ------------------------- | ---------------------------------------------------------------------------- |
+| `pnpm build`              | Generate `src/generated/` from the Release swagger, then bundle to `dist/`  |
+| `pnpm dev`                | Watch the Debug swagger and regenerate `src/generated/` on every change      |
+| `pnpm gen:client:release` | Generate client from `packages/api` Release build output                     |
+| `pnpm gen:client:dev`     | Generate client from `packages/api` Debug build output                       |
+| `pnpm check-types`        | TypeScript type-check (requires a prior `pnpm build`)                        |
 
 ## How it works
 
 ### `build`
 
-1. `gen:spec` – runs `pnpm --filter @expressthat-auth/api gen:spec` which:
-   - Restores the Swashbuckle CLI dotnet tool (`dotnet tool restore`)
-   - Compiles `packages/api` (`dotnet build --configuration Release`)
-   - Runs `dotnet swagger tofile` to produce `packages/api/swagger.json`
-2. `gen:types` – runs `openapi-typescript ../api/swagger.json -o src/schema.gen.ts`
+1. `gen:client:release` – runs `swagger-typescript-api` pointing at
+   `packages/api/bin/Release/net10.0/swagger.json`, which generates:
+   - `src/generated/client.ts` – self-contained `Api` class with inline fetch client and all typed
+     methods grouped by tag (controller)
+2. `tsx scripts/build.ts` – cleans `dist/`, then:
+   - **esbuild** bundles `src/index.ts` into `dist/index.js` (ESM) and `dist/index.cjs` (CJS) with
+     sourcemaps
+   - **tsc** emits `.d.ts` declaration files into `dist/`
 
 ### `dev`
 
-Runs `scripts/dev.ts` via `tsx`.  The script:
-
-1. Performs an initial `pnpm build`.
-2. Watches **all files inside `packages/api/`** (excluding `bin/`, `obj/`, and
-   `node_modules/`) using [chokidar](https://github.com/paulmillr/chokidar).
-3. On any change, triggers a fresh `pnpm build` (debounced – in-flight builds
-   are coalesced into a single follow-up run).
+Waits for the API server to be available, then uses `nodemon` to watch
+`packages/api/bin/Debug/net10.0/swagger.json` and re-runs `gen:client:dev` on every change.

@@ -4,8 +4,8 @@
   "private": true,
   "description": "ExpressThat Auth API – thin wrapper around @expressthat-auth/api",
   "scripts": {
-    "build": "dotnet publish ../../packages/api/Api.csproj --configuration Release --output publish",
-    "dev": "dotnet watch --project ../../packages/api/Api.csproj --no-hot-reload run --launch-profile Development",
+    "build": "dotnet tool restore --tool-manifest ../../packages/api/.config/dotnet-tools.json && dotnet publish ../../packages/api/Api.csproj --configuration Release --output publish",
+    "dev": "dotnet tool restore --tool-manifest ../../packages/api/.config/dotnet-tools.json && dotnet watch --project ../../packages/api/Api.csproj --no-hot-reload run --launch-profile Development",
     "check-types": "dotnet build ../../packages/api/Api.csproj",
     "start": "dotnet publish/Api.dll"
   },

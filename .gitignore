@@ -18,6 +18,9 @@ coverage
 # Turbo
 .turbo
 
+# TypeScript
+*.tsbuildinfo
+
 # Vercel
 .vercel
 
@@ -37,7 +40,7 @@ publish/
 
 # Generated API spec and TypeScript client
 packages/api/swagger.json
-packages/api-client/src/schema.gen.ts
+packages/api-client/src/generated
 
 # Prisma generated client
 packages/database/generated

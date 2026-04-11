@@ -1,3 +1,6 @@
+using Api.Filters;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +22,30 @@ builder.Services.AddSwaggerGen(options =>
             Version = "1.0",
         }
     );
+    options.CustomOperationIds(apiDesc =>
+    {
+        if (apiDesc.ActionDescriptor is ControllerActionDescriptor controllerAction)
+        {
+            return controllerAction.ActionName;
+        }
+        return null;
+    });
+    options.AddSecurityDefinition(
+        "Bearer",
+        new OpenApiSecurityScheme
+        {
+            Type = SecuritySchemeType.Http,
+            Scheme = "bearer",
+            BearerFormat = "JWT",
+            Description = "Enter your JWT token.",
+        }
+    );
+    // Apply Bearer globally; the operation filter removes it from non-[Authorize] endpoints.
+    options.AddSecurityRequirement(doc => new OpenApiSecurityRequirement
+    {
+        [new OpenApiSecuritySchemeReference("Bearer", doc)] = [],
+    });
+    options.OperationFilter<AuthorizeOperationFilter>();
 });
 
 var app = builder.Build();
