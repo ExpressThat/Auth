@@ -1,6 +1,6 @@
 # `@expressthat-auth/api` – ExpressThat Auth API
 
-ASP.NET Core (.NET 9) Web API for the ExpressThat Auth platform.
+ASP.NET Core (.NET 10) Web API for the ExpressThat Auth platform.
 
 This package lives in `packages/api/` and is consumed by `apps/api/` as a
 pnpm workspace dependency.  The `apps/api/` wrapper is the entry-point used
@@ -67,7 +67,7 @@ A C# package just needs:
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
 </Project>
 ```
