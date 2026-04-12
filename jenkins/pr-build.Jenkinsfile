@@ -9,13 +9,16 @@ pipeline {
     stages {
         stage('Prepare') {
             steps {
-                withCredentials([gitUsernamePassword(credentialsId: 'github-jenkins-90-days')]) {
-                    sh '''
-                        git fetch origin main
-                        mkdir -p jenkins
-                        git show FETCH_HEAD:jenkins/Dockerfile.ci > jenkins/Dockerfile.ci
-                    '''
-                }
+                writeFile file: 'jenkins/Dockerfile.ci', text: '''
+FROM mcr.microsoft.com/dotnet/sdk:10.0
+
+RUN apt-get update && apt-get install -y ca-certificates curl gnupg \\
+    && curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \\
+    && apt-get install -y nodejs \\
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN corepack enable && corepack prepare pnpm@9.0.0 --activate
+'''
             }
         }
 
