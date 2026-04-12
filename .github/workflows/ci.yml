@@ -6,7 +6,7 @@ on:
 jobs:
   install:
     name: Install dependencies
-    runs-on: ubicloud-standard-2
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -32,7 +32,7 @@ jobs:
   build:
     name: Build
     needs: install
-    runs-on: ubicloud-standard-2
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -58,7 +58,7 @@ jobs:
   format-and-lint:
     name: Format & Lint
     needs: install
-    runs-on: ubicloud-standard-2
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -84,7 +84,7 @@ jobs:
   check-types:
     name: Type Check
     needs: install
-    runs-on: ubicloud-standard-2
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
