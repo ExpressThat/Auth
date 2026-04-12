@@ -26,8 +26,8 @@ pipeline {
             parallel {
                 stage('Build') {
                     agent {
-                        dockerfile {
-                            filename 'jenkins/Dockerfile.ci'
+                        docker {
+                            image 'expressthat/auth-ci:latest'
                             registryCredentialsId 'docker-hub-read-only'
                             reuseNode true
                         }
@@ -47,14 +47,15 @@ pipeline {
                         }
                     }
                     steps {
+                        sh 'corepack enable && corepack prepare pnpm@9.0.0 --activate'
                         sh 'pnpm format-and-lint'
                     }
                 }
 
                 stage('Type Check') {
                     agent {
-                        dockerfile {
-                            filename 'jenkins/Dockerfile.ci'
+                        docker {
+                            image 'expressthat/auth-ci:latest'
                             registryCredentialsId 'docker-hub-read-only'
                             reuseNode true
                         }
