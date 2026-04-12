@@ -12,6 +12,7 @@ pipeline {
                 docker {
                     image 'node:24'
                     registryCredentialsId 'docker-hub-read-only'
+                    args '--user root'
                     reuseNode true
                 }
             }
@@ -41,6 +42,7 @@ pipeline {
                         docker {
                             image 'node:24'
                             registryCredentialsId 'docker-hub-read-only'
+                            args '--user root'
                             reuseNode true
                         }
                     }
