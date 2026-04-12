@@ -16,9 +16,7 @@ FROM base AS installer
 COPY --from=pruner /app/out/json/ .
 RUN pnpm install --frozen-lockfile
 COPY --from=pruner /app/out/full/ .
-RUN --mount=type=secret,id=turbo_team,required=false \
-    --mount=type=secret,id=turbo_token,required=false \
-    sh -ec 'TURBO_ARGS=""; if [ -f /run/secrets/turbo_team ] && [ -f /run/secrets/turbo_token ]; then TURBO_ARGS="--team=$(cat /run/secrets/turbo_team) --token=$(cat /run/secrets/turbo_token)"; echo "Using Turborepo remote cache"; fi; pnpm turbo run build --filter=web $TURBO_ARGS'
+RUN pnpm turbo run build --filter=web
 
 FROM nginx:alpine AS runner
 COPY --from=installer /app/apps/web/dist /usr/share/nginx/html

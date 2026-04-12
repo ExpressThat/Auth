@@ -38,9 +38,6 @@ jobs:
         with:
           context: .
           file: ./apps/api/Dockerfile
-          secrets: |
-            turbo_team=${{ secrets.TURBO_TEAM }}
-            turbo_token=${{ secrets.TURBO_TOKEN }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
