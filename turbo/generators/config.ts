@@ -58,7 +58,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
         {
           type: "add",
           path: "packages/{{name}}/src/.gitkeep",
-          template: "",
+          templateFile: "templates/csharp-lib/src/.gitkeep",
         },
       ];
     },
