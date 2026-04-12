@@ -22,12 +22,24 @@ pipeline {
             }
         }
 
+        stage('Prepare CI Image') {
+            steps {
+                withCredentials([gitUsernamePassword(credentialsId: 'github-jenkins-90-days')]) {
+                    sh '''
+                        git fetch origin main
+                        mkdir -p jenkins
+                        git show FETCH_HEAD:jenkins/Dockerfile.ci > jenkins/Dockerfile.ci
+                    '''
+                }
+            }
+        }
+
         stage('CI') {
             parallel {
                 stage('Build') {
                     agent {
-                        docker {
-                            image 'expressthat/auth-ci:latest'
+                        dockerfile {
+                            filename 'jenkins/Dockerfile.ci'
                             registryCredentialsId 'docker-hub-read-only'
                             reuseNode true
                         }
@@ -54,8 +66,8 @@ pipeline {
 
                 stage('Type Check') {
                     agent {
-                        docker {
-                            image 'expressthat/auth-ci:latest'
+                        dockerfile {
+                            filename 'jenkins/Dockerfile.ci'
                             registryCredentialsId 'docker-hub-read-only'
                             reuseNode true
                         }
