@@ -20,6 +20,6 @@
   "dependencies": {},
   "packageManager": "pnpm@9.0.0",
   "engines": {
-    "node": ">=18"
+    "node": ">=24.0.0"
   }
 }

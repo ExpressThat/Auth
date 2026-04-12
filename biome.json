@@ -24,6 +24,7 @@
   "files": {
     "ignore": [
       "node_modules",
+      ".pnpm-store",
       ".next",
       "dist",
       ".turbo",

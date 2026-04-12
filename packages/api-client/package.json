@@ -19,13 +19,12 @@
     "build": "pnpm gen:client:release && tsx scripts/build.ts",
     "dev": "wait-on -t 300000 http-get://localhost:3001/api/swagger/v1/swagger.json && nodemon --watch ../api/bin/Debug/net10.0/swagger.json --ext json --exec \"pnpm gen:client:dev\"",
     "gen:client:release": "tsx scripts/gen-client.ts",
-    "gen:client:dev": "tsx scripts/gen-client.ts ../api/bin/Debug/net10.0/swagger.json",
-    "check-types": "tsc --noEmit"
+    "gen:client:dev": "tsx scripts/gen-client.ts ../api/bin/Debug/net10.0/swagger.json"
   },
   "devDependencies": {
     "@expressthat-auth/api": "workspace:*",
     "@expressthat-auth/typescript-config": "workspace:*",
-    "@types/node": "^22.15.3",
+    "@types/node": "^24.0.0",
     "esbuild": "^0.28.0",
     "nodemon": "^3.1.10",
     "swagger-typescript-api": "^13.6.8",
