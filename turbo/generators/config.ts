@@ -9,8 +9,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
       {
         type: "input",
         name: "name",
-        message:
-          'Package name (without the "@expressthat-auth/" prefix, e.g. "my-lib"):',
+        message: 'Package name (without the "@expressthat-auth/" prefix, e.g. "my-lib"):',
         validate: (input: string) => {
           if (!input.trim()) return "Package name is required";
           if (!/^[a-z][a-z0-9-]*$/.test(input.trim())) {
@@ -29,21 +28,14 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 
       const root = turbo.paths.root;
       const pkgDir = path.join(root, "packages", name);
-      const nodeModulesPath = path.join(
-        root,
-        "node_modules",
-        "@expressthat-auth",
-        name
-      );
+      const nodeModulesPath = path.join(root, "node_modules", "@expressthat-auth", name);
 
       if (fs.existsSync(pkgDir)) {
-        throw new Error(
-          `A package already exists at packages/${name}. Choose a different name.`
-        );
+        throw new Error(`A package already exists at packages/${name}. Choose a different name.`);
       }
       if (fs.existsSync(nodeModulesPath)) {
         throw new Error(
-          `"@expressthat-auth/${name}" already exists in node_modules. Choose a different name.`
+          `"@expressthat-auth/${name}" already exists in node_modules. Choose a different name.`,
         );
       }
 
