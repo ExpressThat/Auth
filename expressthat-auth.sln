@@ -8,7 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "packages", "packages", "{80
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "packages\api\Api.csproj", "{3FC7EC71-31D1-712E-1320-384AD08193E8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "apps\api\Api.csproj", "{3FC7EC71-31D1-712E-1320-384AD08193E8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "example-lib", "example-lib", "{9609C9A3-67D3-F055-F678-9C3F4C4B107F}"
 EndProject

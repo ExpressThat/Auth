@@ -23,12 +23,15 @@ importers:
 
   apps/api:
     dependencies:
-      '@expressthat-auth/api':
+      '@expressthat-auth/example-lib':
         specifier: workspace:*
-        version: link:../../packages/api
+        version: link:../../packages/example-lib
 
   apps/web:
     dependencies:
+      '@expressthat-auth/api-client':
+        specifier: workspace:*
+        version: link:../../packages/api-client
       react:
         specifier: ^19.2.0
         version: 19.2.0
@@ -73,23 +76,17 @@ importers:
         specifier: ^8.0.0
         version: 8.0.8(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.3)
 
-  packages/api:
-    dependencies:
-      '@expressthat-auth/example-lib':
-        specifier: workspace:*
-        version: link:../example-lib
-
   packages/api-client:
     devDependencies:
-      '@expressthat-auth/api':
-        specifier: workspace:*
-        version: link:../api
       '@expressthat-auth/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@types/node':
         specifier: ^24.0.0
         version: 24.12.2
+      api:
+        specifier: workspace:*
+        version: link:../../apps/api
       esbuild:
         specifier: ^0.28.0
         version: 0.28.0

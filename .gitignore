@@ -39,7 +39,7 @@ publish/
 .vs/
 
 # Generated API spec and TypeScript client
-packages/api/swagger.json
+apps/api/swagger.json
 packages/api-client/src/generated
 
 # Prisma generated client

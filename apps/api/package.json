@@ -2,14 +2,14 @@
   "name": "api",
   "version": "0.0.1",
   "private": true,
-  "description": "ExpressThat Auth API – thin wrapper around @expressthat-auth/api",
+  "description": "ExpressThat Auth API – ASP.NET Core Web API",
   "scripts": {
-    "build": "dotnet tool restore --tool-manifest ../../packages/api/.config/dotnet-tools.json && dotnet publish ../../packages/api/Api.csproj --configuration Release --output publish",
-    "dev": "dotnet tool restore --tool-manifest ../../packages/api/.config/dotnet-tools.json && dotnet watch --project ../../packages/api/Api.csproj --no-hot-reload run --launch-profile Development",
-    "check-types": "dotnet build ../../packages/api/Api.csproj",
+    "build": "dotnet tool restore && dotnet publish Api.csproj --configuration Release --output publish",
+    "dev": "dotnet tool restore && dotnet watch --no-hot-reload run --launch-profile Development",
+    "check-types": "dotnet build",
     "start": "dotnet publish/Api.dll"
   },
   "dependencies": {
-    "@expressthat-auth/api": "workspace:*"
+    "@expressthat-auth/example-lib": "workspace:*"
   }
 }
