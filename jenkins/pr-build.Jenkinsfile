@@ -2,7 +2,7 @@ pipeline {
     agent { label 'isolated' }
 
     options {
-        disableConcurrentBuilds()
+        // disableConcurrentBuilds()
         timeout(time: 30, unit: 'MINUTES')
     }
 
@@ -26,7 +26,6 @@ RUN corepack enable && corepack prepare pnpm@9.0.0 --activate
             agent {
                 dockerfile {
                     filename 'jenkins/Dockerfile.ci'
-                    registryCredentialsId 'docker-hub-read-only'
                     reuseNode true
                 }
             }
