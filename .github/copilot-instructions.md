@@ -4,10 +4,9 @@
 
 Turborepo monorepo with a mixed TypeScript/C# stack:
 
-- **`apps/web`** – Next.js 16 frontend (React 19, Tailwind v4, NextAuth v5 with GitHub OAuth)
-- **`apps/api`** – thin wrapper/entry-point for running and deploying the ASP.NET Core API
-- **`packages/api`** – ASP.NET Core Web API (.NET 10); the actual source for all API logic
-- **`packages/api-client`** – auto-generated TypeScript client (swagger-typescript-api); generated from the swagger.json produced when `packages/api` is built
+- **`apps/web`** – Vite + React + TypeScript frontend
+- **`apps/api`** – ASP.NET Core Web API (.NET 10); the full API source, entry-point for running and deploying
+- **`packages/api-client`** – auto-generated TypeScript client (swagger-typescript-api); generated from the swagger.json produced when `apps/api` is built
 - **`packages/eslint-config`** / **`packages/typescript-config`** – shared lint/TS configs
 
 The web app and API are deployed independently. The web app calls the API via `@expressthat-auth/api-client`.
@@ -45,7 +44,7 @@ pnpm --filter api build          # builds API and produces swagger.json
 pnpm --filter @expressthat-auth/api-client gen:client:release   # regenerates src/generated/Api.ts
 ```
 
-Both `packages/api/swagger.json` and `packages/api-client/src/generated/Api.ts` are gitignored and must be generated locally.
+Both `apps/api/swagger.json` and `packages/api-client/src/generated/Api.ts` are gitignored and must be generated locally.
 
 ### API Client Usage
 
