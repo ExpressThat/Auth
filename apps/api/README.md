@@ -32,4 +32,4 @@ docker build -f apps/api/Dockerfile -t auth-api .
 2. Add `"@expressthat-auth/<name>": "workspace:*"` to this package's `package.json` dependencies
 3. Run `pnpm install` — pnpm creates a symlink into `node_modules/@expressthat-auth/`
 4. MSBuild auto-discovers the `.csproj` via the glob `ProjectReference` in `Api.csproj`
-5. In the `Dockerfile`, add a `COPY packages/<name>/<name>.csproj packages/<name>/` line before `dotnet restore`, a `COPY packages/<name>/ packages/<name>/` line before `dotnet publish`. The `apps/api/node_modules/@expressthat-auth/` directory is already included via the `.dockerignore` exception and copied in the build stage — MSBuild will discover the new `.csproj` automatically (no extra steps needed)
+5. The `Dockerfile` needs no changes — `apps/api/node_modules/@expressthat-auth/` is included in the build context (via `.dockerignore` exception) and Docker follows pnpm's symlinks, so new packages are picked up automatically

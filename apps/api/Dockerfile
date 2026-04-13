@@ -9,16 +9,15 @@ EXPOSE 3001
 FROM mcr.microsoft.com/dotnet/sdk:10.0-alpine AS builder
 WORKDIR /src
 
-# Copy project files first for layer-cache-friendly restore.
-# Add a COPY line for each C# workspace package you add to apps/api package.json dependencies:
+# Copy Api.csproj + all workspace C# packages via pnpm node_modules symlinks.
+# Docker follows symlinks on COPY, so apps/api/node_modules/@expressthat-auth/
+# brings in every workspace package automatically — no per-package COPY needed.
 COPY apps/api/Api.csproj apps/api/
 COPY apps/api/node_modules/@expressthat-auth/ apps/api/node_modules/@expressthat-auth/
-COPY packages/example-lib/ExampleLib.csproj packages/example-lib/
 RUN dotnet restore apps/api/Api.csproj
 
-# Copy source and publish
+# Copy full API source and publish
 COPY apps/api/ apps/api/
-COPY packages/example-lib/ packages/example-lib/
 RUN dotnet publish apps/api/Api.csproj \
     --configuration Release \
     --no-restore \
