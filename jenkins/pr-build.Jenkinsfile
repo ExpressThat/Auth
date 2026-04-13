@@ -2,7 +2,7 @@ pipeline {
     agent { label 'isolated' }
 
     options {
-        disableConcurrentBuilds()
+        // disableConcurrentBuilds()
         timeout(time: 30, unit: 'MINUTES')
     }
 
