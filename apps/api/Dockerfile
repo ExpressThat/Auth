@@ -13,7 +13,11 @@ WORKDIR /src
 # Add a COPY line for each C# workspace package you add to apps/api package.json dependencies:
 COPY apps/api/Api.csproj apps/api/
 COPY packages/example-lib/ExampleLib.csproj packages/example-lib/
-RUN dotnet restore apps/api/Api.csproj
+# Recreate the pnpm workspace node_modules symlink layout that Api.csproj uses to
+# auto-discover ProjectReferences (node_modules is excluded by .dockerignore).
+RUN mkdir -p apps/api/node_modules/@expressthat-auth \
+ && ln -s /src/packages/example-lib apps/api/node_modules/@expressthat-auth/example-lib \
+ && dotnet restore apps/api/Api.csproj
 
 # Copy source and publish
 COPY apps/api/ apps/api/
