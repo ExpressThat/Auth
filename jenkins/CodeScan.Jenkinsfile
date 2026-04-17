@@ -9,9 +9,10 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    def scannerHome = tool 'SonarQube'
                     withSonarQubeEnv() {
-                        sh "${scannerHome}/bin/sonar-scanner"
+                        docker.image('sonarsource/sonar-scanner-cli:11').inside {
+                            sh 'sonar-scanner'
+                        }
                     }
                 }
             }
