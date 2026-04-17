@@ -7,16 +7,9 @@ pipeline {
 
     stages {
         stage('SonarQube Analysis') {
-            agent {
-                docker {
-                    image 'sonarsource/sonar-scanner-cli:latest'
-                    reuseNode true
-                }
-            }
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh 'sonar-scanner'
-                }
+           def scannerHome = tool 'SonarQube';
+            withSonarQubeEnv() {
+              sh "${scannerHome}/bin/sonar-scanner"
             }
         }
     }
