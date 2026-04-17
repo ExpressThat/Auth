@@ -30,7 +30,7 @@
       ".turbo",
       "packages/database/generated/**",
       "apps/api/swagger.json",
-      "packages/api-client/src/generated/**",
+      "packages/api-client/src/**",
       "**/*.cs",
       "**/*.csproj",
       "**/*.props",

@@ -9,7 +9,5 @@
     "check-types": "dotnet build",
     "start": "dotnet publish/Api.dll"
   },
-  "dependencies": {
-   
-  }
+  "dependencies": {}
 }
