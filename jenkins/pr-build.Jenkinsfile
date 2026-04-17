@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'base' }
+    agent { label 'isolated' }
 
     options {
         // disableConcurrentBuilds()
@@ -10,7 +10,7 @@ pipeline {
         stage('CI') {
             agent {
                 docker {
-                    image 'expressthat/auth-build-harness:latest'
+                    image '172.25.0.3:8082/expressthat/auth-build-harness:latest'
                     reuseNode true
                 }
             }
