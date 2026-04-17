@@ -153,7 +153,7 @@ pnpm format-and-lint:fix
 Pull requests are validated by a parallel Jenkins pipeline:
 
 - **CI** (isolated agent) — installs dependencies, builds, lints, and type-checks the monorepo inside a Docker container
-- **Code Quality** (base agent) — runs SonarQube analysis and waits for the quality gate result
+- **Code Quality** (base agent) — runs a full-depth git clone, SonarQube analysis, and waits for the quality gate result
 
 Both branches run concurrently to keep feedback fast.
 
