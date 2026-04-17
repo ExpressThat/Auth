@@ -8,5 +8,8 @@ RUN apt-get update && apt-get install -y ca-certificates curl gnupg \
     && apt-get install -y nodejs \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Route all npm/pnpm installs through the Nexus npm proxy
+RUN npm config set registry http://172.25.0.3:8083/
+
 # Enable corepack and activate pnpm 9
 RUN corepack enable && corepack prepare pnpm@9.0.0 --activate
