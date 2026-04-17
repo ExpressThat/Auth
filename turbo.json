@@ -16,9 +16,6 @@
         "obj/**/ref/**"
       ]
     },
-    "lint": {
-      "dependsOn": ["^lint"]
-    },
     "check-types": {
       "dependsOn": ["^check-types"]
     },

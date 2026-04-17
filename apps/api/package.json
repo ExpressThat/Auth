@@ -8,8 +8,5 @@
     "dev": "dotnet tool restore && dotnet watch --no-hot-reload run --launch-profile Development",
     "check-types": "dotnet build",
     "start": "dotnet publish/Api.dll"
-  },
-  "dependencies": {
-    "@expressthat-auth/example-lib": "workspace:*"
   }
 }
