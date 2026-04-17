@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'base' }
+    agent { label 'isolated' }
 
     options {
         // disableConcurrentBuilds()
