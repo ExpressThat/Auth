@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'isolated' }
+    agent { label 'base' }
 
     options {
         timeout(time: 30, unit: 'MINUTES')
