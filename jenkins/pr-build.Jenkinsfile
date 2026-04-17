@@ -74,6 +74,11 @@ RUN corepack enable && corepack prepare pnpm@9.0.0 --activate
                     stages {
                         stage('SonarQube Analysis') {
                             steps {
+                                checkout([$class: 'GitSCM',
+                                    branches: scm.branches,
+                                    extensions: [[$class: 'CloneOption', shallow: false, depth: 0, noTags: false]],
+                                    userRemoteConfigs: scm.userRemoteConfigs
+                                ])
                                 script {
                                     withSonarQubeEnv() {
                                         docker.image('sonarsource/sonar-scanner-cli:11').inside {
