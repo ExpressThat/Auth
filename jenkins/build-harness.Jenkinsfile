@@ -9,6 +9,7 @@ pipeline {
         stage('Build') {
             when {
                 anyOf {
+                    expression { return currentBuild.changeSets.isEmpty() }
                     changeset 'jenkins/Dockerfile.BuildHarness'
                     changeset 'jenkins/build-harness.Jenkinsfile'
                 }
@@ -28,6 +29,7 @@ pipeline {
         stage('Push') {
             when {
                 anyOf {
+                    expression { return currentBuild.changeSets.isEmpty() }
                     changeset 'jenkins/Dockerfile.BuildHarness'
                     changeset 'jenkins/build-harness.Jenkinsfile'
                 }
