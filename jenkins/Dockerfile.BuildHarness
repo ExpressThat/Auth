@@ -14,8 +14,17 @@ ENV NPM_CONFIG_REGISTRY=http://172.25.0.3:8081/repository/npm_proxy/
 # Enable corepack and activate pnpm 9
 RUN corepack enable && corepack prepare pnpm@9.0.0 --activate
 
-# Install Playwright Chromium and its OS dependencies into a world-readable path
-# so that the browser is accessible when the container runs as a non-root user
-ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
-RUN npx -y playwright install --with-deps chromium \
-    && chmod -R o+rx /ms-playwright
+# Create ubuntu user (uid 1000) to match the CI runner identity
+RUN useradd -m -u 1000 -s /bin/bash ubuntu
+
+# Install Playwright OS-level dependencies (apt packages; needs root)
+RUN npx -y playwright install-deps chromium
+
+# Install the Playwright browser as the ubuntu user so it lands at the path
+# the CI container expects: /home/ubuntu/.cache/ms-playwright
+USER ubuntu
+RUN npx -y playwright install chromium
+USER root
+
+# Expose the browser path as an env var for consuming projects
+ENV PLAYWRIGHT_BROWSERS_PATH=/home/ubuntu/.cache/ms-playwright
