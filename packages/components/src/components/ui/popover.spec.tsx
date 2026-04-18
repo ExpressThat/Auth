@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import {
   Popover,
@@ -6,6 +6,7 @@ import {
   PopoverDescription,
   PopoverHeader,
   PopoverTitle,
+  PopoverTrigger,
 } from "./popover";
 
 describe("PopoverHeader", () => {
@@ -70,5 +71,18 @@ describe("PopoverDescription", () => {
       </Popover>,
     );
     expect(screen.getByText("Desc")).toHaveAttribute("data-slot", "popover-description");
+  });
+});
+
+describe("Popover interactions", () => {
+  it("opens popover when trigger is clicked", () => {
+    render(
+      <Popover>
+        <PopoverTrigger>Open</PopoverTrigger>
+        <PopoverContent>Popover content</PopoverContent>
+      </Popover>,
+    );
+    fireEvent.click(screen.getByText("Open"));
+    expect(screen.getByText("Popover content")).toBeInTheDocument();
   });
 });

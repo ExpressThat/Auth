@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import {
   Sidebar,
   SidebarContent,
@@ -303,5 +303,47 @@ describe("SidebarInset", () => {
   it("sets data-slot attribute", () => {
     const { container } = render(<SidebarInset />);
     expect(container.firstChild).toHaveAttribute("data-slot", "sidebar-inset");
+  });
+});
+
+describe("SidebarTrigger interactions", () => {
+  it("toggles sidebar from expanded to collapsed on click", () => {
+    render(
+      <SidebarProvider defaultOpen>
+        <SidebarTrigger />
+        <Sidebar>
+          <SidebarContent />
+        </Sidebar>
+      </SidebarProvider>,
+    );
+    const sidebar = document.querySelector('[data-slot="sidebar"]');
+    expect(sidebar).toHaveAttribute("data-state", "expanded");
+    fireEvent.click(document.querySelector('[data-slot="sidebar-trigger"]')!);
+    expect(sidebar).toHaveAttribute("data-state", "collapsed");
+  });
+
+  it("calls onClick in addition to toggling", () => {
+    const onClick = vi.fn();
+    render(
+      <SidebarProvider>
+        <SidebarTrigger onClick={onClick} />
+      </SidebarProvider>,
+    );
+    fireEvent.click(document.querySelector('[data-slot="sidebar-trigger"]')!);
+    expect(onClick).toHaveBeenCalledOnce();
+  });
+
+  it("keyboard shortcut Ctrl+B toggles the sidebar", () => {
+    render(
+      <SidebarProvider defaultOpen>
+        <Sidebar>
+          <SidebarContent />
+        </Sidebar>
+      </SidebarProvider>,
+    );
+    const sidebar = document.querySelector('[data-slot="sidebar"]');
+    expect(sidebar).toHaveAttribute("data-state", "expanded");
+    fireEvent.keyDown(window, { key: "b", ctrlKey: true });
+    expect(sidebar).toHaveAttribute("data-state", "collapsed");
   });
 });

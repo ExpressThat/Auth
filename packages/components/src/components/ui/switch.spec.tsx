@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import { Switch } from "./switch";
 
 describe("Switch", () => {
@@ -33,5 +33,28 @@ describe("Switch", () => {
       render(<Switch size="sm" />);
       expect(screen.getByRole("switch")).toHaveAttribute("data-size", "sm");
     });
+  });
+});
+
+describe("Switch interactions", () => {
+  it("becomes checked on click", () => {
+    render(<Switch />);
+    const sw = screen.getByRole("switch");
+    fireEvent.click(sw);
+    expect(sw).toHaveAttribute("data-checked");
+  });
+
+  it("calls onCheckedChange with true when clicked", () => {
+    const onCheckedChange = vi.fn();
+    render(<Switch onCheckedChange={onCheckedChange} />);
+    fireEvent.click(screen.getByRole("switch"));
+    expect(onCheckedChange).toHaveBeenCalledWith(true, expect.anything());
+  });
+
+  it("does not call onCheckedChange when disabled", () => {
+    const onCheckedChange = vi.fn();
+    render(<Switch disabled onCheckedChange={onCheckedChange} />);
+    fireEvent.click(screen.getByRole("switch"));
+    expect(onCheckedChange).not.toHaveBeenCalled();
   });
 });

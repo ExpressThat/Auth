@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import { Input } from "./input";
 
 describe("Input", () => {
@@ -31,5 +31,33 @@ describe("Input", () => {
   it("renders as password type", () => {
     const { container } = render(<Input type="password" />);
     expect(container.querySelector("input")).toHaveAttribute("type", "password");
+  });
+});
+
+describe("Input interactions", () => {
+  it("calls onChange with new value", () => {
+    const onChange = vi.fn();
+    render(<Input onChange={onChange} />);
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "hello" } });
+    expect(onChange).toHaveBeenCalledOnce();
+  });
+
+  it("calls onFocus when focused", () => {
+    const onFocus = vi.fn();
+    render(<Input onFocus={onFocus} />);
+    fireEvent.focus(screen.getByRole("textbox"));
+    expect(onFocus).toHaveBeenCalledOnce();
+  });
+
+  it("calls onBlur when blurred", () => {
+    const onBlur = vi.fn();
+    render(<Input onBlur={onBlur} />);
+    fireEvent.blur(screen.getByRole("textbox"));
+    expect(onBlur).toHaveBeenCalledOnce();
+  });
+
+  it("reflects controlled value", () => {
+    render(<Input value="controlled" onChange={() => {}} />);
+    expect(screen.getByRole("textbox")).toHaveValue("controlled");
   });
 });

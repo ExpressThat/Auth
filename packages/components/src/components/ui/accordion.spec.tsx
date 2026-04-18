@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./accordion";
 
 const AccordionExample = () => (
@@ -67,5 +67,55 @@ describe("AccordionContent", () => {
     const trigger = screen.getByText("Section 1");
     fireEvent.click(trigger);
     expect(document.querySelector('[data-slot="accordion-content"]')).toBeInTheDocument();
+  });
+});
+
+describe("Accordion interactions", () => {
+  it("calls onValueChange when a section is opened", () => {
+    const onValueChange = vi.fn();
+    render(
+      <Accordion onValueChange={onValueChange}>
+        <AccordionItem value="item-1">
+          <AccordionTrigger>Section 1</AccordionTrigger>
+          <AccordionContent>Content 1</AccordionContent>
+        </AccordionItem>
+      </Accordion>,
+    );
+    fireEvent.click(screen.getByText("Section 1"));
+    expect(onValueChange).toHaveBeenCalledWith(["item-1"], expect.anything());
+  });
+
+  it("collapses an open section on second click", () => {
+    render(
+      <Accordion>
+        <AccordionItem value="item-1">
+          <AccordionTrigger>Section 1</AccordionTrigger>
+          <AccordionContent>Content 1</AccordionContent>
+        </AccordionItem>
+      </Accordion>,
+    );
+    const trigger = screen.getByText("Section 1");
+    fireEvent.click(trigger);
+    expect(screen.getByText("Content 1")).toBeInTheDocument();
+    fireEvent.click(trigger);
+    expect(screen.queryByText("Content 1")).not.toBeInTheDocument();
+  });
+
+  it("supports opening multiple items independently", () => {
+    render(
+      <Accordion>
+        <AccordionItem value="item-1">
+          <AccordionTrigger>Section 1</AccordionTrigger>
+          <AccordionContent>Content 1</AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-2">
+          <AccordionTrigger>Section 2</AccordionTrigger>
+          <AccordionContent>Content 2</AccordionContent>
+        </AccordionItem>
+      </Accordion>,
+    );
+    fireEvent.click(screen.getByText("Section 1"));
+    fireEvent.click(screen.getByText("Section 2"));
+    expect(screen.getByText("Content 2")).toBeInTheDocument();
   });
 });

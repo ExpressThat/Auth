@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import {
   Carousel,
@@ -99,5 +99,37 @@ describe("CarouselNext", () => {
       </Carousel>,
     );
     expect(document.querySelector('[data-slot="carousel-next"]')).toBeInTheDocument();
+  });
+});
+
+describe("Carousel interactions", () => {
+  it("clicking the next button does not throw", () => {
+    render(
+      <Carousel>
+        <CarouselContent>
+          <CarouselItem>Slide 1</CarouselItem>
+          <CarouselItem>Slide 2</CarouselItem>
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>,
+    );
+    const nextBtn = document.querySelector('[data-slot="carousel-next"]')!;
+    expect(() => fireEvent.click(nextBtn)).not.toThrow();
+  });
+
+  it("clicking the previous button does not throw", () => {
+    render(
+      <Carousel>
+        <CarouselContent>
+          <CarouselItem>Slide 1</CarouselItem>
+          <CarouselItem>Slide 2</CarouselItem>
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>,
+    );
+    const prevBtn = document.querySelector('[data-slot="carousel-previous"]')!;
+    expect(() => fireEvent.click(prevBtn)).not.toThrow();
   });
 });

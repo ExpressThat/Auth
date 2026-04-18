@@ -1,8 +1,10 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import {
   DropdownMenu,
+  DropdownMenuContent,
   DropdownMenuGroup,
+  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
@@ -74,5 +76,35 @@ describe("DropdownMenuGroup", () => {
   it("sets data-slot attribute", () => {
     const { container } = render(<DropdownMenuGroup />);
     expect(container.firstChild).toHaveAttribute("data-slot", "dropdown-menu-group");
+  });
+});
+
+describe("DropdownMenu interactions", () => {
+  it("opens menu content when trigger is clicked", () => {
+    render(
+      <DropdownMenu>
+        <DropdownMenuTrigger>Open</DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem>Item</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>,
+    );
+    fireEvent.click(screen.getByText("Open"));
+    expect(screen.getByText("Item")).toBeInTheDocument();
+  });
+
+  it("calls onClick on menu item click", () => {
+    const onClick = vi.fn();
+    render(
+      <DropdownMenu>
+        <DropdownMenuTrigger>Open</DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem onClick={onClick}>Item</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>,
+    );
+    fireEvent.click(screen.getByText("Open"));
+    fireEvent.click(screen.getByText("Item"));
+    expect(onClick).toHaveBeenCalledOnce();
   });
 });

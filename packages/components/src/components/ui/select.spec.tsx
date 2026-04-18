@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import {
   Select,
   SelectContent,
@@ -130,5 +130,39 @@ describe("SelectScrollUpButton", () => {
 describe("SelectScrollDownButton", () => {
   it("is exported and is a component", () => {
     expect(typeof SelectScrollDownButton).toBe("function");
+  });
+});
+
+describe("Select interactions", () => {
+  it("opens popup when trigger is clicked", () => {
+    render(
+      <Select>
+        <SelectTrigger aria-label="select">
+          <SelectValue placeholder="Pick one" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="a">Option A</SelectItem>
+        </SelectContent>
+      </Select>,
+    );
+    fireEvent.click(screen.getByRole("combobox"));
+    expect(screen.getByText("Option A")).toBeInTheDocument();
+  });
+
+  it("calls onValueChange when an item is selected", () => {
+    const onValueChange = vi.fn();
+    render(
+      <Select onValueChange={onValueChange}>
+        <SelectTrigger aria-label="select">
+          <SelectValue placeholder="Pick one" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="a">Option A</SelectItem>
+        </SelectContent>
+      </Select>,
+    );
+    fireEvent.click(screen.getByRole("combobox"));
+    fireEvent.click(screen.getByText("Option A"));
+    expect(onValueChange).toHaveBeenCalledWith("a", expect.anything());
   });
 });

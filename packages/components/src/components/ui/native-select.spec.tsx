@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import { NativeSelect, NativeSelectOptGroup, NativeSelectOption } from "./native-select";
 
 describe("NativeSelect", () => {
@@ -50,5 +50,31 @@ describe("NativeSelectOptGroup", () => {
       </select>,
     );
     expect(container.querySelector("optgroup")).toHaveAttribute("label", "Group A");
+  });
+});
+
+describe("NativeSelect interactions", () => {
+  it("calls onChange when selection changes", () => {
+    const onChange = vi.fn();
+    render(
+      <NativeSelect aria-label="select" onChange={onChange}>
+        <NativeSelectOption value="a">A</NativeSelectOption>
+        <NativeSelectOption value="b">B</NativeSelectOption>
+      </NativeSelect>,
+    );
+    fireEvent.change(screen.getByRole("combobox"), { target: { value: "b" } });
+    expect(onChange).toHaveBeenCalledOnce();
+  });
+
+  it("reflects selected value after change", () => {
+    render(
+      <NativeSelect aria-label="select" defaultValue="a">
+        <NativeSelectOption value="a">A</NativeSelectOption>
+        <NativeSelectOption value="b">B</NativeSelectOption>
+      </NativeSelect>,
+    );
+    const select = screen.getByRole("combobox");
+    fireEvent.change(select, { target: { value: "b" } });
+    expect(select).toHaveValue("b");
   });
 });

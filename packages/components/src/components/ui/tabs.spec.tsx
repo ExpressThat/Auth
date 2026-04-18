@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import { Tabs, TabsContent, TabsList, TabsTrigger, tabsListVariants } from "./tabs";
 
 const TabsExample = () => (
@@ -98,5 +98,34 @@ describe("TabsContent", () => {
 describe("tabsListVariants", () => {
   it("is a function that returns a className string", () => {
     expect(typeof tabsListVariants({ variant: "default" })).toBe("string");
+  });
+});
+
+describe("Tabs interactions", () => {
+  it("sets data-active on the default tab trigger", () => {
+    render(<TabsExample />);
+    const tab1 = screen.getByText("Tab 1");
+    expect(tab1).toHaveAttribute("data-active");
+  });
+
+  it("switches active tab when a trigger is clicked", () => {
+    render(<TabsExample />);
+    fireEvent.click(screen.getByText("Tab 2"));
+    expect(screen.getByText("Tab 2")).toHaveAttribute("data-active");
+    expect(screen.getByText("Tab 1")).not.toHaveAttribute("data-active");
+  });
+
+  it("calls onValueChange when a tab is clicked", () => {
+    const onValueChange = vi.fn();
+    render(
+      <Tabs defaultValue="tab1" onValueChange={onValueChange}>
+        <TabsList>
+          <TabsTrigger value="tab1">Tab 1</TabsTrigger>
+          <TabsTrigger value="tab2">Tab 2</TabsTrigger>
+        </TabsList>
+      </Tabs>,
+    );
+    fireEvent.click(screen.getByText("Tab 2"));
+    expect(onValueChange).toHaveBeenCalledWith("tab2", expect.anything());
   });
 });

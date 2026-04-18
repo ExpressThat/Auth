@@ -1,6 +1,14 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { Menubar, MenubarMenu, MenubarSeparator, MenubarShortcut, MenubarTrigger } from "./menubar";
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarTrigger,
+} from "./menubar";
 
 describe("Menubar", () => {
   it("renders", () => {
@@ -65,5 +73,22 @@ describe("MenubarShortcut", () => {
   it("sets data-slot attribute", () => {
     render(<MenubarShortcut>⌘S</MenubarShortcut>);
     expect(screen.getByText("⌘S")).toHaveAttribute("data-slot", "menubar-shortcut");
+  });
+});
+
+describe("Menubar interactions", () => {
+  it("opens menu when trigger is clicked", () => {
+    render(
+      <Menubar>
+        <MenubarMenu>
+          <MenubarTrigger>File</MenubarTrigger>
+          <MenubarContent>
+            <MenubarItem>New</MenubarItem>
+          </MenubarContent>
+        </MenubarMenu>
+      </Menubar>,
+    );
+    fireEvent.click(screen.getByText("File"));
+    expect(screen.getByText("New")).toBeInTheDocument();
   });
 });

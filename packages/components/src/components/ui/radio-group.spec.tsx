@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import { RadioGroup, RadioGroupItem } from "./radio-group";
 
 describe("RadioGroup", () => {
@@ -63,5 +63,43 @@ describe("RadioGroupItem", () => {
       </RadioGroup>,
     );
     expect(screen.getByRole("radio")).toHaveAttribute("data-disabled");
+  });
+});
+
+describe("RadioGroup interactions", () => {
+  it("sets data-checked on clicked item", () => {
+    render(
+      <RadioGroup>
+        <RadioGroupItem value="a" aria-label="A" />
+        <RadioGroupItem value="b" aria-label="B" />
+      </RadioGroup>,
+    );
+    const radioA = screen.getByRole("radio", { name: "A" });
+    fireEvent.click(radioA);
+    expect(radioA).toHaveAttribute("data-checked");
+  });
+
+  it("calls onValueChange when an item is clicked", () => {
+    const onValueChange = vi.fn();
+    render(
+      <RadioGroup onValueChange={onValueChange}>
+        <RadioGroupItem value="a" aria-label="A" />
+      </RadioGroup>,
+    );
+    fireEvent.click(screen.getByRole("radio", { name: "A" }));
+    expect(onValueChange).toHaveBeenCalledWith("a", expect.anything());
+  });
+
+  it("only one item is checked at a time", () => {
+    render(
+      <RadioGroup>
+        <RadioGroupItem value="a" aria-label="A" />
+        <RadioGroupItem value="b" aria-label="B" />
+      </RadioGroup>,
+    );
+    fireEvent.click(screen.getByRole("radio", { name: "A" }));
+    fireEvent.click(screen.getByRole("radio", { name: "B" }));
+    expect(screen.getByRole("radio", { name: "A" })).not.toHaveAttribute("data-checked");
+    expect(screen.getByRole("radio", { name: "B" })).toHaveAttribute("data-checked");
   });
 });

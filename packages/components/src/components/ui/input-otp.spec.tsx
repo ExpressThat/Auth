@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "./input-otp";
 
@@ -115,5 +115,35 @@ describe("Full InputOTP composition", () => {
       </InputOTP>,
     );
     expect(c.querySelector("input")).toBeInTheDocument();
+  });
+});
+
+describe("InputOTP interactions", () => {
+  it("allows typing into the underlying input", () => {
+    const { container } = render(
+      <InputOTP maxLength={4}>
+        <InputOTPGroup>
+          <InputOTPSlot index={0} />
+          <InputOTPSlot index={1} />
+          <InputOTPSlot index={2} />
+          <InputOTPSlot index={3} />
+        </InputOTPGroup>
+      </InputOTP>,
+    );
+    const input = container.querySelector("input")!;
+    fireEvent.change(input, { target: { value: "12" } });
+    expect(input).toHaveValue("12");
+  });
+
+  it("respects maxLength for the input", () => {
+    const { container } = render(
+      <InputOTP maxLength={4}>
+        <InputOTPGroup>
+          <InputOTPSlot index={0} />
+        </InputOTPGroup>
+      </InputOTP>,
+    );
+    const input = container.querySelector("input")!;
+    expect(input).toHaveAttribute("maxlength", "4");
   });
 });

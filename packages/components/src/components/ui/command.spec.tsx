@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import {
   Command,
   CommandEmpty,
@@ -146,5 +146,57 @@ describe("CommandShortcut", () => {
   it("sets data-slot attribute", () => {
     render(<CommandShortcut>⌘K</CommandShortcut>);
     expect(screen.getByText("⌘K")).toHaveAttribute("data-slot", "command-shortcut");
+  });
+});
+
+describe("Command interactions", () => {
+  it("filters items when typing in the input", () => {
+    render(
+      <Command>
+        <CommandInput placeholder="Search..." />
+        <CommandList>
+          <CommandGroup>
+            <CommandItem value="apple">Apple</CommandItem>
+            <CommandItem value="banana">Banana</CommandItem>
+          </CommandGroup>
+          <CommandEmpty>No results.</CommandEmpty>
+        </CommandList>
+      </Command>,
+    );
+    fireEvent.change(screen.getByPlaceholderText("Search..."), { target: { value: "apple" } });
+    expect(screen.getByText("Apple")).toBeInTheDocument();
+  });
+
+  it("shows CommandEmpty when no items match the filter", () => {
+    render(
+      <Command>
+        <CommandInput placeholder="Search..." />
+        <CommandList>
+          <CommandGroup>
+            <CommandItem value="apple">Apple</CommandItem>
+          </CommandGroup>
+          <CommandEmpty>No results.</CommandEmpty>
+        </CommandList>
+      </Command>,
+    );
+    fireEvent.change(screen.getByPlaceholderText("Search..."), { target: { value: "zzz" } });
+    expect(screen.getByText("No results.")).toBeVisible();
+  });
+
+  it("calls onSelect when a command item is clicked", () => {
+    const onSelect = vi.fn();
+    render(
+      <Command>
+        <CommandList>
+          <CommandGroup>
+            <CommandItem value="copy" onSelect={onSelect}>
+              Copy
+            </CommandItem>
+          </CommandGroup>
+        </CommandList>
+      </Command>,
+    );
+    fireEvent.click(screen.getByText("Copy"));
+    expect(onSelect).toHaveBeenCalledWith("copy");
   });
 });

@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
 
 describe("Collapsible", () => {
@@ -61,5 +61,43 @@ describe("CollapsibleContent", () => {
       </Collapsible>,
     );
     expect(screen.getByText("Visible content")).toBeInTheDocument();
+  });
+});
+
+describe("Collapsible interactions", () => {
+  it("calls onOpenChange with true when trigger is clicked", () => {
+    const onOpenChange = vi.fn();
+    render(
+      <Collapsible onOpenChange={onOpenChange}>
+        <CollapsibleTrigger>Toggle</CollapsibleTrigger>
+        <CollapsibleContent>Content</CollapsibleContent>
+      </Collapsible>,
+    );
+    fireEvent.click(screen.getByText("Toggle"));
+    expect(onOpenChange).toHaveBeenCalledWith(true, expect.anything());
+  });
+
+  it("calls onOpenChange with false on second trigger click", () => {
+    const onOpenChange = vi.fn();
+    render(
+      <Collapsible onOpenChange={onOpenChange}>
+        <CollapsibleTrigger>Toggle</CollapsibleTrigger>
+        <CollapsibleContent>Content</CollapsibleContent>
+      </Collapsible>,
+    );
+    fireEvent.click(screen.getByText("Toggle"));
+    fireEvent.click(screen.getByText("Toggle"));
+    expect(onOpenChange).toHaveBeenLastCalledWith(false, expect.anything());
+  });
+
+  it("shows content after trigger click", () => {
+    render(
+      <Collapsible>
+        <CollapsibleTrigger>Toggle</CollapsibleTrigger>
+        <CollapsibleContent>Hidden content</CollapsibleContent>
+      </Collapsible>,
+    );
+    fireEvent.click(screen.getByText("Toggle"));
+    expect(screen.getByText("Hidden content")).toBeInTheDocument();
   });
 });

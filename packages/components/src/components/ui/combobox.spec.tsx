@@ -1,11 +1,13 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import {
   Combobox,
   ComboboxChip,
   ComboboxChips,
+  ComboboxContent,
   ComboboxEmpty,
   ComboboxGroup,
+  ComboboxInput,
   ComboboxItem,
   ComboboxLabel,
   ComboboxSeparator,
@@ -115,5 +117,49 @@ describe("ComboboxChip", () => {
       </Combobox>,
     );
     expect(document.querySelector('[data-slot="combobox-chip"]')).toBeInTheDocument();
+  });
+});
+
+describe("Combobox interactions", () => {
+  it("shows items when open", () => {
+    render(
+      <Combobox open>
+        <ComboboxInput placeholder="Search..." showTrigger={false} />
+        <ComboboxContent>
+          <ComboboxItem value="apple">Apple</ComboboxItem>
+        </ComboboxContent>
+      </Combobox>,
+    );
+    expect(screen.getByText("Apple")).toBeInTheDocument();
+  });
+
+  it("filters items by typing in the input when open", () => {
+    render(
+      <Combobox open>
+        <ComboboxInput placeholder="Search..." showTrigger={false} />
+        <ComboboxContent>
+          <ComboboxItem value="apple">Apple</ComboboxItem>
+          <ComboboxItem value="banana">Banana</ComboboxItem>
+          <ComboboxEmpty>No results.</ComboboxEmpty>
+        </ComboboxContent>
+      </Combobox>,
+    );
+    const input = screen.getByPlaceholderText("Search...");
+    fireEvent.change(input, { target: { value: "apple" } });
+    expect(screen.getByText("Apple")).toBeInTheDocument();
+  });
+
+  it("calls onValueChange when an item is selected", () => {
+    const onValueChange = vi.fn();
+    render(
+      <Combobox open onValueChange={onValueChange}>
+        <ComboboxInput showTrigger={false} />
+        <ComboboxContent>
+          <ComboboxItem value="apple">Apple</ComboboxItem>
+        </ComboboxContent>
+      </Combobox>,
+    );
+    fireEvent.click(screen.getByText("Apple"));
+    expect(onValueChange).toHaveBeenCalled();
   });
 });

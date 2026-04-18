@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import { Checkbox } from "./checkbox";
 
 describe("Checkbox", () => {
@@ -26,5 +26,28 @@ describe("Checkbox", () => {
   it("is disabled when disabled prop is true", () => {
     render(<Checkbox disabled />);
     expect(screen.getByRole("checkbox")).toHaveAttribute("data-disabled");
+  });
+});
+
+describe("Checkbox interactions", () => {
+  it("becomes checked on click", () => {
+    render(<Checkbox />);
+    const cb = screen.getByRole("checkbox");
+    fireEvent.click(cb);
+    expect(cb).toHaveAttribute("data-checked");
+  });
+
+  it("calls onCheckedChange with true when clicked unchecked", () => {
+    const onCheckedChange = vi.fn();
+    render(<Checkbox onCheckedChange={onCheckedChange} />);
+    fireEvent.click(screen.getByRole("checkbox"));
+    expect(onCheckedChange).toHaveBeenCalledWith(true, expect.anything());
+  });
+
+  it("does not call onCheckedChange when disabled", () => {
+    const onCheckedChange = vi.fn();
+    render(<Checkbox disabled onCheckedChange={onCheckedChange} />);
+    fireEvent.click(screen.getByRole("checkbox"));
+    expect(onCheckedChange).not.toHaveBeenCalled();
   });
 });

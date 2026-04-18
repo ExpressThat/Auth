@@ -38,6 +38,17 @@ beforeAll(() => {
   if (typeof Element.prototype.scrollIntoView === "undefined") {
     Element.prototype.scrollIntoView = () => {};
   }
+  if (typeof global.PointerEvent === "undefined") {
+    global.PointerEvent = class PointerEvent extends MouseEvent {
+      pointerId: number;
+      pointerType: string;
+      constructor(type: string, params: PointerEventInit = {}) {
+        super(type, params);
+        this.pointerId = params.pointerId ?? 1;
+        this.pointerType = params.pointerType ?? "mouse";
+      }
+    } as unknown as typeof PointerEvent;
+  }
 });
 
 afterEach(() => {

@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import { Toggle, toggleVariants } from "./toggle";
 
 describe("Toggle", () => {
@@ -56,5 +56,29 @@ describe("Toggle", () => {
 describe("toggleVariants", () => {
   it("is a function that returns a className string", () => {
     expect(typeof toggleVariants({ variant: "default", size: "default" })).toBe("string");
+  });
+});
+
+describe("Toggle interactions", () => {
+  it("becomes pressed on click", () => {
+    render(<Toggle>Bold</Toggle>);
+    const toggle = screen.getByRole("button");
+    fireEvent.click(toggle);
+    expect(toggle).toHaveAttribute("aria-pressed", "true");
+  });
+
+  it("calls onPressedChange with true when clicked unpressed", () => {
+    const onPressedChange = vi.fn();
+    render(<Toggle onPressedChange={onPressedChange}>Bold</Toggle>);
+    fireEvent.click(screen.getByRole("button"));
+    expect(onPressedChange).toHaveBeenCalledWith(true, expect.anything());
+  });
+
+  it("toggles back to unpressed on second click", () => {
+    render(<Toggle>Bold</Toggle>);
+    const toggle = screen.getByRole("button");
+    fireEvent.click(toggle);
+    fireEvent.click(toggle);
+    expect(toggle).toHaveAttribute("aria-pressed", "false");
   });
 });

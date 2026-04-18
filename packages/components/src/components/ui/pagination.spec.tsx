@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import {
   Pagination,
   PaginationContent,
@@ -63,5 +63,21 @@ describe("PaginationEllipsis", () => {
   it("sets data-slot attribute", () => {
     const { container } = render(<PaginationEllipsis />);
     expect(container.firstChild).toHaveAttribute("data-slot", "pagination-ellipsis");
+  });
+});
+
+describe("Pagination interactions", () => {
+  it("calls onClick when Previous is clicked", () => {
+    const onClick = vi.fn();
+    render(<PaginationPrevious onClick={onClick} />);
+    fireEvent.click(document.querySelector('[aria-label="Go to previous page"]')!);
+    expect(onClick).toHaveBeenCalledOnce();
+  });
+
+  it("calls onClick when Next is clicked", () => {
+    const onClick = vi.fn();
+    render(<PaginationNext onClick={onClick} />);
+    fireEvent.click(document.querySelector('[aria-label="Go to next page"]')!);
+    expect(onClick).toHaveBeenCalledOnce();
   });
 });

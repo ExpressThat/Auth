@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import {
   Dialog,
@@ -7,6 +7,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "./dialog";
 
 describe("DialogHeader", () => {
@@ -83,5 +84,35 @@ describe("DialogDescription", () => {
       </Dialog>,
     );
     expect(screen.getByText("Desc")).toHaveAttribute("data-slot", "dialog-description");
+  });
+});
+
+describe("Dialog interactions", () => {
+  it("opens dialog when trigger is clicked", () => {
+    render(
+      <Dialog>
+        <DialogTrigger>Open Dialog</DialogTrigger>
+        <DialogContent>
+          <DialogTitle>Dialog Title</DialogTitle>
+        </DialogContent>
+      </Dialog>,
+    );
+    fireEvent.click(screen.getByText("Open Dialog"));
+    expect(screen.getByText("Dialog Title")).toBeInTheDocument();
+  });
+
+  it("closes dialog when close button is clicked", () => {
+    render(
+      <Dialog>
+        <DialogTrigger>Open Dialog</DialogTrigger>
+        <DialogContent>
+          <DialogTitle>Dialog Title</DialogTitle>
+        </DialogContent>
+      </Dialog>,
+    );
+    fireEvent.click(screen.getByText("Open Dialog"));
+    expect(screen.getByText("Dialog Title")).toBeInTheDocument();
+    fireEvent.click(document.querySelector('[data-slot="dialog-close"]')!);
+    expect(screen.queryByText("Dialog Title")).not.toBeInTheDocument();
   });
 });
