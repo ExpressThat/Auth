@@ -51,6 +51,7 @@ function BreadcrumbLink({ className, render, ...props }: useRender.ComponentProp
 
 function BreadcrumbPage({ className, ...props }: React.ComponentProps<"span">) {
   return (
+    // biome-ignore lint/a11y/useFocusableInteractive: BreadcrumbPage is the current (disabled) page, intentionally not keyboard navigable
     <span
       data-slot="breadcrumb-page"
       role="link"

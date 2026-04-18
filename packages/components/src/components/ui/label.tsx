@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 
 function Label({ className, ...props }: React.ComponentProps<"label">) {
   return (
+    // biome-ignore lint/a11y/noLabelWithoutControl: Label is a generic component; the associated control is provided by the parent via htmlFor or wrapping
     <label
       data-slot="label"
       className={cn(

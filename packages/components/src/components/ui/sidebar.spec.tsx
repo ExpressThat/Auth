@@ -318,7 +318,7 @@ describe("SidebarTrigger interactions", () => {
     );
     const sidebar = document.querySelector('[data-slot="sidebar"]');
     expect(sidebar).toHaveAttribute("data-state", "expanded");
-    fireEvent.click(document.querySelector('[data-slot="sidebar-trigger"]')!);
+    fireEvent.click(document.querySelector('[data-slot="sidebar-trigger"]') as HTMLElement);
     expect(sidebar).toHaveAttribute("data-state", "collapsed");
   });
 
@@ -329,7 +329,7 @@ describe("SidebarTrigger interactions", () => {
         <SidebarTrigger onClick={onClick} />
       </SidebarProvider>,
     );
-    fireEvent.click(document.querySelector('[data-slot="sidebar-trigger"]')!);
+    fireEvent.click(document.querySelector('[data-slot="sidebar-trigger"]') as HTMLElement);
     expect(onClick).toHaveBeenCalledOnce();
   });
 

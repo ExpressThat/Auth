@@ -70,14 +70,14 @@ describe("Pagination interactions", () => {
   it("calls onClick when Previous is clicked", () => {
     const onClick = vi.fn();
     render(<PaginationPrevious onClick={onClick} />);
-    fireEvent.click(document.querySelector('[aria-label="Go to previous page"]')!);
+    fireEvent.click(document.querySelector('[aria-label="Go to previous page"]') as HTMLElement);
     expect(onClick).toHaveBeenCalledOnce();
   });
 
   it("calls onClick when Next is clicked", () => {
     const onClick = vi.fn();
     render(<PaginationNext onClick={onClick} />);
-    fireEvent.click(document.querySelector('[aria-label="Go to next page"]')!);
+    fireEvent.click(document.querySelector('[aria-label="Go to next page"]') as HTMLElement);
     expect(onClick).toHaveBeenCalledOnce();
   });
 });

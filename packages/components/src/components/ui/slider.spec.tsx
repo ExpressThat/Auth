@@ -34,7 +34,7 @@ describe("Slider interactions", () => {
   it("calls onValueChange when ArrowRight is pressed on the range input", () => {
     const onValueChange = vi.fn();
     render(<Slider defaultValue={[50]} onValueChange={onValueChange} />);
-    const rangeInput = document.querySelector('input[type="range"]')!;
+    const rangeInput = document.querySelector('input[type="range"]') as HTMLInputElement;
     fireEvent.keyDown(rangeInput, { key: "ArrowRight" });
     expect(onValueChange).toHaveBeenCalled();
   });
@@ -42,7 +42,7 @@ describe("Slider interactions", () => {
   it("calls onValueChange when ArrowLeft is pressed on the range input", () => {
     const onValueChange = vi.fn();
     render(<Slider defaultValue={[50]} onValueChange={onValueChange} />);
-    const rangeInput = document.querySelector('input[type="range"]')!;
+    const rangeInput = document.querySelector('input[type="range"]') as HTMLInputElement;
     fireEvent.keyDown(rangeInput, { key: "ArrowLeft" });
     expect(onValueChange).toHaveBeenCalled();
   });

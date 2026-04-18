@@ -112,7 +112,7 @@ describe("Dialog interactions", () => {
     );
     fireEvent.click(screen.getByText("Open Dialog"));
     expect(screen.getByText("Dialog Title")).toBeInTheDocument();
-    fireEvent.click(document.querySelector('[data-slot="dialog-close"]')!);
+    fireEvent.click(document.querySelector('[data-slot="dialog-close"]') as HTMLElement);
     expect(screen.queryByText("Dialog Title")).not.toBeInTheDocument();
   });
 });

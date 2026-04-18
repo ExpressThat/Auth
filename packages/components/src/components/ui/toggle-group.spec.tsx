@@ -61,7 +61,7 @@ describe("ToggleGroupItem interactions", () => {
         <ToggleGroupItem value="bold">Bold</ToggleGroupItem>
       </ToggleGroup>,
     );
-    const item = document.querySelector('[data-slot="toggle-group-item"]')!;
+    const item = document.querySelector('[data-slot="toggle-group-item"]') as HTMLElement;
     fireEvent.click(item);
     expect(item).toHaveAttribute("aria-pressed", "true");
   });
@@ -73,7 +73,7 @@ describe("ToggleGroupItem interactions", () => {
         <ToggleGroupItem value="bold">Bold</ToggleGroupItem>
       </ToggleGroup>,
     );
-    fireEvent.click(document.querySelector('[data-slot="toggle-group-item"]')!);
+    fireEvent.click(document.querySelector('[data-slot="toggle-group-item"]') as HTMLElement);
     expect(onValueChange).toHaveBeenCalled();
   });
 
@@ -85,9 +85,9 @@ describe("ToggleGroupItem interactions", () => {
       </ToggleGroup>,
     );
     const items = document.querySelectorAll<HTMLElement>('[data-slot="toggle-group-item"]');
-    fireEvent.click(items[0]!);
+    fireEvent.click(items[0] as HTMLElement);
     expect(items[0]).toHaveAttribute("aria-pressed", "true");
-    fireEvent.click(items[1]!);
+    fireEvent.click(items[1] as HTMLElement);
     expect(items[1]).toHaveAttribute("aria-pressed", "true");
   });
 });

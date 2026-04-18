@@ -130,7 +130,7 @@ describe("InputOTP interactions", () => {
         </InputOTPGroup>
       </InputOTP>,
     );
-    const input = container.querySelector("input")!;
+    const input = container.querySelector("input") as HTMLInputElement;
     fireEvent.change(input, { target: { value: "12" } });
     expect(input).toHaveValue("12");
   });
@@ -143,7 +143,7 @@ describe("InputOTP interactions", () => {
         </InputOTPGroup>
       </InputOTP>,
     );
-    const input = container.querySelector("input")!;
+    const input = container.querySelector("input") as HTMLInputElement;
     expect(input).toHaveAttribute("maxlength", "4");
   });
 });

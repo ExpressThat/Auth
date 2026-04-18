@@ -114,7 +114,7 @@ describe("Carousel interactions", () => {
         <CarouselNext />
       </Carousel>,
     );
-    const nextBtn = document.querySelector('[data-slot="carousel-next"]')!;
+    const nextBtn = document.querySelector('[data-slot="carousel-next"]') as HTMLElement;
     expect(() => fireEvent.click(nextBtn)).not.toThrow();
   });
 
@@ -129,7 +129,7 @@ describe("Carousel interactions", () => {
         <CarouselNext />
       </Carousel>,
     );
-    const prevBtn = document.querySelector('[data-slot="carousel-previous"]')!;
+    const prevBtn = document.querySelector('[data-slot="carousel-previous"]') as HTMLElement;
     expect(() => fireEvent.click(prevBtn)).not.toThrow();
   });
 });

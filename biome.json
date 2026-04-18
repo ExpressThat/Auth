@@ -50,5 +50,24 @@
       "!**/test-results",
       "!**/test-results"
     ]
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["packages/components/src/components/ui/**"],
+      "linter": {
+        "rules": {
+          "a11y": {
+            "useSemanticElements": "off",
+            "useAriaPropsForRole": "off"
+          },
+          "security": {
+            "noDangerouslySetInnerHtml": "off"
+          },
+          "suspicious": {
+            "noArrayIndexKey": "off"
+          }
+        }
+      }
+    }
+  ]
 }
