@@ -40,7 +40,10 @@
       "!**/publish",
       "!**/bin",
       "!**/obj",
-      "!**/.astro"
+      "!**/.astro",
+      "!**/.astro/**",
+      "!**/test-results",
+      "!**/test-results/**"
     ]
   }
 }

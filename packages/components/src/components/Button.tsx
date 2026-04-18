@@ -14,7 +14,12 @@ export function Button({ children, onClick, variant = "primary", disabled = fals
   };
 
   return (
-    <button className={`${base} ${variants[variant]}`} disabled={disabled} onClick={onClick}>
+    <button
+      type="button"
+      className={`${base} ${variants[variant]}`}
+      disabled={disabled}
+      onClick={onClick}
+    >
       {children}
     </button>
   );

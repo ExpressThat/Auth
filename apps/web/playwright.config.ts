@@ -3,7 +3,7 @@ import { defineConfig, devices } from "@playwright/test";
 export default defineConfig({
   testDir: "./e2e",
   webServer: {
-    command: "pnpm preview",
+    command: "pnpm build && pnpm preview",
     url: "http://localhost:4321/",
     timeout: 120 * 1000,
     reuseExistingServer: !process.env["CI"],
