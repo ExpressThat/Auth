@@ -9,7 +9,7 @@
     "preview": "astro preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright install chromium && playwright test"
   },
   "dependencies": {
     "@astrojs/react": "^4.2.0",
