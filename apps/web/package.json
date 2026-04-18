@@ -23,7 +23,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
     "@expressthat-auth/typescript-config": "workspace:*",
-    "@playwright/test": "1.52.0",
+    "@playwright/test": "^1.52.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
