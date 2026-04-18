@@ -14,9 +14,7 @@ ENV NPM_CONFIG_REGISTRY=http://172.25.0.3:8081/repository/npm_proxy/
 # Enable corepack and activate pnpm 9
 RUN corepack enable && corepack prepare pnpm@9.0.0 --activate
 
-# Create ubuntu user (uid 1000) to match the CI runner identity
-RUN useradd -m -u 1000 -s /bin/bash ubuntu
-
+# The base image (Ubuntu Noble) already has an ubuntu user at uid 1000 with home /home/ubuntu.
 # Install Playwright OS-level dependencies (apt packages; needs root)
 RUN npx -y playwright install-deps chromium
 
