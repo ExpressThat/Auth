@@ -27,6 +27,14 @@
       "dependsOn": [],
       "cache": false,
       "persistent": true
+    },
+    "test": {
+      "dependsOn": ["^check-types"],
+      "cache": false
+    },
+    "test:e2e": {
+      "dependsOn": ["build"],
+      "cache": false
     }
   }
 }

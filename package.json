@@ -12,7 +12,7 @@
     "db:deploy": "turbo run db:deploy"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
+    "@biomejs/biome": "^2.3.0",
     "@turbo/gen": "^2.9.6",
     "turbo": "^2.9.6",
     "typescript": "5.9.2"

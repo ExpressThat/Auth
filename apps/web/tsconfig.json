@@ -1,0 +1,5 @@
+{
+  "extends": "@expressthat-auth/typescript-config/astro",
+  "include": ["src", "e2e"],
+  "exclude": ["dist", "node_modules"]
+}
