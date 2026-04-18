@@ -17,7 +17,7 @@
       ]
     },
     "check-types": {
-      "dependsOn": ["^check-types"]
+      "dependsOn": []
     },
     "//#format-and-lint": {},
     "//#format-and-lint:fix": {
@@ -27,6 +27,14 @@
       "dependsOn": [],
       "cache": false,
       "persistent": true
+    },
+    "test": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "test:e2e": {
+      "dependsOn": ["build"],
+      "cache": false
     }
   }
 }

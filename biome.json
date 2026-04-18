@@ -1,8 +1,6 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-  "organizeImports": {
-    "enabled": true
-  },
+  "$schema": "https://biomejs.dev/schemas/2.4.12/schema.json",
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "linter": {
     "enabled": false
   },
@@ -21,23 +19,32 @@
       "trailingCommas": "all"
     }
   },
+  "html": {
+    "experimentalFullSupportEnabled": true
+  },
   "files": {
-    "ignore": [
-      "node_modules",
-      ".pnpm-store",
-      ".next",
-      "dist",
-      ".turbo",
-      "packages/database/generated/**",
-      "apps/api/swagger.json",
-      "packages/api-client/src/**",
-      "**/*.cs",
-      "**/*.csproj",
-      "**/*.props",
-      "**/*.targets",
-      "publish",
-      "bin",
-      "obj"
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/.pnpm-store",
+      "!**/.next",
+      "!**/dist",
+      "!**/.turbo",
+      "!**/packages/database/generated/**",
+      "!**/apps/api/swagger.json",
+      "!**/packages/api-client/src/**",
+      "!**/*.cs",
+      "!**/*.csproj",
+      "!**/*.props",
+      "!**/*.targets",
+      "!**/publish",
+      "!**/bin",
+      "!**/obj",
+      "!**/.astro",
+      "!**/.astro/**",
+      "!**/*.astro",
+      "!**/test-results",
+      "!**/test-results/**"
     ]
   }
 }

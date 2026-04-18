@@ -42,6 +42,9 @@ publish/
 apps/api/swagger.json
 packages/api-client/src/generated
 
+# Astro generated types
+.astro/
+
 # Prisma generated client
 packages/database/generated
 
@@ -54,3 +57,5 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+
+apps/web/test-results/

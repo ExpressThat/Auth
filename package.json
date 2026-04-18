@@ -7,12 +7,11 @@
     "format-and-lint": "biome check .",
     "format-and-lint:fix": "biome check . --write",
     "check-types": "turbo run check-types",
-    "db:generate": "turbo run db:generate",
-    "db:migrate": "turbo run db:migrate",
-    "db:deploy": "turbo run db:deploy"
+    "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
+    "@biomejs/biome": "^2.4.12",
     "@turbo/gen": "^2.9.6",
     "turbo": "^2.9.6",
     "typescript": "5.9.2"
