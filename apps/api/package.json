@@ -6,7 +6,6 @@
   "scripts": {
     "build": "dotnet tool restore && dotnet publish Api.csproj --configuration Release --output publish",
     "dev": "dotnet tool restore && dotnet watch --no-hot-reload run --launch-profile Development",
-    "check-types": "dotnet build",
     "start": "dotnet publish/Api.dll"
   }
 }
