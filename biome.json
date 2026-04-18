@@ -46,8 +46,7 @@
       "!**/bin",
       "!**/obj",
       "!**/.astro",
-      "!**/.astro",
-      "!**/test-results",
+      "!**/*.astro",
       "!**/test-results"
     ]
   },
