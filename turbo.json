@@ -17,7 +17,7 @@
       ]
     },
     "check-types": {
-      "dependsOn": []
+      "dependsOn": ["build"]
     },
     "//#format-and-lint": {},
     "//#format-and-lint:fix": {
