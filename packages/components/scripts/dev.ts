@@ -8,7 +8,7 @@ const shared = {
   bundle: true,
   sourcemap: true,
   alias: { "@": "./src" },
-  external: ["react", "react-dom", "@base-ui/react", "@base-ui/react/*"],
+  external: ["react", "react-dom", "@base-ui/react", "@base-ui/react/*", "recharts"],
 };
 
 const [esm, cjs] = await Promise.all([
