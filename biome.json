@@ -39,7 +39,8 @@
       "!**/*.targets",
       "!**/publish",
       "!**/bin",
-      "!**/obj"
+      "!**/obj",
+      "!**/.astro"
     ]
   }
 }
