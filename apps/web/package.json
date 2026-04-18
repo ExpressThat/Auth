@@ -7,8 +7,6 @@
     "build": "astro build",
     "check-types": "astro check",
     "preview": "astro preview",
-    "test": "vitest run",
-    "test:watch": "vitest",
     "test:e2e": "playwright install && playwright test"
   },
   "dependencies": {
@@ -24,12 +22,8 @@
     "@astrojs/check": "^0.9.4",
     "@expressthat-auth/typescript-config": "workspace:*",
     "@playwright/test": "^1.52.0",
-    "@testing-library/jest-dom": "^6.6.3",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
-    "@vitest/coverage-v8": "^3.1.2",
-    "jsdom": "^26.1.0",
-    "typescript": "5.9.2",
-    "vitest": "^3.1.2"
+    "typescript": "5.9.2"
   }
 }
