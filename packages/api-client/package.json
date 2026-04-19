@@ -4,14 +4,13 @@
   "private": true,
   "description": "Generated TypeScript client for the ExpressThat Auth API",
   "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": "./dist/index.js"
     }
   },
-  "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
@@ -32,6 +31,7 @@
     "swagger-typescript-api": "^13.6.10",
     "tsx": "^4.21.0",
     "typescript": "6.0.3",
+    "vite": "^6.0.0",
     "wait-on": "^9.0.5"
   }
 }

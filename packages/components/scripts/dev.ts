@@ -1,32 +1,35 @@
 import { rmSync } from "node:fs";
-import { context } from "esbuild";
+import { isAbsolute, resolve } from "node:path";
+import react from "@vitejs/plugin-react";
+import { build } from "vite";
 
 rmSync("dist", { recursive: true, force: true });
 
-const shared = {
-  entryPoints: ["src/index.ts"],
-  bundle: true,
-  sourcemap: true,
-  alias: { "@": "./src" },
-  external: ["react", "react-dom", "@base-ui/react", "@base-ui/react/*", "recharts"],
-};
+const _watcher = await build({
+  plugins: [react()],
+  resolve: {
+    alias: { "@": resolve(import.meta.dirname, "../src") },
+  },
+  build: {
+    lib: {
+      entry: resolve(import.meta.dirname, "../src/index.ts"),
+      formats: ["es"],
+    },
+    rollupOptions: {
+      // Externalize all node_modules — consumers install their own deps.
+      // Do NOT externalize the local @/ alias (resolved to ./src/* by the alias plugin).
+      external: (id) =>
+        !id.startsWith(".") && !id.startsWith("@/") && !id.startsWith("\0") && !isAbsolute(id),
+      output: {
+        preserveModules: true,
+        preserveModulesRoot: "src",
+        dir: "dist",
+        entryFileNames: "[name].js",
+      },
+    },
+    sourcemap: true,
+    watch: {},
+  },
+});
 
-const [esm, cjs] = await Promise.all([
-  context({
-    ...shared,
-    format: "esm",
-    outfile: "dist/index.js",
-  }),
-  context({
-    ...shared,
-    format: "cjs",
-    outfile: "dist/index.cjs",
-  }),
-]);
-
-// Initial build before entering watch mode
-await Promise.all([esm.rebuild(), cjs.rebuild()]);
-console.log("[components] initial build complete");
-
-await Promise.all([esm.watch(), cjs.watch()]);
-console.log("[components] watching for changes...");
+console.log("[components] initial build complete, watching for changes...");
