@@ -3,9 +3,6 @@
   "include": ["src"],
   "exclude": ["dist", "node_modules"],
   "compilerOptions": {
-    "types": ["node"],
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    "types": ["node"]
   }
 }

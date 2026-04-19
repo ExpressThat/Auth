@@ -1,8 +1,7 @@
 "use client";
 
+import { cn } from "@expressthat-auth/components/lib/utils";
 import type * as React from "react";
-
-import { cn } from "@/lib/utils";
 
 function Label({ className, ...props }: React.ComponentProps<"label">) {
   return (
