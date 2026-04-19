@@ -2,7 +2,7 @@
   "$schema": "https://biomejs.dev/schemas/2.4.12/schema.json",
   "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "linter": {
-    "enabled": false
+    "enabled": true
   },
   "formatter": {
     "enabled": true,
@@ -22,6 +22,11 @@
   "html": {
     "experimentalFullSupportEnabled": true
   },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
   "files": {
     "includes": [
       "**",
@@ -30,9 +35,9 @@
       "!**/.next",
       "!**/dist",
       "!**/.turbo",
-      "!**/packages/database/generated/**",
+      "!**/packages/database/generated",
       "!**/apps/api/swagger.json",
-      "!**/packages/api-client/src/**",
+      "!**/packages/api-client/src",
       "!**/*.cs",
       "!**/*.csproj",
       "!**/*.props",
@@ -41,10 +46,27 @@
       "!**/bin",
       "!**/obj",
       "!**/.astro",
-      "!**/.astro/**",
       "!**/*.astro",
-      "!**/test-results",
-      "!**/test-results/**"
+      "!**/test-results"
     ]
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["packages/components/src/components/ui/**"],
+      "linter": {
+        "rules": {
+          "a11y": {
+            "useSemanticElements": "off",
+            "useAriaPropsForRole": "off"
+          },
+          "security": {
+            "noDangerouslySetInnerHtml": "off"
+          },
+          "suspicious": {
+            "noArrayIndexKey": "off"
+          }
+        }
+      }
+    }
+  ]
 }

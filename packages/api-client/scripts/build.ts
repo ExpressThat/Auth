@@ -1,26 +1,28 @@
 import { execSync } from "node:child_process";
 import { rmSync } from "node:fs";
-import { build } from "esbuild";
+import { isAbsolute, resolve } from "node:path";
+import { build } from "vite";
 
 rmSync("dist", { recursive: true, force: true });
 
-const shared = {
-  entryPoints: ["src/index.ts"],
-  bundle: true,
-  sourcemap: true,
-};
-
-await Promise.all([
-  build({
-    ...shared,
-    format: "esm",
-    outfile: "dist/index.js",
-  }),
-  build({
-    ...shared,
-    format: "cjs",
-    outfile: "dist/index.cjs",
-  }),
-]);
+await build({
+  build: {
+    lib: {
+      entry: resolve(import.meta.dirname, "../src/index.ts"),
+      formats: ["es"],
+    },
+    rollupOptions: {
+      // Externalize all node_modules — consumers install their own deps
+      external: (id) => !id.startsWith(".") && !id.startsWith("\0") && !isAbsolute(id),
+      output: {
+        preserveModules: true,
+        preserveModulesRoot: "src",
+        dir: "dist",
+        entryFileNames: "[name].js",
+      },
+    },
+    sourcemap: true,
+  },
+});
 
 execSync("tsc --project tsconfig.build.json", { stdio: "inherit" });

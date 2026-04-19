@@ -1,12 +1,6 @@
 ---
 
-
-
-
-
-
-
-import { Button } from "@expressthat-auth/components";
+import { Button } from "@expressthat-auth/components/button";
 import Layout from "../layouts/Layout.astro";
 ---
 
@@ -14,6 +8,6 @@ import Layout from "../layouts/Layout.astro";
   <main class="flex min-h-screen flex-col items-center justify-center gap-6 p-8">
     <h1 class="text-4xl font-bold text-gray-900">ExpressThat Auth</h1>
     <p class="text-lg text-gray-600">Welcome to the authentication portal.</p>
-    <Button client:load>Get Started</Button>
+    <Button client:idle>Get Started</Button>
   </main>
 </Layout>
