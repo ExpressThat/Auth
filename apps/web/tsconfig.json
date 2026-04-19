@@ -1,12 +1,5 @@
 {
   "extends": "@expressthat-auth/typescript-config/nextjs",
   "include": ["src", "e2e", "next.config.ts"],
-  "exclude": ["dist", "node_modules"],
-  "compilerOptions": {
-    "paths": {
-      "@expressthat-auth/components": ["../../packages/components/src"],
-      "@expressthat-auth/components/*": ["../../packages/components/src/components/ui/*"],
-      "@/*": ["../../packages/components/src/*"]
-    }
-  }
+  "exclude": ["dist", "node_modules"]
 }

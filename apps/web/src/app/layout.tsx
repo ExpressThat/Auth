@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "../styles/global.css";
+import "./global.css";
 
 export const metadata: Metadata = {
   title: "ExpressThat Auth",
