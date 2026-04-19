@@ -1,3 +1,5 @@
+"use client";
+
 import { NavigationMenu as NavigationMenuPrimitive } from "@base-ui/react/navigation-menu";
 import { cn } from "@expressthat-auth/components/lib/utils";
 import { cva } from "class-variance-authority";

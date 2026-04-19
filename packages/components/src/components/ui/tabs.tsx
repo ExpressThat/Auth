@@ -1,3 +1,5 @@
+"use client";
+
 import { Tabs as TabsPrimitive } from "@base-ui/react/tabs";
 import { cn } from "@expressthat-auth/components/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";

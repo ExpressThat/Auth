@@ -1,3 +1,5 @@
+"use client";
+
 import { Menu as MenuPrimitive } from "@base-ui/react/menu";
 import { cn } from "@expressthat-auth/components/lib/utils";
 import { CheckIcon, ChevronRightIcon } from "lucide-react";

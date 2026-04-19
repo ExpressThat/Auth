@@ -1,3 +1,5 @@
+"use client";
+
 import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar";
 import { cn } from "@expressthat-auth/components/lib/utils";
 import type * as React from "react";

@@ -1,3 +1,5 @@
+"use client";
+
 import { Input as InputPrimitive } from "@base-ui/react/input";
 import { cn } from "@expressthat-auth/components/lib/utils";
 import type * as React from "react";
