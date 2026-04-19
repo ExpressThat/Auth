@@ -7,6 +7,7 @@ def nexusInvalidate(String nexusUrl, String repo, String imageName) {
     sh """
         echo "--- Invalidating Nexus cache for ${imageName} ---"
 
+        # Pass 1: delete components by Docker image name
         curl -sf -u "\$NEXUS_USER:\$NEXUS_PASS" \
             '${nexusUrl}/service/rest/v1/search?repository=${repo}&docker.imageName=${imageName}' \
             | jq -r '.items[].id' | while read -r id; do
@@ -15,10 +16,21 @@ def nexusInvalidate(String nexusUrl, String repo, String imageName) {
                     '${nexusUrl}/service/rest/v1/components/'\$id
             done
 
+        # Pass 2: delete assets by Docker image name (tag-based entries)
         curl -sf -u "\$NEXUS_USER:\$NEXUS_PASS" \
             '${nexusUrl}/service/rest/v1/search/assets?repository=${repo}&docker.imageName=${imageName}' \
             | jq -r '.items[].id' | while read -r id; do
-                echo "Deleting asset: \$id"
+                echo "Deleting asset (imageName): \$id"
+                curl -sf -X DELETE -u "\$NEXUS_USER:\$NEXUS_PASS" \
+                    '${nexusUrl}/service/rest/v1/assets/'\$id
+            done
+
+        # Pass 3: delete remaining assets by path (catches sha256 manifest entries
+        # in proxy repos that docker.imageName= doesn't reliably match)
+        curl -sf -u "\$NEXUS_USER:\$NEXUS_PASS" \
+            '${nexusUrl}/service/rest/v1/search/assets?repository=${repo}&name=v2/${imageName}/*' \
+            | jq -r '.items[].id' | while read -r id; do
+                echo "Deleting asset (path): \$id"
                 curl -sf -X DELETE -u "\$NEXUS_USER:\$NEXUS_PASS" \
                     '${nexusUrl}/service/rest/v1/assets/'\$id
             done
