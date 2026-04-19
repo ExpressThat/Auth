@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@expressthat-auth/components/lib/utils";
 import * as React from "react";
 import type { TooltipValueType } from "recharts";

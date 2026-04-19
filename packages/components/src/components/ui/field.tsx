@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@expressthat-auth/components/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 import { useMemo } from "react";

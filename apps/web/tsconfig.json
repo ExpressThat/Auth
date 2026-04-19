@@ -1,5 +1,5 @@
 {
   "extends": "@expressthat-auth/typescript-config/nextjs",
-  "include": ["src", "e2e", "next.config.ts"],
+  "include": ["next-env.d.ts", "src", "e2e", "next.config.ts"],
   "exclude": ["dist", "node_modules"]
 }

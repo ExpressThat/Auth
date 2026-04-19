@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@expressthat-auth/components/lib/utils";
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import * as React from "react";
