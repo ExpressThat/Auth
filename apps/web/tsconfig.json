@@ -1,9 +1,12 @@
 {
-  "extends": "@expressthat-auth/typescript-config/astro",
-  "include": ["src", "e2e"],
+  "extends": "@expressthat-auth/typescript-config/nextjs",
+  "include": ["src", "e2e", "next.config.ts"],
   "exclude": ["dist", "node_modules"],
   "compilerOptions": {
-    "jsx": "react-jsx",
-    "jsxImportSource": "react"
+    "paths": {
+      "@expressthat-auth/components": ["../../packages/components/src"],
+      "@expressthat-auth/components/*": ["../../packages/components/src/components/ui/*"],
+      "@/*": ["../../packages/components/src/*"]
+    }
   }
 }

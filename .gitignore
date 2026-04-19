@@ -42,7 +42,7 @@ publish/
 apps/api/swagger.json
 packages/api-client/src/generated
 
-# Astro generated types
+# Next.js / Astro generated types (legacy)
 .astro/
 
 # Prisma generated client
