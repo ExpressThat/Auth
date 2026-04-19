@@ -16,24 +16,29 @@ def nexusInvalidate(String nexusUrl, String repo, String imageName) {
                     '${nexusUrl}/service/rest/v1/components/'\$id
             done
 
-        # Pass 2: delete assets by Docker image name (tag-based entries)
-        curl -sf -u "\$NEXUS_USER:\$NEXUS_PASS" \
-            '${nexusUrl}/service/rest/v1/search/assets?repository=${repo}&docker.imageName=${imageName}' \
-            | jq -r '.items[].id' | while read -r id; do
-                echo "Deleting asset (imageName): \$id"
+        # Pass 2: page through ALL assets in repo, filter by path prefix, delete matches.
+        # This is the reliable fallback - search/assets query params don't consistently
+        # match sha256 manifest entries in Docker proxy repos.
+        TOKEN=""
+        while true; do
+            if [ -z "\$TOKEN" ]; then
+                RESP=\$(curl -sf -u "\$NEXUS_USER:\$NEXUS_PASS" \
+                    '${nexusUrl}/service/rest/v1/assets?repository=${repo}')
+            else
+                RESP=\$(curl -sf -u "\$NEXUS_USER:\$NEXUS_PASS" \
+                    '${nexusUrl}/service/rest/v1/assets?repository=${repo}&continuationToken='\$TOKEN)
+            fi
+
+            echo "\$RESP" | jq -r '.items[] | select(.path | startswith("v2/${imageName}/")) | .id' \
+            | while read -r id; do
+                echo "Deleting asset: \$id"
                 curl -sf -X DELETE -u "\$NEXUS_USER:\$NEXUS_PASS" \
                     '${nexusUrl}/service/rest/v1/assets/'\$id
             done
 
-        # Pass 3: delete remaining assets by path (catches sha256 manifest entries
-        # in proxy repos that docker.imageName= doesn't reliably match)
-        curl -sf -u "\$NEXUS_USER:\$NEXUS_PASS" \
-            '${nexusUrl}/service/rest/v1/search/assets?repository=${repo}&name=v2/${imageName}/*' \
-            | jq -r '.items[].id' | while read -r id; do
-                echo "Deleting asset (path): \$id"
-                curl -sf -X DELETE -u "\$NEXUS_USER:\$NEXUS_PASS" \
-                    '${nexusUrl}/service/rest/v1/assets/'\$id
-            done
+            TOKEN=\$(echo "\$RESP" | jq -r '.continuationToken // empty')
+            [ -z "\$TOKEN" ] && break
+        done
 
         echo "Done."
     """
