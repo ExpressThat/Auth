@@ -7,18 +7,6 @@ def nexusInvalidate(String nexusUrl, String repo, String imageName) {
     sh """
         echo "--- Invalidating Nexus cache for ${imageName} ---"
 
-        # Pass 1: delete components by Docker image name
-        curl -sf -u "\$NEXUS_USER:\$NEXUS_PASS" \
-            '${nexusUrl}/service/rest/v1/search?repository=${repo}&docker.imageName=${imageName}' \
-            | jq -r '.items[].id' | while read -r id; do
-                echo "Deleting component: \$id"
-                curl -sf -X DELETE -u "\$NEXUS_USER:\$NEXUS_PASS" \
-                    '${nexusUrl}/service/rest/v1/components/'\$id
-            done
-
-        # Pass 2: page through ALL assets in repo, filter by path prefix, delete matches.
-        # This is the reliable fallback - search/assets query params don't consistently
-        # match sha256 manifest entries in Docker proxy repos.
         TOKEN=""
         while true; do
             if [ -z "\$TOKEN" ]; then
