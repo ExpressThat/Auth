@@ -47,37 +47,21 @@ pipeline {
     }
 
     stages {
-        stage('Build') {
+        stage('Build & Push') {
             when {
                 anyOf {
-                    expression { return currentBuild.changeSets.isEmpty() }
                     changeset 'jenkins/Dockerfile.BuildHarness'
                     changeset 'jenkins/build-harness.Jenkinsfile'
-                }
-            }
-            steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-read-only') {
-                        image = docker.build(
-                            "expressthat/auth-build-harness:${env.BUILD_NUMBER}",
-                            '-f jenkins/Dockerfile.BuildHarness .'
-                        )
-                    }
-                }
-            }
-        }
-
-        stage('Push') {
-            when {
-                anyOf {
-                    expression { return currentBuild.changeSets.isEmpty() }
-                    changeset 'jenkins/Dockerfile.BuildHarness'
-                    changeset 'jenkins/build-harness.Jenkinsfile'
+                    expression { currentBuild.previousBuild == null }
                 }
             }
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-write') {
+                        image = docker.build(
+                            "expressthat/auth-build-harness:${env.BUILD_NUMBER}",
+                            '-f jenkins/Dockerfile.BuildHarness .'
+                        )
                         image.push(env.BUILD_NUMBER)
                         image.push('latest')
                     }
@@ -88,9 +72,9 @@ pipeline {
         stage('Invalidate Nexus Cache') {
             when {
                 anyOf {
-                    expression { return currentBuild.changeSets.isEmpty() }
                     changeset 'jenkins/Dockerfile.BuildHarness'
                     changeset 'jenkins/build-harness.Jenkinsfile'
+                    expression { currentBuild.previousBuild == null }
                 }
             }
             steps {
