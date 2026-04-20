@@ -34,10 +34,6 @@
     "./qwik/*": {
       "import": "./output/qwik/src/*.tsx",
       "types": "./output/qwik/src/*.tsx"
-    },
-    "./lit/*": {
-      "import": "./output/lit/src/*.ts",
-      "types": "./output/lit/src/*.ts"
     }
   },
   "scripts": {
@@ -69,9 +65,6 @@
     },
     "@builder.io/qwik": {
       "optional": true
-    },
-    "lit": {
-      "optional": true
     }
   },
   "peerDependencies": {
@@ -82,8 +75,7 @@
     "@angular/core": ">=17",
     "solid-js": "^1",
     "preact": "^10",
-    "@builder.io/qwik": "^1",
-    "lit": "^3"
+    "@builder.io/qwik": "^1"
   },
   "devDependencies": {
     "@builder.io/mitosis": "^0.13.0",
