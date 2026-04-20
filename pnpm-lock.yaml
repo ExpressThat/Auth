@@ -28,9 +28,9 @@ importers:
       '@base-ui/react':
         specifier: ^1.4.0
         version: 1.4.0(@date-fns/tz@1.4.1)(@types/react@19.2.14)(date-fns@4.1.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      '@expressthat-auth/components':
+      '@expressthat-auth/internal-components':
         specifier: workspace:*
-        version: link:../../packages/components
+        version: link:../../packages/internal-components
       '@fontsource-variable/inter':
         specifier: ^5.2.8
         version: 5.2.8
@@ -150,7 +150,7 @@ importers:
         specifier: ^9.0.5
         version: 9.0.5
 
-  packages/components:
+  packages/internal-components:
     dependencies:
       '@base-ui/react':
         specifier: ^1.4.0
@@ -5808,7 +5808,7 @@ snapshots:
 
   '@types/set-cookie-parser@2.4.10':
     dependencies:
-      '@types/node': 22.19.17
+      '@types/node': 24.12.2
 
   '@types/statuses@2.0.6': {}
 
@@ -6942,7 +6942,7 @@ snapshots:
 
   make-dir@4.0.0:
     dependencies:
-      semver: 7.7.3
+      semver: 7.7.4
 
   math-intrinsics@1.1.0: {}
 
@@ -7503,8 +7503,7 @@ snapshots:
 
   semver@7.7.3: {}
 
-  semver@7.7.4:
-    optional: true
+  semver@7.7.4: {}
 
   send@1.2.1:
     dependencies:

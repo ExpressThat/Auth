@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.4.0",
-    "@expressthat-auth/components": "workspace:*",
+    "@expressthat-auth/internal-components": "workspace:*",
     "@fontsource-variable/inter": "^5.2.8",
     "@tailwindcss/postcss": "^4.1.4",
     "class-variance-authority": "^0.7.1",
