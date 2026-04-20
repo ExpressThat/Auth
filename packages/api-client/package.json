@@ -5,17 +5,16 @@
   "description": "Generated TypeScript client for the ExpressThat Auth API",
   "type": "module",
   "sideEffects": false,
+  "files": [
+    "dist",
+    "src"
+  ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
     }
   },
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "build": "pnpm gen:client:release && tsx scripts/build.ts",
     "dev": "wait-on -t 300000 http-get://localhost:3001/api/swagger/v1/swagger.json && nodemon --watch ../../apps/api/bin/Debug/net10.0/swagger.json --ext json --exec \"pnpm gen:client:dev\"",

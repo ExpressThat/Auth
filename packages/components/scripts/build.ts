@@ -8,9 +8,6 @@ rmSync("dist", { recursive: true, force: true });
 
 await build({
   plugins: [react()],
-  resolve: {
-    alias: { "@": resolve(import.meta.dirname, "../src") },
-  },
   build: {
     lib: {
       entry: resolve(import.meta.dirname, "../src/index.ts"),
@@ -18,9 +15,13 @@ await build({
     },
     rollupOptions: {
       // Externalize all node_modules — consumers install their own deps.
-      // Do NOT externalize the local @/ alias (resolved to ./src/* by the alias plugin).
+      // Self-referencing imports (@expressthat-auth/components/*) are NOT externalized
+      // so Rollup resolves them to relative imports in the dist output.
       external: (id) =>
-        !id.startsWith(".") && !id.startsWith("@/") && !id.startsWith("\0") && !isAbsolute(id),
+        !id.startsWith(".") &&
+        !id.startsWith("@expressthat-auth/components") &&
+        !id.startsWith("\0") &&
+        !isAbsolute(id),
       output: {
         preserveModules: true,
         preserveModulesRoot: "src",

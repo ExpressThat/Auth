@@ -47,6 +47,7 @@
       "!**/obj",
       "!**/.astro",
       "!**/*.astro",
+      "!**/next-env.d.ts",
       "!**/test-results"
     ]
   },

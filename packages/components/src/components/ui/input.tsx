@@ -1,7 +1,8 @@
-import { Input as InputPrimitive } from "@base-ui/react/input";
-import type * as React from "react";
+"use client";
 
-import { cn } from "@/lib/utils";
+import { Input as InputPrimitive } from "@base-ui/react/input";
+import { cn } from "@expressthat-auth/components/lib/utils";
+import type * as React from "react";
 
 function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   return (

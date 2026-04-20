@@ -3,20 +3,17 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "check-types": "astro check",
-    "preview": "astro preview",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "check-types": "tsc --noEmit",
     "test:e2e": "playwright install && playwright test"
   },
   "dependencies": {
-    "@astrojs/node": "^10.0.5",
-    "@astrojs/react": "^5.0.3",
     "@base-ui/react": "^1.4.0",
     "@expressthat-auth/components": "workspace:*",
     "@fontsource-variable/inter": "^5.2.8",
-    "@tailwindcss/vite": "^4.1.4",
-    "astro": "^6.1.8",
+    "@tailwindcss/postcss": "^4.1.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
@@ -24,6 +21,7 @@
     "embla-carousel-react": "^8.6.0",
     "input-otp": "^1.4.2",
     "lucide-react": "^1.8.0",
+    "next": "^16.2.4",
     "next-themes": "^0.4.6",
     "react": "^19.2.5",
     "react-day-picker": "^9.14.0",
@@ -38,13 +36,11 @@
     "vaul": "^1.1.2"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.4",
     "@expressthat-auth/typescript-config": "workspace:*",
     "@playwright/test": "^1.52.0",
-    "@shiftescape/astro-toolbar-routes": "^0.1.2",
+    "@types/node": "^22.0.0",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
-    "rollup-plugin-visualizer": "^7.0.1",
     "typescript": "6.0.3"
   }
 }

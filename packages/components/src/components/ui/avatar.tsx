@@ -1,7 +1,8 @@
-import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar";
-import type * as React from "react";
+"use client";
 
-import { cn } from "@/lib/utils";
+import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar";
+import { cn } from "@expressthat-auth/components/lib/utils";
+import type * as React from "react";
 
 function Avatar({
   className,

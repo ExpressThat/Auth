@@ -1,6 +1,5 @@
+import { cn } from "@expressthat-auth/components/lib/utils";
 import type * as React from "react";
-
-import { cn } from "@/lib/utils";
 
 function Card({
   className,
