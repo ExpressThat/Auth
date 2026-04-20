@@ -42,6 +42,9 @@ publish/
 apps/api/swagger.json
 packages/api-client/src/generated
 
+# Mitosis generated framework outputs
+packages/ui/output/
+
 # Next.js / Astro generated types (legacy)
 .astro/
 
