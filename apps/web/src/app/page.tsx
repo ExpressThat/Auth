@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@expressthat-auth/components/button";
+import { Button } from "@expressthat-auth/internal-components/button";
 
 export default function Home() {
   return (
