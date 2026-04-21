@@ -5,6 +5,7 @@
   "type": "module",
   "sideEffects": false,
   "files": [
+    "dist",
     "output",
     "src"
   ],
@@ -37,7 +38,7 @@
     }
   },
   "scripts": {
-    "build": "mitosis build",
+    "build": "mitosis build && tsx scripts/build.ts",
     "dev": "mitosis build --watch",
     "check-types": "tsc --noEmit"
   },
@@ -80,7 +81,20 @@
   "devDependencies": {
     "@builder.io/mitosis": "^0.13.0",
     "@builder.io/mitosis-cli": "^0.13.0",
+    "@builder.io/qwik": "^1",
     "@expressthat-auth/typescript-config": "workspace:*",
-    "typescript": "6.0.3"
+    "@preact/preset-vite": "^2.10.2",
+    "@sveltejs/vite-plugin-svelte": "^6.2.1",
+    "@vitejs/plugin-react": "^6.0.1",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "esbuild": "^0.28.0",
+    "preact": "^10",
+    "solid-js": "^1",
+    "svelte": "^5",
+    "tsx": "^4.21.0",
+    "typescript": "6.0.3",
+    "vite": "^8.0.0",
+    "vite-plugin-solid": "^2.11.8",
+    "vue": "^3"
   }
 }
