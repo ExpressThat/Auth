@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test:e2e": "playwright install && playwright test"
+    "test:e2e": "playwright install && playwright test -c playwright.react.config.ts && playwright test -c playwright.vue.config.ts && playwright test -c playwright.svelte.config.ts && playwright test -c playwright.solid.config.ts && playwright test -c playwright.preact.config.ts && playwright test -c playwright.qwik.config.ts && playwright test -c playwright.angular.config.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.52.0",
