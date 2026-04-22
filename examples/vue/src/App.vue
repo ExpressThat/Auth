@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import Button from "@expressthat-auth/ui/vue/button";
+import Button from "@expressthat-auth/ui/vue/eXButton";
 import { defineComponent } from "vue";
 
 export default defineComponent({

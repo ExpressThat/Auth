@@ -1,5 +1,5 @@
 import { component$ } from "@builder.io/qwik";
-import Button from "@expressthat-auth/ui/qwik/button";
+import Button from "@expressthat-auth/ui/qwik/eXButton";
 
 export default component$(() => {
   return (

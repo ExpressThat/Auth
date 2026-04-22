@@ -7,7 +7,7 @@ export interface ButtonProps {
   onClick?: () => void;
 }
 
-export default function Button(props: ButtonProps) {
+export default function EXButton(props: ButtonProps) {
   const state = useStore({
     get buttonClass(): string {
       return `btn btn--${props.variant ?? "primary"}`;

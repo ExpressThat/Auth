@@ -1,4 +1,4 @@
-import Button from "@expressthat-auth/ui/react/button";
+import Button from "@expressthat-auth/ui/react/eXButton";
 
 export default function App() {
   return (

@@ -54,6 +54,16 @@
   },
   "overrides": [
     {
+      "includes": ["**/mitosis.config.*"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "useQwikValidLexicalScope": "off"
+          }
+        }
+      }
+    },
+    {
       "includes": ["packages/internal-components/src/components/ui/**"],
       "linter": {
         "rules": {

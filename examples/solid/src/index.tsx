@@ -1,4 +1,4 @@
-import Button from "@expressthat-auth/ui/solid/button";
+import Button from "@expressthat-auth/ui/solid/eXButton";
 import { render } from "solid-js/web";
 
 function App() {

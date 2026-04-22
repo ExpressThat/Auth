@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Button from "@expressthat-auth/ui/svelte/button";
+  import Button from "@expressthat-auth/ui/svelte/eXButton";
 </script>
 
 <div>
