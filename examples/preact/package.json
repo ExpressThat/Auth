@@ -1,0 +1,21 @@
+{
+  "name": "example-preact",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@expressthat-auth/ui": "workspace:*",
+    "preact": "^10"
+  },
+  "devDependencies": {
+    "@expressthat-auth/typescript-config": "workspace:*",
+    "@preact/preset-vite": "^2.10.2",
+    "typescript": "6.0.3",
+    "vite": "^8.0.0"
+  }
+}

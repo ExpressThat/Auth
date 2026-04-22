@@ -1,0 +1,21 @@
+{
+  "name": "example-svelte",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@expressthat-auth/ui": "workspace:*",
+    "svelte": "^5"
+  },
+  "devDependencies": {
+    "@expressthat-auth/typescript-config": "workspace:*",
+    "@sveltejs/vite-plugin-svelte": "^6.2.1",
+    "typescript": "6.0.3",
+    "vite": "^8.0.0"
+  }
+}

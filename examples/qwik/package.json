@@ -1,0 +1,20 @@
+{
+  "name": "example-qwik",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@builder.io/qwik": "^1",
+    "@expressthat-auth/ui": "workspace:*"
+  },
+  "devDependencies": {
+    "@expressthat-auth/typescript-config": "workspace:*",
+    "typescript": "6.0.3",
+    "vite": "^8.0.0"
+  }
+}
