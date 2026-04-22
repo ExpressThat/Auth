@@ -1,4 +1,6 @@
 import { render } from "@builder.io/qwik";
 import Root from "./root";
 
-render(document.getElementById("app")!, <Root />);
+const app = document.getElementById("app");
+if (!app) throw new Error("Root element #app not found");
+render(app, <Root />);

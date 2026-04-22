@@ -1,4 +1,6 @@
 import { render } from "preact";
 import App from "./App";
 
-render(<App />, document.getElementById("app")!);
+const app = document.getElementById("app");
+if (!app) throw new Error("Root element #app not found");
+render(<App />, app);
