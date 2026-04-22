@@ -29,12 +29,12 @@
       "cache": false,
       "persistent": true
     },
-    "test": {
+    "test:components": {
       "dependsOn": [],
       "cache": false
     },
-    "test:e2e": {
-      "dependsOn": ["build"],
+    "test:e2e:web": {
+      "dependsOn": [],
       "cache": false
     },
     "test:e2e:react": {
