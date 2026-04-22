@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "ng serve --port 5179",
     "build": "ng build",
+    "preview": "serve dist/browser -p 4179 --no-clipboard",
     "check-types": "ng build --configuration=production"
   },
   "dependencies": {
@@ -22,6 +23,7 @@
     "@angular-devkit/build-angular": "^18.2.0",
     "@angular/cli": "^18.2.0",
     "@angular/compiler-cli": "^18.2.0",
+    "serve": "^14.2.0",
     "typescript": "~5.5.0"
   }
 }
