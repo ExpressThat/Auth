@@ -62,3 +62,7 @@ yarn-error.log*
 *.pem
 
 apps/web/test-results/
+
+examples/e2e/test-results/
+
+examples/angular/.angular/
