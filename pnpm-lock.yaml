@@ -149,7 +149,7 @@ importers:
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^21.0.0
-        version: 21.2.8(@angular/compiler-cli@21.2.9(@angular/compiler@21.2.9)(typescript@5.9.3))(@angular/compiler@21.2.9)(@angular/core@21.2.9(@angular/compiler@21.2.9)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@21.2.9(@angular/common@21.2.9(@angular/core@21.2.9(@angular/compiler@21.2.9)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.2.9(@angular/compiler@21.2.9)(rxjs@7.8.2)(zone.js@0.15.1)))(@emnapi/core@1.9.2)(@emnapi/runtime@1.10.0)(@types/node@24.12.2)(chokidar@5.0.0)(jiti@2.6.1)(lightningcss@1.32.0)(stylus@0.62.0)(tailwindcss@4.2.4)(tsx@4.21.0)(typescript@5.9.3)(vitest@4.1.4(@types/node@24.12.2)(@vitest/coverage-v8@4.1.4)(jsdom@29.0.2(@noble/hashes@1.8.0))(msw@2.13.4(@types/node@24.12.2)(typescript@5.9.3))(vite@7.3.2(@types/node@24.12.2)(jiti@2.6.1)(less@4.4.2)(lightningcss@1.32.0)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3)))(yaml@2.8.3)
+        version: 21.2.8(@angular/compiler-cli@21.2.9(@angular/compiler@21.2.9)(typescript@5.9.3))(@angular/compiler@21.2.9)(@angular/core@21.2.9(@angular/compiler@21.2.9)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@21.2.9(@angular/common@21.2.9(@angular/core@21.2.9(@angular/compiler@21.2.9)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.2.9(@angular/compiler@21.2.9)(rxjs@7.8.2)(zone.js@0.15.1)))(@emnapi/core@1.9.2)(@emnapi/runtime@1.10.0)(@types/node@24.12.2)(chokidar@5.0.0)(jiti@2.6.1)(lightningcss@1.32.0)(stylus@0.62.0)(tailwindcss@4.2.4)(tsx@4.21.0)(typescript@5.9.3)(vitest@4.1.4(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2(@noble/hashes@1.8.0))(msw@2.13.4(@types/node@24.12.2)(typescript@5.9.3))(vite@7.3.2(@types/node@24.12.2)(jiti@2.6.1)(less@4.4.2)(lightningcss@1.32.0)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3)))(yaml@2.8.3)
       '@angular/cli':
         specifier: ^21.0.0
         version: 21.2.8(@types/node@24.12.2)(chokidar@5.0.0)
@@ -422,8 +422,8 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1(vite@8.0.9(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1)(less@4.6.4)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3))
       '@vitest/coverage-v8':
-        specifier: ^4.1.4
-        version: 4.1.4(vitest@4.1.4)
+        specifier: ^4.1.5
+        version: 4.1.5(vitest@4.1.4)
       esbuild:
         specifier: ^0.28.0
         version: 0.28.0
@@ -444,7 +444,7 @@ importers:
         version: 8.0.9(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1)(less@4.6.4)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3)
       vitest:
         specifier: ^4.1.4
-        version: 4.1.4(@types/node@24.12.2)(@vitest/coverage-v8@4.1.4)(jsdom@29.0.2(@noble/hashes@1.8.0))(msw@2.13.4(@types/node@24.12.2)(typescript@5.9.3))(vite@8.0.9(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1)(less@4.6.4)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3))
+        version: 4.1.4(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2(@noble/hashes@1.8.0))(msw@2.13.4(@types/node@24.12.2)(typescript@5.9.3))(vite@8.0.9(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1)(less@4.6.4)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3))
 
   packages/typescript-config: {}
 
@@ -4170,11 +4170,11 @@ packages:
       vite: ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
       vue: ^3.2.25
 
-  '@vitest/coverage-v8@4.1.4':
-    resolution: {integrity: sha512-x7FptB5oDruxNPDNY2+S8tCh0pcq7ymCe1gTHcsp733jYjrJl8V1gMUlVysuCD9Kz46Xz9t1akkv08dPcYDs1w==}
+  '@vitest/coverage-v8@4.1.5':
+    resolution: {integrity: sha512-38C0/Ddb7HcRG0Z4/DUem8x57d2p9jYgp18mkaYswEOQBGsI1CG4f/hjm0ZCeaJfWhSZ4k7jgs29V1Zom7Ki9A==}
     peerDependencies:
-      '@vitest/browser': 4.1.4
-      vitest: 4.1.4
+      '@vitest/browser': 4.1.5
+      vitest: 4.1.5
     peerDependenciesMeta:
       '@vitest/browser':
         optional: true
@@ -4196,6 +4196,9 @@ packages:
   '@vitest/pretty-format@4.1.4':
     resolution: {integrity: sha512-ddmDHU0gjEUyEVLxtZa7xamrpIefdEETu3nZjWtHeZX4QxqJ7tRxSteHVXJOcr8jhiLoGAhkK4WJ3WqBpjx42A==}
 
+  '@vitest/pretty-format@4.1.5':
+    resolution: {integrity: sha512-7I3q6l5qr03dVfMX2wCo9FxwSJbPdwKjy2uu/YPpU3wfHvIL4QHwVRp57OfGrDFeUJ8/8QdfBKIV12FTtLn00g==}
+
   '@vitest/runner@4.1.4':
     resolution: {integrity: sha512-xTp7VZ5aXP5ZJrn15UtJUWlx6qXLnGtF6jNxHepdPHpMfz/aVPx+htHtgcAL2mDXJgKhpoo2e9/hVJsIeFbytQ==}
 
@@ -4207,6 +4210,9 @@ packages:
 
   '@vitest/utils@4.1.4':
     resolution: {integrity: sha512-13QMT+eysM5uVGa1rG4kegGYNp6cnQcsTc67ELFbhNLQO+vgsygtYJx2khvdt4gVQqSSpC/KT5FZZxUpP3Oatw==}
+
+  '@vitest/utils@4.1.5':
+    resolution: {integrity: sha512-76wdkrmfXfqGjueGgnb45ITPyUi1ycZ4IHgC2bhPDUfWHklY/q3MdLOAB+TF1e6xfl8NxNY0ZYaPCFNWSsw3Ug==}
 
   '@volar/language-core@2.4.15':
     resolution: {integrity: sha512-3VHw+QZU0ZG9IuQmzT68IyN4hZNd9GchGPhbD9+pa8CVv7rnoOZwo7T8weIbrRmihqy3ATpdfXFnqRrfPVK6CA==}
@@ -8668,13 +8674,13 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@angular-devkit/build-angular@21.2.8(@angular/compiler-cli@21.2.9(@angular/compiler@21.2.9)(typescript@5.9.3))(@angular/compiler@21.2.9)(@angular/core@21.2.9(@angular/compiler@21.2.9)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@21.2.9(@angular/common@21.2.9(@angular/core@21.2.9(@angular/compiler@21.2.9)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.2.9(@angular/compiler@21.2.9)(rxjs@7.8.2)(zone.js@0.15.1)))(@emnapi/core@1.9.2)(@emnapi/runtime@1.10.0)(@types/node@24.12.2)(chokidar@5.0.0)(jiti@2.6.1)(lightningcss@1.32.0)(stylus@0.62.0)(tailwindcss@4.2.4)(tsx@4.21.0)(typescript@5.9.3)(vitest@4.1.4(@types/node@24.12.2)(@vitest/coverage-v8@4.1.4)(jsdom@29.0.2(@noble/hashes@1.8.0))(msw@2.13.4(@types/node@24.12.2)(typescript@5.9.3))(vite@7.3.2(@types/node@24.12.2)(jiti@2.6.1)(less@4.4.2)(lightningcss@1.32.0)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3)))(yaml@2.8.3)':
+  '@angular-devkit/build-angular@21.2.8(@angular/compiler-cli@21.2.9(@angular/compiler@21.2.9)(typescript@5.9.3))(@angular/compiler@21.2.9)(@angular/core@21.2.9(@angular/compiler@21.2.9)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@21.2.9(@angular/common@21.2.9(@angular/core@21.2.9(@angular/compiler@21.2.9)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.2.9(@angular/compiler@21.2.9)(rxjs@7.8.2)(zone.js@0.15.1)))(@emnapi/core@1.9.2)(@emnapi/runtime@1.10.0)(@types/node@24.12.2)(chokidar@5.0.0)(jiti@2.6.1)(lightningcss@1.32.0)(stylus@0.62.0)(tailwindcss@4.2.4)(tsx@4.21.0)(typescript@5.9.3)(vitest@4.1.4(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2(@noble/hashes@1.8.0))(msw@2.13.4(@types/node@24.12.2)(typescript@5.9.3))(vite@7.3.2(@types/node@24.12.2)(jiti@2.6.1)(less@4.4.2)(lightningcss@1.32.0)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3)))(yaml@2.8.3)':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.2102.8(chokidar@5.0.0)
       '@angular-devkit/build-webpack': 0.2102.8(chokidar@5.0.0)(webpack-dev-server@5.2.3(tslib@2.8.1)(webpack@5.105.2(esbuild@0.27.3)))(webpack@5.105.2(esbuild@0.27.3))
       '@angular-devkit/core': 21.2.8(chokidar@5.0.0)
-      '@angular/build': 21.2.8(@angular/compiler-cli@21.2.9(@angular/compiler@21.2.9)(typescript@5.9.3))(@angular/compiler@21.2.9)(@angular/core@21.2.9(@angular/compiler@21.2.9)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@21.2.9(@angular/common@21.2.9(@angular/core@21.2.9(@angular/compiler@21.2.9)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.2.9(@angular/compiler@21.2.9)(rxjs@7.8.2)(zone.js@0.15.1)))(@emnapi/core@1.9.2)(@emnapi/runtime@1.10.0)(@types/node@24.12.2)(chokidar@5.0.0)(jiti@2.6.1)(less@4.4.2)(lightningcss@1.32.0)(postcss@8.5.6)(stylus@0.62.0)(tailwindcss@4.2.4)(terser@5.46.0)(tslib@2.8.1)(tsx@4.21.0)(typescript@5.9.3)(vitest@4.1.4(@types/node@24.12.2)(@vitest/coverage-v8@4.1.4)(jsdom@29.0.2(@noble/hashes@1.8.0))(msw@2.13.4(@types/node@24.12.2)(typescript@5.9.3))(vite@7.3.2(@types/node@24.12.2)(jiti@2.6.1)(less@4.4.2)(lightningcss@1.32.0)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3)))(yaml@2.8.3)
+      '@angular/build': 21.2.8(@angular/compiler-cli@21.2.9(@angular/compiler@21.2.9)(typescript@5.9.3))(@angular/compiler@21.2.9)(@angular/core@21.2.9(@angular/compiler@21.2.9)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@21.2.9(@angular/common@21.2.9(@angular/core@21.2.9(@angular/compiler@21.2.9)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.2.9(@angular/compiler@21.2.9)(rxjs@7.8.2)(zone.js@0.15.1)))(@emnapi/core@1.9.2)(@emnapi/runtime@1.10.0)(@types/node@24.12.2)(chokidar@5.0.0)(jiti@2.6.1)(less@4.4.2)(lightningcss@1.32.0)(postcss@8.5.6)(stylus@0.62.0)(tailwindcss@4.2.4)(terser@5.46.0)(tslib@2.8.1)(tsx@4.21.0)(typescript@5.9.3)(vitest@4.1.4(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2(@noble/hashes@1.8.0))(msw@2.13.4(@types/node@24.12.2)(typescript@5.9.3))(vite@7.3.2(@types/node@24.12.2)(jiti@2.6.1)(less@4.4.2)(lightningcss@1.32.0)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3)))(yaml@2.8.3)
       '@angular/compiler-cli': 21.2.9(@angular/compiler@21.2.9)(typescript@5.9.3)
       '@babel/core': 7.29.0
       '@babel/generator': 7.29.1
@@ -8786,7 +8792,7 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@angular/build@21.2.8(@angular/compiler-cli@21.2.9(@angular/compiler@21.2.9)(typescript@5.9.3))(@angular/compiler@21.2.9)(@angular/core@21.2.9(@angular/compiler@21.2.9)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@21.2.9(@angular/common@21.2.9(@angular/core@21.2.9(@angular/compiler@21.2.9)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.2.9(@angular/compiler@21.2.9)(rxjs@7.8.2)(zone.js@0.15.1)))(@emnapi/core@1.9.2)(@emnapi/runtime@1.10.0)(@types/node@24.12.2)(chokidar@5.0.0)(jiti@2.6.1)(less@4.4.2)(lightningcss@1.32.0)(postcss@8.5.6)(stylus@0.62.0)(tailwindcss@4.2.4)(terser@5.46.0)(tslib@2.8.1)(tsx@4.21.0)(typescript@5.9.3)(vitest@4.1.4(@types/node@24.12.2)(@vitest/coverage-v8@4.1.4)(jsdom@29.0.2(@noble/hashes@1.8.0))(msw@2.13.4(@types/node@24.12.2)(typescript@5.9.3))(vite@7.3.2(@types/node@24.12.2)(jiti@2.6.1)(less@4.4.2)(lightningcss@1.32.0)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3)))(yaml@2.8.3)':
+  '@angular/build@21.2.8(@angular/compiler-cli@21.2.9(@angular/compiler@21.2.9)(typescript@5.9.3))(@angular/compiler@21.2.9)(@angular/core@21.2.9(@angular/compiler@21.2.9)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@21.2.9(@angular/common@21.2.9(@angular/core@21.2.9(@angular/compiler@21.2.9)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.2.9(@angular/compiler@21.2.9)(rxjs@7.8.2)(zone.js@0.15.1)))(@emnapi/core@1.9.2)(@emnapi/runtime@1.10.0)(@types/node@24.12.2)(chokidar@5.0.0)(jiti@2.6.1)(less@4.4.2)(lightningcss@1.32.0)(postcss@8.5.6)(stylus@0.62.0)(tailwindcss@4.2.4)(terser@5.46.0)(tslib@2.8.1)(tsx@4.21.0)(typescript@5.9.3)(vitest@4.1.4(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2(@noble/hashes@1.8.0))(msw@2.13.4(@types/node@24.12.2)(typescript@5.9.3))(vite@7.3.2(@types/node@24.12.2)(jiti@2.6.1)(less@4.4.2)(lightningcss@1.32.0)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3)))(yaml@2.8.3)':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.2102.8(chokidar@5.0.0)
@@ -8826,7 +8832,7 @@ snapshots:
       lmdb: 3.5.1
       postcss: 8.5.6
       tailwindcss: 4.2.4
-      vitest: 4.1.4(@types/node@24.12.2)(@vitest/coverage-v8@4.1.4)(jsdom@29.0.2(@noble/hashes@1.8.0))(msw@2.13.4(@types/node@24.12.2)(typescript@5.9.3))(vite@7.3.2(@types/node@24.12.2)(jiti@2.6.1)(less@4.4.2)(lightningcss@1.32.0)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3))
+      vitest: 4.1.4(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2(@noble/hashes@1.8.0))(msw@2.13.4(@types/node@24.12.2)(typescript@5.9.3))(vite@7.3.2(@types/node@24.12.2)(jiti@2.6.1)(less@4.4.2)(lightningcss@1.32.0)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3))
     transitivePeerDependencies:
       - '@emnapi/core'
       - '@emnapi/runtime'
@@ -12205,10 +12211,10 @@ snapshots:
       vite: 8.0.9(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1)(less@4.6.4)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3)
       vue: 3.5.32(typescript@6.0.3)
 
-  '@vitest/coverage-v8@4.1.4(vitest@4.1.4)':
+  '@vitest/coverage-v8@4.1.5(vitest@4.1.4)':
     dependencies:
       '@bcoe/v8-coverage': 1.0.2
-      '@vitest/utils': 4.1.4
+      '@vitest/utils': 4.1.5
       ast-v8-to-istanbul: 1.0.0
       istanbul-lib-coverage: 3.2.2
       istanbul-lib-report: 3.0.1
@@ -12217,7 +12223,7 @@ snapshots:
       obug: 2.1.1
       std-env: 4.1.0
       tinyrainbow: 3.1.0
-      vitest: 4.1.4(@types/node@24.12.2)(@vitest/coverage-v8@4.1.4)(jsdom@29.0.2(@noble/hashes@1.8.0))(msw@2.13.4(@types/node@24.12.2)(typescript@5.9.3))(vite@7.3.2(@types/node@24.12.2)(jiti@2.6.1)(less@4.4.2)(lightningcss@1.32.0)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3))
+      vitest: 4.1.4(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2(@noble/hashes@1.8.0))(msw@2.13.4(@types/node@24.12.2)(typescript@5.9.3))(vite@7.3.2(@types/node@24.12.2)(jiti@2.6.1)(less@4.4.2)(lightningcss@1.32.0)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3))
 
   '@vitest/expect@4.1.4':
     dependencies:
@@ -12250,6 +12256,10 @@ snapshots:
     dependencies:
       tinyrainbow: 3.1.0
 
+  '@vitest/pretty-format@4.1.5':
+    dependencies:
+      tinyrainbow: 3.1.0
+
   '@vitest/runner@4.1.4':
     dependencies:
       '@vitest/utils': 4.1.4
@@ -12267,6 +12277,12 @@ snapshots:
   '@vitest/utils@4.1.4':
     dependencies:
       '@vitest/pretty-format': 4.1.4
+      convert-source-map: 2.0.0
+      tinyrainbow: 3.1.0
+
+  '@vitest/utils@4.1.5':
+    dependencies:
+      '@vitest/pretty-format': 4.1.5
       convert-source-map: 2.0.0
       tinyrainbow: 3.1.0
 
@@ -16731,7 +16747,7 @@ snapshots:
     optionalDependencies:
       vite: 8.0.9(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1)(less@4.6.4)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3)
 
-  vitest@4.1.4(@types/node@24.12.2)(@vitest/coverage-v8@4.1.4)(jsdom@29.0.2(@noble/hashes@1.8.0))(msw@2.13.4(@types/node@24.12.2)(typescript@5.9.3))(vite@7.3.2(@types/node@24.12.2)(jiti@2.6.1)(less@4.4.2)(lightningcss@1.32.0)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3)):
+  vitest@4.1.4(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2(@noble/hashes@1.8.0))(msw@2.13.4(@types/node@24.12.2)(typescript@5.9.3))(vite@7.3.2(@types/node@24.12.2)(jiti@2.6.1)(less@4.4.2)(lightningcss@1.32.0)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3)):
     dependencies:
       '@vitest/expect': 4.1.4
       '@vitest/mocker': 4.1.4(msw@2.13.4(@types/node@24.12.2)(typescript@5.9.3))(vite@7.3.2(@types/node@24.12.2)(jiti@2.6.1)(less@4.4.2)(lightningcss@1.32.0)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3))
@@ -16755,12 +16771,12 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 24.12.2
-      '@vitest/coverage-v8': 4.1.4(vitest@4.1.4)
+      '@vitest/coverage-v8': 4.1.5(vitest@4.1.4)
       jsdom: 29.0.2(@noble/hashes@1.8.0)
     transitivePeerDependencies:
       - msw
 
-  vitest@4.1.4(@types/node@24.12.2)(@vitest/coverage-v8@4.1.4)(jsdom@29.0.2(@noble/hashes@1.8.0))(msw@2.13.4(@types/node@24.12.2)(typescript@5.9.3))(vite@8.0.9(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1)(less@4.6.4)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3)):
+  vitest@4.1.4(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2(@noble/hashes@1.8.0))(msw@2.13.4(@types/node@24.12.2)(typescript@5.9.3))(vite@8.0.9(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1)(less@4.6.4)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3)):
     dependencies:
       '@vitest/expect': 4.1.4
       '@vitest/mocker': 4.1.4(msw@2.13.4(@types/node@24.12.2)(typescript@5.9.3))(vite@8.0.9(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1)(less@4.6.4)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3))
@@ -16784,7 +16800,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 24.12.2
-      '@vitest/coverage-v8': 4.1.4(vitest@4.1.4)
+      '@vitest/coverage-v8': 4.1.5(vitest@4.1.4)
       jsdom: 29.0.2(@noble/hashes@1.8.0)
     transitivePeerDependencies:
       - msw
