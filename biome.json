@@ -38,6 +38,7 @@
       "!**/packages/database/generated",
       "!**/apps/api/swagger.json",
       "!**/packages/api-client/src",
+      "!**/packages/ui/output",
       "!**/*.cs",
       "!**/*.csproj",
       "!**/*.props",
@@ -52,6 +53,16 @@
     ]
   },
   "overrides": [
+    {
+      "includes": ["**/mitosis.config.*"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "useQwikValidLexicalScope": "off"
+          }
+        }
+      }
+    },
     {
       "includes": ["packages/internal-components/src/components/ui/**"],
       "linter": {

@@ -11,6 +11,7 @@
         ".next/**",
         "!.next/cache/**",
         "dist/**",
+        "output/**",
         "publish/**",
         "bin/Release/**",
         "obj/**/ref/**"
@@ -28,12 +29,40 @@
       "cache": false,
       "persistent": true
     },
-    "test": {
+    "test:components": {
       "dependsOn": [],
       "cache": false
     },
-    "test:e2e": {
-      "dependsOn": ["build"],
+    "test:e2e:web": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "test:e2e:react": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "test:e2e:vue": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "test:e2e:svelte": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "test:e2e:solid": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "test:e2e:preact": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "test:e2e:qwik": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "test:e2e:angular": {
+      "dependsOn": [],
       "cache": false
     }
   }

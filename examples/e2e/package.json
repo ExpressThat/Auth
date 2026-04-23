@@ -1,0 +1,20 @@
+{
+  "name": "example-e2e",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:e2e:react": "playwright install && playwright test -c playwright.react.config.ts",
+    "test:e2e:vue": "playwright install && playwright test -c playwright.vue.config.ts",
+    "test:e2e:svelte": "playwright install && playwright test -c playwright.svelte.config.ts",
+    "test:e2e:solid": "playwright install && playwright test -c playwright.solid.config.ts",
+    "test:e2e:preact": "playwright install && playwright test -c playwright.preact.config.ts",
+    "test:e2e:qwik": "playwright install && playwright test -c playwright.qwik.config.ts",
+    "test:e2e:angular": "playwright install && playwright test -c playwright.angular.config.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@types/node": "^22.0.0",
+    "typescript": "6.0.3"
+  }
+}

@@ -33,7 +33,7 @@
   "scripts": {
     "build": "tsx scripts/build.ts",
     "check-types": "tsc --noEmit",
-    "test": "vitest run",
+    "test:components": "vitest run",
     "test:watch": "vitest"
   },
   "peerDependencies": {

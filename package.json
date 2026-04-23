@@ -7,8 +7,15 @@
     "format-and-lint": "biome check .",
     "format-and-lint:fix": "biome check . --write",
     "check-types": "turbo run check-types",
-    "test": "turbo run test",
-    "test:e2e": "turbo run test:e2e"
+    "test:components": "turbo run test:components",
+    "test:e2e:web": "turbo run test:e2e:web",
+    "test:e2e:react": "turbo run test:e2e:react",
+    "test:e2e:vue": "turbo run test:e2e:vue",
+    "test:e2e:svelte": "turbo run test:e2e:svelte",
+    "test:e2e:solid": "turbo run test:e2e:solid",
+    "test:e2e:preact": "turbo run test:e2e:preact",
+    "test:e2e:qwik": "turbo run test:e2e:qwik",
+    "test:e2e:angular": "turbo run test:e2e:angular"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.12",
