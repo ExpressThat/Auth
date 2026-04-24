@@ -143,4 +143,4 @@ for (const target of targets) {
   });
 }
 
-execSync("tsc --project tsconfig.build.json", { stdio: "inherit" });
+execSync("tsgo --project tsconfig.build.json", { stdio: "inherit" });

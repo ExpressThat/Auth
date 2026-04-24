@@ -33,4 +33,4 @@ await build({
   },
 });
 
-execSync("tsc --project tsconfig.build.json", { stdio: "inherit" });
+execSync("tsgo --project tsconfig.build.json", { stdio: "inherit" });
