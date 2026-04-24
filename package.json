@@ -20,8 +20,9 @@
   "devDependencies": {
     "@biomejs/biome": "^2.4.12",
     "@turbo/gen": "^2.9.6",
+    "@typescript/native-preview": "beta",
     "turbo": "^2.9.6",
-    "typescript": "6.0.3"
+    "typescript": "npm:@typescript/typescript6@^6.0.0"
   },
   "packageManager": "pnpm@9.0.0",
   "engines": {

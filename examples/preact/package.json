@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview --port 4177",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsgo --noEmit"
   },
   "dependencies": {
     "@expressthat-auth/ui": "workspace:*",
@@ -16,7 +16,7 @@
   "devDependencies": {
     "@expressthat-auth/typescript-config": "workspace:*",
     "@preact/preset-vite": "^2.10.2",
-    "typescript": "6.0.3",
+    "typescript": "npm:@typescript/typescript6@^6.0.0",
     "vite": "^7.0.0"
   }
 }

@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview --port 4173",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsgo --noEmit"
   },
   "dependencies": {
     "@expressthat-auth/ui": "workspace:*",
@@ -19,7 +19,7 @@
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^5.2.0",
-    "typescript": "6.0.3",
+    "typescript": "npm:@typescript/typescript6@^6.0.0",
     "vite": "^7.0.0"
   }
 }

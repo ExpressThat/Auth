@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "check-types": "tsc --noEmit",
+    "check-types": "tsgo --noEmit",
     "test:e2e:web": "playwright install && playwright test"
   },
   "dependencies": {
@@ -41,6 +41,6 @@
     "@types/node": "^22.0.0",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
-    "typescript": "6.0.3"
+    "typescript": "npm:@typescript/typescript6@^6.0.0"
   }
 }
