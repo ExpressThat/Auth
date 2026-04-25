@@ -27,6 +27,12 @@ jobs:
         with:
           dotnet-version: "10.x"
 
+      - uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-ci-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-turbo-ci-
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -62,6 +68,12 @@ jobs:
         with:
           dotnet-version: "10.x"
 
+      - uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-e2e-examples-${{ matrix.framework }}-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-turbo-e2e-examples-${{ matrix.framework }}-
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -90,6 +102,12 @@ jobs:
         with:
           dotnet-version: "10.x"
 
+      - uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-e2e-web-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-turbo-e2e-web-
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -117,6 +135,12 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "10.x"
+
+      - uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-tests-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-turbo-tests-
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
