@@ -10,6 +10,14 @@
     "src"
   ],
   "exports": {
+    "./react/theme": {
+      "import": "./output/react/src/theme.ts",
+      "types": "./output/react/src/theme.ts"
+    },
+    "./react/theme.context": {
+      "import": "./output/react/src/theme.context.ts",
+      "types": "./output/react/src/theme.context.ts"
+    },
     "./react/*": {
       "import": "./output/react/src/*.tsx",
       "types": "./output/react/src/*.tsx"
@@ -24,13 +32,37 @@
       "import": "./output/angular/src/*.ts",
       "types": "./output/angular/src/*.ts"
     },
+    "./solid/theme": {
+      "import": "./output/solid/src/theme.ts",
+      "types": "./output/solid/src/theme.ts"
+    },
+    "./solid/theme.context": {
+      "import": "./output/solid/src/theme.context.ts",
+      "types": "./output/solid/src/theme.context.ts"
+    },
     "./solid/*": {
       "import": "./output/solid/src/*.tsx",
       "types": "./output/solid/src/*.tsx"
     },
+    "./preact/theme": {
+      "import": "./output/preact/src/theme.ts",
+      "types": "./output/preact/src/theme.ts"
+    },
+    "./preact/theme.context": {
+      "import": "./output/preact/src/theme.context.ts",
+      "types": "./output/preact/src/theme.context.ts"
+    },
     "./preact/*": {
       "import": "./output/preact/src/*.tsx",
       "types": "./output/preact/src/*.tsx"
+    },
+    "./qwik/theme": {
+      "import": "./output/qwik/src/theme.ts",
+      "types": "./output/qwik/src/theme.ts"
+    },
+    "./qwik/theme.context": {
+      "import": "./output/qwik/src/theme.context.ts",
+      "types": "./output/qwik/src/theme.context.ts"
     },
     "./qwik/*": {
       "import": "./output/qwik/src/*.tsx",
@@ -39,7 +71,7 @@
   },
   "scripts": {
     "build": "mitosis build && tsx scripts/build.ts",
-    "dev": "mitosis build --watch",
+    "dev": "tsx scripts/dev.ts",
     "check-types": "tsc --noEmit"
   },
   "peerDependenciesMeta": {

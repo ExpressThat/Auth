@@ -6,11 +6,6 @@ import ThemeContext from "./theme.context.lite";
 export interface EXLoginBoxProps {
   title?: string;
   subtitle?: string;
-  emailLabel?: string;
-  passwordLabel?: string;
-  submitLabel?: string;
-  forgotPasswordLabel?: string;
-  socialDividerLabel?: string;
   socialLogins?: any;
   onForgotPassword?: () => void;
   onSubmit?: (email: string, password: string) => void;
@@ -93,7 +88,7 @@ export default function EXLoginBox(props: EXLoginBoxProps) {
             <EXInput
               id="ex-login-email"
               type="email"
-              label={props.emailLabel || "Email"}
+              label={"Email"}
               value={state.email}
               placeholder="you@example.com"
               onChange={(value) => (state.email = value)}
@@ -117,7 +112,7 @@ export default function EXLoginBox(props: EXLoginBoxProps) {
                   color: theme.colorText,
                 }}
               >
-                {props.passwordLabel || "Password"}
+                {"Password"}
               </span>
               <Show when={props.onForgotPassword != null}>
                 <button
@@ -136,7 +131,7 @@ export default function EXLoginBox(props: EXLoginBoxProps) {
                     fontFamily: theme.fontFamily,
                   }}
                 >
-                  {props.forgotPasswordLabel || "Forgot password?"}
+                  {"Forgot password?"}
                 </button>
               </Show>
             </div>
@@ -174,7 +169,7 @@ export default function EXLoginBox(props: EXLoginBoxProps) {
 
           <div css={{ marginTop: "0.5rem" }}>
             <EXButton
-              label={props.submitLabel || "Sign in"}
+              label={"Sign in"}
               type="submit"
               variant="primary"
               isLoading={props.isLoading}
@@ -204,7 +199,7 @@ export default function EXLoginBox(props: EXLoginBoxProps) {
                   color: theme.colorTextMuted,
                 }}
               >
-                {props.socialDividerLabel || "or continue with"}
+                {"or continue with"}
               </span>
               <div
                 css={{ flex: "1", height: "1px" }}

@@ -13,7 +13,7 @@ const angularStandaloneFalsePlugin = () => ({
 
 /** @type {import('@builder.io/mitosis').MitosisConfig} */
 module.exports = {
-  targets: ["react", "vue", "svelte", "angular", "solid", "preact", "qwik"],
+  targets: ["react", "vue", "svelte", "angular", "solid", "preact", "qwik", "rsc"],
   commonOptions: {
     typescript: true,
   },

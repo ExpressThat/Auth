@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "ng serve --port 5179",
+    "dev:examples": "ng serve --port 5179",
     "build": "ng build",
     "preview": "serve dist/browser -p 4179 --no-clipboard",
     "check-types": "ng build --configuration=production"

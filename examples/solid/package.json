@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev:examples": "vite",
     "build": "vite build",
     "preview": "vite preview --port 4176",
     "check-types": "tsc --noEmit"

@@ -31,6 +31,9 @@ importers:
       '@expressthat-auth/internal-components':
         specifier: workspace:*
         version: link:../../packages/internal-components
+      '@expressthat-auth/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       '@fontsource-variable/inter':
         specifier: ^5.2.8
         version: 5.2.8
