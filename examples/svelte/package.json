@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "@expressthat-auth/typescript-config": "workspace:*",
-    "@sveltejs/vite-plugin-svelte": "^6.2.2",
+    "@sveltejs/vite-plugin-svelte": "^7.0.0",
     "typescript": "6.0.3",
     "vite": "^7.0.0"
   }
