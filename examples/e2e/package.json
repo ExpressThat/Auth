@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "playwright:install": "playwright install --with-deps",
     "test:e2e:react": "playwright test -c playwright.react.config.ts",
     "test:e2e:vue": "playwright test -c playwright.vue.config.ts",
     "test:e2e:svelte": "playwright test -c playwright.svelte.config.ts",
