@@ -9,9 +9,52 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  ci:
-    name: CI
+  install:
+    name: Install Dependencies
     runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "pnpm"
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.x"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+  format-and-lint:
+    name: Format and Lint
+    runs-on: ubuntu-latest
+    needs: install
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Format and lint
+        run: pnpm format-and-lint
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: install
 
     steps:
       - uses: actions/checkout@v4
@@ -30,17 +73,42 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: .turbo
-          key: ${{ runner.os }}-turbo-ci-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-turbo-ci-
+          key: ${{ runner.os }}-turbo-build-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-turbo-build-
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Format and lint
-        run: pnpm format-and-lint
-
       - name: Build
         run: pnpm build
+
+  type-check:
+    name: Type Check
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "pnpm"
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.x"
+
+      - uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-build-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-turbo-build-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Type check
         run: pnpm check-types
@@ -48,7 +116,7 @@ jobs:
   e2e-examples:
     name: E2E Examples (${{ matrix.framework }})
     runs-on: ubuntu-latest
-    needs: ci
+    needs: [build, format-and-lint]
     strategy:
       fail-fast: false
       matrix:
@@ -89,7 +157,7 @@ jobs:
   e2e-web:
     name: E2E Web
     runs-on: ubuntu-latest
-    needs: ci
+    needs: [build, format-and-lint]
 
     steps:
       - uses: actions/checkout@v4
@@ -126,7 +194,7 @@ jobs:
   tests-components:
     name: Test Components
     runs-on: ubuntu-latest
-    needs: ci
+    needs: [build, format-and-lint]
 
     steps:
       - uses: actions/checkout@v4
