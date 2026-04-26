@@ -9,7 +9,7 @@
     "check-types": "ng build --configuration=production"
   },
   "dependencies": {
-    "@angular/common": "^21.0.0",
+    "@angular/common": "^21.2.10",
     "@angular/compiler": "^21.2.10",
     "@angular/core": "^21.0.0",
     "@angular/platform-browser": "^21.2.10",
