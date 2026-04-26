@@ -1,0 +1,60 @@
+{
+  "name": "@expressthat-auth/ui",
+  "version": "0.0.0",
+  "private": true,
+  "description": "StencilJS web component library for ExpressThat Auth",
+  "type": "module",
+  "module": "dist/components/index.js",
+  "collection": "dist/collection/collection-manifest.json",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist",
+    "hydrate",
+    "loader"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/types/components.d.ts",
+      "import": "./dist/components/index.js"
+    },
+    "./components": {
+      "types": "./dist/types/components.d.ts",
+      "import": "./dist/components/index.js"
+    },
+    "./dist/components": {
+      "types": "./dist/types/components.d.ts",
+      "import": "./dist/components/index.js"
+    },
+    "./dist/*": {
+      "import": "./dist/*",
+      "types": "./dist/*"
+    },
+    "./components/*": {
+      "import": "./dist/components/*",
+      "types": "./dist/components/*"
+    },
+    "./hydrate": {
+      "types": "./hydrate/index.d.ts",
+      "import": "./hydrate/index.mjs",
+      "require": "./hydrate/index.js",
+      "default": "./hydrate/index.js"
+    },
+    "./loader": {
+      "types": "./loader/index.d.ts",
+      "import": "./loader/index.js"
+    }
+  },
+  "scripts": {
+    "build": "stencil build --docs",
+    "dev": "stencil build --watch",
+    "check-types": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@expressthat-auth/typescript-config": "workspace:*",
+    "@stencil/angular-output-target": "^0.10.0",
+    "@stencil/core": "^4.30.0",
+    "@stencil/react-output-target": "^1.2.0",
+    "@stencil/vue-output-target": "^0.13.1",
+    "typescript": "6.0.3"
+  }
+}

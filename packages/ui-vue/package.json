@@ -1,0 +1,39 @@
+{
+  "name": "@expressthat-auth/ui-vue",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./vite": {
+      "types": "./dist/vite.d.ts",
+      "import": "./dist/vite.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.build.json",
+    "build-proxy-components": "tsc --project tsconfig.build.json",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@expressthat-auth/ui": "workspace:*",
+    "stream-browserify": "^3.0.0"
+  },
+  "peerDependencies": {
+    "vue": ">=3"
+  },
+  "devDependencies": {
+    "@expressthat-auth/typescript-config": "workspace:*",
+    "@stencil/vue-output-target": "^0.13.1",
+    "typescript": "6.0.3",
+    "vite": "^8.0.0",
+    "vue": "^3.5.0"
+  }
+}

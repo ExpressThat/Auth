@@ -1,0 +1,25 @@
+{
+  "name": "@expressthat-auth/example-angular",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "ng serve",
+    "build": "ng build",
+    "preview": "http-server dist/browser -p 4179 -c-1 --silent",
+    "check-types": "tsc --noEmit -p tsconfig.app.json"
+  },
+  "dependencies": {
+    "@angular/common": "^21.0.0",
+    "@angular/core": "^21.0.0",
+    "@angular/platform-browser": "^21.0.0",
+    "@expressthat-auth/ui-angular": "workspace:*",
+    "rxjs": "~7.8.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^21.0.0",
+    "@angular/cli": "^21.0.0",
+    "http-server": "^14.1.1",
+    "typescript": "~5.9.0"
+  }
+}

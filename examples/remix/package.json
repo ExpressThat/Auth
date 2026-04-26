@@ -1,0 +1,31 @@
+{
+  "name": "@expressthat-auth/example-remix",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "remix vite:dev",
+    "build": "remix vite:build",
+    "preview": "cross-env PORT=4175 remix-serve ./build/server/index.js",
+    "start": "remix-serve ./build/server/index.js",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@expressthat-auth/ui-react": "workspace:*",
+    "@remix-run/node": "^2.17.4",
+    "@remix-run/react": "^2.17.4",
+    "@remix-run/serve": "^2.17.4",
+    "isbot": "^4.0.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
+  },
+  "devDependencies": {
+    "@expressthat-auth/typescript-config": "workspace:*",
+    "@remix-run/dev": "^2.17.4",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "cross-env": "^7.0.3",
+    "typescript": "6.0.3",
+    "vite": "^8.0.0"
+  }
+}

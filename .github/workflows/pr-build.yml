@@ -116,7 +116,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        framework: [web]
+        framework:
+          [
+            web,
+            react,
+            vue,
+            remix,
+            remix-no-ssr,
+            react-router,
+            react-router-no-ssr,
+            angular,
+            angular-module,
+            nextjs,
+            nextjs-no-ssr,
+            nuxt,
+            nuxt-no-ssr,
+          ]
 
     steps:
       - uses: actions/checkout@v4
