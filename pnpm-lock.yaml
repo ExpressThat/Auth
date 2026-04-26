@@ -334,8 +334,8 @@ importers:
         specifier: ^3.1.10
         version: 3.1.14
       swagger-typescript-api:
-        specifier: ^13.6.10
-        version: 13.6.10(encoding@0.1.13)(magicast@0.5.2)(react@19.2.5)
+        specifier: ^13.7.1
+        version: 13.7.1(encoding@0.1.13)(magicast@0.5.2)(react@19.2.5)
       tsx:
         specifier: ^4.21.0
         version: 4.21.0
@@ -1503,8 +1503,8 @@ packages:
       '@biomejs/wasm-web':
         optional: true
 
-  '@biomejs/wasm-nodejs@2.4.12':
-    resolution: {integrity: sha512-3SGczq2LKHJw9TYhJEmNwgBY767wSu+nRZVkp+oDiczYn2u7Xekb4smn/r3KJpaxGKkxxtTV4h6RTwBUKzf8Fw==}
+  '@biomejs/wasm-nodejs@2.4.13':
+    resolution: {integrity: sha512-BA64wwPmk5NUz+kP+jrHa8dnIjZSqeX6Q+Q9CC5skZ9c1AqkdS+3vR1QQUzqJ4btbxLPoYVSe1OiTYil7nr8YQ==}
 
   '@bramus/specificity@2.4.2':
     resolution: {integrity: sha512-ctxtJ/eA+t+6q2++vj5j7FYX3nRu311q1wfYH3xjlLOsczhlhxAg2FWNUXhpGvAw3BWo1xBcvOV6/YLc2r5FJw==}
@@ -4361,6 +4361,9 @@ packages:
   ajv@8.18.0:
     resolution: {integrity: sha512-PlXPeEWMXMZ7sPYOHqmDyCJzcfNrUr3fGNKtezX14ykXOEIvyK81d+qydx89KY5O71FKMPaQ2vBfBFI5NHR63A==}
 
+  ajv@8.20.0:
+    resolution: {integrity: sha512-Thbli+OlOj+iMPYFBVBfJ3OmCAnaSyNn4M1vz9T6Gka5Jt9ba/HIR56joy65tY6kx/FCF5VXNB819Y7/GUrBGA==}
+
   algoliasearch@5.48.1:
     resolution: {integrity: sha512-Rf7xmeuIo7nb6S4mp4abW2faW8DauZyE2faBIKFaUfP3wnpOvNSbiI5AwVhqBNj0jPgBWEvhyCu0sLjN2q77Rg==}
     engines: {node: '>= 14.0.0'}
@@ -5165,8 +5168,8 @@ packages:
     resolution: {integrity: sha512-cgwlv/1iFQiFnU96XXgROh8xTeetsnJiDsTc7TYCLFd9+/WNkIqPTxiM/8pSd8VIrhXGTf1Ny1q1hquVqDJB5w==}
     engines: {node: '>= 4'}
 
-  dompurify@3.3.3:
-    resolution: {integrity: sha512-Oj6pzI2+RqBfFG+qOaOLbFXLQ90ARpcGG6UePL82bJLtdsa6CYJD7nmiU8MW9nQNOtCHV3lZ/Bzq1X0QYbBZCA==}
+  dompurify@3.4.1:
+    resolution: {integrity: sha512-JahakDAIg1gyOm7dlgWSDjV4n7Ip2PKR55NIT6jrMfIgLFgWo81vdr1/QGqWtFNRqXP9UV71oVePtjqS2ebnPw==}
 
   domutils@3.2.2:
     resolution: {integrity: sha512-6kZKyUajlDuqlHKVX1w7gyslj9MPIXzIFiz/rGu35uC1wMi+kMhQwGhl4lt9unC9Vb9INnY9Z3/ZA3+FhASLaw==}
@@ -5289,6 +5292,9 @@ packages:
 
   es-toolkit@1.45.1:
     resolution: {integrity: sha512-/jhoOj/Fx+A+IIyDNOvO3TItGmlMKhtX8ISAHKE90c4b/k1tqaqEZ+uUqfpU8DMnW5cgNJv606zS55jGvza0Xw==}
+
+  es-toolkit@1.46.0:
+    resolution: {integrity: sha512-IToJ6ct9OLl5zz6WsC/1vZEwfSZ7Myil+ygl5Tf30Xjn9AEkzNB4kqp2G7VUJKF1DtTx/ra5M5KLlXvzOg51BA==}
 
   es6-promise@3.3.1:
     resolution: {integrity: sha512-SOp9Phqvqn7jtEUxPWdWfWoLmyt2VaJ6MpvP9Comy1MceMXqE6bxvaTu4iaxpYYPzhny28Lc+M87/c2cPK6lDg==}
@@ -6529,8 +6535,8 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
-  nanoid@5.1.7:
-    resolution: {integrity: sha512-ua3NDgISf6jdwezAheMOk4mbE1LXjm1DfMUDMuJf4AqxLFK3ccGpgWizwa5YV7Yz9EpXwEaWoRXSb/BnV0t5dQ==}
+  nanoid@5.1.9:
+    resolution: {integrity: sha512-ZUvP7KeBLe3OZ1ypw6dI/TzYJuvHP77IM4Ry73waSQTLn8/g8rpdjfyVAh7t1/+FjBtG4lCP42MEbDxOsRpBMw==}
     engines: {node: ^18 || >=20}
     hasBin: true
 
@@ -7818,8 +7824,8 @@ packages:
   swagger-schema-official@2.0.0-bab6bed:
     resolution: {integrity: sha512-rCC0NWGKr/IJhtRuPq/t37qvZHI/mH4I4sxflVM+qgVe5Z2uOCivzWaVbuioJaB61kvm5UvB7b49E+oBY0M8jA==}
 
-  swagger-typescript-api@13.6.10:
-    resolution: {integrity: sha512-X+DenKK2txtI0LdNcpmWddcZWiWaf6erIZ+m9Wz7vk/yMFmPJ9EljSuX+dnJQ9YuzjV1imaRCDKsHA4CG2wUZA==}
+  swagger-typescript-api@13.7.1:
+    resolution: {integrity: sha512-CuRxMWjD6QqzDPQO9snTYLyN0FER3BK0PRDifCfgZlfqqOxwoet+9t3Q12zR8s2Vs8XEvKsaRKoMLedfMDUa/A==}
     engines: {node: '>=20'}
     hasBin: true
 
@@ -7983,10 +7989,6 @@ packages:
   type-fest@2.19.0:
     resolution: {integrity: sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==}
     engines: {node: '>=12.20'}
-
-  type-fest@5.5.0:
-    resolution: {integrity: sha512-PlBfpQwiUvGViBNX84Yxwjsdhd1TUlXr6zjX7eoirtCPIr08NAmxwa+fcYBTeRQxHo9YC9wwF3m9i700sHma8g==}
-    engines: {node: '>=20'}
 
   type-fest@5.6.0:
     resolution: {integrity: sha512-8ZiHFm91orbSAe2PSAiSVBVko18pbhbiB3U9GglSzF/zCGkR+rxpHx6sEMCUm4kxY4LjDIUGgCfUMtwfZfjfUA==}
@@ -8517,8 +8519,8 @@ packages:
     resolution: {integrity: sha512-CzhO+pFNo8ajLM2d2IW/R93ipy99LWjtwblvC1RsoSUMZgyLbYFr221TnSNT7GjGdYui6P459mw9JH/g/zW2ug==}
     engines: {node: '>=18'}
 
-  yummies@7.18.0:
-    resolution: {integrity: sha512-fgldINrxPi20XJjIa1LOniyqHROm5HwDmmq0VZtQml4u3cMerm8H7H2BM8kMhHilgd8l7rg3mN4xt2apc2l/xA==}
+  yummies@7.19.2:
+    resolution: {integrity: sha512-3a8C0lsYP3c1sMsnQiPffS/X6hj1T0oIWOV/P6515ytGY5scAtcgaIg4mv8pe3856vyoTjagllvixdMxnitNUg==}
     peerDependencies:
       mobx: ^6.12.4
       react: ^18 || ^19
@@ -8922,8 +8924,8 @@ snapshots:
       '@apidevtools/json-schema-ref-parser': 14.0.1
       '@apidevtools/openapi-schemas': 2.1.0
       '@apidevtools/swagger-methods': 3.0.2
-      ajv: 8.18.0
-      ajv-draft-04: 1.0.0(ajv@8.18.0)
+      ajv: 8.20.0
+      ajv-draft-04: 1.0.0(ajv@8.20.0)
       call-me-maybe: 1.0.2
       openapi-types: 12.1.3
 
@@ -9875,11 +9877,11 @@ snapshots:
   '@biomejs/cli-win32-x64@2.4.13':
     optional: true
 
-  '@biomejs/js-api@4.0.0(@biomejs/wasm-nodejs@2.4.12)':
+  '@biomejs/js-api@4.0.0(@biomejs/wasm-nodejs@2.4.13)':
     optionalDependencies:
-      '@biomejs/wasm-nodejs': 2.4.12
+      '@biomejs/wasm-nodejs': 2.4.13
 
-  '@biomejs/wasm-nodejs@2.4.12': {}
+  '@biomejs/wasm-nodejs@2.4.13': {}
 
   '@bramus/specificity@2.4.2':
     dependencies:
@@ -12421,9 +12423,9 @@ snapshots:
 
   agent-base@7.1.4: {}
 
-  ajv-draft-04@1.0.0(ajv@8.18.0):
+  ajv-draft-04@1.0.0(ajv@8.20.0):
     optionalDependencies:
-      ajv: 8.18.0
+      ajv: 8.20.0
 
   ajv-formats@2.1.1(ajv@8.18.0):
     optionalDependencies:
@@ -12439,6 +12441,13 @@ snapshots:
       fast-deep-equal: 3.1.3
 
   ajv@8.18.0:
+    dependencies:
+      fast-deep-equal: 3.1.3
+      fast-uri: 3.1.0
+      json-schema-traverse: 1.0.0
+      require-from-string: 2.0.2
+
+  ajv@8.20.0:
     dependencies:
       fast-deep-equal: 3.1.3
       fast-uri: 3.1.0
@@ -13244,7 +13253,7 @@ snapshots:
     dependencies:
       domelementtype: 2.3.0
 
-  dompurify@3.3.3:
+  dompurify@3.4.1:
     optionalDependencies:
       '@types/trusted-types': 2.0.7
 
@@ -13354,6 +13363,8 @@ snapshots:
       hasown: 2.0.2
 
   es-toolkit@1.45.1: {}
+
+  es-toolkit@1.46.0: {}
 
   es6-promise@3.3.1: {}
 
@@ -14740,7 +14751,7 @@ snapshots:
 
   nanoid@3.3.11: {}
 
-  nanoid@5.1.7: {}
+  nanoid@5.1.9: {}
 
   needle@3.5.0:
     dependencies:
@@ -16253,25 +16264,25 @@ snapshots:
 
   swagger-schema-official@2.0.0-bab6bed: {}
 
-  swagger-typescript-api@13.6.10(encoding@0.1.13)(magicast@0.5.2)(react@19.2.5):
+  swagger-typescript-api@13.7.1(encoding@0.1.13)(magicast@0.5.2)(react@19.2.5):
     dependencies:
       '@apidevtools/swagger-parser': 12.1.0(openapi-types@12.1.3)
-      '@biomejs/js-api': 4.0.0(@biomejs/wasm-nodejs@2.4.12)
-      '@biomejs/wasm-nodejs': 2.4.12
+      '@biomejs/js-api': 4.0.0(@biomejs/wasm-nodejs@2.4.13)
+      '@biomejs/wasm-nodejs': 2.4.13
       '@types/swagger-schema-official': 2.0.25
       c12: 3.3.4(magicast@0.5.2)
       citty: 0.2.2
       consola: 3.4.2
-      es-toolkit: 1.45.1
+      es-toolkit: 1.46.0
       eta: 3.5.0
-      nanoid: 5.1.7
+      nanoid: 5.1.9
       openapi-types: 12.1.3
       swagger-schema-official: 2.0.0-bab6bed
       swagger2openapi: 7.0.8(encoding@0.1.13)
-      type-fest: 5.5.0
+      type-fest: 5.6.0
       typescript: 6.0.3
       yaml: 2.8.3
-      yummies: 7.18.0(react@19.2.5)
+      yummies: 7.19.2(react@19.2.5)
     transitivePeerDependencies:
       - '@biomejs/wasm-bundler'
       - '@biomejs/wasm-web'
@@ -16438,10 +16449,6 @@ snapshots:
   tw-animate-css@1.4.0: {}
 
   type-fest@2.19.0: {}
-
-  type-fest@5.5.0:
-    dependencies:
-      tagged-tag: 1.0.0
 
   type-fest@5.6.0:
     dependencies:
@@ -17015,13 +17022,13 @@ snapshots:
 
   yoctocolors@2.1.2: {}
 
-  yummies@7.18.0(react@19.2.5):
+  yummies@7.19.2(react@19.2.5):
     dependencies:
       class-variance-authority: 0.7.1
       clsx: 2.1.1
       dayjs: 1.11.20
-      dompurify: 3.3.3
-      nanoid: 5.1.7
+      dompurify: 3.4.1
+      nanoid: 5.1.9
       tailwind-merge: 3.5.0
     optionalDependencies:
       react: 19.2.5
