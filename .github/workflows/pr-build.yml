@@ -109,7 +109,7 @@ jobs:
       - name: Type check
         run: pnpm check-types
 
-  e2e-examples:
+  e2e:
     name: E2E (${{ matrix.framework }})
     runs-on: ubuntu-latest
     needs: [build, format-and-lint, type-check]
@@ -147,7 +147,7 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: E2E examples (${{ matrix.framework }})
+      - name: E2E (${{ matrix.framework }})
         run: pnpm test:e2e:${{ matrix.framework }}
 
   tests-components:
