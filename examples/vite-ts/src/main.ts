@@ -1,6 +1,4 @@
-import { defineCustomElements } from "@expressthat-auth/ui/loader";
-
-defineCustomElements();
+import "@expressthat-auth/ui/components";
 
 const app = document.getElementById("app");
 if (!app) throw new Error("Missing #app element");
