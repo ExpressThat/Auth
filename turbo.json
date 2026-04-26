@@ -10,7 +10,12 @@
       "outputs": [
         ".next/**",
         "!.next/cache/**",
+        ".output/**",
+        "build/**",
         "dist/**",
+        "dist-custom-elements/**",
+        "loader/**",
+        "hydrate/**",
         "src/generated/**",
         "output/**",
         "publish/**",
