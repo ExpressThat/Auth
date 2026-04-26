@@ -11,6 +11,7 @@
         ".next/**",
         "!.next/cache/**",
         "dist/**",
+        "src/generated/**",
         "output/**",
         "publish/**",
         "bin/Release/**",
