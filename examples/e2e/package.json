@@ -16,7 +16,9 @@
     "test:e2e:nextjs": "playwright test -c playwright.nextjs.config.ts",
     "test:e2e:nextjs-no-ssr": "playwright test -c playwright.nextjs-no-ssr.config.ts",
     "test:e2e:nuxt": "playwright test -c playwright.nuxt.config.ts",
-    "test:e2e:nuxt-no-ssr": "playwright test -c playwright.nuxt-no-ssr.config.ts"
+    "test:e2e:nuxt-no-ssr": "playwright test -c playwright.nuxt-no-ssr.config.ts",
+    "test:e2e:vite-ts": "playwright test -c playwright.vite-ts.config.ts",
+    "test:e2e:vite": "playwright test -c playwright.vite.config.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.52.0",
