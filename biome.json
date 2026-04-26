@@ -58,7 +58,8 @@
       "!**/examples/**/build",
       "!**/examples/**/.nuxt",
       "!**/examples/**/.output",
-      "!**/examples/**/.angular"
+      "!**/examples/**/.angular",
+      "!**/examples/**/.react-router"
     ]
   },
   "overrides": [

@@ -8,7 +8,19 @@
     "format-and-lint:fix": "biome check . --write",
     "check-types": "turbo run check-types",
     "test:components": "turbo run test:components",
-    "test:e2e:web": "turbo run test:e2e:web"
+    "test:e2e:web": "turbo run test:e2e:web",
+    "test:e2e:react": "turbo run test:e2e:react",
+    "test:e2e:vue": "turbo run test:e2e:vue",
+    "test:e2e:remix": "turbo run test:e2e:remix",
+    "test:e2e:remix-no-ssr": "turbo run test:e2e:remix-no-ssr",
+    "test:e2e:react-router": "turbo run test:e2e:react-router",
+    "test:e2e:react-router-no-ssr": "turbo run test:e2e:react-router-no-ssr",
+    "test:e2e:angular": "turbo run test:e2e:angular",
+    "test:e2e:angular-module": "turbo run test:e2e:angular-module",
+    "test:e2e:nextjs": "turbo run test:e2e:nextjs",
+    "test:e2e:nextjs-no-ssr": "turbo run test:e2e:nextjs-no-ssr",
+    "test:e2e:nuxt": "turbo run test:e2e:nuxt",
+    "test:e2e:nuxt-no-ssr": "turbo run test:e2e:nuxt-no-ssr"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.13",

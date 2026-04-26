@@ -38,6 +38,54 @@
       "dependsOn": [],
       "cache": false
     },
+    "test:e2e:react": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "test:e2e:vue": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "test:e2e:remix": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "test:e2e:remix-no-ssr": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "test:e2e:react-router": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "test:e2e:react-router-no-ssr": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "test:e2e:angular": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "test:e2e:angular-module": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "test:e2e:nextjs": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "test:e2e:nextjs-no-ssr": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "test:e2e:nuxt": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "test:e2e:nuxt-no-ssr": {
+      "dependsOn": [],
+      "cache": false
+    },
     "build-proxy-components": {
       "dependsOn": ["build"],
       "cache": false

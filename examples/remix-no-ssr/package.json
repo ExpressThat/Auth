@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "remix vite:dev",
     "build": "remix vite:build",
+    "preview": "http-server build/client -p 4176 -c-1 --silent",
     "start": "remix-serve ./build/server/index.js",
     "check-types": "tsc --noEmit"
   },
@@ -23,6 +24,7 @@
     "@remix-run/dev": "^2.17.4",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "http-server": "^14.1.1",
     "typescript": "6.0.3",
     "vite": "^8.0.0"
   }

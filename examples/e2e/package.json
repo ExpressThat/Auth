@@ -1,0 +1,26 @@
+{
+  "name": "@expressthat-auth/example-e2e",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "playwright:install": "playwright install --with-deps",
+    "test:e2e:react": "playwright test -c playwright.react.config.ts",
+    "test:e2e:vue": "playwright test -c playwright.vue.config.ts",
+    "test:e2e:remix": "playwright test -c playwright.remix.config.ts",
+    "test:e2e:remix-no-ssr": "playwright test -c playwright.remix-no-ssr.config.ts",
+    "test:e2e:react-router": "playwright test -c playwright.react-router.config.ts",
+    "test:e2e:react-router-no-ssr": "playwright test -c playwright.react-router-no-ssr.config.ts",
+    "test:e2e:angular": "playwright test -c playwright.angular.config.ts",
+    "test:e2e:angular-module": "playwright test -c playwright.angular-module.config.ts",
+    "test:e2e:nextjs": "playwright test -c playwright.nextjs.config.ts",
+    "test:e2e:nextjs-no-ssr": "playwright test -c playwright.nextjs-no-ssr.config.ts",
+    "test:e2e:nuxt": "playwright test -c playwright.nuxt.config.ts",
+    "test:e2e:nuxt-no-ssr": "playwright test -c playwright.nuxt-no-ssr.config.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@types/node": "^22.0.0",
+    "typescript": "6.0.3"
+  }
+}

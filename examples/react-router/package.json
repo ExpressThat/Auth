@@ -6,12 +6,14 @@
   "scripts": {
     "dev": "react-router dev",
     "build": "react-router build",
+    "preview": "cross-env PORT=4177 react-router-serve ./build/server/index.js",
     "start": "react-router-serve ./build/server/index.js",
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
     "@expressthat-auth/ui-react": "workspace:*",
     "@react-router/node": "^7.14.1",
+    "@react-router/serve": "^7.14.1",
     "isbot": "^4.0.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
@@ -22,6 +24,7 @@
     "@react-router/dev": "^7.14.1",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "cross-env": "^7.0.3",
     "typescript": "6.0.3",
     "vite": "^8.0.0"
   }

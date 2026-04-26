@@ -69,6 +69,10 @@ examples/e2e/test-results/
 
 examples/angular/.angular/
 
+# React Router generated types
+examples/react-router/.react-router/
+examples/react-router-no-ssr/.react-router/
+
 packages/ui/.stencil/
 
 packages/ui/loader/

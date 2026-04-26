@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "preview": "next start -p 4181",
     "start": "next start",
     "check-types": "tsc --noEmit"
   },

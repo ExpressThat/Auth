@@ -3,4 +3,5 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [react()],
+  preview: { port: 4173, strictPort: true },
 });
