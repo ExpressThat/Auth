@@ -39,6 +39,7 @@
       "!**/apps/api/swagger.json",
       "!**/packages/api-client/src",
       "!**/packages/ui/loader",
+      "!**/packages/ui/hydrate",
       "!**/packages/ui/src/components.d.ts",
       "!**/packages/ui-react/src/generated",
       "!**/packages/ui-vue/src/generated",

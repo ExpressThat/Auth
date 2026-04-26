@@ -11,6 +11,7 @@
   "types": "dist/types/index.d.ts",
   "files": [
     "dist",
+    "hydrate",
     "loader"
   ],
   "exports": {
@@ -29,6 +30,12 @@
     "./components/*": {
       "import": "./dist/components/*",
       "types": "./dist/components/*"
+    },
+    "./hydrate": {
+      "types": "./hydrate/index.d.ts",
+      "import": "./hydrate/index.mjs",
+      "require": "./hydrate/index.js",
+      "default": "./hydrate/index.js"
     },
     "./loader": {
       "types": "./loader/index.d.ts",

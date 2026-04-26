@@ -72,3 +72,4 @@ examples/angular/.angular/
 packages/ui/.stencil/
 
 packages/ui/loader/
+packages/ui/hydrate/

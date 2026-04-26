@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@expressthat-auth/internal-components/button";
-import { ExButton } from "@expressthat-auth/ui-react";
+import { ExButton } from "@expressthat-auth/ui-react/next";
 
 export default function Home() {
   return (

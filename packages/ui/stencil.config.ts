@@ -16,16 +16,22 @@ export const config: Config = {
       externalRuntime: false,
     },
     {
+      type: "dist-hydrate-script",
+      dir: "./hydrate",
+    },
+    {
       type: "docs-readme",
     },
     reactOutputTarget({
-      // outDir is the only required option in v1.x
       outDir: "../ui-react/src/generated",
+      hydrateModule: "@expressthat-auth/ui/hydrate",
+      clientModule: "@expressthat-auth/ui-react",
     }),
     vueOutputTarget({
       componentCorePackage: "@expressthat-auth/ui",
       proxiesFile: "../ui-vue/src/generated/index.ts",
       includeImportCustomElements: true,
+      hydrateModule: "@expressthat-auth/ui/hydrate",
     }),
     angularOutputTarget({
       componentCorePackage: "@expressthat-auth/ui",
