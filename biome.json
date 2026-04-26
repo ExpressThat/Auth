@@ -54,7 +54,11 @@
       "!**/.astro",
       "!**/*.astro",
       "!**/next-env.d.ts",
-      "!**/test-results"
+      "!**/test-results",
+      "!**/examples/**/build",
+      "!**/examples/**/.nuxt",
+      "!**/examples/**/.output",
+      "!**/examples/**/.angular"
     ]
   },
   "overrides": [

@@ -73,3 +73,7 @@ packages/ui/.stencil/
 
 packages/ui/loader/
 packages/ui/hydrate/
+
+.nuxt/
+.output/
+.angular/

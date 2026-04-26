@@ -19,6 +19,10 @@
       "types": "./dist/types/components.d.ts",
       "import": "./dist/components/index.js"
     },
+    "./components": {
+      "types": "./dist/types/components.d.ts",
+      "import": "./dist/components/index.js"
+    },
     "./dist/components": {
       "types": "./dist/types/components.d.ts",
       "import": "./dist/components/index.js"
@@ -52,7 +56,7 @@
     "@stencil/angular-output-target": "^0.10.0",
     "@stencil/core": "^4.30.0",
     "@stencil/react-output-target": "^1.2.0",
-    "@stencil/vue-output-target": "^0.11.8",
+    "@stencil/vue-output-target": "^0.13.1",
     "typescript": "6.0.3"
   }
 }

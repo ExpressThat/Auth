@@ -5,6 +5,7 @@ import { vueOutputTarget } from "@stencil/vue-output-target";
 
 export const config: Config = {
   namespace: "expressthat-auth-ui",
+  minifyJs: false,
   outputTargets: [
     {
       type: "dist",
@@ -30,13 +31,16 @@ export const config: Config = {
     vueOutputTarget({
       componentCorePackage: "@expressthat-auth/ui",
       proxiesFile: "../ui-vue/src/generated/index.ts",
-      includeImportCustomElements: true,
       hydrateModule: "@expressthat-auth/ui/hydrate",
+      includeImportCustomElements: true,
+      includePolyfills: false,
+      includeDefineCustomElements: false,
     }),
     angularOutputTarget({
       componentCorePackage: "@expressthat-auth/ui",
       directivesProxyFile: "../ui-angular/src/generated/index.ts",
       directivesArrayFile: "../ui-angular/src/generated/index.directives.ts",
+      outputType: "standalone",
     }),
   ],
 };
