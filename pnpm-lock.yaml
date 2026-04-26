@@ -132,8 +132,8 @@ importers:
         specifier: ^21.2.10
         version: 21.2.10(@angular/common@21.2.10(@angular/core@21.2.9(@angular/compiler@21.2.10)(rxjs@7.8.2)(zone.js@0.16.1))(rxjs@7.8.2))(@angular/core@21.2.9(@angular/compiler@21.2.10)(rxjs@7.8.2)(zone.js@0.16.1))
       '@angular/platform-browser-dynamic':
-        specifier: ^21.0.0
-        version: 21.2.9(@angular/common@21.2.10(@angular/core@21.2.9(@angular/compiler@21.2.10)(rxjs@7.8.2)(zone.js@0.16.1))(rxjs@7.8.2))(@angular/compiler@21.2.10)(@angular/core@21.2.9(@angular/compiler@21.2.10)(rxjs@7.8.2)(zone.js@0.16.1))(@angular/platform-browser@21.2.10(@angular/common@21.2.10(@angular/core@21.2.9(@angular/compiler@21.2.10)(rxjs@7.8.2)(zone.js@0.16.1))(rxjs@7.8.2))(@angular/core@21.2.9(@angular/compiler@21.2.10)(rxjs@7.8.2)(zone.js@0.16.1)))
+        specifier: ^21.2.10
+        version: 21.2.10(@angular/common@21.2.10(@angular/core@21.2.9(@angular/compiler@21.2.10)(rxjs@7.8.2)(zone.js@0.16.1))(rxjs@7.8.2))(@angular/compiler@21.2.10)(@angular/core@21.2.9(@angular/compiler@21.2.10)(rxjs@7.8.2)(zone.js@0.16.1))(@angular/platform-browser@21.2.10(@angular/common@21.2.10(@angular/core@21.2.9(@angular/compiler@21.2.10)(rxjs@7.8.2)(zone.js@0.16.1))(rxjs@7.8.2))(@angular/core@21.2.9(@angular/compiler@21.2.10)(rxjs@7.8.2)(zone.js@0.16.1)))
       '@expressthat-auth/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -764,14 +764,14 @@ packages:
       zone.js:
         optional: true
 
-  '@angular/platform-browser-dynamic@21.2.9':
-    resolution: {integrity: sha512-Z+2vefW4GUSuTC4BOKNiyftqecLSjxOKwe1ZNljBsjesLzywIXi+v+tyEm8ODHHlf7bz/0HwXvc9OYZmfjt95A==}
+  '@angular/platform-browser-dynamic@21.2.10':
+    resolution: {integrity: sha512-+/HMJSLnF87EODkHj0AKE3Q8AfYO/8jpTfr731QmplqBtCoLlA/1XR8aYow2hB9YKL9HZWDb2qGkRtCXhrtt+w==}
     engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
     peerDependencies:
-      '@angular/common': 21.2.9
-      '@angular/compiler': 21.2.9
-      '@angular/core': 21.2.9
-      '@angular/platform-browser': 21.2.9
+      '@angular/common': 21.2.10
+      '@angular/compiler': 21.2.10
+      '@angular/core': 21.2.10
+      '@angular/platform-browser': 21.2.10
 
   '@angular/platform-browser@21.2.10':
     resolution: {integrity: sha512-5WMoHGU8BOV3eO9h3vGMIUDPf+3SHis7+X2dHKMtKfFBUtiO8m/lq2x3PzkkKj1782i7KYt92EqPHuADd/eWOw==}
@@ -8894,7 +8894,7 @@ snapshots:
       '@angular/compiler': 21.2.10
       zone.js: 0.16.1
 
-  '@angular/platform-browser-dynamic@21.2.9(@angular/common@21.2.10(@angular/core@21.2.9(@angular/compiler@21.2.10)(rxjs@7.8.2)(zone.js@0.16.1))(rxjs@7.8.2))(@angular/compiler@21.2.10)(@angular/core@21.2.9(@angular/compiler@21.2.10)(rxjs@7.8.2)(zone.js@0.16.1))(@angular/platform-browser@21.2.10(@angular/common@21.2.10(@angular/core@21.2.9(@angular/compiler@21.2.10)(rxjs@7.8.2)(zone.js@0.16.1))(rxjs@7.8.2))(@angular/core@21.2.9(@angular/compiler@21.2.10)(rxjs@7.8.2)(zone.js@0.16.1)))':
+  '@angular/platform-browser-dynamic@21.2.10(@angular/common@21.2.10(@angular/core@21.2.9(@angular/compiler@21.2.10)(rxjs@7.8.2)(zone.js@0.16.1))(rxjs@7.8.2))(@angular/compiler@21.2.10)(@angular/core@21.2.9(@angular/compiler@21.2.10)(rxjs@7.8.2)(zone.js@0.16.1))(@angular/platform-browser@21.2.10(@angular/common@21.2.10(@angular/core@21.2.9(@angular/compiler@21.2.10)(rxjs@7.8.2)(zone.js@0.16.1))(rxjs@7.8.2))(@angular/core@21.2.9(@angular/compiler@21.2.10)(rxjs@7.8.2)(zone.js@0.16.1)))':
     dependencies:
       '@angular/common': 21.2.10(@angular/core@21.2.9(@angular/compiler@21.2.10)(rxjs@7.8.2)(zone.js@0.16.1))(rxjs@7.8.2)
       '@angular/compiler': 21.2.10
