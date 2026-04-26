@@ -1,15 +1,14 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@expressthat-auth/typescript-config/base",
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "declaration": true,
     "experimentalDecorators": true,
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "ESNext",
+    "moduleDetection": "auto",
     "moduleResolution": "bundler",
     "target": "ES2017",
-    "strict": true,
-    "skipLibCheck": true,
     "jsx": "react",
     "jsxFactory": "h",
     "jsxFragmentFactory": "Fragment"

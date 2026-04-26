@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@expressthat-auth/internal-components/button";
-import { ExButton } from "@expressthat-auth/ui-react/next";
+import { ExButton } from "@expressthat-auth/ui-react";
 
 export default function Home() {
   return (
@@ -12,7 +12,7 @@ export default function Home() {
       <ExButton
         label="Click Me"
         variant="outline"
-        onClick={() => {
+        onExClick={() => {
           alert("test");
         }}
       />

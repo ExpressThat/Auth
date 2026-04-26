@@ -8,7 +8,10 @@ test("button is rendered correctly", async ({ page }) => {
 
   const button = webComponent.getByRole("button");
   await expect(button).toBeVisible();
-  await expect(button).toContainText(process.env.EXAMPLE_LABEL ?? "");
+
+  const label = process.env.EXAMPLE_LABEL;
+  if (!label) throw new Error("EXAMPLE_LABEL env var is not set");
+  await expect(button).toContainText(label);
   await expect(button).toHaveClass(/btn/);
   await expect(button).toHaveClass(/btn--primary/);
 });
