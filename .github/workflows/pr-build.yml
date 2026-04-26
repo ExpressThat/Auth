@@ -118,6 +118,7 @@ jobs:
       matrix:
         framework:
           [
+            web,
             react,
             vue,
             remix,
