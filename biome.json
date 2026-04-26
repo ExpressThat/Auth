@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.4.12/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.4.13/schema.json",
   "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "linter": {
     "enabled": true
@@ -38,7 +38,11 @@
       "!**/packages/database/generated",
       "!**/apps/api/swagger.json",
       "!**/packages/api-client/src",
-      "!**/packages/ui/output",
+      "!**/packages/ui/loader",
+      "!**/packages/ui/src/components.d.ts",
+      "!**/packages/ui-react/src/generated",
+      "!**/packages/ui-vue/src/generated",
+      "!**/packages/ui-angular/src/generated",
       "!**/*.cs",
       "!**/*.csproj",
       "!**/*.props",

@@ -26,7 +26,7 @@
       "cache": false
     },
     "dev": {
-      "dependsOn": [],
+      "dependsOn": ["^build-proxy-components"],
       "cache": false,
       "persistent": true
     },
@@ -36,6 +36,10 @@
     },
     "test:e2e:web": {
       "dependsOn": [],
+      "cache": false
+    },
+    "build-proxy-components": {
+      "dependsOn": ["build"],
       "cache": false
     }
   }
