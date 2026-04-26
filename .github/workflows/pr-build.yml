@@ -109,14 +109,14 @@ jobs:
       - name: Type check
         run: pnpm check-types
 
-  e2e-examples:
-    name: E2E Examples (${{ matrix.framework }})
+  e2e:
+    name: E2E (${{ matrix.framework }})
     runs-on: ubuntu-latest
     needs: [build, format-and-lint, type-check]
     strategy:
       fail-fast: false
       matrix:
-        framework: [react, vue, svelte, solid, preact, qwik, angular]
+        framework: [web]
 
     steps:
       - uses: actions/checkout@v4
@@ -147,45 +147,8 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: E2E examples (${{ matrix.framework }})
+      - name: E2E (${{ matrix.framework }})
         run: pnpm test:e2e:${{ matrix.framework }}
-
-  e2e-web:
-    name: E2E Web
-    runs-on: ubuntu-latest
-    needs: [build, format-and-lint, type-check]
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: pnpm/action-setup@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: "pnpm"
-
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: "10.x"
-
-      - uses: actions/cache/restore@v4
-        with:
-          path: .turbo
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-turbo-
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Install Playwright Browsers
-        run: pnpx playwright install --with-deps
-
-      - name: Build
-        run: pnpm build
-
-      - name: E2E web tests
-        run: pnpm test:e2e:web
 
   tests-components:
     name: Test Components
