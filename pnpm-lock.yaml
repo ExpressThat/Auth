@@ -280,6 +280,9 @@ importers:
       vue:
         specifier: ^3.5.0
         version: 3.5.33(typescript@5.8.3)
+      vue-tsc:
+        specifier: ^2.0.0
+        version: 2.2.12(typescript@5.8.3)
 
   examples/nuxt-no-ssr:
     dependencies:
@@ -299,6 +302,9 @@ importers:
       vue:
         specifier: ^3.5.0
         version: 3.5.33(typescript@5.8.3)
+      vue-tsc:
+        specifier: ^2.0.0
+        version: 2.2.12(typescript@5.8.3)
 
   examples/react:
     dependencies:
@@ -14183,7 +14189,6 @@ snapshots:
       path-browserify: 1.0.1
     optionalDependencies:
       typescript: 5.8.3
-    optional: true
 
   '@vue/language-core@2.2.12(typescript@6.0.3)':
     dependencies:
@@ -20377,7 +20382,6 @@ snapshots:
       '@volar/typescript': 2.4.15
       '@vue/language-core': 2.2.12(typescript@5.8.3)
       typescript: 5.8.3
-    optional: true
 
   vue-tsc@2.2.12(typescript@6.0.3):
     dependencies:
