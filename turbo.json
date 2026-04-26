@@ -33,6 +33,10 @@
     "test:components": {
       "dependsOn": [],
       "cache": false
+    },
+    "test:e2e:web": {
+      "dependsOn": [],
+      "cache": false
     }
   }
 }
