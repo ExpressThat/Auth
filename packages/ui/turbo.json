@@ -2,7 +2,7 @@
   "extends": ["//"],
   "tasks": {
     "build": {
-      "outputs": ["dist/**", "dist-custom-elements/**", "loader/**"]
+      "outputs": ["dist/**", "dist-custom-elements/**", "loader/**", "hydrate/**"]
     }
   }
 }
