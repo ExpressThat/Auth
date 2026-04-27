@@ -6,7 +6,9 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { EXLoginBoxSubmitDetail } from "./components/ex-login-box/ex-login-box";
+import { EXRegisterBoxSubmitDetail } from "./components/ex-register-box/ex-register-box";
 export { EXLoginBoxSubmitDetail } from "./components/ex-login-box/ex-login-box";
+export { EXRegisterBoxSubmitDetail } from "./components/ex-register-box/ex-register-box";
 export namespace Components {
     interface ExButton {
         "colorBackground"?: string;
@@ -152,6 +154,34 @@ export namespace Components {
         "radiusSm"?: string;
         "radiusXl"?: string;
     }
+    interface ExRegisterBox {
+        "colorBackground"?: string;
+        "colorDivider"?: string;
+        "colorError"?: string;
+        "colorInputBackground"?: string;
+        "colorInputBorder"?: string;
+        "colorInputBorderFocus"?: string;
+        "colorLink"?: string;
+        "colorPrimary"?: string;
+        "colorPrimaryForeground"?: string;
+        "colorPrimaryHover"?: string;
+        "colorSurface"?: string;
+        "colorText"?: string;
+        "colorTextMuted"?: string;
+        "fontFamily"?: string;
+        "fontSizeLg"?: string;
+        "fontSizeMd"?: string;
+        "fontSizeSm"?: string;
+        "fontSizeXl"?: string;
+        "fontSizeXs"?: string;
+        "fontWeightMedium"?: string;
+        "fontWeightNormal"?: string;
+        "fontWeightSemibold"?: string;
+        "radiusLg"?: string;
+        "radiusMd"?: string;
+        "radiusSm"?: string;
+        "radiusXl"?: string;
+    }
     interface ExTestButton {
         /**
           * Whether the button is disabled.
@@ -181,6 +211,10 @@ export interface ExInputCustomEvent<T> extends CustomEvent<T> {
 export interface ExLoginBoxCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLExLoginBoxElement;
+}
+export interface ExRegisterBoxCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLExRegisterBoxElement;
 }
 export interface ExTestButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -240,6 +274,24 @@ declare global {
         prototype: HTMLExLoginBoxElement;
         new (): HTMLExLoginBoxElement;
     };
+    interface HTMLExRegisterBoxElementEventMap {
+        "exSubmit": EXRegisterBoxSubmitDetail;
+        "exSignIn": void;
+    }
+    interface HTMLExRegisterBoxElement extends Components.ExRegisterBox, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLExRegisterBoxElementEventMap>(type: K, listener: (this: HTMLExRegisterBoxElement, ev: ExRegisterBoxCustomEvent<HTMLExRegisterBoxElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLExRegisterBoxElementEventMap>(type: K, listener: (this: HTMLExRegisterBoxElement, ev: ExRegisterBoxCustomEvent<HTMLExRegisterBoxElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLExRegisterBoxElement: {
+        prototype: HTMLExRegisterBoxElement;
+        new (): HTMLExRegisterBoxElement;
+    };
     interface HTMLExTestButtonElementEventMap {
         "exTestClick": void;
     }
@@ -261,6 +313,7 @@ declare global {
         "ex-button": HTMLExButtonElement;
         "ex-input": HTMLExInputElement;
         "ex-login-box": HTMLExLoginBoxElement;
+        "ex-register-box": HTMLExRegisterBoxElement;
         "ex-test-button": HTMLExTestButtonElement;
     }
 }
@@ -429,6 +482,42 @@ declare namespace LocalJSX {
         "radiusSm"?: string;
         "radiusXl"?: string;
     }
+    interface ExRegisterBox {
+        "colorBackground"?: string;
+        "colorDivider"?: string;
+        "colorError"?: string;
+        "colorInputBackground"?: string;
+        "colorInputBorder"?: string;
+        "colorInputBorderFocus"?: string;
+        "colorLink"?: string;
+        "colorPrimary"?: string;
+        "colorPrimaryForeground"?: string;
+        "colorPrimaryHover"?: string;
+        "colorSurface"?: string;
+        "colorText"?: string;
+        "colorTextMuted"?: string;
+        "fontFamily"?: string;
+        "fontSizeLg"?: string;
+        "fontSizeMd"?: string;
+        "fontSizeSm"?: string;
+        "fontSizeXl"?: string;
+        "fontSizeXs"?: string;
+        "fontWeightMedium"?: string;
+        "fontWeightNormal"?: string;
+        "fontWeightSemibold"?: string;
+        /**
+          * Fired when the "Sign in" link is clicked.
+         */
+        "onExSignIn"?: (event: ExRegisterBoxCustomEvent<void>) => void;
+        /**
+          * Fired when the form is submitted; detail contains email + password.
+         */
+        "onExSubmit"?: (event: ExRegisterBoxCustomEvent<EXRegisterBoxSubmitDetail>) => void;
+        "radiusLg"?: string;
+        "radiusMd"?: string;
+        "radiusSm"?: string;
+        "radiusXl"?: string;
+    }
     interface ExTestButton {
         /**
           * Whether the button is disabled.
@@ -548,6 +637,34 @@ declare namespace LocalJSX {
         "radiusLg": string;
         "radiusXl": string;
     }
+    interface ExRegisterBoxAttributes {
+        "colorBackground": string;
+        "colorSurface": string;
+        "colorPrimary": string;
+        "colorPrimaryHover": string;
+        "colorPrimaryForeground": string;
+        "colorText": string;
+        "colorTextMuted": string;
+        "colorInputBackground": string;
+        "colorInputBorder": string;
+        "colorInputBorderFocus": string;
+        "colorError": string;
+        "colorDivider": string;
+        "colorLink": string;
+        "fontFamily": string;
+        "fontSizeXs": string;
+        "fontSizeSm": string;
+        "fontSizeMd": string;
+        "fontSizeLg": string;
+        "fontSizeXl": string;
+        "fontWeightNormal": string;
+        "fontWeightMedium": string;
+        "fontWeightSemibold": string;
+        "radiusSm": string;
+        "radiusMd": string;
+        "radiusLg": string;
+        "radiusXl": string;
+    }
     interface ExTestButtonAttributes {
         "label": string;
         "variant": "primary" | "secondary" | "outline";
@@ -558,6 +675,7 @@ declare namespace LocalJSX {
         "ex-button": Omit<ExButton, keyof ExButtonAttributes> & { [K in keyof ExButton & keyof ExButtonAttributes]?: ExButton[K] } & { [K in keyof ExButton & keyof ExButtonAttributes as `attr:${K}`]?: ExButtonAttributes[K] } & { [K in keyof ExButton & keyof ExButtonAttributes as `prop:${K}`]?: ExButton[K] };
         "ex-input": Omit<ExInput, keyof ExInputAttributes> & { [K in keyof ExInput & keyof ExInputAttributes]?: ExInput[K] } & { [K in keyof ExInput & keyof ExInputAttributes as `attr:${K}`]?: ExInputAttributes[K] } & { [K in keyof ExInput & keyof ExInputAttributes as `prop:${K}`]?: ExInput[K] };
         "ex-login-box": Omit<ExLoginBox, keyof ExLoginBoxAttributes> & { [K in keyof ExLoginBox & keyof ExLoginBoxAttributes]?: ExLoginBox[K] } & { [K in keyof ExLoginBox & keyof ExLoginBoxAttributes as `attr:${K}`]?: ExLoginBoxAttributes[K] } & { [K in keyof ExLoginBox & keyof ExLoginBoxAttributes as `prop:${K}`]?: ExLoginBox[K] };
+        "ex-register-box": Omit<ExRegisterBox, keyof ExRegisterBoxAttributes> & { [K in keyof ExRegisterBox & keyof ExRegisterBoxAttributes]?: ExRegisterBox[K] } & { [K in keyof ExRegisterBox & keyof ExRegisterBoxAttributes as `attr:${K}`]?: ExRegisterBoxAttributes[K] } & { [K in keyof ExRegisterBox & keyof ExRegisterBoxAttributes as `prop:${K}`]?: ExRegisterBox[K] };
         "ex-test-button": Omit<ExTestButton, keyof ExTestButtonAttributes> & { [K in keyof ExTestButton & keyof ExTestButtonAttributes]?: ExTestButton[K] } & { [K in keyof ExTestButton & keyof ExTestButtonAttributes as `attr:${K}`]?: ExTestButtonAttributes[K] } & { [K in keyof ExTestButton & keyof ExTestButtonAttributes as `prop:${K}`]?: ExTestButton[K] };
     }
 }
@@ -568,6 +686,7 @@ declare module "@stencil/core" {
             "ex-button": LocalJSX.IntrinsicElements["ex-button"] & JSXBase.HTMLAttributes<HTMLExButtonElement>;
             "ex-input": LocalJSX.IntrinsicElements["ex-input"] & JSXBase.HTMLAttributes<HTMLExInputElement>;
             "ex-login-box": LocalJSX.IntrinsicElements["ex-login-box"] & JSXBase.HTMLAttributes<HTMLExLoginBoxElement>;
+            "ex-register-box": LocalJSX.IntrinsicElements["ex-register-box"] & JSXBase.HTMLAttributes<HTMLExRegisterBoxElement>;
             "ex-test-button": LocalJSX.IntrinsicElements["ex-test-button"] & JSXBase.HTMLAttributes<HTMLExTestButtonElement>;
         }
     }

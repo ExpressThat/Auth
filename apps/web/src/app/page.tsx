@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@expressthat-auth/internal-components/button";
-import { ExLoginBox, ExTestButton } from "@expressthat-auth/ui-react";
+import { ExLoginBox, ExRegisterBox, ExTestButton } from "@expressthat-auth/ui-react";
 
 export default function Home() {
   return (
@@ -20,6 +20,10 @@ export default function Home() {
       <ExLoginBox>
         <p slot="social-logins">test</p>
       </ExLoginBox>
+
+      <ExRegisterBox>
+        <p slot="social-logins">test</p>
+      </ExRegisterBox>
     </main>
   );
 }

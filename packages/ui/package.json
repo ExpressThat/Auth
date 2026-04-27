@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "@expressthat-auth/typescript-config": "workspace:*",
+    "@expressthat-auth/api-client": "workspace:*",
     "@stencil/angular-output-target": "^0.10.0",
     "@stencil/core": "^4.30.0",
     "@stencil/react-output-target": "^1.2.0",

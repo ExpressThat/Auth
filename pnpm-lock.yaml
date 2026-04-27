@@ -700,6 +700,9 @@ importers:
 
   packages/ui:
     devDependencies:
+      '@expressthat-auth/api-client':
+        specifier: workspace:*
+        version: link:../api-client
       '@expressthat-auth/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
