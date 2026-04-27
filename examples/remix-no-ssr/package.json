@@ -16,16 +16,16 @@
     "@remix-run/react": "^2.17.4",
     "@remix-run/serve": "^2.17.4",
     "isbot": "^4.0.0",
-    "react": "^19.2.5",
-    "react-dom": "^19.2.5"
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0"
   },
   "devDependencies": {
     "@expressthat-auth/typescript-config": "workspace:*",
     "@remix-run/dev": "^2.17.4",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
     "http-server": "^14.1.1",
-    "typescript": "6.0.3",
-    "vite": "^8.0.0"
+    "typescript": "~5.8.0",
+    "vite": "^6.0.0"
   }
 }
