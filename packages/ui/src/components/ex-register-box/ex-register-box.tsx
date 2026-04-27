@@ -1,6 +1,7 @@
 // biome-ignore lint/correctness/noUnusedImports: Stencil requires explicit h factory and decorator imports
 import { Component, Event, type EventEmitter, h, State } from "@stencil/core";
 import { ThemeBase } from "../../theme-base";
+import { createExpressThatAuthClient } from "@expressthat-auth/api-client";
 
 export interface EXRegisterBoxSubmitDetail {
   email: string;
@@ -26,13 +27,28 @@ export class EXRegisterBox extends ThemeBase {
   @State() private showConfirmPassword: boolean = false;
   @State() private confirmError: string = "";
 
+  private client = createExpressThatAuthClient("http://localhost:3001");
+
+
   private handleSubmit = (e?: Event) => {
+    console.log("Submitting registration form with email:", this.email);
     e?.preventDefault();
     if (this.password !== this.confirmPassword) {
       this.confirmError = "Passwords do not match";
       return;
     }
     this.confirmError = "";
+
+    this.client.account.register({
+      email: this.email,
+      password: this.password,
+    }) .then((response) => {
+      console.log(`Registration successful: Email: ${response.email}, User ID: ${response.id}`);
+    })
+    .catch((error) => {
+      console.error("Registration failed:", error);
+    });
+
     this.exSubmit.emit({ email: this.email, password: this.password });
   };
 
@@ -132,7 +148,7 @@ export class EXRegisterBox extends ThemeBase {
             </div>
 
             <div style={{ marginTop: "0.5rem" }}>
-              <ex-button label="Create account" type="submit" variant="primary" {...theme} />
+              <ex-button label="Create account" type="button" variant="primary" {...theme} onExClick={this.handleSubmit} />
             </div>
           </form>
 

@@ -10,6 +10,15 @@ var port = Environment.GetEnvironmentVariable("PORT") ?? "3001";
 builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
 builder.Services.AddControllers();
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddCors(options =>
+    {
+        options.AddDefaultPolicy(policy =>
+            policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    });
+}
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -60,6 +69,11 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "ExpressThat Auth API v1");
     c.RoutePrefix = "api/docs";
 });
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseCors();
+}
 
 app.MapControllers();
 
