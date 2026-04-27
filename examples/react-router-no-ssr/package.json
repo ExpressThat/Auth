@@ -22,7 +22,7 @@
     "@expressthat-auth/typescript-config": "workspace:*",
     "@react-router/dev": "^7.14.1",
     "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
+    "@types/react-dom": "^19.2.3",
     "http-server": "^14.1.1",
     "typescript": "6.0.3",
     "vite": "^8.0.0"
