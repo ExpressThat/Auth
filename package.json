@@ -30,6 +30,15 @@
     "turbo": "^2.9.6",
     "typescript": "6.0.3"
   },
+  "pnpm": {
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "@bomb.sh/tab>commander": "^14.0.0",
+        "@stencil/ssr>vite": "^8.0.0",
+        "@stencil/ssr>next": "^16.0.0"
+      }
+    }
+  },
   "packageManager": "pnpm@9.0.0",
   "engines": {
     "node": ">=24.0.0"

@@ -5,7 +5,153 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { EXLoginBoxSubmitDetail } from "./components/ex-login-box/ex-login-box";
+export { EXLoginBoxSubmitDetail } from "./components/ex-login-box/ex-login-box";
 export namespace Components {
+    interface ExButton {
+        "colorBackground"?: string;
+        "colorDivider"?: string;
+        "colorError"?: string;
+        "colorInputBackground"?: string;
+        "colorInputBorder"?: string;
+        "colorInputBorderFocus"?: string;
+        "colorLink"?: string;
+        "colorPrimary"?: string;
+        "colorPrimaryForeground"?: string;
+        "colorPrimaryHover"?: string;
+        "colorSurface"?: string;
+        "colorText"?: string;
+        "colorTextMuted"?: string;
+        /**
+          * Disables the button.
+          * @default false
+         */
+        "disabled": boolean;
+        "fontFamily"?: string;
+        "fontSizeLg"?: string;
+        "fontSizeMd"?: string;
+        "fontSizeSm"?: string;
+        "fontSizeXl"?: string;
+        "fontSizeXs"?: string;
+        "fontWeightMedium"?: string;
+        "fontWeightNormal"?: string;
+        "fontWeightSemibold"?: string;
+        /**
+          * Shows a loading indicator and disables interaction.
+          * @default false
+         */
+        "isLoading": boolean;
+        /**
+          * Text content of the button.
+          * @default "Button"
+         */
+        "label": string;
+        "radiusLg"?: string;
+        "radiusMd"?: string;
+        "radiusSm"?: string;
+        "radiusXl"?: string;
+        /**
+          * HTML button type.
+          * @default "button"
+         */
+        "type": "button" | "submit" | "reset";
+        /**
+          * Visual style variant.
+          * @default "primary"
+         */
+        "variant": "primary" | "secondary" | "ghost";
+    }
+    interface ExInput {
+        "colorBackground"?: string;
+        "colorDivider"?: string;
+        "colorError"?: string;
+        "colorInputBackground"?: string;
+        "colorInputBorder"?: string;
+        "colorInputBorderFocus"?: string;
+        "colorLink"?: string;
+        "colorPrimary"?: string;
+        "colorPrimaryForeground"?: string;
+        "colorPrimaryHover"?: string;
+        "colorSurface"?: string;
+        "colorText"?: string;
+        "colorTextMuted"?: string;
+        /**
+          * Disables the input.
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Validation error message shown below the input.
+         */
+        "error"?: string;
+        "fontFamily"?: string;
+        "fontSizeLg"?: string;
+        "fontSizeMd"?: string;
+        "fontSizeSm"?: string;
+        "fontSizeXl"?: string;
+        "fontSizeXs"?: string;
+        "fontWeightMedium"?: string;
+        "fontWeightNormal"?: string;
+        "fontWeightSemibold"?: string;
+        /**
+          * Associates the label with the input.
+         */
+        "inputId"?: string;
+        /**
+          * Visible label above the input.
+         */
+        "label"?: string;
+        /**
+          * Placeholder text.
+         */
+        "placeholder"?: string;
+        "radiusLg"?: string;
+        "radiusMd"?: string;
+        "radiusSm"?: string;
+        "radiusXl"?: string;
+        /**
+          * Label for an optional right-side button (e.g. "Show" / "Hide").
+         */
+        "rightButtonLabel"?: string;
+        /**
+          * Input type (text, email, password, etc.).
+          * @default "text"
+         */
+        "type": string;
+        /**
+          * Controlled value.
+          * @default ""
+         */
+        "value": string;
+    }
+    interface ExLoginBox {
+        "colorBackground"?: string;
+        "colorDivider"?: string;
+        "colorError"?: string;
+        "colorInputBackground"?: string;
+        "colorInputBorder"?: string;
+        "colorInputBorderFocus"?: string;
+        "colorLink"?: string;
+        "colorPrimary"?: string;
+        "colorPrimaryForeground"?: string;
+        "colorPrimaryHover"?: string;
+        "colorSurface"?: string;
+        "colorText"?: string;
+        "colorTextMuted"?: string;
+        "fontFamily"?: string;
+        "fontSizeLg"?: string;
+        "fontSizeMd"?: string;
+        "fontSizeSm"?: string;
+        "fontSizeXl"?: string;
+        "fontSizeXs"?: string;
+        "fontWeightMedium"?: string;
+        "fontWeightNormal"?: string;
+        "fontWeightSemibold"?: string;
+        "radiusLg"?: string;
+        "radiusMd"?: string;
+        "radiusSm"?: string;
+        "radiusXl"?: string;
+    }
     interface ExTestButton {
         /**
           * Whether the button is disabled.
@@ -24,11 +170,76 @@ export namespace Components {
         "variant": "primary" | "secondary" | "outline";
     }
 }
+export interface ExButtonCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLExButtonElement;
+}
+export interface ExInputCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLExInputElement;
+}
+export interface ExLoginBoxCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLExLoginBoxElement;
+}
 export interface ExTestButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLExTestButtonElement;
 }
 declare global {
+    interface HTMLExButtonElementEventMap {
+        "exClick": void;
+    }
+    interface HTMLExButtonElement extends Components.ExButton, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLExButtonElementEventMap>(type: K, listener: (this: HTMLExButtonElement, ev: ExButtonCustomEvent<HTMLExButtonElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLExButtonElementEventMap>(type: K, listener: (this: HTMLExButtonElement, ev: ExButtonCustomEvent<HTMLExButtonElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLExButtonElement: {
+        prototype: HTMLExButtonElement;
+        new (): HTMLExButtonElement;
+    };
+    interface HTMLExInputElementEventMap {
+        "exRightButtonClick": void;
+        "exChange": string;
+    }
+    interface HTMLExInputElement extends Components.ExInput, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLExInputElementEventMap>(type: K, listener: (this: HTMLExInputElement, ev: ExInputCustomEvent<HTMLExInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLExInputElementEventMap>(type: K, listener: (this: HTMLExInputElement, ev: ExInputCustomEvent<HTMLExInputElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLExInputElement: {
+        prototype: HTMLExInputElement;
+        new (): HTMLExInputElement;
+    };
+    interface HTMLExLoginBoxElementEventMap {
+        "exSubmit": EXLoginBoxSubmitDetail;
+        "exForgotPassword": void;
+    }
+    interface HTMLExLoginBoxElement extends Components.ExLoginBox, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLExLoginBoxElementEventMap>(type: K, listener: (this: HTMLExLoginBoxElement, ev: ExLoginBoxCustomEvent<HTMLExLoginBoxElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLExLoginBoxElementEventMap>(type: K, listener: (this: HTMLExLoginBoxElement, ev: ExLoginBoxCustomEvent<HTMLExLoginBoxElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLExLoginBoxElement: {
+        prototype: HTMLExLoginBoxElement;
+        new (): HTMLExLoginBoxElement;
+    };
     interface HTMLExTestButtonElementEventMap {
         "exTestClick": void;
     }
@@ -47,10 +258,177 @@ declare global {
         new (): HTMLExTestButtonElement;
     };
     interface HTMLElementTagNameMap {
+        "ex-button": HTMLExButtonElement;
+        "ex-input": HTMLExInputElement;
+        "ex-login-box": HTMLExLoginBoxElement;
         "ex-test-button": HTMLExTestButtonElement;
     }
 }
 declare namespace LocalJSX {
+    interface ExButton {
+        "colorBackground"?: string;
+        "colorDivider"?: string;
+        "colorError"?: string;
+        "colorInputBackground"?: string;
+        "colorInputBorder"?: string;
+        "colorInputBorderFocus"?: string;
+        "colorLink"?: string;
+        "colorPrimary"?: string;
+        "colorPrimaryForeground"?: string;
+        "colorPrimaryHover"?: string;
+        "colorSurface"?: string;
+        "colorText"?: string;
+        "colorTextMuted"?: string;
+        /**
+          * Disables the button.
+          * @default false
+         */
+        "disabled"?: boolean;
+        "fontFamily"?: string;
+        "fontSizeLg"?: string;
+        "fontSizeMd"?: string;
+        "fontSizeSm"?: string;
+        "fontSizeXl"?: string;
+        "fontSizeXs"?: string;
+        "fontWeightMedium"?: string;
+        "fontWeightNormal"?: string;
+        "fontWeightSemibold"?: string;
+        /**
+          * Shows a loading indicator and disables interaction.
+          * @default false
+         */
+        "isLoading"?: boolean;
+        /**
+          * Text content of the button.
+          * @default "Button"
+         */
+        "label"?: string;
+        /**
+          * Fired when the button is clicked.
+         */
+        "onExClick"?: (event: ExButtonCustomEvent<void>) => void;
+        "radiusLg"?: string;
+        "radiusMd"?: string;
+        "radiusSm"?: string;
+        "radiusXl"?: string;
+        /**
+          * HTML button type.
+          * @default "button"
+         */
+        "type"?: "button" | "submit" | "reset";
+        /**
+          * Visual style variant.
+          * @default "primary"
+         */
+        "variant"?: "primary" | "secondary" | "ghost";
+    }
+    interface ExInput {
+        "colorBackground"?: string;
+        "colorDivider"?: string;
+        "colorError"?: string;
+        "colorInputBackground"?: string;
+        "colorInputBorder"?: string;
+        "colorInputBorderFocus"?: string;
+        "colorLink"?: string;
+        "colorPrimary"?: string;
+        "colorPrimaryForeground"?: string;
+        "colorPrimaryHover"?: string;
+        "colorSurface"?: string;
+        "colorText"?: string;
+        "colorTextMuted"?: string;
+        /**
+          * Disables the input.
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Validation error message shown below the input.
+         */
+        "error"?: string;
+        "fontFamily"?: string;
+        "fontSizeLg"?: string;
+        "fontSizeMd"?: string;
+        "fontSizeSm"?: string;
+        "fontSizeXl"?: string;
+        "fontSizeXs"?: string;
+        "fontWeightMedium"?: string;
+        "fontWeightNormal"?: string;
+        "fontWeightSemibold"?: string;
+        /**
+          * Associates the label with the input.
+         */
+        "inputId"?: string;
+        /**
+          * Visible label above the input.
+         */
+        "label"?: string;
+        /**
+          * Fired when the value changes; detail is the new string value.
+         */
+        "onExChange"?: (event: ExInputCustomEvent<string>) => void;
+        /**
+          * Fired when the right button is clicked.
+         */
+        "onExRightButtonClick"?: (event: ExInputCustomEvent<void>) => void;
+        /**
+          * Placeholder text.
+         */
+        "placeholder"?: string;
+        "radiusLg"?: string;
+        "radiusMd"?: string;
+        "radiusSm"?: string;
+        "radiusXl"?: string;
+        /**
+          * Label for an optional right-side button (e.g. "Show" / "Hide").
+         */
+        "rightButtonLabel"?: string;
+        /**
+          * Input type (text, email, password, etc.).
+          * @default "text"
+         */
+        "type"?: string;
+        /**
+          * Controlled value.
+          * @default ""
+         */
+        "value"?: string;
+    }
+    interface ExLoginBox {
+        "colorBackground"?: string;
+        "colorDivider"?: string;
+        "colorError"?: string;
+        "colorInputBackground"?: string;
+        "colorInputBorder"?: string;
+        "colorInputBorderFocus"?: string;
+        "colorLink"?: string;
+        "colorPrimary"?: string;
+        "colorPrimaryForeground"?: string;
+        "colorPrimaryHover"?: string;
+        "colorSurface"?: string;
+        "colorText"?: string;
+        "colorTextMuted"?: string;
+        "fontFamily"?: string;
+        "fontSizeLg"?: string;
+        "fontSizeMd"?: string;
+        "fontSizeSm"?: string;
+        "fontSizeXl"?: string;
+        "fontSizeXs"?: string;
+        "fontWeightMedium"?: string;
+        "fontWeightNormal"?: string;
+        "fontWeightSemibold"?: string;
+        /**
+          * Fired when the forgot-password link is clicked.
+         */
+        "onExForgotPassword"?: (event: ExLoginBoxCustomEvent<void>) => void;
+        /**
+          * Fired when the form is submitted; detail contains email + password.
+         */
+        "onExSubmit"?: (event: ExLoginBoxCustomEvent<EXLoginBoxSubmitDetail>) => void;
+        "radiusLg"?: string;
+        "radiusMd"?: string;
+        "radiusSm"?: string;
+        "radiusXl"?: string;
+    }
     interface ExTestButton {
         /**
           * Whether the button is disabled.
@@ -73,6 +451,103 @@ declare namespace LocalJSX {
         "variant"?: "primary" | "secondary" | "outline";
     }
 
+    interface ExButtonAttributes {
+        "colorBackground": string;
+        "colorSurface": string;
+        "colorPrimary": string;
+        "colorPrimaryHover": string;
+        "colorPrimaryForeground": string;
+        "colorText": string;
+        "colorTextMuted": string;
+        "colorInputBackground": string;
+        "colorInputBorder": string;
+        "colorInputBorderFocus": string;
+        "colorError": string;
+        "colorDivider": string;
+        "colorLink": string;
+        "fontFamily": string;
+        "fontSizeXs": string;
+        "fontSizeSm": string;
+        "fontSizeMd": string;
+        "fontSizeLg": string;
+        "fontSizeXl": string;
+        "fontWeightNormal": string;
+        "fontWeightMedium": string;
+        "fontWeightSemibold": string;
+        "radiusSm": string;
+        "radiusMd": string;
+        "radiusLg": string;
+        "radiusXl": string;
+        "label": string;
+        "type": "button" | "submit" | "reset";
+        "variant": "primary" | "secondary" | "ghost";
+        "disabled": boolean;
+        "isLoading": boolean;
+    }
+    interface ExInputAttributes {
+        "colorBackground": string;
+        "colorSurface": string;
+        "colorPrimary": string;
+        "colorPrimaryHover": string;
+        "colorPrimaryForeground": string;
+        "colorText": string;
+        "colorTextMuted": string;
+        "colorInputBackground": string;
+        "colorInputBorder": string;
+        "colorInputBorderFocus": string;
+        "colorError": string;
+        "colorDivider": string;
+        "colorLink": string;
+        "fontFamily": string;
+        "fontSizeXs": string;
+        "fontSizeSm": string;
+        "fontSizeMd": string;
+        "fontSizeLg": string;
+        "fontSizeXl": string;
+        "fontWeightNormal": string;
+        "fontWeightMedium": string;
+        "fontWeightSemibold": string;
+        "radiusSm": string;
+        "radiusMd": string;
+        "radiusLg": string;
+        "radiusXl": string;
+        "inputId": string;
+        "type": string;
+        "label": string;
+        "value": string;
+        "placeholder": string;
+        "disabled": boolean;
+        "error": string;
+        "rightButtonLabel": string;
+    }
+    interface ExLoginBoxAttributes {
+        "colorBackground": string;
+        "colorSurface": string;
+        "colorPrimary": string;
+        "colorPrimaryHover": string;
+        "colorPrimaryForeground": string;
+        "colorText": string;
+        "colorTextMuted": string;
+        "colorInputBackground": string;
+        "colorInputBorder": string;
+        "colorInputBorderFocus": string;
+        "colorError": string;
+        "colorDivider": string;
+        "colorLink": string;
+        "fontFamily": string;
+        "fontSizeXs": string;
+        "fontSizeSm": string;
+        "fontSizeMd": string;
+        "fontSizeLg": string;
+        "fontSizeXl": string;
+        "fontWeightNormal": string;
+        "fontWeightMedium": string;
+        "fontWeightSemibold": string;
+        "radiusSm": string;
+        "radiusMd": string;
+        "radiusLg": string;
+        "radiusXl": string;
+    }
     interface ExTestButtonAttributes {
         "label": string;
         "variant": "primary" | "secondary" | "outline";
@@ -80,6 +555,9 @@ declare namespace LocalJSX {
     }
 
     interface IntrinsicElements {
+        "ex-button": Omit<ExButton, keyof ExButtonAttributes> & { [K in keyof ExButton & keyof ExButtonAttributes]?: ExButton[K] } & { [K in keyof ExButton & keyof ExButtonAttributes as `attr:${K}`]?: ExButtonAttributes[K] } & { [K in keyof ExButton & keyof ExButtonAttributes as `prop:${K}`]?: ExButton[K] };
+        "ex-input": Omit<ExInput, keyof ExInputAttributes> & { [K in keyof ExInput & keyof ExInputAttributes]?: ExInput[K] } & { [K in keyof ExInput & keyof ExInputAttributes as `attr:${K}`]?: ExInputAttributes[K] } & { [K in keyof ExInput & keyof ExInputAttributes as `prop:${K}`]?: ExInput[K] };
+        "ex-login-box": Omit<ExLoginBox, keyof ExLoginBoxAttributes> & { [K in keyof ExLoginBox & keyof ExLoginBoxAttributes]?: ExLoginBox[K] } & { [K in keyof ExLoginBox & keyof ExLoginBoxAttributes as `attr:${K}`]?: ExLoginBoxAttributes[K] } & { [K in keyof ExLoginBox & keyof ExLoginBoxAttributes as `prop:${K}`]?: ExLoginBox[K] };
         "ex-test-button": Omit<ExTestButton, keyof ExTestButtonAttributes> & { [K in keyof ExTestButton & keyof ExTestButtonAttributes]?: ExTestButton[K] } & { [K in keyof ExTestButton & keyof ExTestButtonAttributes as `attr:${K}`]?: ExTestButtonAttributes[K] } & { [K in keyof ExTestButton & keyof ExTestButtonAttributes as `prop:${K}`]?: ExTestButton[K] };
     }
 }
@@ -87,6 +565,9 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "ex-button": LocalJSX.IntrinsicElements["ex-button"] & JSXBase.HTMLAttributes<HTMLExButtonElement>;
+            "ex-input": LocalJSX.IntrinsicElements["ex-input"] & JSXBase.HTMLAttributes<HTMLExInputElement>;
+            "ex-login-box": LocalJSX.IntrinsicElements["ex-login-box"] & JSXBase.HTMLAttributes<HTMLExLoginBoxElement>;
             "ex-test-button": LocalJSX.IntrinsicElements["ex-test-button"] & JSXBase.HTMLAttributes<HTMLExTestButtonElement>;
         }
     }
