@@ -2,10 +2,28 @@ import { angularOutputTarget } from "@stencil/angular-output-target";
 import type { Config } from "@stencil/core";
 import { reactOutputTarget } from "@stencil/react-output-target";
 import { vueOutputTarget } from "@stencil/vue-output-target";
+import { transform } from "esbuild";
+import type { Plugin } from "rollup";
+
+// Rollup plugin to transpile TypeScript files from workspace packages
+// (e.g. @expressthat-auth/api-client uses JIT source exports pointing to .ts files)
+const externalTsPlugin: Plugin = {
+  name: "external-ts",
+  async transform(code, id) {
+    if (id.endsWith(".ts") && !id.includes("/ui/src/")) {
+      const result = await transform(code, { loader: "ts", sourcemap: false });
+      return { code: result.code };
+    }
+    return null;
+  },
+};
 
 export const config: Config = {
   namespace: "expressthat-auth-ui",
   minifyJs: false,
+  rollupPlugins: {
+    before: [externalTsPlugin],
+  },
   outputTargets: [
     {
       type: "dist",

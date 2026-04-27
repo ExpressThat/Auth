@@ -61,11 +61,13 @@
 ### Used by
 
  - [ex-login-box](../ex-login-box)
+ - [ex-register-box](../ex-register-box)
 
 ### Graph
 ```mermaid
 graph TD;
   ex-login-box --> ex-button
+  ex-register-box --> ex-button
   style ex-button fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

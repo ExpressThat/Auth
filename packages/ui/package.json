@@ -4,6 +4,7 @@
   "private": true,
   "description": "StencilJS web component library for ExpressThat Auth",
   "type": "module",
+  "main": "dist/index.cjs.js",
   "module": "dist/components/index.js",
   "collection": "dist/collection/collection-manifest.json",
   "types": "dist/types/index.d.ts",
@@ -50,11 +51,13 @@
     "check-types": "tsc --noEmit"
   },
   "devDependencies": {
+    "@expressthat-auth/api-client": "workspace:*",
     "@expressthat-auth/typescript-config": "workspace:*",
     "@stencil/angular-output-target": "^0.10.0",
     "@stencil/core": "^4.30.0",
     "@stencil/react-output-target": "^1.2.0",
     "@stencil/vue-output-target": "^0.13.1",
+    "esbuild": "^0.28.0",
     "typescript": "6.0.3"
   }
 }
