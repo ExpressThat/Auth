@@ -17,10 +17,9 @@ export default function Home() {
         }}
       />
 
-
-        <ExLoginBox>
-          <p slot="social-logins">test</p>
-        </ExLoginBox>
+      <ExLoginBox>
+        <p slot="social-logins">test</p>
+      </ExLoginBox>
     </main>
   );
 }
