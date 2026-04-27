@@ -712,6 +712,9 @@ importers:
       '@stencil/react-output-target':
         specifier: ^1.2.0
         version: 1.5.1(@stencil/core@4.43.4)(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@stencil/store':
+        specifier: ^2.0.8
+        version: 2.2.2(@stencil/core@4.43.4)
       '@stencil/vue-output-target':
         specifier: ^0.13.1
         version: 0.13.1(@stencil/core@4.43.4)(vue-router@5.0.6(@vue/compiler-sfc@3.5.33)(vue@3.5.33(typescript@6.0.3)))(vue@3.5.33(typescript@6.0.3))
@@ -4484,6 +4487,12 @@ packages:
       next: 13 || 14 || 15
       vite: ^6.x
       webpack: ^5.x
+
+  '@stencil/store@2.2.2':
+    resolution: {integrity: sha512-6BxJblhIkSxflEft8eayYwEApTmsIaGeXsRDLI1AAM2BPPFPfrcsG1fBOcA61oMBaXmCGKt0AGTLbxSHnYazxQ==}
+    engines: {node: '>=18.0.0', npm: '>=6.0.0'}
+    peerDependencies:
+      '@stencil/core': '>=2.0.0 || >=3.0.0 || >= 4.0.0-beta.0 || >= 4.0.0'
 
   '@stencil/vue-output-target@0.13.1':
     resolution: {integrity: sha512-otJexEqRvFOeXKP+C/Q+SAI0A4LT94ddeTIuwrSqYLMvEZpsKQ0xdnPbbYnkMIsLvInyGjO7xqmzVjpzNf50rw==}
@@ -13610,6 +13619,10 @@ snapshots:
       recast: 0.23.11
       vite: 8.0.9(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1)(less@4.6.4)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3)
       webpack: 5.106.2(esbuild@0.28.0)
+
+  '@stencil/store@2.2.2(@stencil/core@4.43.4)':
+    dependencies:
+      '@stencil/core': 4.43.4
 
   '@stencil/vue-output-target@0.13.1(@stencil/core@4.43.4)(vue-router@5.0.6(@vue/compiler-sfc@3.5.33)(vue@3.5.33(typescript@6.0.3)))(vue@3.5.33(typescript@6.0.3))':
     dependencies:

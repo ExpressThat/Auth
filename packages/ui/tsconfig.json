@@ -8,7 +8,7 @@
     "module": "ESNext",
     "moduleDetection": "auto",
     "moduleResolution": "bundler",
-    "target": "ES2017",
+    "target": "ES2022",
     "jsx": "react",
     "jsxFactory": "h",
     "jsxFragmentFactory": "Fragment"
