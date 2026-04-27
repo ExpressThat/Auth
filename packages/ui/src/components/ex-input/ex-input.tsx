@@ -1,6 +1,8 @@
 // biome-ignore lint/correctness/noUnusedImports: Stencil requires explicit h factory and decorator imports
-import { Component, Event, type EventEmitter, h, Prop, State } from "@stencil/core";
+import { Component, Event, type EventEmitter, h, Prop, State, Watch } from "@stencil/core";
 import { ThemeBase } from "../../theme-base";
+
+let idCounter = 0;
 
 @Component({
   tag: "ex-input",
@@ -39,6 +41,24 @@ export class EXInput extends ThemeBase {
   @Event() exChange!: EventEmitter<string>;
 
   @State() private isFocused: boolean = false;
+  @State() private internalValue: string = "";
+  private generatedId?: string;
+
+  componentWillLoad() {
+    this.internalValue = this.value;
+    if (this.label && !this.inputId) {
+      this.generatedId = `ex-input-${++idCounter}`;
+    }
+  }
+
+  @Watch("value")
+  valueChanged(newValue: string) {
+    this.internalValue = newValue;
+  }
+
+  private get effectiveInputId(): string | undefined {
+    return this.inputId ?? this.generatedId;
+  }
 
   private get hasRightButton(): boolean {
     return this.rightButtonLabel != null;
@@ -55,7 +75,7 @@ export class EXInput extends ThemeBase {
       <div style={{ fontFamily: theme.fontFamily }}>
         {this.label != null && (
           <label
-            htmlFor={this.inputId}
+            htmlFor={this.effectiveInputId}
             style={{
               display: "block",
               marginBottom: "0.375rem",
@@ -69,15 +89,18 @@ export class EXInput extends ThemeBase {
         )}
         <div style={{ position: "relative" }}>
           <input
-            id={this.inputId}
+            id={this.effectiveInputId}
             type={this.type}
-            value={this.value}
+            value={this.internalValue}
             placeholder={this.placeholder}
             disabled={this.disabled}
             part="input"
             onFocus={() => (this.isFocused = true)}
             onBlur={() => (this.isFocused = false)}
-            onInput={(e) => this.exChange.emit((e.target as HTMLInputElement).value)}
+            onInput={(e) => {
+              this.internalValue = (e.target as HTMLInputElement).value;
+              this.exChange.emit(this.internalValue);
+            }}
             style={{
               display: "block",
               width: "100%",
@@ -115,12 +138,16 @@ export class EXInput extends ThemeBase {
               <button
                 type="button"
                 part="right-button"
-                onClick={() => this.exRightButtonClick.emit()}
+                disabled={this.disabled}
+                onClick={() => {
+                  if (!this.disabled) this.exRightButtonClick.emit();
+                }}
                 style={{
                   background: "none",
                   border: "none",
                   padding: "0",
-                  cursor: "pointer",
+                  cursor: this.disabled ? "default" : "pointer",
+                  opacity: this.disabled ? "0.5" : "1",
                   fontSize: theme.fontSizeXs,
                   fontWeight: theme.fontWeightMedium,
                   color: theme.colorLink,

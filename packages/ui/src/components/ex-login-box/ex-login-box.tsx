@@ -97,20 +97,11 @@ export class EXLoginBox extends ThemeBase {
               <div
                 style={{
                   display: "flex",
-                  justifyContent: "space-between",
+                  justifyContent: "flex-end",
                   alignItems: "baseline",
                   marginBottom: "0.375rem",
                 }}
               >
-                <span
-                  style={{
-                    fontSize: theme.fontSizeSm,
-                    fontWeight: theme.fontWeightMedium,
-                    color: theme.colorText,
-                  }}
-                >
-                  Password
-                </span>
                 <button
                   type="button"
                   part="forgot-password"
@@ -131,6 +122,7 @@ export class EXLoginBox extends ThemeBase {
               <ex-input
                 input-id="ex-login-password"
                 type={passwordType}
+                label="Password"
                 value={this.password}
                 placeholder="••••••••"
                 right-button-label={passwordToggleLabel}
@@ -141,13 +133,7 @@ export class EXLoginBox extends ThemeBase {
             </div>
 
             <div style={{ marginTop: "0.5rem" }}>
-              <ex-button
-                label="Sign in"
-                type="submit"
-                variant="primary"
-                {...theme}
-                onExClick={this.handleSubmit}
-              />
+              <ex-button label="Sign in" type="submit" variant="primary" {...theme} />
             </div>
           </form>
 
