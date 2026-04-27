@@ -1,8 +1,8 @@
 import { angularOutputTarget } from "@stencil/angular-output-target";
 import type { Config } from "@stencil/core";
-import { transform } from "esbuild";
 import { reactOutputTarget } from "@stencil/react-output-target";
 import { vueOutputTarget } from "@stencil/vue-output-target";
+import { transform } from "esbuild";
 import type { Plugin } from "rollup";
 
 // Rollup plugin to transpile TypeScript files from workspace packages

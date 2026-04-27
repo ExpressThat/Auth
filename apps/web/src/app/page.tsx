@@ -7,10 +7,7 @@ export default function Home() {
       <h1 className="text-4xl font-bold text-gray-900">ExpressThat Auth</h1>
       <p className="text-lg text-gray-600">Welcome to the authentication portal.</p>
       <Button>Get Started</Button>
-      <ExTestButton
-        label="Click Me"
-        variant="outline"
-      />
+      <ExTestButton label="Click Me" variant="outline" />
 
       <ExLoginBox>
         <p slot="social-logins">test</p>
