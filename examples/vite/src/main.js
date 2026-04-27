@@ -6,10 +6,10 @@ if (!app) throw new Error("Missing #app element");
 app.innerHTML = `
   <main style="padding: 2rem; font-family: sans-serif">
     <h1>Vite + JavaScript Example (Web Component)</h1>
-    <p>Renders ExButton from @expressthat-auth/ui as a native web component.</p>
-    <ex-button label="Click Me" variant="primary"></ex-button>
+    <p>Renders EXTestButton from @expressthat-auth/ui as a native web component.</p>
+    <ex-test-button label="Click Me" variant="primary"></ex-test-button>
   </main>
 `;
 
-const button = app.querySelector("ex-button");
-button?.addEventListener("exClick", () => alert("clicked!"));
+const button = app.querySelector("ex-test-button");
+button?.addEventListener("exTestClick", () => alert("clicked!"));

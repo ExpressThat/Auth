@@ -1,4 +1,4 @@
-# ex-button
+# ex-test-button
 
 
 
@@ -16,9 +16,9 @@
 
 ## Events
 
-| Event     | Description                       | Type                |
-| --------- | --------------------------------- | ------------------- |
-| `exClick` | Fired when the button is clicked. | `CustomEvent<void>` |
+| Event         | Description                       | Type                |
+| ------------- | --------------------------------- | ------------------- |
+| `exTestClick` | Fired when the button is clicked. | `CustomEvent<void>` |
 
 
 ## Shadow Parts

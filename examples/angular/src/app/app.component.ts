@@ -1,10 +1,10 @@
 import { Component } from "@angular/core";
-import { ExButton } from "@expressthat-auth/ui-angular";
+import { ExTestButton } from "@expressthat-auth/ui-angular";
 
 @Component({
   selector: "app-root",
   standalone: true,
-  imports: [ExButton],
+  imports: [ExTestButton],
   templateUrl: "./app.component.html",
 })
 export class AppComponent {

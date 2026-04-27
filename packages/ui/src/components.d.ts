@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
-    interface ExButton {
+    interface ExTestButton {
         /**
           * Whether the button is disabled.
           * @default false
@@ -24,34 +24,34 @@ export namespace Components {
         "variant": "primary" | "secondary" | "outline";
     }
 }
-export interface ExButtonCustomEvent<T> extends CustomEvent<T> {
+export interface ExTestButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
-    target: HTMLExButtonElement;
+    target: HTMLExTestButtonElement;
 }
 declare global {
-    interface HTMLExButtonElementEventMap {
-        "exClick": void;
+    interface HTMLExTestButtonElementEventMap {
+        "exTestClick": void;
     }
-    interface HTMLExButtonElement extends Components.ExButton, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLExButtonElementEventMap>(type: K, listener: (this: HTMLExButtonElement, ev: ExButtonCustomEvent<HTMLExButtonElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+    interface HTMLExTestButtonElement extends Components.ExTestButton, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLExTestButtonElementEventMap>(type: K, listener: (this: HTMLExTestButtonElement, ev: ExTestButtonCustomEvent<HTMLExTestButtonElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLExButtonElementEventMap>(type: K, listener: (this: HTMLExButtonElement, ev: ExButtonCustomEvent<HTMLExButtonElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLExTestButtonElementEventMap>(type: K, listener: (this: HTMLExTestButtonElement, ev: ExTestButtonCustomEvent<HTMLExTestButtonElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
-    var HTMLExButtonElement: {
-        prototype: HTMLExButtonElement;
-        new (): HTMLExButtonElement;
+    var HTMLExTestButtonElement: {
+        prototype: HTMLExTestButtonElement;
+        new (): HTMLExTestButtonElement;
     };
     interface HTMLElementTagNameMap {
-        "ex-button": HTMLExButtonElement;
+        "ex-test-button": HTMLExTestButtonElement;
     }
 }
 declare namespace LocalJSX {
-    interface ExButton {
+    interface ExTestButton {
         /**
           * Whether the button is disabled.
           * @default false
@@ -65,7 +65,7 @@ declare namespace LocalJSX {
         /**
           * Fired when the button is clicked.
          */
-        "onExClick"?: (event: ExButtonCustomEvent<void>) => void;
+        "onExTestClick"?: (event: ExTestButtonCustomEvent<void>) => void;
         /**
           * Visual style variant.
           * @default "primary"
@@ -73,21 +73,21 @@ declare namespace LocalJSX {
         "variant"?: "primary" | "secondary" | "outline";
     }
 
-    interface ExButtonAttributes {
+    interface ExTestButtonAttributes {
         "label": string;
         "variant": "primary" | "secondary" | "outline";
         "disabled": boolean;
     }
 
     interface IntrinsicElements {
-        "ex-button": Omit<ExButton, keyof ExButtonAttributes> & { [K in keyof ExButton & keyof ExButtonAttributes]?: ExButton[K] } & { [K in keyof ExButton & keyof ExButtonAttributes as `attr:${K}`]?: ExButtonAttributes[K] } & { [K in keyof ExButton & keyof ExButtonAttributes as `prop:${K}`]?: ExButton[K] };
+        "ex-test-button": Omit<ExTestButton, keyof ExTestButtonAttributes> & { [K in keyof ExTestButton & keyof ExTestButtonAttributes]?: ExTestButton[K] } & { [K in keyof ExTestButton & keyof ExTestButtonAttributes as `attr:${K}`]?: ExTestButtonAttributes[K] } & { [K in keyof ExTestButton & keyof ExTestButtonAttributes as `prop:${K}`]?: ExTestButton[K] };
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "ex-button": LocalJSX.IntrinsicElements["ex-button"] & JSXBase.HTMLAttributes<HTMLExButtonElement>;
+            "ex-test-button": LocalJSX.IntrinsicElements["ex-test-button"] & JSXBase.HTMLAttributes<HTMLExTestButtonElement>;
         }
     }
 }

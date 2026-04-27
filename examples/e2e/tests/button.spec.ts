@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test("button is rendered correctly", async ({ page }) => {
   await page.goto("/");
 
-  const webComponent = page.locator("ex-button");
+  const webComponent = page.locator("ex-test-button");
   await expect(webComponent).toBeVisible();
 
   const button = webComponent.getByRole("button");
