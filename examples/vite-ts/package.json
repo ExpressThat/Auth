@@ -1,0 +1,20 @@
+{
+  "name": "@expressthat-auth/example-vite-ts",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@expressthat-auth/ui": "workspace:*"
+  },
+  "devDependencies": {
+    "@expressthat-auth/typescript-config": "workspace:*",
+    "typescript": "6.0.3",
+    "vite": "^8.0.0"
+  }
+}

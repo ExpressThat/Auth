@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@expressthat-auth/internal-components/button";
-import { ExButton } from "@expressthat-auth/ui-react";
+import { ExTestButton } from "@expressthat-auth/ui-react";
 
 export default function Home() {
   return (
@@ -9,10 +9,10 @@ export default function Home() {
       <h1 className="text-4xl font-bold text-gray-900">ExpressThat Auth</h1>
       <p className="text-lg text-gray-600">Welcome to the authentication portal.</p>
       <Button>Get Started</Button>
-      <ExButton
+      <ExTestButton
         label="Click Me"
         variant="outline"
-        onExClick={() => {
+        onExTestClick={() => {
           alert("test");
         }}
       />

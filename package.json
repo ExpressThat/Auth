@@ -20,7 +20,9 @@
     "test:e2e:nextjs": "turbo run test:e2e:nextjs",
     "test:e2e:nextjs-no-ssr": "turbo run test:e2e:nextjs-no-ssr",
     "test:e2e:nuxt": "turbo run test:e2e:nuxt",
-    "test:e2e:nuxt-no-ssr": "turbo run test:e2e:nuxt-no-ssr"
+    "test:e2e:nuxt-no-ssr": "turbo run test:e2e:nuxt-no-ssr",
+    "test:e2e:vite-ts": "turbo run test:e2e:vite-ts",
+    "test:e2e:vite": "turbo run test:e2e:vite"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.13",

@@ -131,6 +131,8 @@ jobs:
             nextjs-no-ssr,
             nuxt,
             nuxt-no-ssr,
+            vite-ts,
+            vite,
           ]
 
     steps:

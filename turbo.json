@@ -92,6 +92,14 @@
       "dependsOn": [],
       "cache": false
     },
+    "test:e2e:vite-ts": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "test:e2e:vite": {
+      "dependsOn": [],
+      "cache": false
+    },
     "build-proxy-components": {
       "dependsOn": ["build"],
       "cache": false

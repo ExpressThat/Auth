@@ -2,11 +2,11 @@
 import { Component, Event, type EventEmitter, h, Prop } from "@stencil/core";
 
 @Component({
-  tag: "ex-button",
-  styleUrl: "ex-button.css",
+  tag: "ex-test-button",
+  styleUrl: "ex-test-button.css",
   shadow: true,
 })
-export class ExButton {
+export class EXTestButton {
   /** Text content of the button. */
   @Prop() label: string = "Button";
 
@@ -17,10 +17,10 @@ export class ExButton {
   @Prop() disabled: boolean = false;
 
   /** Fired when the button is clicked. */
-  @Event() exClick!: EventEmitter<void>;
+  @Event() exTestClick!: EventEmitter<void>;
 
   private handleClick = () => {
-    this.exClick.emit();
+    this.exTestClick.emit();
   };
 
   render() {
