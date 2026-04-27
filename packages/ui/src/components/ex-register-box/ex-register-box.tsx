@@ -126,11 +126,8 @@ export class EXRegisterBox extends ThemeBase {
                 right-button-label={confirmToggleLabel}
                 error={this.confirmError}
                 {...theme}
-                onExChange={(e: CustomEvent<string>) => {
-                      onExRightButtonClick={() => (this.showConfirmPassword = !this.showConfirmPassword)}
-             onExRightButtonClick={() =>
-                  (this.showConfirmPassword = !this.showConfirmPassword)
-                }
+                onExChange={(e: CustomEvent<string>) => (this.confirmPassword = e.detail)}
+                onExRightButtonClick={() => (this.showConfirmPassword = !this.showConfirmPassword)}
               />
             </div>
 
