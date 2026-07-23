@@ -1028,11 +1028,60 @@ Security is the primary product requirement rather than a later enhancement. The
 
 OAuth 2.0 and OpenID Connect should be implemented according to their standards rather than as a custom token protocol. Security-sensitive protocol work should use mature, reviewed libraries where possible.
 
-### 8.1 GDPR and European Data Residency
+### 8.1 Continuous Defensive Security Engineering
+
+Security is a continuous engineering constraint for every design,
+implementation, test, deployment, and operational task rather than a feature
+added before release. Each change must identify affected assets, entry points,
+trust boundaries, privileges, personal or secret data, abuse cases, and
+assumptions. The living threat model and abuse-case register must be updated when
+those change.
+
+Defensive programming rules include:
+
+- Treat every value from a browser, API caller, token, provider, webhook, queue,
+  cache, object store, database, configuration file, import, and generated
+  artifact as untrusted until its syntax, semantics, size, ownership, freshness,
+  and intended use are verified.
+- Canonicalise once, reject ambiguous encodings, use strict allow-lists and
+  bounded parsers, and validate again when data crosses a new trust boundary.
+- Enforce authorization and tenant/environment predicates at the use-case and
+  repository boundaries; frontend visibility and caller-supplied identifiers are
+  never security controls.
+- Use least privilege, deny-by-default policy, explicit state machines,
+  parameterised queries, reviewed cryptographic APIs, safe output encoding,
+  idempotency, replay protection, optimistic concurrency, and fail-closed
+  dependency behaviour.
+- Minimise secrets and personal data, redact before logging or error reporting,
+  use constant-time comparisons where secret equality is involved, and never
+  expose internal failures that help enumeration or exploitation.
+- Design for concurrent and repeated execution across instances. Check state and
+  authorization in the same transaction/effect boundary instead of relying on a
+  prior check or process-local cache.
+- Give every successful security-sensitive test a denied counterpart and cover
+  malformed, boundary, injection, downgrade, replay, race, enumeration, confused
+  deputy, cross-tenant, cross-environment, and dependency-failure cases.
+
+Automated security analysis must run during ordinary development and CI, on a
+schedule, for release candidates, and when dependencies, runtimes, adapters, or
+deployment configuration change. It includes typed/static analysis, dependency
+and credential scanning, lockfile and artifact integrity, container and
+infrastructure configuration scanning, dynamic authenticated API/UI testing,
+protocol conformance, property testing, fuzzing, and concurrency campaigns.
+Workers and Docker receive equivalent testing.
+
+Tool findings are triaged rather than ignored. Every suppression has a narrow
+scope, reason, owner, and expiry. Findings record severity, affected versions,
+remediation targets, and verification evidence. Fixes receive regression tests
+or another durable automated control wherever technically possible. Independent
+security review and penetration testing supplement this process; they do not
+replace it.
+
+### 8.2 GDPR and European Data Residency
 
 The service will be designed to support GDPR obligations and will host data in Europe. For the hosted edition, primary databases, replicas, backups, and logs containing personal data must remain in approved European regions. Vendors and subprocessors must be selected and configured consistently with that requirement.
 
-### 8.2 Data Ownership, Control, and Portability
+### 8.3 Data Ownership, Control, and Portability
 
 The platform does not claim ownership of customer or end-user data. Customer organisations control the tenant data they and their applications introduce, subject to the rights of the people represented in that data. End users retain their applicable data-subject rights over personal data. Hosted-service terms, self-hosted documentation, APIs, and product screens must state these responsibilities plainly rather than making export or deletion a support-only process.
 

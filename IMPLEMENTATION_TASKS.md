@@ -15,6 +15,8 @@ The default order is intentional: complete a task only after its listed dependen
 - Split a task again before starting it if implementation proves larger than that.
 - `Depends on: none` means the task can begin immediately.
 - A task is not complete merely because its happy path works.
+- Every task must consider how its inputs, state transitions, dependencies,
+  concurrency, authorization, outputs, and failure modes could be exploited.
 - Product changes discovered during implementation must be added to this backlog rather than hidden inside an unrelated task.
 - Architecture decisions must be recorded as short Architecture Decision Records under `docs/decisions/`.
 
@@ -43,6 +45,10 @@ Unless a task explicitly concerns documentation only, it is complete when:
 - Automated tests would fail if the behaviour were removed.
 - Relevant unit, type, schema, contract, repository, component, integration, security, migration, concurrency, or end-to-end tests pass.
 - Tenant-isolation tests use at least two tenants where tenant data is involved.
+- A security-impact check identifies affected assets, trust boundaries, abuse
+  cases, privileges, personal or secret data, and threat-model changes.
+- Tests cover applicable malicious, malformed, boundary, replay, race,
+  downgrade, enumeration, injection, and fail-closed cases as well as success.
 - External inputs are runtime-validated and unsafe outputs are redacted.
 - OpenAPI and user or operator documentation are updated where relevant.
 - Both Workers and Docker targets pass where runtime behaviour is affected.
@@ -66,7 +72,38 @@ Infrastructure choices are replaceable implementation details, not domain depend
 - A deployment must fail validation when a required adapter is absent, incompatible with its runtime, incorrectly configured, or unable to meet the selected residency policy.
 - All implementations of a contract run the same conformance suite, including failure, retry, duplicate-delivery, concurrency, redaction, tenant-scope, runtime, and residency cases that apply to that capability.
 
-### 2.5 Delivery Milestones
+### 2.5 Continuous Defensive Security Rule
+
+Security work happens during every task and throughout the product lifetime.
+
+- Treat browser, API, token, webhook, provider, queue, cache, object, database,
+  configuration, import, and generated inputs as untrusted until validated for
+  syntax, semantics, size, ownership, freshness, and intended use.
+- Prefer allow-lists, least privilege, deny-by-default policy, explicit state
+  machines, parameterised data access, safe cryptographic APIs, short-lived
+  authority, idempotency, and fail-closed dependency behaviour.
+- Never rely on a frontend check, globally unique identifier, signed-but-wrongly
+  purposed token, process-local state, obscurity, or later filtering as a
+  security boundary.
+- Add denied counterparts, hostile boundary cases, and regression tests while
+  implementing each behaviour; do not defer adversarial testing to SEC-025 or a
+  final penetration test.
+- Update the living threat model and abuse-case register whenever a task adds an
+  asset, entry point, trust boundary, privilege, provider, parser, protocol,
+  background effect, data class, or deployment path.
+- Run automated security analysis on commits, clean builds, scheduled campaigns,
+  release candidates, and dependency/runtime updates. Suppressions require a
+  reason, owner, expiry, and audit trail.
+- Track findings by severity, owner, remediation target, affected releases, and
+  verification evidence. A finding is not closed until a regression test or
+  equivalent durable control proves the fix where technically possible.
+- Reassess both Workers and Docker, hosted and self-hosted profiles, SQLite and
+  PostgreSQL paths, and all adapter implementations wherever behaviour differs.
+
+When convenience conflicts with a security invariant, preserve the invariant
+and record the product or architecture decision explicitly.
+
+### 2.6 Delivery Milestones
 
 | Milestone | Result |
 | --- | --- |
@@ -257,8 +294,16 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Done when:** package versions, application releases, OpenAPI versions, migration notes, and security advisories have an explicit workflow.
 
 - [ ] **FND-020 — Add contributor documentation.**  
-  **Depends on:** FND-014, FND-016.  
-  **Done when:** setup, commands, architecture boundaries, testing expectations, file-size policy, and review requirements are reproducible by a new contributor.
+  **Depends on:** FND-014, FND-016, FND-021.
+  **Done when:** setup, commands, architecture boundaries, defensive-programming rules, security-impact checks, testing expectations, file-size policy, and review requirements are reproducible by a new contributor.
+
+- [ ] **FND-021 — Add the adversarial testing toolkit.**
+  **Depends on:** DEC-016, FND-008, FND-011, FND-013.
+  **Done when:** reusable property/fuzz harnesses, hostile input corpora, parser limits, two-tenant/two-environment fixtures, concurrency/replay drivers, redaction assertions, and Workers/Docker security-test runners can be used by every feature package.
+
+- [ ] **FND-022 — Enforce continuous security analysis.**
+  **Depends on:** FND-005, FND-015, FND-017.
+  **Done when:** typed/static analysis, dependency and secret scans, lockfile integrity, generated-artifact checks, container and deployment-configuration scans, severity policy, expiring suppressions, scheduled runs, and machine-readable findings fail the appropriate quality or release gate.
 
 ## 5. Phase 2 — Runtime-Neutral Platform Contracts
 
@@ -1200,6 +1245,18 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** SEC-023, MGT-007.  
   **Done when:** authorised administrators can create, copy once, scope, assign, expire, rotate, revoke, and inspect last use without retrieving stored secrets.
 
+- [ ] **SEC-030 — Implement the living threat-model workflow.**
+  **Depends on:** DEC-016, FND-020.
+  **Done when:** every feature and architecture change performs a recorded security-impact check, affected abuse cases and controls remain traceable to tests, findings have owners and deadlines, and stale assumptions trigger review without depending on pull requests.
+
+- [ ] **SEC-031 — Add continuous dynamic and fuzz security campaigns.**
+  **Depends on:** FND-021, FND-022, SEC-025.
+  **Done when:** authenticated API/UI dynamic tests, protocol and parser fuzzing, property/invariant tests, race/replay campaigns, malformed HTTP, and tenant/environment escape attempts run on commits where feasible, on a schedule at scale, and against both Workers and Docker artifacts.
+
+- [ ] **SEC-032 — Operate vulnerability intake and remediation.**
+  **Depends on:** FND-019, FND-022, SEC-030.
+  **Done when:** automated, researcher, customer, provider, runtime, and internal findings enter one severity process with acknowledgement and remediation targets, coordinated disclosure, affected-version tracking, regression evidence, advisories, and verified closure.
+
 ## 15. Phase 12 — End-User Organisations and Enterprise Identity
 
 - [ ] **ORG-001 — Define end-user-organisation schemas and repositories.**  
@@ -1751,8 +1808,8 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Done when:** measured capacity, autoscaling signals, backpressure, dependency loss, duplicate work, rolling release, restore, and disaster exercises meet targets.
 
 - [ ] **REL-005 — Complete security architecture review.**  
-  **Depends on:** SEC-025, SUP-012, ADV-009 if enabled.  
-  **Done when:** threat model, protocol choices, keys, cookies, tenant isolation, providers, support access, supply chain, and operational controls have no unowned critical findings.
+  **Depends on:** SEC-031, SEC-032, SUP-012, ADV-009 if enabled.
+  **Done when:** threat model, protocol choices, keys, cookies, tenant isolation, providers, support access, supply chain, continuous security evidence, and operational controls have no unowned critical or high findings.
 
 - [ ] **REL-006 — Complete independent penetration testing.**  
   **Depends on:** REL-003, REL-005.  
@@ -1781,7 +1838,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 Complete when:
 
 - DEC-001 through DEC-022 are either completed or explicitly scheduled before their first consumer.
-- FND-001 through FND-020 pass on a clean checkout.
+- FND-001 through FND-022 pass on a clean checkout.
 - RUN-001 through RUN-020 have conformance-tested implementations.
 - DB-001 through DB-025 pass against SQLite, PostgreSQL, and the applicable local Workers database path.
 - API-001 through API-019 run equivalently through Docker and Workers shells.
@@ -1803,7 +1860,7 @@ Complete when:
 
 - PRV-001 through PRV-014, JOB-001 through JOB-005, and WHK-001 through WHK-004 are complete.
 - MGT-014 and MGT-015 are complete.
-- SEC-001 through SEC-029 are complete.
+- SEC-001 through SEC-032 are complete.
 - OPS-001 through OPS-021 are complete for the selected beta deployment.
 - Load, failure, runtime, repository, protocol, and security test suites pass.
 
