@@ -14,6 +14,7 @@ platform's security, portability, operability, or public contracts.
 
 | ADR | Decision | Status |
 | --- | --- | --- |
+| [0001](0001-package-manager.md) | Use pnpm for workspace and dependency management | Accepted |
 | [Template](TEMPLATE.md) | Standard ADR structure | Reference |
 
 ## Numbering
@@ -35,4 +36,3 @@ the index in numeric order and link superseding records in both directions.
 3. Record security, privacy, residency, and self-hosting effects.
 4. Mark the decision accepted before dependent backlog tasks are completed.
 5. Revisit the ADR when a listed review trigger occurs.
-

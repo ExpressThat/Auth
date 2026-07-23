@@ -86,8 +86,10 @@ These tasks prevent foundational security or compatibility decisions from being 
 
   **Done when:** `docs/decisions/` contains a numbered template covering context, decision, alternatives, security impact, portability impact, and consequences.
 
-- [ ] **DEC-002 — Select and pin the workspace package manager.**  
-  **Depends on:** DEC-001.  
+- [x] **DEC-002 — Select and pin the workspace package manager.**
+
+  **Depends on:** DEC-001.
+
   **Done when:** an ADR records the choice, version pinning, workspace layout, lockfile policy, and CI installation command. Start by evaluating the recommended `pnpm` option.
 
 - [ ] **DEC-003 — Define supported Node.js, browser, Workers, and TypeScript versions.**  
