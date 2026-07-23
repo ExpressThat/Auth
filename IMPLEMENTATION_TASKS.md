@@ -108,7 +108,7 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** DEC-003.  
   **Done when:** a spike proves Zod-based Hono routes can generate complete OpenAPI, run on Workers and Node, and produce usable inferred client types.
 
-- [ ] **DEC-006 — Select reviewed OAuth 2.0 and OpenID Connect building blocks.**  
+- [x] **DEC-006 — Select reviewed OAuth 2.0 and OpenID Connect building blocks.**
   **Depends on:** DEC-003.  
   **Done when:** an ADR identifies which protocol behaviours use reviewed libraries, which must be implemented locally, compatibility risks, and the conformance strategy.
 

@@ -18,6 +18,7 @@ platform's security, portability, operability, or public contracts.
 | [0002](0002-supported-runtimes.md) | Support Node LTS, Workers, and modern browsers | Accepted |
 | [0003](0003-test-toolchain.md) | Use Vitest and Playwright across test layers | Accepted |
 | [0004](0004-hono-contracts.md) | Define Hono routes with Zod-backed OpenAPI contracts | Accepted |
+| [0005](0005-oauth-oidc-building-blocks.md) | Build the issuer on portable reviewed protocol primitives | Accepted |
 | [Template](TEMPLATE.md) | Standard ADR structure | Reference |
 
 ## Numbering
