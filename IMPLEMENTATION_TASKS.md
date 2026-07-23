@@ -120,7 +120,7 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** DEC-006.  
   **Done when:** algorithms, key identifiers, publishing, overlap, retirement, emergency rotation, local development, hosted custody, and self-hosted custody are specified.
 
-- [ ] **DEC-009 — Define browser cookie and domain topology.**  
+- [x] **DEC-009 — Define browser cookie and domain topology.**
   **Depends on:** DEC-006.  
   **Done when:** hosted and custom domains, cookie scope, `SameSite`, CSRF strategy, redirect boundaries, embedded-flow limitations, and account-domain behaviour are specified.
 
