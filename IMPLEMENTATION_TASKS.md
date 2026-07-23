@@ -254,9 +254,13 @@ These tasks prevent foundational security or compatibility decisions from being 
   plugins for unchecked assertions and raw boundary JSON; nine executable policy
   tests prove unsafe examples fail and narrowed, handled code passes.
 
-- [ ] **FND-006 — Implement the 250-line policy checker in TypeScript.**  
+- [x] **FND-006 — Implement the 250-line policy checker in TypeScript.**  
   **Depends on:** FND-003.  
   **Done when:** tracked first-party code, tests, configuration, migrations, and tooling are counted physically; only centrally declared exemptions apply; checker tests cover every exemption and failure mode.
+  **Evidence:** `pnpm check:lines` counts cached and untracked first-party files,
+  excludes only the central documentation/generated/vendor/binary/lock/tool-output
+  registry, reports sorted violations above 250 physical lines, and has complete
+  statement, branch, function, and line coverage.
 
 - [ ] **FND-007 — Implement package-boundary and cycle checks.**  
   **Depends on:** FND-002, FND-003.  

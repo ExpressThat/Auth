@@ -12,8 +12,9 @@
   },
   "scripts": {
     "build": "turbo run build",
-    "check": "biome check .",
+    "check": "biome check . && pnpm check:lines",
     "check:fix": "biome check --write .",
+    "check:lines": "pnpm --filter @expressthat-auth/quality check:lines",
     "dev": "turbo run dev",
     "format": "biome format --write .",
     "format:check": "biome format .",
