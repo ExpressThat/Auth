@@ -230,9 +230,10 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Done when:** all planned `apps/`, `packages/`, `deploy/`, and `tooling/` workspaces exist with clear ownership and no placeholder production logic.
   **Evidence:** 29 uniquely named pnpm projects are registered; ownership and dependency direction are defined in [the workspace register](docs/architecture/workspace-ownership.md), and new production workspaces contain metadata only.
 
-- [ ] **FND-003 — Add strict shared TypeScript configurations.**  
+- [x] **FND-003 — Add strict shared TypeScript configurations.**
   **Depends on:** FND-002.  
   **Done when:** base, library, Node, Workers, React, and tooling configurations enable every strictness rule required by the architecture.
+  **Evidence:** all six profiles extend the strict base, resolve through the `@express-that-auth/typescript-config` workspace, pass `tsc --showConfig`, and type-check the Node and Workers spikes without local strictness duplication.
 
 - [x] **FND-004 — Add repository formatting.**
   **Depends on:** FND-001.  

@@ -1,17 +1,8 @@
 {
+  "extends": "@express-that-auth/typescript-config/node.json",
   "compilerOptions": {
-    "allowImportingTsExtensions": true,
-    "exactOptionalPropertyTypes": true,
     "lib": ["ES2024", "DOM"],
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "noEmit": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitOverride": true,
-    "noUncheckedIndexedAccess": true,
-    "strict": true,
-    "types": ["node"],
-    "verbatimModuleSyntax": true
+    "types": ["node"]
   },
   "include": ["src/**/*.ts", "test/password.test.ts", "vitest.node.config.ts"]
 }

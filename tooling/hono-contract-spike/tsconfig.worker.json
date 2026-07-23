@@ -1,18 +1,7 @@
 {
+  "extends": "@express-that-auth/typescript-config/workers.json",
   "compilerOptions": {
-    "allowImportingTsExtensions": true,
-    "exactOptionalPropertyTypes": true,
-    "lib": ["ES2024"],
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "noEmit": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitOverride": true,
-    "noUncheckedIndexedAccess": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "types": ["@cloudflare/vitest-pool-workers/types"],
-    "verbatimModuleSyntax": true
+    "types": ["@cloudflare/vitest-pool-workers/types"]
   },
   "include": [
     "src/**/*.ts",
