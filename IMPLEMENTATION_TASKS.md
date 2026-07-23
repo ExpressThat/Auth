@@ -128,7 +128,7 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** DEC-001.  
   **Done when:** sortable identifiers such as UUIDv7, public identifier exposure, clock precision, UTC handling, and database representation are fixed.
 
-- [ ] **DEC-011 — Define API versioning and compatibility policy.**  
+- [x] **DEC-011 — Define API versioning and compatibility policy.**
   **Depends on:** DEC-005.  
   **Done when:** the initial `/v1` convention, deprecation headers, breaking-change rules, OpenAPI release process, and SDK compatibility promises are documented.
 
