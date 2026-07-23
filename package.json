@@ -1,0 +1,26 @@
+{
+  "name": "express-that-auth",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A portable, multi-tenant authentication and identity platform.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "packageManager": "pnpm@11.16.0",
+  "engines": {
+    "node": ">=24.18.0 <27",
+    "pnpm": "11.16.0"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "test:coverage": "turbo run test:coverage",
+    "typecheck": "turbo run typecheck"
+  },
+  "devDependencies": {
+    "turbo": "2.10.6",
+    "tsx": "4.23.1",
+    "typescript": "7.0.2"
+  }
+}

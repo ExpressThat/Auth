@@ -1,0 +1,17 @@
+packages:
+  - apps/*
+  - packages/*
+  - packages/providers/*
+  - tooling/*
+  - tooling/generators/*
+  - tooling/quality/*
+  - deploy/*
+
+engineStrict: true
+linkWorkspacePackages: true
+allowBuilds:
+  esbuild: true
+preferWorkspacePackages: true
+saveExact: true
+sharedWorkspaceLockfile: true
+strictPeerDependencies: true

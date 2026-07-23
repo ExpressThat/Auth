@@ -178,8 +178,10 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 ## 4. Phase 1 — Monorepo and Quality Foundation
 
-- [ ] **FND-001 — Initialise the workspace root.**  
-  **Depends on:** DEC-002, DEC-003.  
+- [x] **FND-001 — Initialise the workspace root.**
+
+  **Depends on:** DEC-002, DEC-003.
+
   **Done when:** the root manifest, workspace definition, lockfile, engines, package-manager pin, and root commands install reproducibly.
 
 - [ ] **FND-002 — Create the initial Turborepo directory structure.**  
