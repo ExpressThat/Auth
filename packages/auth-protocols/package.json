@@ -1,0 +1,8 @@
+{
+  "name": "@express-that-auth/auth-protocols",
+  "version": "0.0.0",
+  "private": true,
+  "description": "OAuth, OpenID Connect, token, and authentication protocol behavior.",
+  "license": "MIT",
+  "type": "module"
+}

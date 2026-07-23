@@ -215,6 +215,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 - [x] **DEC-022 — Create a protocol and security standards register.**
   **Depends on:** DEC-006, DEC-016.  
   **Done when:** relevant OAuth, OIDC, JWT, PKCE, token exchange, WebAuthn, SAML, SCIM, webhook, password, and browser-security standards have pinned references and review owners.
+  **Evidence:** [ADR-0021](docs/decisions/0021-standards-register.md) and the [binding standards register](docs/security/standards-register.md).
 
 ## 4. Phase 1 — Monorepo and Quality Foundation
 
@@ -224,9 +225,10 @@ These tasks prevent foundational security or compatibility decisions from being 
 
   **Done when:** the root manifest, workspace definition, lockfile, engines, package-manager pin, and root commands install reproducibly.
 
-- [ ] **FND-002 — Create the initial Turborepo directory structure.**  
+- [x] **FND-002 — Create the initial Turborepo directory structure.**  
   **Depends on:** FND-001.  
   **Done when:** all planned `apps/`, `packages/`, `deploy/`, and `tooling/` workspaces exist with clear ownership and no placeholder production logic.
+  **Evidence:** 29 uniquely named pnpm projects are registered; ownership and dependency direction are defined in [the workspace register](docs/architecture/workspace-ownership.md), and new production workspaces contain metadata only.
 
 - [ ] **FND-003 — Add strict shared TypeScript configurations.**  
   **Depends on:** FND-002.  

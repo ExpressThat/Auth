@@ -18,6 +18,54 @@ importers:
         specifier: 7.0.2
         version: 7.0.2
 
+  apps/auth-api: {}
+
+  apps/auth-web: {}
+
+  apps/jobs: {}
+
+  apps/management-api: {}
+
+  apps/management-web: {}
+
+  apps/platform-api: {}
+
+  deploy/cloudflare: {}
+
+  deploy/docker: {}
+
+  packages/api-contracts: {}
+
+  packages/auth-protocols: {}
+
+  packages/authorization: {}
+
+  packages/config: {}
+
+  packages/data-access: {}
+
+  packages/database-conformance: {}
+
+  packages/database-postgres: {}
+
+  packages/database-sqlite: {}
+
+  packages/domain: {}
+
+  packages/lint-config: {}
+
+  packages/runtime: {}
+
+  packages/sdk-core: {}
+
+  packages/test-config: {}
+
+  packages/typescript-config: {}
+
+  packages/ui: {}
+
+  tooling/generators: {}
+
   tooling/hono-contract-spike:
     dependencies:
       '@hono/node-server':
@@ -73,6 +121,10 @@ importers:
       wrangler:
         specifier: 4.114.0
         version: 4.114.0
+
+  tooling/quality: {}
+
+  tooling/scripts: {}
 
 packages:
 

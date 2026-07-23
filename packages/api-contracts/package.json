@@ -1,0 +1,8 @@
+{
+  "name": "@express-that-auth/api-contracts",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Typed runtime schemas, API errors, events, and OpenAPI contracts.",
+  "license": "MIT",
+  "type": "module"
+}

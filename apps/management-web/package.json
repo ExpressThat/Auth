@@ -1,0 +1,8 @@
+{
+  "name": "@express-that-auth/management-web",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Customer and platform management React application.",
+  "license": "MIT",
+  "type": "module"
+}

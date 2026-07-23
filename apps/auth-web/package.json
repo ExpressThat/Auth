@@ -1,0 +1,8 @@
+{
+  "name": "@express-that-auth/auth-web",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Sign-in, sign-up, consent, and account React application.",
+  "license": "MIT",
+  "type": "module"
+}

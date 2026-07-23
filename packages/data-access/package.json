@@ -1,0 +1,8 @@
+{
+  "name": "@express-that-auth/data-access",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Database-neutral repositories and transaction contracts.",
+  "license": "MIT",
+  "type": "module"
+}

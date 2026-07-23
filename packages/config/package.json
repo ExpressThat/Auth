@@ -1,0 +1,8 @@
+{
+  "name": "@express-that-auth/config",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Validated runtime and deployment configuration contracts.",
+  "license": "MIT",
+  "type": "module"
+}

@@ -1,0 +1,8 @@
+{
+  "name": "@express-that-auth/database-sqlite",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Drizzle SQLite schema, repositories, and migrations.",
+  "license": "MIT",
+  "type": "module"
+}

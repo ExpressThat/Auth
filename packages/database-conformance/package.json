@@ -1,0 +1,8 @@
+{
+  "name": "@express-that-auth/database-conformance",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Shared repository and migration compatibility tests.",
+  "license": "MIT",
+  "type": "module"
+}

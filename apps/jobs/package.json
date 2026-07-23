@@ -1,0 +1,8 @@
+{
+  "name": "@express-that-auth/jobs",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Durable background jobs and scheduled work.",
+  "license": "MIT",
+  "type": "module"
+}

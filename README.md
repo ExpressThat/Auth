@@ -285,6 +285,7 @@ Start here:
 - [Ordered implementation backlog](IMPLEMENTATION_TASKS.md)
 - [Other providers feature overview](OTHER_PROVIDERS_FEATURE_OVERVIEW.md)
 - [Architecture Decision Records](docs/decisions/README.md)
+- [Workspace ownership and boundaries](docs/architecture/workspace-ownership.md)
 - [Living platform threat model](docs/security/threat-model.md)
 - [Data classification and handling](docs/security/data-classification.md)
 - [European residency and transfer map](docs/privacy/european-data-residency.md)

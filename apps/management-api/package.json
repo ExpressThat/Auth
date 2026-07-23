@@ -1,0 +1,8 @@
+{
+  "name": "@express-that-auth/management-api",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Customer organisation management API.",
+  "license": "MIT",
+  "type": "module"
+}
