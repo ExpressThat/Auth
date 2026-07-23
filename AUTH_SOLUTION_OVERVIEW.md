@@ -366,7 +366,7 @@ Runtime interfaces should cover:
 | HTTP server | Workers `fetch` handler | `@hono/node-server` |
 | Static frontend assets | Workers static-assets binding | Unprivileged static web server |
 | Local development database | Local D1/SQLite-compatible binding | Local SQLite file |
-| Shared production database | European PostgreSQL through Hyperdrive or a compatible Worker connection | Direct connection to shared PostgreSQL |
+| Shared production database | Selected supported EU shared-database adapter through a compatible Worker connection | Selected supported shared-database adapter |
 | Secrets | Workers secrets and bindings | Container secrets or an external secrets manager |
 | Queue | Cloudflare Queues | Pluggable queue such as a PostgreSQL-backed queue, Redis-compatible queue, or message broker |
 | Scheduled work | Cron Triggers where residency permits | Dedicated scheduler container |
@@ -375,7 +375,7 @@ Runtime interfaces should cover:
 | Cryptography | Web Crypto and reviewed compatible implementations | Web Crypto with reviewed Node-compatible implementations |
 | Observability | Workers logs, traces, and exported events | OpenTelemetry-compatible logs, metrics, and traces |
 
-The [Cloudflare Hyperdrive documentation](https://developers.cloudflare.com/hyperdrive/) confirms that Workers can connect to existing PostgreSQL and compatible databases. The initial local-development implementation can use SQLite, while a shared PostgreSQL database is the planned default for hosted production and horizontally scaled Docker deployments. Cloudflare-specific stores may still be used for caches, rate limits, or other replaceable infrastructure.
+The [Cloudflare Hyperdrive documentation](https://developers.cloudflare.com/hyperdrive/) confirms that Workers can connect to existing PostgreSQL and compatible databases. Local development defaults to SQLite. PostgreSQL is the initial first-party shared-production adapter and hosted reference profile, but it is not a domain dependency or permanent hosted requirement. Cloudflare-specific stores may still be used for caches, rate limits, or other replaceable infrastructure.
 
 Database, queue, cache, object-storage, email, SMS, and secret-manager choices should be injected as adapters. The application must not assume a Cloudflare binding exists, and the Docker edition must not emulate Cloudflare-specific APIs throughout the business logic.
 
@@ -618,6 +618,38 @@ Each provider category owns a reusable conformance suite. An adapter is releasab
 
 The repository should include deterministic mock adapters for local development and automated testing. Mock providers must be impossible to activate accidentally in a production environment.
 
+#### Local Development Dependency Stack
+
+Interactive local development must not require hosted accounts and must not use
+process-local implementations for capabilities whose behavior depends on shared
+state. The repository will provide one Docker Compose stack under
+`deploy/docker` that starts the local shared dependencies with pinned images,
+loopback-only ports, health checks, non-production credentials, persistent
+volumes, and a deterministic reset command.
+
+The initial profile will use SQLite directly in the application for its local
+database and include these Compose services:
+
+- RabbitMQ for durable queue and redelivery behavior;
+- a local S3-compatible object store for object and signed-access behavior;
+- Valkey for distributed cache and rate-limit state;
+- an SMTP capture service for inspecting email without external delivery; and
+- an OpenTelemetry collector and local observability sinks.
+
+Applications may run on the host or in containers and connect to the same
+Compose network resources through configuration. The initial local adapter
+bindings select these services through the normal runtime contracts. In-memory
+implementations are reserved for deterministic unit/contract tests and cannot
+be the default interactive-development topology.
+
+PostgreSQL is not required for ordinary local development. Production-dialect
+conformance runs in CI, with an opt-in local test profile added only if it proves
+useful for database work.
+
+This development stack is distinct from the production self-hosted Compose
+example. It carries no production hardening, availability, persistence, backup,
+residency, or security guarantee and must refuse production mode.
+
 ### 3.10 European Residency on Cloudflare
 
 Running an ordinary Worker on Cloudflare's global network does not by itself prove that all processing stays in Europe.
@@ -644,12 +676,20 @@ Drizzle reduces database-driver coupling, but it does not make SQL dialects iden
 - **Local development and early single-instance use:** SQLite.
 - **Cloudflare local development:** a local D1/SQLite-compatible database through the Workers development environment.
 - **Automated repository tests:** SQLite for fast feedback, plus PostgreSQL in CI for production-dialect verification.
-- **Hosted production:** a shared European PostgreSQL database accessed from Workers through a compatible connection or Hyperdrive.
-- **Horizontally scaled Docker production:** a shared PostgreSQL database accessed through a bounded connection pool.
+- **Hosted production:** an operator-selected, supported shared transactional database in approved European regions; PostgreSQL is the initial reference adapter.
+- **Horizontally scaled Docker production:** an operator-selected, supported shared transactional database; PostgreSQL is the initial first-party adapter.
 
 A local SQLite file is not a supported production database for multiple API or job instances. Each container would otherwise have a different file or require an unsafe shared filesystem, and SQLite write concurrency would become a scaling constraint.
 
 Cloudflare D1 can be supported through Drizzle's [D1 integration](https://orm.drizzle.team/docs/sqlite/connect-cloudflare-d1), but choosing D1 for hosted production requires a separate review of transaction, consistency, residency, backup, throughput, and migration requirements. It must not be treated as interchangeable with PostgreSQL merely because both are supported by Drizzle.
+
+The core does not choose a database vendor. A deployment selects a registered
+database adapter through validated operator configuration. Self-hosters may use
+any first-party, community, or private adapter that implements the repository,
+transaction, schema, migration, health, backup-capability, and conformance
+contracts for that database. "Pluggable" does not mean an arbitrary database
+works without such an implementation or that a non-SQL database is supported by
+Drizzle automatically.
 
 #### Schema and Repository Design
 
@@ -660,6 +700,7 @@ The database packages should provide:
 - A shared `UnitOfWork` and transaction boundary contract.
 - Repository contracts for users, identities, credentials, organisations, memberships, applications, sessions, grants, providers, audit events, and jobs.
 - A SQLite implementation and a PostgreSQL implementation.
+- A versioned database-adapter registration contract for additional dialects.
 - Dialect-specific Drizzle schemas and generated migrations.
 - Explicit mapping between database records and domain entities.
 - A common repository conformance suite run against both implementations.
@@ -1408,8 +1449,8 @@ The following decisions now form part of the intended product design:
 16. API contracts will be schema-driven and strongly typed, generating runtime validation, TypeScript types, full OpenAPI specifications, interactive Swagger-compatible documentation, contract tests, and SDK inputs from one source.
 17. The entire product will use a Turborepo monorepo with explicit package boundaries, a dependency-aware task graph, affected-package CI, cacheable build outputs, and independently deployable application workspaces.
 18. External delivery, infrastructure, federation, risk, and streaming integrations will use strongly typed provider contracts with schema-driven configuration, tenant-scoped instances, inherited bindings, capability discovery, secret references, normalized errors, and reusable conformance suites.
-19. SQL access and migrations will use Drizzle ORM. SQLite is the initial local and single-instance database, while hosted and horizontally scaled production deployments will use a shared transactional database, with PostgreSQL as the planned default.
-20. Database portability will be enforced through repository contracts, separate dialect schemas and migrations, and shared conformance tests rather than assuming SQLite and PostgreSQL are behaviourally identical.
+19. SQL access and migrations will use Drizzle ORM. SQLite is the initial local and single-instance database; PostgreSQL is the initial shared-production reference adapter; hosted and self-hosted operators select any registered, supported database adapter that meets their deployment profile.
+20. Database portability will be enforced through repository contracts, versioned adapter registration, separate dialect schemas and migrations, and shared conformance tests rather than assuming Drizzle makes databases behaviourally interchangeable.
 21. API, frontend-serving, and job instances will be stateless and horizontally scalable. No cross-request security, tenant, session, cache, lock, rate-limit, job, or authorization state may exist only in process memory.
 22. Every first-party production behaviour will have automated tests, every bug fix will include a regression test, and executable TypeScript will maintain complete line, statement, function, and branch coverage.
 23. Every first-party authored source, test, configuration, migration, and tooling file is limited to 250 physical lines. Documentation, generated content, third-party code, lockfiles, and machine-generated fixtures are excluded.

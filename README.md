@@ -69,7 +69,8 @@ capabilities include:
 - email, SMS, social identity, enterprise SSO, and directory provisioning;
 - webhooks, action hooks, risk, bot challenges, observability, and deployment
   automation; and
-- database repositories for SQLite and PostgreSQL through Drizzle.
+- database repositories and migrations behind selectable adapters, with Drizzle
+  SQLite and PostgreSQL as the initial first-party implementations.
 
 Every adapter declares capabilities, runtime support, configuration and secret
 schemas, failure behavior, tenant scope, and residency guarantees. Hosted
@@ -176,7 +177,7 @@ flowchart TB
 | API | Hono |
 | Contracts | Zod-backed routes, inferred types, OpenAPI 3.1 |
 | Frontend | Vite, React, HeroUI, Tailwind CSS |
-| Database | Drizzle with SQLite and PostgreSQL implementations |
+| Database | Pluggable repository adapters; initial Drizzle SQLite and PostgreSQL implementations |
 | Formatting and linting | Biome, installed and configured at the workspace root |
 | Unit/integration tests | Vitest |
 | Browser tests | Playwright |
@@ -205,6 +206,15 @@ Argon2id approaches. Their useful conformance tests will move into production
 packages, and the spike workspaces will be removed when those packages replace
 them.
 
+The planned local-development profile uses SQLite directly and a single Docker
+Compose stack for shared dependencies such as RabbitMQ, S3-compatible object
+storage, Valkey, email capture, and OpenTelemetry. Initial
+interactive-development adapters connect to those local resources through the
+normal contracts; in-process adapters remain test doubles only. PostgreSQL is
+reserved for CI production-dialect conformance and optional database testing,
+not required for ordinary local development. This is a development convenience,
+not the production self-hosted topology.
+
 ## Getting Started
 
 ### Prerequisites
@@ -212,8 +222,8 @@ them.
 - Node.js `>=24.18.0 <27`
 - pnpm `11.16.0`
 - Git
-- Docker for PostgreSQL, container, and full deployment testing as those
-  workspaces are introduced
+- Docker for local shared dependencies, container builds, and deployment
+  testing as those workspaces are introduced
 
 Enable Corepack if pnpm is not already available:
 

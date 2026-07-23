@@ -217,6 +217,13 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Done when:** relevant OAuth, OIDC, JWT, PKCE, token exchange, WebAuthn, SAML, SCIM, webhook, password, and browser-security standards have pinned references and review owners.
   **Evidence:** [ADR-0021](docs/decisions/0021-standards-register.md) and the [binding standards register](docs/security/standards-register.md).
 
+- [x] **DEC-023 — Define the pluggable database-adapter boundary.**
+  **Depends on:** DEC-013, DEC-014, DEC-018.  
+  **Done when:** hosted and self-hosted database selection, initial adapters,
+  capability declaration, schema and migration ownership, conformance, recovery,
+  and the limits of ORM portability are explicit.
+  **Evidence:** [ADR-0022](docs/decisions/0022-pluggable-database-adapters.md).
+
 ## 4. Phase 1 — Monorepo and Quality Foundation
 
 - [x] **FND-001 — Initialise the workspace root.**
@@ -312,6 +319,10 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** FND-005, FND-015, FND-017.
   **Done when:** typed/static analysis, dependency and secret scans, lockfile integrity, generated-artifact checks, container and deployment-configuration scans, severity policy, expiring suppressions, scheduled runs, and machine-readable findings fail the appropriate quality or release gate.
 
+- [ ] **FND-023 — Create the local shared-dependency Compose stack.**
+  **Depends on:** FND-002, FND-014.
+  **Done when:** one documented command starts pinned, health-checked, loopback-only RabbitMQ, S3-compatible object storage, Valkey, SMTP capture, and OpenTelemetry services; applications use local SQLite directly; host-run and container-run apps can use the same service endpoints; reset is deterministic; no real secrets are committed; and the stack refuses production mode.
+
 ## 5. Phase 2 — Runtime-Neutral Platform Contracts
 
 - [ ] **RUN-001 — Create the validated configuration package.**  
@@ -364,7 +375,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [ ] **RUN-013 — Implement local deterministic adapters.**  
   **Depends on:** RUN-002 through RUN-009.  
-  **Done when:** safe in-memory request/test doubles and local non-production adapters pass contracts and cannot be enabled in production.
+  **Done when:** safe in-memory deterministic test doubles pass contracts and cannot be selected by interactive or production deployments.
 
 - [ ] **RUN-014 — Add liveness, readiness, and dependency diagnostics contracts.**  
   **Depends on:** RUN-011, DEC-021.  
@@ -393,6 +404,10 @@ These tasks prevent foundational security or compatibility decisions from being 
 - [ ] **RUN-020 — Enforce the no-cross-request-process-state rule.**  
   **Depends on:** RUN-012, RUN-016, FND-007.  
   **Done when:** automated architecture checks and multi-instance tests reject tenant caches, sessions, nonces, locks, rate limits, job ownership, or authorization state held only in application memory.
+
+- [ ] **RUN-021 — Implement the initial local resource-backed adapter profile.**
+  **Depends on:** RUN-003 through RUN-009, RUN-017, RUN-018, FND-023.
+  **Done when:** validated local configuration binds database access to SQLite and durable queues, object storage, distributed cache/rate-limit state, email capture, and observability to Compose resources through normal contracts; every adapter passes its conformance suite; shared capabilities do not use process-local state; and the profile cannot start as production.
 
 ## 6. Phase 3 — Database, Migrations, and Repositories
 
@@ -495,6 +510,10 @@ These tasks prevent foundational security or compatibility decisions from being 
 - [ ] **DB-025 — Add the local Workers D1/SQLite-compatible database adapter.**  
   **Depends on:** DB-004, DB-015 through DB-021, RUN-017.  
   **Done when:** local Workers development runs the shared repository conformance suite through the D1-compatible binding without making D1 a required hosted-production database.
+
+- [ ] **DB-026 — Publish the pluggable database-adapter contract and kit.**
+  **Depends on:** DB-003, DB-022, RUN-017.
+  **Done when:** hosted and self-hosted composition can select a registered database adapter through validated operator configuration; the kit defines schema, migration, transaction, repository, health, backup/restore capability, runtime, and conformance requirements; SQLite and PostgreSQL are initial first-party implementations; and additional Drizzle-supported or independently implemented adapters require no domain/API fork.
 
 ## 7. Phase 4 — API Contracts and Deployable Shells
 
@@ -1463,8 +1482,8 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Done when:** device login, environment selection, safe credential storage, config export/import, user import, diagnostics, and non-interactive use are defined.
 
 - [ ] **DX-006 — Build local development and emulator tooling.**  
-  **Depends on:** API-018, PRV-011, DB-004.  
-  **Done when:** one command starts SQLite, APIs, jobs, mock delivery, and both frontends with deterministic reset and sample tenants.
+  **Depends on:** API-018, PRV-011, DB-004, RUN-021.  
+  **Done when:** one command starts or verifies SQLite, local Compose dependencies, migrations, APIs, jobs, both frontends, deterministic sample tenants, and delivery inspection; an opt-in PostgreSQL profile is used only for production-dialect testing when needed.
 
 - [ ] **DX-007 — Implement configuration export.**  
   **Depends on:** TEN-018, PRV-008.  
@@ -1553,8 +1572,8 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Done when:** static assets, SPA fallback, caching, compression, security headers, health, and immutable configuration loading work.
 
 - [ ] **OPS-003 — Create the self-hosted Compose example.**  
-  **Depends on:** OPS-001, OPS-002, DB-005, JOB-003.  
-  **Done when:** APIs, frontends, jobs, PostgreSQL, queue/cache choice, secrets, health, migrations, and local TLS guidance start reproducibly.
+  **Depends on:** OPS-001, OPS-002, DB-005, DB-026, JOB-003.  
+  **Done when:** APIs, frontends, jobs, an operator-selected supported shared-database adapter, operator-selected queue/cache/object/secret adapters, health, migrations, and TLS guidance start reproducibly; the PostgreSQL reference profile works but is not mandatory architecture, and production composition is clearly separated from the local-development stack.
 
 - [ ] **OPS-004 — Create Cloudflare Workers deployment packages.**  
   **Depends on:** API-017, UI-020, MGT-012.  
@@ -1853,10 +1872,10 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 Complete when:
 
-- DEC-001 through DEC-022 are either completed or explicitly scheduled before their first consumer.
-- FND-001 through FND-022 pass on a clean checkout.
-- RUN-001 through RUN-020 have conformance-tested implementations.
-- DB-001 through DB-025 pass against SQLite, PostgreSQL, and the applicable local Workers database path.
+- DEC-001 through DEC-023 are either completed or explicitly scheduled before their first consumer.
+- FND-001 through FND-023 pass on a clean checkout.
+- RUN-001 through RUN-021 have conformance-tested implementations.
+- DB-001 through DB-026 pass against SQLite, PostgreSQL, and the applicable local Workers database path; the adapter kit proves the core is not tied to either dialect.
 - API-001 through API-019 run equivalently through Docker and Workers shells.
 
 ### M1 — Core Authentication MVP

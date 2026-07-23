@@ -63,12 +63,16 @@ Configuration packages cannot import product code.
 | Workspace | Ownership | Responsibility |
 | --- | --- | --- |
 | `deploy/cloudflare` | Cloud platform | Workers entry points, bindings, Wrangler configuration, and hosted composition |
-| `deploy/docker` | Container platform | Container entry points, Dockerfiles, Compose examples, and self-hosted composition |
+| `deploy/docker` | Container platform | Container entry points, local dependency Compose, production Dockerfiles, and self-hosted composition |
 
 Deployments select adapters and compose applications. Product packages never
 import deployment workspaces. Workers and Docker composition must expose the
 same contracts and security behavior; hosted operational commitments do not
 transfer to self-hosted Docker.
+
+The local dependency Compose stack and production self-hosted example are
+separate profiles. Local dependencies default to loopback-only development
+settings and cannot be promoted as a production topology.
 
 ## Tooling Workspaces
 

@@ -35,6 +35,7 @@ platform's security, portability, operability, or public contracts.
 | [0019](0019-support-impersonation.md) | Prefer read-only support and constrain impersonation | Accepted |
 | [0020](0020-security-reliability-targets.md) | Use tiered SLOs and security response targets | Accepted |
 | [0021](0021-standards-register.md) | Pin and own protocol and security standards | Accepted |
+| [0022](0022-pluggable-database-adapters.md) | Keep database selection behind conforming adapters | Accepted |
 | [Template](TEMPLATE.md) | Standard ADR structure | Reference |
 
 ## Numbering
@@ -51,7 +52,8 @@ the index in numeric order and link superseding records in both directions.
 
 ADR numbers are not the same identifier as backlog `DEC-*` tasks. `DEC-001`
 created this template and index without creating a decision record, so
-`DEC-002` produced `ADR-0001` and `DEC-022` produced `ADR-0021`. Each ADR's
+`DEC-002` produced `ADR-0001`, `DEC-022` produced `ADR-0021`, and `DEC-023`
+produced `ADR-0022`. Each ADR's
 `Related tasks` field is the authoritative mapping.
 
 ## Lifecycle

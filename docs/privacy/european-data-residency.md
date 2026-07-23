@@ -61,7 +61,7 @@ transfer impact and supplementary measures still require assessment.
 | TLS termination and request execution | Request path/body/cookies/tokens/IP metadata | Hosted/custom identity and management origins use EU Regional Services on supported zone/custom domains; verify continuously | `workers.dev`, unregionalized host, unsupported protocol/product, or silent global fallback |
 | Static public assets/discovery/JWKS | Public | May use global cache/CDN with integrity, versioning, and no personal variants | Private/authenticated responses in shared/global cache |
 | Browser/API response | All classes needed by caller | Decrypt/process in EU, authorize/minimize, encrypted transit to the user wherever located | Proxy/edge feature that reprocesses content outside approved EU boundary |
-| Primary SQL database | Confidential, Personal, Credential, secret references | EU PostgreSQL primary with EU replicas, TLS, encryption, EU administration and support | Global replica, non-EU failover, copied production data, or unsupported location |
+| Primary SQL database | Confidential, Personal, Credential, secret references | Supported shared-database adapter with EU primary, replicas, TLS, encryption, administration, support, backup, and failover evidence; PostgreSQL is the initial reference | Global replica, non-EU failover, copied production data, unsupported dialect/location, or unqualified adapter |
 | Database connection acceleration | Query text/parameters/results/credentials | Use only after the exact service/profile proves EU processing, cache, metadata, support, and subrequest behavior; otherwise direct approved EU path or EU data-access service | Assume Worker regionalization also regionalizes a database proxy/cache |
 | D1, if separately approved | Same as SQL scope | Create with immutable `jurisdiction=eu`; replicas remain inside jurisdiction; pass transaction/backup/restore review | Location hints without jurisdiction, existing non-jurisdiction DB, or automatic global placement |
 | Queue and workflow | Tenant context, events, job inputs/results | EU PostgreSQL-backed queue or other adapter with EU storage, processing, dead letter, metrics, support, backup, and consumer execution | Cloud/service queue without documented EU guarantee; payload minimization does not cure unsupported metadata |
@@ -109,8 +109,9 @@ its own residency decision.
 
 ### Data Stores
 
-- Hosted PostgreSQL remains the default production system of record in an
-  approved EU region with EU replicas/backups.
+- Hosted production selects a supported shared-database adapter whose complete
+  path meets the EU policy. PostgreSQL is the initial reference adapter, not a
+  permanent product requirement.
 - Hyperdrive is not automatically approved merely because its origin database
   is European. Before use with non-public data, qualification must cover query
   processing, connection pools, caches, credentials, telemetry, support, and

@@ -274,7 +274,7 @@ flowchart LR
 | RUN-T02 | Cloudflare binding or Node API leaks into core and changes correctness | High | Adapter contracts, package boundaries, bundle inspection, equal conformance, no runtime conditionals in domain | Low |
 | RUN-T03 | Docker trusts arbitrary forwarded headers or runs privileged/insecure | High | Explicit proxy allow-list, canonical public origins, unprivileged read-only image, dropped capabilities, secure defaults | Medium from operator misconfiguration |
 | RUN-T04 | Worker global reuse or Node singleton becomes authoritative cache/session/lock | Critical | No cross-request in-process correctness, static analysis/review, multi-instance and eviction tests | Low |
-| RUN-T05 | SQLite is used as shared multi-instance production storage | High | Profile validation forbids it, PostgreSQL required for scaled production, clear diagnostics/docs | Low |
+| RUN-T05 | A single-instance database is used as shared multi-instance production storage | High | Profile capability validation requires a supported shared transactional adapter; PostgreSQL is the initial reference, not the only possible implementation | Low |
 | RUN-T06 | Browser cookie/storage/privacy changes break CSRF/SSO or expose session | High | Host-only opaque cookies, no third-party-cookie dependency, browser matrix, fallback interactions, periodic review | Medium due ecosystem change |
 | RUN-T07 | Denial of service differs at Worker limits vs container resources | High | Per-profile measured limits, request budgets, queue offload, backpressure, autoscaling/load tests | Medium under provider-wide outage |
 
