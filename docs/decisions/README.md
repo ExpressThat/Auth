@@ -49,6 +49,11 @@ Use four-digit, monotonically increasing identifiers:
 Never reuse the identifier of a deleted or superseded decision. Add new ADRs to
 the index in numeric order and link superseding records in both directions.
 
+ADR numbers are not the same identifier as backlog `DEC-*` tasks. `DEC-001`
+created this template and index without creating a decision record, so
+`DEC-002` produced `ADR-0001` and `DEC-022` produced `ADR-0021`. Each ADR's
+`Related tasks` field is the authoritative mapping.
+
 ## Lifecycle
 
 1. Copy the template and record the context before implementation.
