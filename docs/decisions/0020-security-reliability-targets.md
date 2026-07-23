@@ -30,9 +30,12 @@ burst capacity, at least 30% bottleneck headroom, queue start/hand-off targets b
 security priority, EU-contained RPO/RTO by failure scope, and SEV-0 through
 SEV-3 response/communication targets.
 
-Workers and Docker must meet the same user-facing behavior and target thresholds.
-Self-hosted releases publish measured reference topologies and include the load/
-failure tools rather than promising performance for unknown hardware.
+Workers and Docker must meet the same user-facing behavior and security
+invariants. Hosted Workers and hosted Docker capacity must meet the target
+thresholds. Self-hosted releases publish measured reference topologies and
+include load/failure tools rather than promising performance for unknown
+hardware. Self-hosted operators set and prove their own uptime, availability,
+capacity, backup, and RPO/RTO commitments.
 
 Production beta gathers/exercises the indicators. General availability requires
 representative evidence and no unowned critical/high security finding.
@@ -73,7 +76,8 @@ evidence, incident tooling, and disaster recovery remain within the EU.
 
 Black-box SLIs and conformance are provider-neutral. Each adapter/runtime can
 have different internal budgets but cannot deliver weaker externally observable
-correctness or omit benchmark/failure evidence.
+correctness or omit benchmark/failure evidence. Reference evidence is not an SLA
+or guarantee for another self-hosted topology.
 
 ## Operational Impact
 
@@ -102,4 +106,3 @@ staff and infrastructure. Error-budget exhaustion pauses risky delivery.
 - Any trigger in the target standard.
 - A customer contract proposes a stricter SLA/SLO.
 - Targets are routinely exceeded or missed and no longer guide decisions.
-

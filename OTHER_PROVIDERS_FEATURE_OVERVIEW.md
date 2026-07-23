@@ -110,3 +110,7 @@ The most important conclusions applied to the product plan are:
 - Security protections need strong defaults rather than optional afterthoughts.
 - Hosted and self-hosted editions should share the same domain and protocol model.
 - Customers and users retain control of their data through complete, self-service portability and privacy workflows rather than support-only exports.
+- Open-source availability and functional parity must not imply a service
+  promise: hosted commitments belong only to the hosted operator's applicable
+  policies and contracts, while self-hosted operators own their infrastructure,
+  regions, compliance, security, availability, recovery, and privacy operations.

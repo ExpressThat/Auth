@@ -1,6 +1,7 @@
 # Security and Reliability Targets
 
-- **Status:** Binding general-availability targets
+- **Status:** Binding hosted general-availability targets; self-hosted references
+  only
 - **Version:** 1.0
 - **Date:** 2026-07-23
 - **Owners:** Security, SRE, platform, and identity engineering
@@ -10,9 +11,16 @@
 
 These targets define production acceptance for the hosted EU service and
 reference profiles for self-hosted deployments. Production beta must collect the
-same indicators and demonstrate a credible path to the targets; general
-availability requires meeting them through representative load, failure, restore,
-and incident exercises.
+same indicators and demonstrate a credible path to the targets; hosted general
+availability requires meeting them through representative load, failure,
+restore, and incident exercises.
+
+Only the operated hosted service can receive these SLO and recovery commitments,
+and product targets are not contractual promises unless incorporated into an
+applicable hosted policy or agreement. Self-hosted operators set and prove their
+own availability, performance, capacity, backup, and RPO/RTO objectives. The
+project makes no guarantee for unknown operator infrastructure. See the
+[hosted and self-hosted responsibility boundary](hosted-self-hosted-responsibility.md).
 
 An SLI counts eligible requests from the public service boundary:
 
@@ -136,7 +144,9 @@ proof that reaches it within five minutes.
 
 Self-hosted releases publish benchmark results and sizing for named reference
 topologies. The product cannot promise throughput for unknown operator hardware,
-but its conformance/load tools let the operator prove chosen targets.
+but its conformance/load tools let the operator prove chosen targets. A result
+applies only to the named versions, configuration, workload, and infrastructure;
+it is neither an SLA nor a prediction for another installation.
 
 ## 5. Queue and Background Timeliness
 
@@ -167,6 +177,10 @@ Alerts:
 - declare incident severity from the customer/security effect, not queue name.
 
 ## 6. Recovery Objectives
+
+The following are hosted-service objectives. A self-hosted operator must define,
+implement, test, and communicate its own RPO/RTO; using the software or a
+reference topology does not inherit these objectives.
 
 | Failure scope | RPO | RTO / service objective |
 | --- | ---: | ---: |
@@ -258,4 +272,3 @@ unit tests or a single happy-path benchmark.
 - Error budget is exhausted twice in a quarter.
 - Security/privacy obligations require faster detection, containment, deletion,
   notification, or recovery.
-

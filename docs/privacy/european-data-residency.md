@@ -169,16 +169,25 @@ handling.
 
 ## 6. Self-Hosted Profile
 
-Self-hosted operators are the infrastructure controller/processor responsible
-for their selected regions and subprocessors. The product does not claim that an
-arbitrary Docker installation is European.
+Self-hosted operators may select any infrastructure, vendor, support model, and
+region, including locations outside Europe. They are responsible for their
+controller/processor roles, legal controls, remote access, backups, failover,
+subprocessors, and transfers. The hosted data map does not apply automatically
+and the product does not claim that an arbitrary Docker installation is
+European or GDPR compliant.
 
-The deployment validator supports an `eu-resident` policy that requires every
-adapter to declare storage, processing, backup, support, and failover locations.
-It fails startup/activation on unknown, global, conflicting, or insufficient
-capabilities. Operator overrides cannot make the product display a verified EU
-status; an override produces an explicit non-compliant/unsupported status and
-audit event.
+The deployment validator offers an optional `eu-resident` policy. When selected,
+every adapter must declare storage, processing, backup, support, and failover
+locations, and unknown, global, conflicting, or insufficient capability fails
+that profile. An operator may instead choose an unrestricted or custom policy.
+Such a deployment is shown as `operator-managed / EU residency not verified`,
+not as having inherited hosted residency and not as universally illegal or
+unsupported.
+
+Passing the validator is not legal advice, GDPR certification, or proof about
+undisclosed infrastructure and operating practice. The full boundary is defined
+in the
+[hosted and self-hosted responsibility policy](../operations/hosted-self-hosted-responsibility.md).
 
 Documentation maps database, queue, cache, object, secret, key, telemetry,
 provider, backup, and support responsibilities. Diagnostics export the safe
@@ -280,4 +289,3 @@ The provider-fact review is repeated before enabling or upgrading a capability.
 - [Cloudflare D1 data location](https://developers.cloudflare.com/d1/configuration/data-location/)
 - [Cloudflare R2 localization guide](https://developers.cloudflare.com/data-localization/how-to/r2/)
 - [Cloudflare Hyperdrive architecture](https://developers.cloudflare.com/hyperdrive/concepts/how-hyperdrive-works/)
-

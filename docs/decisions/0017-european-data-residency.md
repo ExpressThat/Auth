@@ -35,9 +35,11 @@ separately. Regional Services is not treated as covering subrequests or bindings
 Cloud services without an explicit current EU guarantee remain disabled for
 non-public workloads; the portable EU Docker/service adapter is used instead.
 
-Self-hosters select their own regions. The product can validate and report an EU
-profile but cannot claim residency for an arbitrary installation or allow an
-operator override to masquerade as verified compliance.
+Self-hosters select their own regions and may intentionally operate outside
+Europe. The optional EU profile can validate and report declared technical
+capabilities, but cannot claim residency or GDPR compliance for an arbitrary
+installation. An unrestricted/custom profile is labelled operator-managed and
+not EU-verified; it cannot masquerade as having inherited hosted compliance.
 
 ## Alternatives Considered
 
@@ -79,7 +81,8 @@ Customer-directed transfers remain visible and purpose-limited.
 Residency is expressed through adapter capabilities and deployment policy.
 Workers can use compliant platform features where proven; Docker and external
 EU services remain permanent alternatives. Self-hosters receive the same
-validator without a false hosted guarantee.
+validator without a false hosted guarantee. The validator is not legal advice,
+certification, an SLA, or proof of undisclosed operator practice.
 
 ## Operational Impact
 
@@ -112,4 +115,3 @@ Cloud services remain unavailable until they publish sufficient guarantees.
   introduced.
 - GDPR transfer guidance, adequacy, or customer residency commitments change.
 - Evidence expires or monitoring observes out-of-region behavior.
-

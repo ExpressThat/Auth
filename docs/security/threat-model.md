@@ -343,7 +343,10 @@ state or disclosure matters.
   not eliminate this.
 - A malicious self-hosted root operator can read its deployment's data and keys,
   replace binaries, or disable controls. Secure defaults, diagnostics, signed
-  releases, and documentation cannot override root control.
+  releases, and documentation cannot override root control. The operator also
+  owns its regions, providers, legal compliance, availability, backups,
+  recovery, patching, and incident response; hosted guarantees do not transfer
+  to that installation.
 - A platform/KMS/database/build administrator or legal authority with sufficient
   access can create exceptional risk. Separation of duties, non-exportable keys,
   immutable external evidence, approval, and transparency reduce the risk.
@@ -390,4 +393,3 @@ Security incidents update this model, add regression evidence, and reassess
 similar trust boundaries. A feature cannot be considered complete while it has
 an unowned critical/high threat or relies on an undocumented security
 assumption.
-

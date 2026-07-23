@@ -2,6 +2,7 @@
   "name": "@express-that-auth/password-hashing-spike",
   "version": "0.0.0",
   "private": true,
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "build": "tsc --noEmit && tsc --noEmit --project tsconfig.worker.json",

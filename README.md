@@ -55,6 +55,10 @@ Frontends use Vite and produce deployable assets for both Workers and Docker.
 Runtime parity is tested; a feature is incomplete if it works on only one
 target.
 
+Runtime parity means compatible behavior, contracts, security invariants, and
+conformance—not identical operational guarantees. Hosted commitments apply only
+to infrastructure operated by the hosted service.
+
 ### Infrastructure is adapter-based
 
 Core packages depend on contracts rather than provider SDKs. Replaceable
@@ -109,6 +113,20 @@ Ordinary exports never contain reusable credentials or secrets. Eligible
 password-hash migrations use a separate, target-encrypted, high-risk workflow.
 Hosted non-public data and platform-controlled processing remain in approved
 European Union locations.
+
+### Self-hosted deployments are operator-controlled
+
+Self-hosted operators may use any infrastructure, provider, or region, including
+locations outside Europe. They own their deployment's legal compliance,
+security, subprocessors, upgrades, capacity, availability, monitoring, backups,
+recovery, and data-subject operations.
+
+The open-source project provides software, secure defaults, adapters, validation
+tools, and reference topologies. It makes no service promise or guarantee for a
+self-hosted installation. Any hosted commitments come only from the hosted
+operator's applicable terms, privacy notice, data-processing agreement, support
+policy, or customer contract. See the
+[hosted and self-hosted responsibility boundary](docs/operations/hosted-self-hosted-responsibility.md).
 
 ## Architecture
 
@@ -273,6 +291,7 @@ Start here:
 - [Bootstrap and break-glass standard](docs/security/bootstrap-and-break-glass.md)
 - [Support access and impersonation standard](docs/security/support-and-impersonation.md)
 - [Security and reliability targets](docs/operations/security-reliability-targets.md)
+- [Hosted and self-hosted responsibility boundary](docs/operations/hosted-self-hosted-responsibility.md)
 - [Protocol and security standards register](docs/security/standards-register.md)
 
 The overview defines the intended product. The backlog is the source of delivery
@@ -293,5 +312,12 @@ graph and current checkboxes.
 
 ## License
 
-This repository is currently private and `UNLICENSED`. No permission is granted
-to use, copy, modify, or distribute it unless a license is added explicitly.
+ExpressThat Auth is open-source software licensed under the
+[MIT License](LICENSE).
+
+Copyright (c) 2026 ExpressThat LTD.
+
+The licence covers the software and includes its standard "as is" warranty
+disclaimer. It does not create a hosted-service SLA, support commitment, data
+residency promise, DPA, or other managed-service obligation. Those can be made
+only by the hosted operator through a separate applicable policy or contract.

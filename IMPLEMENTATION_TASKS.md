@@ -71,6 +71,9 @@ Infrastructure choices are replaceable implementation details, not domain depend
 - Each required capability must have a safe local-development implementation, at least one production-capable self-hosted implementation, and an appropriate hosted implementation before those deployment profiles are declared supported.
 - A deployment must fail validation when a required adapter is absent, incompatible with its runtime, incorrectly configured, or unable to meet the selected residency policy.
 - All implementations of a contract run the same conformance suite, including failure, retry, duplicate-delivery, concurrency, redaction, tenant-scope, runtime, and residency cases that apply to that capability.
+- Self-hosted operators may select any provider or region, including outside Europe. Hosted residency, GDPR, security, availability, support, backup, recovery, and RPO/RTO commitments do not transfer to self-hosted installations.
+- The open-source project, repository, contributors, roadmap, tests, benchmarks, and documentation make no service promise. Self-hosted validation and reference results are operator tools, not legal certification, an SLA, or a guarantee for unknown infrastructure.
+- Documentation and product UI must preserve the [hosted and self-hosted responsibility boundary](docs/operations/hosted-self-hosted-responsibility.md). Hosted promises exist only when the hosted operator states them in an applicable published policy or contract.
 
 ### 2.5 Continuous Defensive Security Rule
 
@@ -1563,7 +1566,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [ ] **OPS-007 — Implement production queue adapters.**  
   **Depends on:** RUN-007, RUN-017, RUN-018, JOB-003.  
-  **Done when:** separately packaged Workers-hosted and production self-hosted choices pass queue conformance, duplicate delivery, lease expiry, dead-letter, scale, configuration, and residency tests.
+  **Done when:** separately packaged Workers-hosted and production self-hosted choices pass queue conformance, duplicate delivery, lease expiry, dead-letter, scale, configuration, and selected-policy residency tests; hosted choices meet the European policy.
 
 - [ ] **OPS-008 — Implement production distributed cache/rate-limit adapters.**  
   **Depends on:** RUN-006, RUN-017, RUN-018, SEC-014.  
@@ -1571,7 +1574,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [ ] **OPS-009 — Implement production object-storage adapters.**  
   **Depends on:** RUN-008, RUN-017, RUN-018, AUTH-026.  
-  **Done when:** separately packaged hosted and production self-hosted choices pass integrity, encryption, signed access, expiry, deletion, retention, failover, configuration, and European residency checks.
+  **Done when:** separately packaged hosted and production self-hosted choices pass integrity, encryption, signed access, expiry, deletion, retention, failover, configuration, and selected-policy residency checks; hosted choices meet the European policy.
 
 - [ ] **OPS-010 — Implement production secret-storage adapters.**  
   **Depends on:** RUN-004, RUN-017, RUN-018, PRV-007.  
@@ -1644,6 +1647,10 @@ These tasks prevent foundational security or compatibility decisions from being 
 - [ ] **OPS-027 — Build hosted custom-domain management screens.**  
   **Depends on:** OPS-022 through OPS-024, MGT-004.  
   **Done when:** authorised administrators request domains, copy DNS records, monitor verification and certificates, retry failures, activate, roll back, and remove domains safely.
+
+- [ ] **OPS-028 — Publish and enforce the self-hosted responsibility boundary.**
+  **Depends on:** OPS-025, OPS-026, DEC-018, DEC-021.
+  **Done when:** installation guides, configuration UI, deployment reports, benchmarks, support policy, and release profiles state that self-hosted operators choose infrastructure and regions and own compliance, security, availability, backups, recovery, RPO/RTO, subprocessors, and privacy operations; hosted commitments are never presented as inherited guarantees.
 
 ## 19. Phase 16 — Privacy, Audit, Analytics, and Commercial Controls
 
@@ -1771,7 +1778,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [ ] **ADV-012 — Add self-hosted high-availability validation.**  
   **Depends on:** OPS-016, OPS-018 through OPS-020, OPS-025.  
-  **Done when:** documented topologies survive API, worker, database, cache, queue, object, and key-service failures within targets.
+  **Done when:** named, reproducible reference topologies survive API, worker, database, cache, queue, object, and key-service failures within their declared targets, and results are labelled as reference evidence rather than a guarantee for another installation.
 
 - [ ] **ADV-013 — Add automated compatibility reports and provider importers.**  
   **Depends on:** DX-018, DX-019.  
@@ -1787,13 +1794,13 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [ ] **ADV-016 — Implement initial production SMS adapters.**  
   **Depends on:** ADV-001, RUN-017, PRV-010.  
-  **Done when:** hosted and self-hosted-compatible choices pass delivery, error, idempotency, timeout, sender, fraud, secret, runtime, and European residency conformance.
+  **Done when:** hosted and self-hosted-compatible choices pass delivery, error, idempotency, timeout, sender, fraud, secret, runtime, and selected-policy residency conformance; hosted choices meet the European policy.
 
 ## 21. Phase 18 — Release Gates and General Availability
 
 - [ ] **REL-001 — Define supported deployment profiles.**  
-  **Depends on:** OPS-004, OPS-026.  
-  **Done when:** hosted Workers, hosted European containers where required, and self-hosted Docker profiles list supported adapters, dependencies, scaling limits, and exclusions.
+  **Depends on:** OPS-004, OPS-026, OPS-028.
+  **Done when:** hosted Workers, hosted European containers where required, and self-hosted Docker profiles list supported adapters, dependencies, scaling limits, exclusions, operator responsibilities, and whether each target is a hosted commitment or reference result.
 
 - [ ] **REL-002 — Freeze and review the first stable public API.**  
   **Depends on:** API-013, DX-021.  
@@ -1820,15 +1827,20 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Done when:** production evidence verifies European hosting and processing claims, retention, export, deletion, support access, backups, and subprocessors.
 
 - [ ] **REL-008 — Complete self-hosted install and upgrade acceptance.**  
-  **Depends on:** OPS-026, ADV-012.  
-  **Done when:** a clean installation, bootstrap, backup, restore, rolling upgrade, rollback, recovery, monitoring, and removal are executed only from published instructions.
+  **Depends on:** OPS-026, OPS-028, ADV-012.
+  **Done when:** a clean installation, bootstrap, backup, restore, rolling upgrade, rollback, recovery, monitoring, and removal are executed only from published instructions, and the output identifies operator-owned compliance and reliability decisions without implying a project SLA.
 
 - [ ] **REL-009 — Complete hosted production-readiness review.**  
   **Depends on:** REL-004 through REL-007, OPS-024.  
   **Done when:** on-call, alerts, runbooks, capacity, support controls, domain automation, backups, incident process, status communication, and launch rollback are approved.
 
-- [ ] **REL-010 — Publish the general-availability release.**  
-  **Depends on:** REL-001 through REL-009.  
+- [x] **REL-010 — Select and review the open-source licence.**
+  **Depends on:** None.
+  **Done when:** the repository owner approves an OSI-compatible licence and required notices, current production-dependency compatibility is checked, warranty/liability language preserves the hosted/self-hosted boundary, and package metadata identifies the licence.
+  **Decision:** MIT, copyright 2026 ExpressThat LTD. The standard "as is" disclaimer applies to the software; hosted obligations require separate applicable policies or contracts. The current production dependency set contains MIT and ISC licences. Recheck all dependency and artifact licences at every release.
+
+- [ ] **REL-011 — Publish the general-availability release.**
+  **Depends on:** REL-001 through REL-010.
   **Done when:** signed artifacts, migrations, OpenAPI, SDKs, documentation, change log, known limits, security contact, support policy, and rollback evidence are published together.
 
 ## 22. Milestone Completion Gates
@@ -1879,10 +1891,10 @@ Complete when:
 Complete when:
 
 - DX-001 through DX-025 are complete for the supported SDK and migration scope.
-- OPS-001 through OPS-027 are complete for every supported deployment profile.
+- OPS-001 through OPS-028 are complete for every supported deployment profile.
 - GOV-001 through GOV-015 are complete.
 - Applicable ADV tasks are either complete or explicitly excluded from the first stable release.
-- REL-001 through REL-010 are complete.
+- REL-001 through REL-011 are complete.
 
 ## 23. Suggested First 20 Tasks
 

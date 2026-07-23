@@ -101,7 +101,9 @@ cryptography, storage, or execution placement.
 Self-hosted Docker operators receive the Node.js 24 production baseline. Shared
 packages cannot use Node-only APIs, so support for Workers does not require
 Cloudflare emulation in Docker. Browser and SDK output remains ordinary
-standards-based JavaScript.
+standards-based JavaScript. Runtime parity covers behavior, contracts, security
+invariants, and conformance; it does not transfer hosted availability,
+residency, support, or recovery commitments to a self-hosted deployment.
 
 ## Operational Impact
 

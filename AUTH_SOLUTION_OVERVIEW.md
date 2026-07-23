@@ -964,7 +964,7 @@ narrow, expiring, independently audited recovery principal.
 
 ### 6.1 Hosted and Self-Hosted Editions
 
-The platform will be available both as a hosted service and as self-hosted software. Both editions should use the same core domain model, protocols, and APIs so that applications can move between them with minimal changes.
+The platform will be available both as a hosted service and as self-hosted software. Both editions should use the same core domain model, protocols, APIs, security invariants, and conformance suites so that applications can move between them with minimal changes. This functional compatibility does not transfer hosted operational or legal commitments to a self-hosted installation.
 
 The hosted service will also provide managed infrastructure features, including:
 
@@ -975,7 +975,19 @@ The hosted service will also provide managed infrastructure features, including:
 - Verified-domain workflows for enterprise SSO.
 - Managed regional infrastructure, scaling, monitoring, backups, upgrades, and security patches.
 
-In the self-hosted edition, the operator is responsible for infrastructure, DNS, certificates, upgrades, monitoring, backups, email delivery, and the deployment and verification steps required by enterprise identity providers.
+In the self-hosted edition, the operator may choose any platform, provider, and
+region, including locations outside Europe. The operator is responsible for
+infrastructure, legal compliance, subprocessors, security, DNS, certificates,
+upgrades, monitoring, capacity, availability, backups, recovery, email delivery,
+data-subject operations, and enterprise identity-provider deployment and
+verification.
+
+The open-source project provides portable software, secure defaults, validation
+tools, and reference topologies; it makes no service promise for an installation.
+Hosted commitments exist only in the hosted operator's applicable published
+terms, privacy notice, data-processing agreement, support policy, or customer
+contract. The binding division is the
+[hosted and self-hosted responsibility boundary](docs/operations/hosted-self-hosted-responsibility.md).
 
 ## 7. Suggested Domain Model
 
@@ -1113,6 +1125,12 @@ storage, caches, keys, secrets, support, subprocessors, and every runtime
 subrequest independently. An EU edge location never implicitly approves another
 service or binding.
 
+These hosted rules are not claims about self-hosted installations. Self-hosted
+operators select their own regions and processing paths and may operate outside
+Europe. They must establish their own lawful basis, contracts, transfer
+controls, privacy operations, and evidence. An optional technical residency
+validator is not legal certification.
+
 ### 8.3 Data Ownership, Control, and Portability
 
 The platform does not claim ownership of customer or end-user data. Customer organisations control the tenant data they and their applications introduce, subject to the rights of the people represented in that data. End users retain their applicable data-subject rights over personal data. Hosted-service terms, self-hosted documentation, APIs, and product screens must state these responsibilities plainly rather than making export or deletion a support-only process.
@@ -1132,7 +1150,7 @@ End users must have a clear self-service privacy area, subject to the customer o
 - Understand significant automated security decisions where disclosure is lawful and would not undermine abuse controls.
 - Contact the responsible controller or privacy contact and track a data-subject request.
 
-Identity verification for a privacy request must be proportionate and must not collect unnecessary new data. Requests, approvals, exports, downloads, denials, legal holds, and completion evidence are auditable. Export download links are single-purpose, encrypted, short-lived, step-up protected, and stored through the object-storage adapter in the selected European region.
+Identity verification for a privacy request must be proportionate and must not collect unnecessary new data. Requests, approvals, exports, downloads, denials, legal holds, and completion evidence are auditable. Export download links are single-purpose, encrypted, short-lived, step-up protected, and stored through the object-storage adapter in the region required by the active deployment policy. The hosted policy requires an approved European region; a self-hosted operator selects and owns its policy.
 
 The product must distinguish controller and processor responsibilities. For most customer end-user data, the customer organisation is the controller and the hosted platform acts as processor; the platform can also be a controller for its own management accounts, billing, security, and legally required operational records. Self-hosted operators assume the corresponding operational responsibilities. Rights that conflict with fraud prevention, legal obligations, another person's rights, immutable security evidence, or an active legal hold require a documented, reviewable outcome rather than silent refusal.
 
@@ -1149,7 +1167,11 @@ The product must provide the technical controls needed to support:
 - Auditable administrator and support access.
 - Incident response and breach-notification procedures.
 
-Technical features alone do not establish GDPR compliance. The hosted service and each self-hosted operator will also need appropriate policies, contracts, records, and operating procedures.
+Technical features alone do not establish GDPR compliance. The hosted service
+must maintain appropriate policies, contracts, records, and operating
+procedures for the processing it controls. Each self-hosted operator independently
+owns those obligations for its installation; the project cannot guarantee,
+operate, or verify them without a separate explicit agreement.
 
 ## 9. Market-Informed Feature Plan
 
@@ -1271,7 +1293,7 @@ The product should adopt these broader principles:
 - **Extensibility must be safe and observable.** Hooks need versioning, secrets, timeouts, retries, test payloads, logs, rollback, and clear failure behaviour.
 - **Migration determines adoption.** Bulk import, password-hash compatibility, JIT migration, identity linking, and rollback planning are essential for replacing another provider.
 - **Security controls need usable defaults.** Breach detection, rate limits, refresh rotation, bot protection, and administrator MFA should be enabled by default.
-- **Cloud and self-hosted must remain compatible.** The hosted edition can automate infrastructure, but should not introduce a different identity or protocol model.
+- **Cloud and self-hosted must remain compatible.** The hosted edition can automate infrastructure, but should not introduce a different identity or protocol model. Compatibility is not a transfer of hosted SLA, residency, compliance, support, or recovery commitments.
 
 ## 10. Recommended Delivery Phases
 
@@ -1388,6 +1410,12 @@ The following decisions now form part of the intended product design:
 22. Every first-party production behaviour will have automated tests, every bug fix will include a regression test, and executable TypeScript will maintain complete line, statement, function, and branch coverage.
 23. Every first-party authored source, test, configuration, migration, and tooling file is limited to 250 physical lines. Documentation, generated content, third-party code, lockfiles, and machine-generated fixtures are excluded.
 24. The platform does not claim ownership of customer or end-user data. Administrators receive complete tenant export and migration tooling, while end users receive self-service GDPR access, portability, correction, restriction, objection, consent-withdrawal, and erasure workflows with documented legal and security exceptions.
+25. The open-source project makes no service promise. Hosted operational,
+    European-residency, GDPR, support, and SLA commitments apply only when the
+    hosted operator states them in an applicable published policy or contract.
+    Self-hosted operators may choose any infrastructure and region and own
+    compliance, security, availability, backups, recovery, and privacy
+    operations.
 
 ## 12. Concise Product Statement
 
