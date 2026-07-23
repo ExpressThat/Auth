@@ -766,6 +766,12 @@ The test strategy includes:
 
 The architecture is considered horizontally scalable only when adding an instance increases safe capacity without changing application correctness.
 
+Hosted availability, latency, capacity, queue-delay, recovery, incident, and
+vulnerability-response acceptance is measured against the
+[security and reliability targets](docs/operations/security-reliability-targets.md).
+Security, tenant isolation, audit, cryptography, and European residency cannot
+be traded for a faster or more available-looking response.
+
 ### 3.13 Testing and Maintainability Enforcement
 
 Testing and readability requirements are release gates. They apply equally to features, bug fixes, refactors, adapters, migrations, runtime implementations, and deployment tooling.

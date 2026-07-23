@@ -205,7 +205,7 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** DEC-016, DEC-017.  
   **Done when:** eligibility, prohibited targets and actions, approval modes, notification, retention, and default-disabled behaviour are fixed.
 
-- [ ] **DEC-021 — Define security and reliability targets.**  
+- [x] **DEC-021 — Define security and reliability targets.**
   **Depends on:** DEC-016.  
   **Done when:** authentication latency, availability, recovery objectives, token endpoint capacity, acceptable queue delay, and incident severity targets are measurable.
 

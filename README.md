@@ -272,6 +272,7 @@ Start here:
 - [European residency and transfer map](docs/privacy/european-data-residency.md)
 - [Bootstrap and break-glass standard](docs/security/bootstrap-and-break-glass.md)
 - [Support access and impersonation standard](docs/security/support-and-impersonation.md)
+- [Security and reliability targets](docs/operations/security-reliability-targets.md)
 
 The overview defines the intended product. The backlog is the source of delivery
 progress. ADRs are binding until superseded.
