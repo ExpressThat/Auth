@@ -69,6 +69,15 @@ The research produced the following recurring feature groups:
 - Short-lived, actor-aware, audited impersonation.
 - Delivery diagnostics for email, SMS, webhooks, SSO, and directory synchronization.
 
+### 3.6 Data Ownership and Privacy
+
+- Complete tenant data inventory, bulk export, migration, and restore validation.
+- User-facing access, portability, rectification, consent withdrawal, restriction, objection, anonymisation, and erasure workflows.
+- Machine-readable export manifests with schemas, relationships, checksums, omissions, and compatibility information.
+- Separate high-risk encrypted credential migration packages that never expose plaintext or reusable secrets.
+- Retention choices, legal-hold handling, backup-expiry disclosure, request tracking, and auditable completion evidence.
+- Clear controller, processor, hosted-operator, self-hosted-operator, and end-user responsibilities.
+
 ## 4. Integration Provider Examples
 
 The authentication platform's adapter system can eventually support providers such as:
@@ -100,3 +109,4 @@ The most important conclusions applied to the product plan are:
 - Support tooling and controlled impersonation should be designed early.
 - Security protections need strong defaults rather than optional afterthoughts.
 - Hosted and self-hosted editions should share the same domain and protocol model.
+- Customers and users retain control of their data through complete, self-service portability and privacy workflows rather than support-only exports.

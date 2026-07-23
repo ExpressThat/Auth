@@ -712,7 +712,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [ ] **AUTH-026 — Implement user export.**  
   **Depends on:** AUTH-023, RUN-008, DEC-017.  
-  **Done when:** an authorized durable job creates a scoped, expiring, encrypted export and records access.
+  **Done when:** a user or authorised controller starts a durable job that produces the user's portable machine-readable identity, profile, membership, consent, grant, session, authentication, support-access, and applicable audit-derived data with documented exclusions, encrypted expiring delivery, step-up protection, and access evidence.
 
 - [ ] **AUTH-027 — Implement user deletion and anonymisation.**  
   **Depends on:** AUTH-013, AUTH-023, DEC-017.  
@@ -1448,7 +1448,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [ ] **DX-018 — Implement tenant export and migration packages.**  
   **Depends on:** DX-007, DX-016, AUTH-026.  
-  **Done when:** versioned encrypted packages, manifests, checksums, supported resources, omissions, compatibility reports, and restore validation are documented.
+  **Done when:** versioned encrypted packages, manifests, schemas, counts, relationship maps, checksums, supported users and tenant resources, omissions, credential-separation rules, compatibility reports, and full restore validation are documented and tested without requiring direct database access.
 
 - [ ] **DX-019 — Add migration rollback and reconciliation reports.**  
   **Depends on:** DX-018.  
@@ -1604,11 +1604,11 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [ ] **GOV-004 — Implement complete data-subject export orchestration.**  
   **Depends on:** AUTH-026, ORG-001, SUP-008, GOV-001.  
-  **Done when:** all applicable identity, membership, consent, session, support, and audit-derived data is included or exclusions are documented.
+  **Done when:** all applicable identity, membership, consent, session, support, authentication-history, and audit-derived personal data is available in a portable machine-readable package with schemas, relationships, provenance, documented exclusions, encrypted expiring delivery, request tracking, and download audit.
 
 - [ ] **GOV-005 — Implement complete account and tenant erasure orchestration.**  
   **Depends on:** AUTH-027, TEN-008, GOV-001, GOV-002.  
-  **Done when:** dependencies, providers, exports, logs, backups, grace periods, legal holds, anonymisation, and completion evidence are handled.
+  **Done when:** dependencies, providers, exports, logs, backups, grace periods, cancellation, restriction, objections, legal holds, anonymisation, controller decisions, and completion evidence are handled and visible to the requester.
 
 - [ ] **GOV-006 — Implement versioned terms, privacy, and consent acceptance.**  
   **Depends on:** AUTH-021, DB-014.  
@@ -1647,8 +1647,24 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Done when:** evidence preservation, containment, support access, processor coordination, impact assessment, notification decision, communications, and review are rehearsed.
 
 - [ ] **GOV-015 — Complete GDPR operational-readiness review.**  
-  **Depends on:** GOV-001 through GOV-014, OPS-021.  
-  **Done when:** technical controls, policies, contracts, records, data-processing agreements, subprocessors, support procedures, and evidence gaps are reviewed by qualified owners.
+  **Depends on:** GOV-001 through GOV-019, OPS-021.
+  **Done when:** data-ownership statements, controller/processor roles, data-subject rights, technical controls, policies, contracts, records, data-processing agreements, subprocessors, support procedures, and evidence gaps are reviewed by qualified owners.
+
+- [ ] **GOV-016 — Implement complete administrator tenant-data inventory and export.**
+  **Depends on:** DX-018, GOV-001, GOV-008, TEN-019.
+  **Done when:** a scoped administrator can export all tenant-owned users, identity metadata, applications, environments, organisations, memberships, roles, groups, grants, consents, custom data, provider metadata, configuration, allowed history, and audit data with versioned schemas, counts, relationships, checksums, omissions, encryption, expiry, progress, cancellation, and access audit.
+
+- [ ] **GOV-017 — Implement protected credential migration export.**
+  **Depends on:** GOV-016, DX-015, DX-018, SEC-005.
+  **Done when:** eligible password hashes and non-plaintext migration material can be exported only through a distinct step-up-protected, target-public-key-encrypted, dual-authorised, short-lived workflow that excludes raw tokens, API secrets, recovery codes, private keys, peppers, provider credentials, and master keys and produces an import compatibility report.
+
+- [ ] **GOV-018 — Implement the data-subject rights request lifecycle.**
+  **Depends on:** GOV-003 through GOV-006, JOB-004, UI-018.
+  **Done when:** access, portability, rectification, restriction, objection, consent withdrawal, erasure, identity verification, controller review, statutory timing, communication, appeal, legal holds, documented denial, and auditable completion are explicit durable states.
+
+- [ ] **GOV-019 — Build administrator and end-user data-control screens.**
+  **Depends on:** GOV-016 through GOV-018, MGT-003, UI-018.
+  **Done when:** administrators can inventory and export tenant data without database access and users can obtain copies, manage available choices, submit and track rights requests, understand retention/backup timing and exclusions, and securely retrieve completed exports with accessibility and both-runtime end-to-end coverage.
 
 ## 20. Phase 17 — Advanced Platform Capabilities
 

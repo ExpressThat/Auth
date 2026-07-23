@@ -1021,12 +1021,36 @@ OAuth 2.0 and OpenID Connect should be implemented according to their standards 
 
 The service will be designed to support GDPR obligations and will host data in Europe. For the hosted edition, primary databases, replicas, backups, and logs containing personal data must remain in approved European regions. Vendors and subprocessors must be selected and configured consistently with that requirement.
 
+### 8.2 Data Ownership, Control, and Portability
+
+The platform does not claim ownership of customer or end-user data. Customer organisations control the tenant data they and their applications introduce, subject to the rights of the people represented in that data. End users retain their applicable data-subject rights over personal data. Hosted-service terms, self-hosted documentation, APIs, and product screens must state these responsibilities plainly rather than making export or deletion a support-only process.
+
+An authorised customer administrator must be able to export the organisation's complete logical dataset without direct database access. This includes users, non-secret identity references, profiles, verified contact metadata, applications, environments, end-user organisations, memberships, roles, groups, grants, consent records, custom attributes, configuration, provider metadata, webhook metadata, session and authentication history permitted by policy, and tenant-scoped audit records. Each export must include a versioned manifest, schemas, counts, checksums, relationship identifiers, creation time, omissions, and restore or migration compatibility information.
+
+Readable administrative exports must never contain plaintext or reusable credentials, raw session or refresh tokens, API secret values, recovery codes, private signing keys, provider credentials, peppers, or deployment master keys. Where legitimate tenant migration requires password hashes or other non-plaintext credential material, a separate high-risk migration package must use step-up authentication, explicit authorization, target-bound encryption, short retention, complete audit evidence, and an import compatibility report.
+
+End users must have a clear self-service privacy area, subject to the customer organisation's controller policy and applicable law, where they can:
+
+- Obtain a portable, machine-readable copy of their personal data and understand documented exclusions.
+- Correct inaccurate data and reverify identifiers where required.
+- Request erasure or anonymisation and see grace periods, legal holds, backup-expiry timing, and completion status.
+- Request restriction of processing or object to configured processing purposes.
+- Withdraw optional consent without making previously lawful processing appear undone.
+- Configure available retention and communication choices.
+- Understand significant automated security decisions where disclosure is lawful and would not undermine abuse controls.
+- Contact the responsible controller or privacy contact and track a data-subject request.
+
+Identity verification for a privacy request must be proportionate and must not collect unnecessary new data. Requests, approvals, exports, downloads, denials, legal holds, and completion evidence are auditable. Export download links are single-purpose, encrypted, short-lived, step-up protected, and stored through the object-storage adapter in the selected European region.
+
+The product must distinguish controller and processor responsibilities. For most customer end-user data, the customer organisation is the controller and the hosted platform acts as processor; the platform can also be a controller for its own management accounts, billing, security, and legally required operational records. Self-hosted operators assume the corresponding operational responsibilities. Rights that conflict with fraud prevention, legal obligations, another person's rights, immutable security evidence, or an active legal hold require a documented, reviewable outcome rather than silent refusal.
+
 The product must provide the technical controls needed to support:
 
 - Data minimisation and purpose limitation.
 - Documented retention periods and automated expiry.
-- User and organisation data export.
-- Rectification and deletion workflows.
+- Complete administrator tenant export and migration without provider lock-in.
+- User data access and machine-readable portability.
+- Rectification, processing-restriction, objection, consent-withdrawal, deletion, and anonymisation workflows.
 - Account and tenant deletion with defined backup-expiry behaviour.
 - Consent and lawful-basis records where the customer requires them.
 - Data-processing agreements and subprocessor transparency.
@@ -1266,6 +1290,7 @@ The following decisions now form part of the intended product design:
 21. API, frontend-serving, and job instances will be stateless and horizontally scalable. No cross-request security, tenant, session, cache, lock, rate-limit, job, or authorization state may exist only in process memory.
 22. Every first-party production behaviour will have automated tests, every bug fix will include a regression test, and executable TypeScript will maintain complete line, statement, function, and branch coverage.
 23. Every first-party authored source, test, configuration, migration, and tooling file is limited to 250 physical lines. Documentation, generated content, third-party code, lockfiles, and machine-generated fixtures are excluded.
+24. The platform does not claim ownership of customer or end-user data. Administrators receive complete tenant export and migration tooling, while end users receive self-service GDPR access, portability, correction, restriction, objection, consent-withdrawal, and erasure workflows with documented legal and security exceptions.
 
 ## 12. Concise Product Statement
 
