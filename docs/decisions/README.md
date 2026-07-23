@@ -22,6 +22,7 @@ platform's security, portability, operability, or public contracts.
 | [0006](0006-password-hashing.md) | Use versioned Argon2id behind portable hashing adapters | Accepted |
 | [0007](0007-signing-key-custody.md) | Separate signing-key lifecycle from custody providers | Accepted |
 | [0008](0008-browser-cookie-domain-topology.md) | Use host-only sessions on plane-specific first-party origins | Accepted |
+| [0009](0009-identifiers-and-time.md) | Use UUIDv7 identifiers and UTC epoch-millisecond instants | Accepted |
 | [Template](TEMPLATE.md) | Standard ADR structure | Reference |
 
 ## Numbering

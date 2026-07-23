@@ -124,7 +124,7 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** DEC-006.  
   **Done when:** hosted and custom domains, cookie scope, `SameSite`, CSRF strategy, redirect boundaries, embedded-flow limitations, and account-domain behaviour are specified.
 
-- [ ] **DEC-010 — Choose identifier and timestamp conventions.**  
+- [x] **DEC-010 — Choose identifier and timestamp conventions.**
   **Depends on:** DEC-001.  
   **Done when:** sortable identifiers such as UUIDv7, public identifier exposure, clock precision, UTC handling, and database representation are fixed.
 
