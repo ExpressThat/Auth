@@ -80,8 +80,10 @@ Infrastructure choices are replaceable implementation details, not domain depend
 
 These tasks prevent foundational security or compatibility decisions from being made accidentally inside feature work.
 
-- [ ] **DEC-001 — Create the decision-record template and index.**  
-  **Depends on:** none.  
+- [x] **DEC-001 — Create the decision-record template and index.**
+
+  **Depends on:** none.
+
   **Done when:** `docs/decisions/` contains a numbered template covering context, decision, alternatives, security impact, portability impact, and consequences.
 
 - [ ] **DEC-002 — Select and pin the workspace package manager.**  
