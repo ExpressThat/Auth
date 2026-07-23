@@ -25,6 +25,7 @@ platform's security, portability, operability, or public contracts.
 | [0009](0009-identifiers-and-time.md) | Use UUIDv7 identifiers and UTC epoch-millisecond instants | Accepted |
 | [0010](0010-api-versioning.md) | Version HTTP APIs by major path and immutable OpenAPI release | Accepted |
 | [0011](0011-shared-api-conventions.md) | Standardize JSON, problems, cursors, concurrency, and retries | Accepted |
+| [0012](0012-trusted-tenant-context.md) | Resolve and cross-check every tenant context before data access | Accepted |
 | [Template](TEMPLATE.md) | Standard ADR structure | Reference |
 
 ## Numbering

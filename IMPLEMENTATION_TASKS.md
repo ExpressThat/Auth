@@ -136,7 +136,7 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** DEC-011.  
   **Done when:** error envelopes, pagination, filtering, sorting, correlation identifiers, idempotency keys, optimistic concurrency, and rate-limit headers are specified.
 
-- [ ] **DEC-013 — Define trusted tenant-context resolution.**  
+- [x] **DEC-013 — Define trusted tenant-context resolution.**
   **Depends on:** DEC-012.  
   **Done when:** management organisation, customer organisation, application, and end-user organisation context sources and verification rules are documented.
 
