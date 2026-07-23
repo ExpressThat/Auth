@@ -132,7 +132,7 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** DEC-005.  
   **Done when:** the initial `/v1` convention, deprecation headers, breaking-change rules, OpenAPI release process, and SDK compatibility promises are documented.
 
-- [ ] **DEC-012 — Define shared API conventions.**  
+- [x] **DEC-012 — Define shared API conventions.**
   **Depends on:** DEC-011.  
   **Done when:** error envelopes, pagination, filtering, sorting, correlation identifiers, idempotency keys, optimistic concurrency, and rate-limit headers are specified.
 
