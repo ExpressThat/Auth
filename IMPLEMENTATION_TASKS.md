@@ -189,7 +189,7 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** DEC-006, DEC-008, DEC-009, DEC-013.  
   **Done when:** assets, actors, trust boundaries, abuse cases, mitigations, and residual risks cover authentication, tenancy, providers, support access, jobs, and both runtimes.
 
-- [ ] **DEC-017 — Classify platform data.**  
+- [x] **DEC-017 — Classify platform data.**
   **Depends on:** DEC-016.  
   **Done when:** public, internal, confidential, credential, secret, and personal-data classes have storage, logging, encryption, retention, and export rules.
 

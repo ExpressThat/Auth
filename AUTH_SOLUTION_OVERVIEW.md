@@ -1028,6 +1028,12 @@ Security is the primary product requirement rather than a later enhancement. The
 
 OAuth 2.0 and OpenID Connect should be implemented according to their standards rather than as a custom token protocol. Security-sensitive protocol work should use mature, reviewed libraries where possible.
 
+Every boundary field and stored or derived copy must follow the Public,
+Internal, Confidential, Personal, Credential, or Secret handling rules in
+[the platform data classification standard](docs/security/data-classification.md).
+Unknown fields default to Confidential and are excluded from logging and export
+until classified.
+
 ### 8.1 Continuous Defensive Security Engineering
 
 Security is a continuous engineering constraint for every design,
