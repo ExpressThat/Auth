@@ -116,7 +116,7 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** DEC-003.  
   **Done when:** compatible Workers and Node implementations, Argon2id parameters, hash versioning, rehash rules, test vectors, and latency limits are recorded.
 
-- [ ] **DEC-008 — Define signing-key custody and rotation.**  
+- [x] **DEC-008 — Define signing-key custody and rotation.**
   **Depends on:** DEC-006.  
   **Done when:** algorithms, key identifiers, publishing, overlap, retirement, emergency rotation, local development, hosted custody, and self-hosted custody are specified.
 

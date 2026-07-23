@@ -20,6 +20,7 @@ platform's security, portability, operability, or public contracts.
 | [0004](0004-hono-contracts.md) | Define Hono routes with Zod-backed OpenAPI contracts | Accepted |
 | [0005](0005-oauth-oidc-building-blocks.md) | Build the issuer on portable reviewed protocol primitives | Accepted |
 | [0006](0006-password-hashing.md) | Use versioned Argon2id behind portable hashing adapters | Accepted |
+| [0007](0007-signing-key-custody.md) | Separate signing-key lifecycle from custody providers | Accepted |
 | [Template](TEMPLATE.md) | Standard ADR structure | Reference |
 
 ## Numbering
