@@ -1243,6 +1243,10 @@ An `ImpersonationSession` should record at least:
 - Source IP, device, and risk assessment.
 - Audit correlation identifier.
 
+The binding eligibility, protected-target/action, approval, notification,
+retention, actor-token, session, and failure rules are defined by the
+[support access and impersonation standard](docs/security/support-and-impersonation.md).
+
 ### 9.3 Product Principles Learned from the Market
 
 The product should adopt these broader principles:

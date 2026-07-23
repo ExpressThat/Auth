@@ -201,7 +201,7 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** DEC-016.  
   **Done when:** first installation, first platform administrator, credential custody, recovery, approvals, expiry, and mandatory audit procedures are documented.
 
-- [ ] **DEC-020 — Define support and impersonation policy.**  
+- [x] **DEC-020 — Define support and impersonation policy.**
   **Depends on:** DEC-016, DEC-017.  
   **Done when:** eligibility, prohibited targets and actions, approval modes, notification, retention, and default-disabled behaviour are fixed.
 
