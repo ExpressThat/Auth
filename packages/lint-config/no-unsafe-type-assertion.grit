@@ -1,0 +1,7 @@
+engine biome(1.0)
+language js(typescript)
+
+`$value as $type` as $assertion where {
+  not $assertion <: `$value as const`,
+  register_diagnostic(span=$assertion, message="Type assertions require runtime proof. Narrow unknown values with a guard or schema.", severity="error")
+}

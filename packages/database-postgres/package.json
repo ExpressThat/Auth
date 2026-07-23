@@ -1,5 +1,5 @@
 {
-  "name": "@express-that-auth/database-postgres",
+  "name": "@expressthat-auth/database-postgres",
   "version": "0.0.0",
   "private": true,
   "description": "Drizzle PostgreSQL schema, repositories, and migrations.",

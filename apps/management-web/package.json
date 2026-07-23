@@ -1,5 +1,5 @@
 {
-  "name": "@express-that-auth/management-web",
+  "name": "@expressthat-auth/management-web",
   "version": "0.0.0",
   "private": true,
   "description": "Customer and platform management React application.",

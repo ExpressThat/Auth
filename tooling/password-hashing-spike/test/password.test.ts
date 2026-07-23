@@ -22,6 +22,7 @@ describe("Argon2id adapters", () => {
     });
     const outputHex = Array.from(output, (byte) => byte.toString(16).padStart(2, "0")).join("");
 
+    // biome-ignore lint/security/noSecrets: public RFC 9106 test vector
     expect(outputHex).toBe("0d640df58d78766c08c037a34a8b53c9d01ef0452d75b65eb52520e96b01e659");
   });
 
@@ -65,6 +66,7 @@ describe("Argon2id adapters", () => {
     );
   });
 
+  // biome-ignore-start lint/security/noSecrets: deliberately malformed non-secret PHC fixtures
   it.each([
     "not-a-phc-string",
     "$argon2id$v=16$m=19456,t=2,p=1$AA$AA",
@@ -77,4 +79,5 @@ describe("Argon2id adapters", () => {
   ])("rejects unsupported or malformed PHC input: %s", async (encoded) => {
     await expect(portableVerify(encoded, PASSWORD)).resolves.toBe(false);
   });
+  // biome-ignore-end lint/security/noSecrets: deliberately malformed non-secret PHC fixtures
 });

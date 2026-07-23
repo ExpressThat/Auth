@@ -1,0 +1,47 @@
+import { spawnSync } from "node:child_process";
+import { readFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import { describe, expect, it } from "vitest";
+
+const REPOSITORY_ROOT = fileURLToPath(new URL("../../../", import.meta.url));
+const CANONICAL_SCOPE = "@expressthat-auth/";
+const RETIRED_SCOPE = ["@express", "that-auth"].join("-");
+
+function runGit(arguments_: string[]): { output: string; status: number | null } {
+  const result = spawnSync("git", arguments_, {
+    cwd: REPOSITORY_ROOT,
+    encoding: "utf8",
+  });
+
+  return {
+    output: `${result.stdout ?? ""}${result.stderr ?? ""}`,
+    status: result.status,
+  };
+}
+
+describe("workspace package scope", () => {
+  it("uses the canonical scope for every workspace manifest", async () => {
+    const result = runGit(["ls-files", "--", "*package.json"]);
+
+    expect(result.status).toBe(0);
+    const manifests = result.output
+      .split(/\r?\n/u)
+      .filter((path) => path.length > 0 && path !== "package.json");
+
+    expect(manifests.length).toBeGreaterThan(0);
+
+    for (const manifest of manifests) {
+      const source = await readFile(new URL(`../../../${manifest}`, import.meta.url), "utf8");
+      const packageName = /"name"\s*:\s*"([^"]+)"/u.exec(source)?.[1];
+
+      expect(packageName?.startsWith(CANONICAL_SCOPE), manifest).toBe(true);
+    }
+  });
+
+  it("does not retain the retired scope in tracked files", () => {
+    const result = runGit(["grep", "-n", RETIRED_SCOPE, "--", "."]);
+
+    expect(result.status).toBe(1);
+    expect(result.output).toBe("");
+  });
+});

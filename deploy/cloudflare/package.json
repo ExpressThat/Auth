@@ -1,5 +1,5 @@
 {
-  "name": "@express-that-auth/deploy-cloudflare",
+  "name": "@expressthat-auth/deploy-cloudflare",
   "version": "0.0.0",
   "private": true,
   "description": "Cloudflare Workers composition and deployment workspace.",

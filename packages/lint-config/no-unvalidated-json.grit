@@ -1,0 +1,11 @@
+engine biome(1.0)
+language js(typescript)
+
+or {
+  `JSON.parse($input)` as $call where {
+    register_diagnostic(span=$call, message="Decode JSON through a runtime schema instead of JSON.parse().", severity="error")
+  },
+  `$receiver.json()` as $call where {
+    register_diagnostic(span=$call, message="Parse boundary JSON through a runtime schema before use.", severity="error")
+  }
+}

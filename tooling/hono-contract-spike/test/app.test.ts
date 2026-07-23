@@ -1,4 +1,3 @@
-import type { AddressInfo } from "node:net";
 import { serve } from "@hono/node-server";
 import { hc } from "hono/client";
 import { afterEach, describe, expect, expectTypeOf, it } from "vitest";
@@ -36,7 +35,13 @@ describe("Hono contract", () => {
     const server = serve({ fetch: app.fetch, port: 0 });
     servers.push(server);
     await new Promise<void>((resolve) => server.once("listening", resolve));
-    const { port } = server.address() as AddressInfo;
+    const address = server.address();
+
+    if (!address || typeof address === "string") {
+      throw new TypeError("Expected the test server to expose a network address.");
+    }
+
+    const { port } = address;
 
     const response = await fetch(`http://127.0.0.1:${port}/v1/spike/usr_123`);
 

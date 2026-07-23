@@ -1,5 +1,5 @@
 {
-  "name": "@express-that-auth/auth-protocols",
+  "name": "@expressthat-auth/auth-protocols",
   "version": "0.0.0",
   "private": true,
   "description": "OAuth, OpenID Connect, token, and authentication protocol behavior.",

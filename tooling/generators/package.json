@@ -1,5 +1,5 @@
 {
-  "name": "@express-that-auth/generators",
+  "name": "@expressthat-auth/generators",
   "version": "0.0.0",
   "private": true,
   "description": "Repository generators for packages, routes, and migrations.",

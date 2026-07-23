@@ -20,6 +20,16 @@
       "!!pnpm-lock.yaml"
     ]
   },
+  "plugins": [
+    {
+      "path": "./packages/lint-config/no-unsafe-type-assertion.grit",
+      "includes": ["**/*.ts", "**/*.tsx"]
+    },
+    {
+      "path": "./packages/lint-config/no-unvalidated-json.grit",
+      "includes": ["**/src/**/*.ts", "**/src/**/*.tsx"]
+    }
+  ],
   "formatter": {
     "enabled": true,
     "formatWithErrors": false,
@@ -33,10 +43,19 @@
     "enabled": true,
     "rules": {
       "preset": "recommended",
+      "nursery": {
+        "noFloatingPromises": "error",
+        "noMisusedPromises": "error"
+      },
+      "security": {
+        "noSecrets": "error"
+      },
       "style": {
-        "noNonNullAssertion": "error"
+        "noNonNullAssertion": "error",
+        "noProcessEnv": "error"
       },
       "suspicious": {
+        "noConsole": "error",
         "noExplicitAny": "error",
         "noFocusedTests": "error"
       }

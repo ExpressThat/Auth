@@ -1,5 +1,5 @@
 {
-  "name": "@express-that-auth/test-config",
+  "name": "@expressthat-auth/test-config",
   "version": "0.0.0",
   "private": true,
   "description": "Shared test defaults, fixtures, and helpers.",

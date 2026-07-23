@@ -1,5 +1,5 @@
 {
-  "extends": "@express-that-auth/typescript-config/workers.json",
+  "extends": "@expressthat-auth/typescript-config/workers.json",
   "compilerOptions": {
     "types": ["@cloudflare/vitest-pool-workers/types"]
   },

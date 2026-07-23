@@ -1,5 +1,5 @@
 {
-  "name": "@express-that-auth/database-sqlite",
+  "name": "@expressthat-auth/database-sqlite",
   "version": "0.0.0",
   "private": true,
   "description": "Drizzle SQLite schema, repositories, and migrations.",

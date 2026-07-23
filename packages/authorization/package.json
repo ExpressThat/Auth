@@ -1,5 +1,5 @@
 {
-  "name": "@express-that-auth/authorization",
+  "name": "@expressthat-auth/authorization",
   "version": "0.0.0",
   "private": true,
   "description": "Permissions, roles, grants, and policy evaluation.",

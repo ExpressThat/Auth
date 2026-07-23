@@ -1,5 +1,5 @@
 {
-  "name": "@express-that-auth/password-hashing-spike",
+  "name": "@expressthat-auth/password-hashing-spike",
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "0.18.8",
-    "@express-that-auth/typescript-config": "workspace:*",
+    "@expressthat-auth/typescript-config": "workspace:*",
     "@types/node": "26.1.1",
     "@vitest/coverage-v8": "4.1.10",
     "vitest": "4.1.10",

@@ -122,8 +122,8 @@ The retained spike proves:
 Run:
 
 ```text
-pnpm --filter @express-that-auth/hono-contract-spike build
-pnpm --filter @express-that-auth/hono-contract-spike test:coverage
+pnpm --filter @expressthat-auth/hono-contract-spike build
+pnpm --filter @expressthat-auth/hono-contract-spike test:coverage
 ```
 
 ## Review Triggers

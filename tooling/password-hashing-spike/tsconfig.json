@@ -1,5 +1,5 @@
 {
-  "extends": "@express-that-auth/typescript-config/node.json",
+  "extends": "@expressthat-auth/typescript-config/node.json",
   "compilerOptions": {
     "lib": ["ES2024", "DOM"],
     "types": ["node"]

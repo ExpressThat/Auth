@@ -253,7 +253,7 @@ workspaces are scaffolded. Turborepo can target one workspace with `--filter`,
 for example:
 
 ```bash
-pnpm test --filter @express-that-auth/hono-contract-spike
+pnpm test --filter @expressthat-auth/hono-contract-spike
 ```
 
 Package names and commands will evolve while the production workspace replaces

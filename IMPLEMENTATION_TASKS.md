@@ -240,16 +240,19 @@ These tasks prevent foundational security or compatibility decisions from being 
 - [x] **FND-003 — Add strict shared TypeScript configurations.**
   **Depends on:** FND-002.  
   **Done when:** base, library, Node, Workers, React, and tooling configurations enable every strictness rule required by the architecture.
-  **Evidence:** all six profiles extend the strict base, resolve through the `@express-that-auth/typescript-config` workspace, pass `tsc --showConfig`, and type-check the Node and Workers spikes without local strictness duplication.
+  **Evidence:** all six profiles extend the strict base, resolve through the `@expressthat-auth/typescript-config` workspace, pass `tsc --showConfig`, and type-check the Node and Workers spikes without local strictness duplication.
 
 - [x] **FND-004 — Add repository formatting.**
   **Depends on:** FND-001.  
   **Done when:** one command checks formatting, another applies it, generated paths are centralised, and CI can run the check without mutation.
   **Evidence:** root-pinned Biome provides non-mutating `pnpm format:check` and mutating `pnpm format`; generated and third-party paths are excluded centrally in `biome.json`.
 
-- [ ] **FND-005 — Add shared lint rules.**  
+- [x] **FND-005 — Add shared lint rules.**  
   **Depends on:** FND-003.  
   **Done when:** unsafe `any`, unhandled promises, unvalidated boundary data, prohibited assertions, secret logging, and focused tests are rejected where technically detectable.
+  **Evidence:** the root Biome policy combines typed lint rules with repository
+  plugins for unchecked assertions and raw boundary JSON; nine executable policy
+  tests prove unsafe examples fail and narrowed, handled code passes.
 
 - [ ] **FND-006 — Implement the 250-line policy checker in TypeScript.**  
   **Depends on:** FND-003.  

@@ -1,5 +1,5 @@
 {
-  "name": "@express-that-auth/domain",
+  "name": "@expressthat-auth/domain",
   "version": "0.0.0",
   "private": true,
   "description": "Runtime-neutral identity entities, policies, and use cases.",
