@@ -98,8 +98,10 @@ These tasks prevent foundational security or compatibility decisions from being 
 
   **Done when:** minimum versions, upgrade cadence, and compatibility test matrix are recorded.
 
-- [ ] **DEC-004 — Select the TypeScript test toolchain.**  
-  **Depends on:** DEC-003.  
+- [x] **DEC-004 — Select the TypeScript test toolchain.**
+
+  **Depends on:** DEC-003.
+
   **Done when:** unit, type, component, end-to-end, coverage, and Workers-runtime test tools are selected; start by evaluating Vitest and Playwright.
 
 - [ ] **DEC-005 — Validate the Hono contract approach.**  
