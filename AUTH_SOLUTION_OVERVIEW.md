@@ -27,7 +27,7 @@ The system organisation is a permanent, protected organisation created when the 
 It exists to hold:
 
 - The platform's own management application.
-- Platform administrator identities.
+- Management identities used by customer and platform administrators.
 - Internal service and machine identities, where required.
 - Platform-level configuration that should not belong to a customer.
 
@@ -990,7 +990,11 @@ The initial domain model is likely to include:
 | `Environment` | Separates development, staging, and production configuration and credentials. |
 | `AuditEvent` | Immutable record of security-sensitive and administrative activity. |
 
-Whether management identities and end users share a physical database table is an implementation decision. They should remain separate concepts in the domain model because they have different trust boundaries, lifecycle rules, and permissions.
+Management identities and end users use separate physical table families,
+repositories, credentials, sessions, issuers, and key scopes. They can share
+reviewed authentication components through typed realm contracts, but matching
+personal data never links or promotes an identity across the two trust planes.
+ADR-0013 records the detailed storage decision.
 
 ## 8. Important Security Requirements
 

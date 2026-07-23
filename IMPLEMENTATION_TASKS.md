@@ -140,7 +140,7 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** DEC-012.  
   **Done when:** management organisation, customer organisation, application, and end-user organisation context sources and verification rules are documented.
 
-- [ ] **DEC-014 — Decide the physical management-identity storage model.**  
+- [x] **DEC-014 — Decide the physical management-identity storage model.**
   **Depends on:** DEC-013.  
   **Done when:** separate or shared physical tables are chosen without weakening the separate management and end-user trust boundaries.
 

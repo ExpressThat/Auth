@@ -26,6 +26,7 @@ platform's security, portability, operability, or public contracts.
 | [0010](0010-api-versioning.md) | Version HTTP APIs by major path and immutable OpenAPI release | Accepted |
 | [0011](0011-shared-api-conventions.md) | Standardize JSON, problems, cursors, concurrency, and retries | Accepted |
 | [0012](0012-trusted-tenant-context.md) | Resolve and cross-check every tenant context before data access | Accepted |
+| [0013](0013-management-identity-storage.md) | Store management and end-user identities in separate table families | Accepted |
 | [Template](TEMPLATE.md) | Standard ADR structure | Reference |
 
 ## Numbering
