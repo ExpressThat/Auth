@@ -185,7 +185,7 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** DEC-013.  
   **Done when:** development, staging, and production data, credentials, keys, users, callbacks, and promotion boundaries are specified.
 
-- [ ] **DEC-016 — Produce the first platform threat model.**  
+- [x] **DEC-016 — Produce the first platform threat model.**
   **Depends on:** DEC-006, DEC-008, DEC-009, DEC-013.  
   **Done when:** assets, actors, trust boundaries, abuse cases, mitigations, and residual risks cover authentication, tenancy, providers, support access, jobs, and both runtimes.
 
