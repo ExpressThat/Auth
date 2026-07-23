@@ -1,0 +1,24 @@
+{
+  "name": "@express-that-auth/password-hashing-spike",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit && tsc --noEmit --project tsconfig.worker.json",
+    "lint": "tsc --noEmit && tsc --noEmit --project tsconfig.worker.json",
+    "test": "vitest run --config vitest.node.config.ts && vitest run --config vitest.workers.config.ts",
+    "test:coverage": "vitest run --coverage --config vitest.node.config.ts && vitest run --config vitest.workers.config.ts",
+    "typecheck": "tsc --noEmit && tsc --noEmit --project tsconfig.worker.json"
+  },
+  "dependencies": {
+    "@noble/hashes": "2.2.0",
+    "@node-rs/argon2": "2.0.2"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "0.18.8",
+    "@types/node": "26.1.1",
+    "@vitest/coverage-v8": "4.1.10",
+    "vitest": "4.1.10",
+    "wrangler": "4.114.0"
+  }
+}

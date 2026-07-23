@@ -112,7 +112,7 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** DEC-003.  
   **Done when:** an ADR identifies which protocol behaviours use reviewed libraries, which must be implemented locally, compatibility risks, and the conformance strategy.
 
-- [ ] **DEC-007 — Select the password-hashing implementations.**  
+- [x] **DEC-007 — Select the password-hashing implementations.**
   **Depends on:** DEC-003.  
   **Done when:** compatible Workers and Node implementations, Argon2id parameters, hash versioning, rehash rules, test vectors, and latency limits are recorded.
 
