@@ -197,7 +197,7 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** DEC-017.  
   **Done when:** databases, replicas, backups, logs, queues, scheduled jobs, object storage, support tools, and subprocessors have an approved European processing rule.
 
-- [ ] **DEC-019 — Define bootstrap and break-glass policy.**  
+- [x] **DEC-019 — Define bootstrap and break-glass policy.**
   **Depends on:** DEC-016.  
   **Done when:** first installation, first platform administrator, credential custody, recovery, approvals, expiry, and mandatory audit procedures are documented.
 

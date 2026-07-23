@@ -949,6 +949,13 @@ The management dashboard can therefore exercise the same authentication paths as
 
 Special care is required during deployments. A fault in the hosted sign-in UI or authentication API must not permanently prevent operators from recovering the platform. A limited, audited break-glass process should be designed before production use.
 
+The binding process is defined by the
+[bootstrap and break-glass standard](docs/security/bootstrap-and-break-glass.md).
+There is no default administrator, reusable setup password, vendor master key,
+or environment-variable bypass. Bootstrap is one-time and short-lived;
+emergency recovery requires multiple offline custodians and creates only a
+narrow, expiring, independently audited recovery principal.
+
 ### 6.1 Hosted and Self-Hosted Editions
 
 The platform will be available both as a hosted service and as self-hosted software. Both editions should use the same core domain model, protocols, and APIs so that applications can move between them with minimal changes.

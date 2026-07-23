@@ -31,6 +31,7 @@ platform's security, portability, operability, or public contracts.
 | [0015](0015-platform-threat-model.md) | Maintain an asset and trust-boundary threat model | Accepted |
 | [0016](0016-data-classification.md) | Classify and describe every boundary field | Accepted |
 | [0017](0017-european-data-residency.md) | Qualify every hosted data path for EU residency | Accepted |
+| [0018](0018-bootstrap-break-glass.md) | Use one-time bootstrap and quorum break glass | Accepted |
 | [Template](TEMPLATE.md) | Standard ADR structure | Reference |
 
 ## Numbering
