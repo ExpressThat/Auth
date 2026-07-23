@@ -104,7 +104,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 
   **Done when:** unit, type, component, end-to-end, coverage, and Workers-runtime test tools are selected; start by evaluating Vitest and Playwright.
 
-- [ ] **DEC-005 — Validate the Hono contract approach.**  
+- [x] **DEC-005 — Validate the Hono contract approach.**
   **Depends on:** DEC-003.  
   **Done when:** a spike proves Zod-based Hono routes can generate complete OpenAPI, run on Workers and Node, and produce usable inferred client types.
 
