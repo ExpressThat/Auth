@@ -1087,6 +1087,13 @@ replace it.
 
 The service will be designed to support GDPR obligations and will host data in Europe. For the hosted edition, primary databases, replicas, backups, and logs containing personal data must remain in approved European regions. Vendors and subprocessors must be selected and configured consistently with that requirement.
 
+The binding hosted rule is the
+[European residency and transfer map](docs/privacy/european-data-residency.md).
+It qualifies databases, replicas, backups, logs, queues, schedulers, object
+storage, caches, keys, secrets, support, subprocessors, and every runtime
+subrequest independently. An EU edge location never implicitly approves another
+service or binding.
+
 ### 8.3 Data Ownership, Control, and Portability
 
 The platform does not claim ownership of customer or end-user data. Customer organisations control the tenant data they and their applications introduce, subject to the rights of the people represented in that data. End users retain their applicable data-subject rights over personal data. Hosted-service terms, self-hosted documentation, APIs, and product screens must state these responsibilities plainly rather than making export or deletion a support-only process.

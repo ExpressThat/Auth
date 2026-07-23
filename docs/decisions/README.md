@@ -30,6 +30,7 @@ platform's security, portability, operability, or public contracts.
 | [0014](0014-environment-isolation.md) | Isolate users, credentials, keys, providers, and data by environment | Accepted |
 | [0015](0015-platform-threat-model.md) | Maintain an asset and trust-boundary threat model | Accepted |
 | [0016](0016-data-classification.md) | Classify and describe every boundary field | Accepted |
+| [0017](0017-european-data-residency.md) | Qualify every hosted data path for EU residency | Accepted |
 | [Template](TEMPLATE.md) | Standard ADR structure | Reference |
 
 ## Numbering

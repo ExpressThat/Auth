@@ -193,7 +193,7 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** DEC-016.  
   **Done when:** public, internal, confidential, credential, secret, and personal-data classes have storage, logging, encryption, retention, and export rules.
 
-- [ ] **DEC-018 — Map European data-residency boundaries.**  
+- [x] **DEC-018 — Map European data-residency boundaries.**
   **Depends on:** DEC-017.  
   **Done when:** databases, replicas, backups, logs, queues, scheduled jobs, object storage, support tools, and subprocessors have an approved European processing rule.
 
