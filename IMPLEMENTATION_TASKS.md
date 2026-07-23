@@ -92,8 +92,10 @@ These tasks prevent foundational security or compatibility decisions from being 
 
   **Done when:** an ADR records the choice, version pinning, workspace layout, lockfile policy, and CI installation command. Start by evaluating the recommended `pnpm` option.
 
-- [ ] **DEC-003 — Define supported Node.js, browser, Workers, and TypeScript versions.**  
-  **Depends on:** DEC-001.  
+- [x] **DEC-003 — Define supported Node.js, browser, Workers, and TypeScript versions.**
+
+  **Depends on:** DEC-001.
+
   **Done when:** minimum versions, upgrade cadence, and compatibility test matrix are recorded.
 
 - [ ] **DEC-004 — Select the TypeScript test toolchain.**  

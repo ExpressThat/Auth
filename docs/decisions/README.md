@@ -15,6 +15,7 @@ platform's security, portability, operability, or public contracts.
 | ADR | Decision | Status |
 | --- | --- | --- |
 | [0001](0001-package-manager.md) | Use pnpm for workspace and dependency management | Accepted |
+| [0002](0002-supported-runtimes.md) | Support Node LTS, Workers, and modern browsers | Accepted |
 | [Template](TEMPLATE.md) | Standard ADR structure | Reference |
 
 ## Numbering
