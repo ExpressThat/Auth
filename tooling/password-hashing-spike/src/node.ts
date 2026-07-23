@@ -14,9 +14,6 @@ export async function nodeHash(password: string): Promise<string> {
   });
 }
 
-export async function nodeVerify(
-  encodedHash: string,
-  password: string,
-): Promise<boolean> {
+export async function nodeVerify(encodedHash: string, password: string): Promise<boolean> {
   return verify(encodedHash, passwordBytes(password));
 }

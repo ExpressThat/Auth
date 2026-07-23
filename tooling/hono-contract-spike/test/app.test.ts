@@ -1,8 +1,8 @@
+import type { AddressInfo } from "node:net";
 import { serve } from "@hono/node-server";
 import { hc } from "hono/client";
-import type { AddressInfo } from "node:net";
 import { afterEach, describe, expect, expectTypeOf, it } from "vitest";
-import { app, type AppType } from "../src/app.ts";
+import { type AppType, app } from "../src/app.ts";
 
 const servers: Array<ReturnType<typeof serve>> = [];
 

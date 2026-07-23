@@ -9,9 +9,7 @@ describe("Workers Argon2id baseline", () => {
     const encoded = await portableHash("workers-compatible password", salt);
     const elapsedMs = performance.now() - startedAt;
 
-    await expect(
-      portableVerify(encoded, "workers-compatible password"),
-    ).resolves.toBe(true);
+    await expect(portableVerify(encoded, "workers-compatible password")).resolves.toBe(true);
     expect(elapsedMs).toBeLessThan(2_000);
   });
 });

@@ -1,10 +1,13 @@
-import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
+import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
 
 const Identifier = z.object({
-  id: z.string().min(3).openapi({
-    example: "usr_123",
-    param: { in: "path", name: "id" },
-  }),
+  id: z
+    .string()
+    .min(3)
+    .openapi({
+      example: "usr_123",
+      param: { in: "path", name: "id" },
+    }),
 });
 
 const Subject = z

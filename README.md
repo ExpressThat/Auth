@@ -177,6 +177,7 @@ flowchart TB
 | Contracts | Zod-backed routes, inferred types, OpenAPI 3.1 |
 | Frontend | Vite, React, HeroUI, Tailwind CSS |
 | Database | Drizzle with SQLite and PostgreSQL implementations |
+| Formatting and linting | Biome, installed and configured at the workspace root |
 | Unit/integration tests | Vitest |
 | Browser tests | Playwright |
 | Worker tests | Workerd through the Cloudflare Vitest pool |

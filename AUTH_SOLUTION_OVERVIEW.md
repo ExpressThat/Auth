@@ -292,7 +292,7 @@ packages/
   ui/                       Shared HeroUI-based components and design tokens
   config/                   Validated configuration definitions
   typescript-config/        Shared strict TypeScript configurations
-  lint-config/              Shared lint rules
+  lint-config/              Custom lint-policy support beyond root Biome
   test-config/              Shared test defaults and helpers
 deploy/
   cloudflare/               Wrangler configuration and Worker entry points
@@ -325,6 +325,10 @@ The root `turbo.json` will define at least:
 - `quality:boundaries` — rejects prohibited package imports and dependency cycles.
 - `dev` — persistent, uncached development tasks.
 - `deploy` — explicit, uncached deployment tasks that are never triggered by an ordinary build.
+
+Formatting and general linting use one exact-pinned root installation of Biome
+and one root configuration. Repository-specific security and architecture rules
+that Biome cannot express live in the quality tooling workspace.
 
 Task inputs must include the source, relevant configuration, lockfile state, schema inputs, and declared environment-variable names. Secrets must never be written into cacheable outputs. Generated OpenAPI documents, compiled type declarations, frontend bundles, coverage reports, and distributable SDK artifacts should have explicit output paths.
 

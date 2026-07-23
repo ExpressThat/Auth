@@ -234,9 +234,10 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** FND-002.  
   **Done when:** base, library, Node, Workers, React, and tooling configurations enable every strictness rule required by the architecture.
 
-- [ ] **FND-004 — Add repository formatting.**  
+- [x] **FND-004 — Add repository formatting.**
   **Depends on:** FND-001.  
   **Done when:** one command checks formatting, another applies it, generated paths are centralised, and CI can run the check without mutation.
+  **Evidence:** root-pinned Biome provides non-mutating `pnpm format:check` and mutating `pnpm format`; generated and third-party paths are excluded centrally in `biome.json`.
 
 - [ ] **FND-005 — Add shared lint rules.**  
   **Depends on:** FND-003.  

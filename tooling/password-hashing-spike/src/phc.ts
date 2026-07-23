@@ -25,10 +25,7 @@ function decodeBase64(value: string): Uint8Array {
   return Uint8Array.from(binary, (character) => character.charCodeAt(0));
 }
 
-export function formatArgon2Hash(
-  salt: Uint8Array,
-  hash: Uint8Array,
-): string {
+export function formatArgon2Hash(salt: Uint8Array, hash: Uint8Array): string {
   return [
     "$argon2id",
     `v=${ARGON2_POLICY.version}`,
@@ -38,13 +35,15 @@ export function formatArgon2Hash(
   ].join("$");
 }
 
-export function parseApprovedArgon2Hash(
-  encodedHash: string,
-): ParsedArgon2Hash | undefined {
+export function parseApprovedArgon2Hash(encodedHash: string): ParsedArgon2Hash | undefined {
   const match = PHC_PATTERN.exec(encodedHash);
+  const saltValue = match?.[5];
+  const hashValue = match?.[6];
 
   if (
     !match ||
+    !saltValue ||
+    !hashValue ||
     Number(match[1]) !== ARGON2_POLICY.version ||
     Number(match[2]) !== ARGON2_POLICY.memoryKiB ||
     Number(match[3]) !== ARGON2_POLICY.iterations ||
@@ -54,13 +53,10 @@ export function parseApprovedArgon2Hash(
   }
 
   try {
-    const salt = decodeBase64(match[5]!);
-    const hash = decodeBase64(match[6]!);
+    const salt = decodeBase64(saltValue);
+    const hash = decodeBase64(hashValue);
 
-    if (
-      salt.length !== ARGON2_POLICY.saltBytes ||
-      hash.length !== ARGON2_POLICY.hashBytes
-    ) {
+    if (salt.length !== ARGON2_POLICY.saltBytes || hash.length !== ARGON2_POLICY.hashBytes) {
       return undefined;
     }
 

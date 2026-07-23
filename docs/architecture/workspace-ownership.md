@@ -53,7 +53,7 @@ depend on contracts and implementations only to test them.
 | Workspace | Ownership | Responsibility |
 | --- | --- | --- |
 | `packages/typescript-config` | Engineering productivity | Strict base, library, Node, Workers, React, and tooling TypeScript profiles |
-| `packages/lint-config` | Code quality | Shared static-analysis rules and prohibited-pattern checks |
+| `packages/lint-config` | Code quality | Custom repository lint-policy support beyond the root Biome configuration |
 | `packages/test-config` | Test engineering | Shared Vitest, Workers, component, coverage, fixture, and test utilities |
 
 Configuration packages cannot import product code.

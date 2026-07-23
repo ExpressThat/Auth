@@ -15,19 +15,18 @@ function derive(password: string, salt: Uint8Array): Promise<Uint8Array> {
 }
 
 function equalHashBytes(left: Uint8Array, right: Uint8Array): boolean {
+  const leftView = new DataView(left.buffer, left.byteOffset, left.byteLength);
+  const rightView = new DataView(right.buffer, right.byteOffset, right.byteLength);
   let difference = 0;
 
   for (let index = 0; index < ARGON2_POLICY.hashBytes; index += 1) {
-    difference |= left[index]! ^ right[index]!;
+    difference |= leftView.getUint8(index) ^ rightView.getUint8(index);
   }
 
   return difference === 0;
 }
 
-export async function portableHash(
-  password: string,
-  salt: Uint8Array,
-): Promise<string> {
+export async function portableHash(password: string, salt: Uint8Array): Promise<string> {
   if (salt.length !== ARGON2_POLICY.saltBytes) {
     throw new RangeError("Argon2id salts must contain exactly 16 bytes.");
   }
@@ -35,10 +34,7 @@ export async function portableHash(
   return formatArgon2Hash(salt, await derive(password, salt));
 }
 
-export async function portableVerify(
-  encodedHash: string,
-  password: string,
-): Promise<boolean> {
+export async function portableVerify(encodedHash: string, password: string): Promise<boolean> {
   const parsed = parseApprovedArgon2Hash(encodedHash);
 
   if (!parsed) {
