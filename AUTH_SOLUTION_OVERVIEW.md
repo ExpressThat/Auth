@@ -1041,6 +1041,12 @@ Security is the primary product requirement rather than a later enhancement. The
 
 OAuth 2.0 and OpenID Connect should be implemented according to their standards rather than as a custom token protocol. Security-sensitive protocol work should use mature, reviewed libraries where possible.
 
+The exact OAuth, OIDC, JOSE, WebAuthn, SAML, SCIM, webhook, password, HTTP, and
+browser specifications, maturity, product status, profile, and review owners are
+maintained in the
+[protocol and security standards register](docs/security/standards-register.md).
+Drafts and living standards cannot silently become production behavior.
+
 Every boundary field and stored or derived copy must follow the Public,
 Internal, Confidential, Personal, Credential, or Secret handling rules in
 [the platform data classification standard](docs/security/data-classification.md).

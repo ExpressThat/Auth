@@ -34,6 +34,7 @@ platform's security, portability, operability, or public contracts.
 | [0018](0018-bootstrap-break-glass.md) | Use one-time bootstrap and quorum break glass | Accepted |
 | [0019](0019-support-impersonation.md) | Prefer read-only support and constrain impersonation | Accepted |
 | [0020](0020-security-reliability-targets.md) | Use tiered SLOs and security response targets | Accepted |
+| [0021](0021-standards-register.md) | Pin and own protocol and security standards | Accepted |
 | [Template](TEMPLATE.md) | Standard ADR structure | Reference |
 
 ## Numbering

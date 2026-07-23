@@ -209,7 +209,7 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** DEC-016.  
   **Done when:** authentication latency, availability, recovery objectives, token endpoint capacity, acceptable queue delay, and incident severity targets are measurable.
 
-- [ ] **DEC-022 — Create a protocol and security standards register.**  
+- [x] **DEC-022 — Create a protocol and security standards register.**
   **Depends on:** DEC-006, DEC-016.  
   **Done when:** relevant OAuth, OIDC, JWT, PKCE, token exchange, WebAuthn, SAML, SCIM, webhook, password, and browser-security standards have pinned references and review owners.
 
