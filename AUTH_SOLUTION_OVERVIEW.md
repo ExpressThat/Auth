@@ -48,7 +48,7 @@ A customer organisation is the top-level tenant for a customer using the platfor
 An organisation owns:
 
 - One or more applications.
-- A user pool.
+- One isolated user pool per environment.
 - Organisation administrators and their roles.
 - Authentication and security policies.
 - Branding and hosted-screen configuration.
@@ -106,9 +106,16 @@ Applications belong to exactly one customer organisation.
 
 ### 2.6 User Pool
 
-Each customer organisation has a user pool containing the identities of people who use that organisation's applications.
+Each customer organisation has one isolated user pool per environment containing
+the identities of people who use that environment's applications.
 
-Applications in the same customer organisation always share its user pool. This means a user has one identity across all applications owned by that organisation. Application access and consent are represented separately, so a user existing in the shared pool does not automatically grant every application access to their identity or data.
+Applications in the same customer organisation and environment always share
+that environment's user pool. This means a user has one identity across all
+applications owned by that organisation within development, staging, or
+production, while identities never flow between those environments. Application
+access and consent are represented separately, so a user existing in the shared
+pool does not automatically grant every application access to their identity or
+data.
 
 When a user signs up through an application, that application receives the initial access grant as part of sign-up. When the same user signs in to another application in the customer organisation for the first time, the platform must show a consent screen describing the permissions and data requested by that application. The user's decision is recorded as an application grant and can be reviewed or revoked later.
 
@@ -1271,7 +1278,8 @@ The product should adopt these broader principles:
 
 The following decisions now form part of the intended product design:
 
-1. Applications in a customer organisation share one user pool.
+1. Applications in the same customer organisation and environment share one
+   user pool; users and credentials are isolated between environments.
 2. The application through which a user signs up receives the initial access grant. The user must consent when first entering another application in the shared pool.
 3. A management identity can belong to any number of customer organisations and switch its active organisation without signing out.
 4. An end user can belong to any number of end-user organisations and switch the active organisation without signing out.

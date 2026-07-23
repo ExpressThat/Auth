@@ -144,7 +144,7 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** DEC-013.  
   **Done when:** separate or shared physical tables are chosen without weakening the separate management and end-user trust boundaries.
 
-- [ ] **DEC-015 — Define environment isolation.**  
+- [x] **DEC-015 — Define environment isolation.**
   **Depends on:** DEC-013.  
   **Done when:** development, staging, and production data, credentials, keys, users, callbacks, and promotion boundaries are specified.
 

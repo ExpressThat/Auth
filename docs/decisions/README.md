@@ -27,6 +27,7 @@ platform's security, portability, operability, or public contracts.
 | [0011](0011-shared-api-conventions.md) | Standardize JSON, problems, cursors, concurrency, and retries | Accepted |
 | [0012](0012-trusted-tenant-context.md) | Resolve and cross-check every tenant context before data access | Accepted |
 | [0013](0013-management-identity-storage.md) | Store management and end-user identities in separate table families | Accepted |
+| [0014](0014-environment-isolation.md) | Isolate users, credentials, keys, providers, and data by environment | Accepted |
 | [Template](TEMPLATE.md) | Standard ADR structure | Reference |
 
 ## Numbering
