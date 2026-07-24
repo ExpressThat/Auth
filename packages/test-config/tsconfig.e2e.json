@@ -1,0 +1,4 @@
+{
+  "extends": "@expressthat-auth/typescript-config/node.json",
+  "include": ["e2e/**/*.ts", "playwright.config.ts"]
+}

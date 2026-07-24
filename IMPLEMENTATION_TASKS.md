@@ -294,9 +294,13 @@ These tasks prevent foundational security or compatibility decisions from being 
   to prove loading, empty, success, error, keyboard retry, and automated
   accessibility checks in four passing component tests.
 
-- [ ] **FND-011 — Configure end-to-end browser testing.**  
+- [x] **FND-011 — Configure end-to-end browser testing.**
   **Depends on:** DEC-004, FND-002.  
   **Done when:** isolated test data, browser projects, trace capture, accessibility checks, and deterministic local startup work.
+  **Evidence:** the shared Playwright preset runs Chromium, Firefox, and WebKit
+  against a health-checked local server; per-worker browser fixtures create
+  isolated tenant identifiers, failure diagnostics retain traces, screenshots,
+  and videos, and all three projects pass the same axe accessibility scan.
 
 - [ ] **FND-012 — Enforce complete executable-code coverage.**  
   **Depends on:** FND-008, FND-010.  
