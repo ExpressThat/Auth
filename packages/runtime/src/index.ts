@@ -107,6 +107,38 @@ export {
   SignedObjectUrl,
 } from "./object-values.js";
 export {
+  type EndSpanRequest,
+  type LogSeverity,
+  type MetricKind,
+  type MetricPoint,
+  ObservabilityError,
+  type ObservabilityErrorCode,
+  type ObservabilityHealth,
+  type ObservabilityHealthStatus,
+  type ObservabilityOperation,
+  type ObservabilityProvider,
+  type SpanKind,
+  type SpanStatus,
+  type StartSpanRequest,
+  type StructuredLogEvent,
+  type TraceContext,
+  type TraceEvent,
+  type TraceSpan,
+} from "./observability.js";
+export {
+  CorrelationId,
+  type DurationBucket,
+  type HttpMethod,
+  PseudonymousTelemetryReference,
+  RouteTemplate,
+  type RuntimeProfile,
+  SpanId,
+  TelemetryCode,
+  TelemetryEventName,
+  type TelemetryResult,
+  TraceId,
+} from "./observability-values.js";
+export {
   MAX_STORED_PASSWORD_HASH_BYTES,
   PasswordHash,
   type PasswordHasher,
@@ -175,6 +207,15 @@ export {
   type SecretVersionRequest,
   type SecretVersionState,
 } from "./secret.js";
+export { TelemetryAttributeSet } from "./telemetry-attribute-set.js";
+export {
+  TELEMETRY_FIELDS,
+  TelemetryAttribute,
+  type TelemetryAttributeValue,
+  type TelemetryCardinality,
+  type TelemetryField,
+  type TelemetrySinkKind,
+} from "./telemetry-attributes.js";
 export {
   type Clock,
   EpochMilliseconds,

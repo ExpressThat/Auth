@@ -650,9 +650,26 @@ These tasks prevent foundational security or compatibility decisions from being 
   statement, function, and branch coverage; compile-time tests reject raw
   object keys, and the full repository gates pass.
 
-- [ ] **RUN-009 — Create observability contracts.**  
-  **Depends on:** DEC-017.  
+- [x] **RUN-009 — Create observability contracts.**
+  **Depends on:** DEC-017.
   **Done when:** structured logs, metrics, traces, correlation, audit separation, personal-data redaction, and secret suppression are defined.
+  **Evidence:** `@expressthat-auth/runtime` exposes message-free structured
+  logs, finite metric points, correlated parent/child traces, exact-size trace
+  identifiers, span events/lifecycle, health, and redacted normalized errors.
+  Telemetry attributes can only use centrally registered typed descriptors with
+  classification, sink, and cardinality policy; attribute sets enforce sink
+  allow-lists, uniqueness, and bounded size. Metrics accept only registry fields
+  available to their low-cardinality sink, while correlation and
+  non-reversible pseudonymous tenant references remain log/trace-only.
+  Arbitrary personal/credential/secret strings and forged descriptors are
+  rejected. Operational event names reject the audit namespace and the
+  observability provider has no audit operation. A test-only adapter proves
+  safe serialization, audit separation, route templating, sink isolation,
+  metric validation, trace correlation, span terminal rules, health, outages,
+  and canary suppression. Fifteen new tests bring the runtime suite to 164
+  passing tests with 100% line, statement, function, and branch coverage;
+  compile-time tests reject raw telemetry strings, and the full repository
+  gates pass.
 
 - [ ] **RUN-010 — Create request and actor context.**  
   **Depends on:** DEC-013, RUN-002, RUN-009.  

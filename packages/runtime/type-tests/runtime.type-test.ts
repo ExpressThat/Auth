@@ -17,6 +17,7 @@ import {
   ObjectKey,
   ObjectScope,
   type ObjectStorageProvider,
+  type ObservabilityProvider,
   PasswordHash,
   type PasswordHasher,
   PublicEntityId,
@@ -29,6 +30,8 @@ import {
   SecretVersion,
   type SigningProvider,
   SystemClock,
+  TELEMETRY_FIELDS,
+  TelemetryAttribute,
   UuidV7Generator,
   WebCryptoRandomSource,
 } from "@expressthat-auth/runtime";
@@ -113,6 +116,7 @@ export const objectScope = ObjectScope.create({
   environmentId: PublicEntityId.parse("env", "env_01234567-89ab-7001-8203-040506070809"),
 });
 export const objectKey = ObjectKey.parse("type-test/object");
+export declare const observability: ObservabilityProvider;
 
 // @ts-expect-error -- public identifier prefixes come from the fixed registry.
 PublicEntityId.parse("account", "account_01234567-89ab-7001-8203-040506070809");
@@ -141,6 +145,11 @@ cacheState.put({
 durableQueue.acknowledge({ receipt: "job:lease" });
 // @ts-expect-error -- object lookups require a validated, redacting key.
 objectStorage.get({ key: "exports/file", scope: objectScope });
+TelemetryAttribute.create(
+  TELEMETRY_FIELDS.operation,
+  // @ts-expect-error -- raw strings cannot enter registered telemetry fields.
+  "canary-secret-value",
+);
 keyManagement.rotate({
   // @ts-expect-error -- lifecycle algorithms are a closed allow-list.
   algorithm: "none",

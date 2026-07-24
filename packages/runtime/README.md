@@ -246,6 +246,45 @@ Hosted non-public objects require verified European storage and processing.
 Self-hosted operators may select `operator-managed`; that accurately reports
 their chosen location without inheriting hosted EU or GDPR claims.
 
+## Observability
+
+`ObservabilityProvider` defines structured operational logs, metric points,
+traces, span events, and health without accepting free-form log messages,
+objects, exceptions, request bodies, headers, cookies, SQL parameters,
+environment values, credentials, or secrets.
+
+Attributes can only be created from the central `TELEMETRY_FIELDS` registry.
+Each field declares classification, allowed sinks, cardinality, and a typed
+serializer. Values use closed enums or validated value objects for operation
+codes, parameterized route templates, correlation IDs, status codes, and
+non-reversible pseudonymous tenant references. Arbitrary strings cannot enter a
+registered typed field. Attribute sets enforce per-sink allow-lists, duplicate
+rejection, and bounded field counts. Only registry fields explicitly marked
+low-cardinality are available to metrics; correlation and pseudonymous tenant
+references are restricted to logs and traces.
+
+Operational event names reject the `audit` namespace. This provider is not an
+audit sink: durable audit records use a separate domain and storage boundary
+with actor, subject, tenant, purpose, immutable facts, retention, and export
+rules. Emitting a diagnostic log never satisfies an audit requirement.
+
+Logs require timestamp, severity, correlation, registered event name, and a
+message-free attribute set. Metrics require finite values, registered labels,
+kind, unit, and observation time. Traces use exact-size trace/span IDs,
+correlation, optional parent context, typed events, and an explicit terminal
+status; error spans require a safe error code and completed spans reject later
+mutation.
+
+The conformance implementation is test-only. It proves sink separation,
+low-cardinality metrics, personal-data pseudonymization, raw-string and forged
+descriptor rejection, audit separation, route templating, trace correlation,
+span lifecycle, metric validation, health, and redacted errors. Production
+adapters must redact before every SDK/export boundary, bound buffers and
+backpressure, avoid telemetry failure changing authorization outcomes, and
+prove European routing, access, and retention for hosted non-public telemetry.
+Self-hosted operators control their collectors, destinations, regions, and
+retention.
+
 ## Identifiers
 
 `UuidV7Generator` combines an injected clock with ten bytes from an injected
