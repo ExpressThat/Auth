@@ -902,11 +902,58 @@ A feature or fix is complete only when:
 - Its acceptance behaviour is covered by automated tests.
 - Negative, boundary, tenant-isolation, and failure behaviour are tested.
 - Relevant documentation and OpenAPI output are updated.
+- Documentation is written alongside the implementation and describes the
+  current behaviour, configuration, limits, failure modes, security and privacy
+  implications, runtime differences, and operator or user actions that the
+  change introduces. Documentation debt is not deferred to a later phase.
 - Both runtime targets pass where applicable.
 - Coverage remains complete.
 - No applicable file exceeds 250 physical lines.
 - No skipped or flaky test is introduced.
 - Generated artifacts are reproducible from a clean checkout.
+
+### 3.14 Documentation as a Continuous Build Artifact
+
+Documentation is part of the product and is created or updated while each
+component is built. A feature is not complete when only its source and tests
+exist. Its intended audience must be able to discover, configure, use, operate,
+secure, troubleshoot, migrate, and retire it from documentation that matches the
+released behaviour.
+
+Documentation lives with the source of truth it explains:
+
+- Every workspace has a README covering its purpose, ownership boundary,
+  public exports, dependencies, supported runtimes, commands, tests, extension
+  points, security considerations, and links to deeper material.
+- Public TypeScript exports have concise API documentation where names and
+  types alone do not fully communicate invariants, side effects, error
+  behaviour, authorization, tenancy, data classification, or lifecycle.
+- Every API route is represented by the contract-derived OpenAPI description,
+  safe examples, authentication and authorization requirements, errors,
+  limits, idempotency, and relevant protocol guidance.
+- Every adapter documents capabilities, configuration and secret references,
+  runtime and residency support, failure and retry semantics, health checks,
+  local-development setup, and self-hosted operator responsibilities.
+- Every application workflow has audience-appropriate administrator or
+  end-user guidance, including denied and recovery paths.
+- Every deployment change updates installation, configuration, upgrade,
+  rollback, backup, restore, observability, capacity, and troubleshooting
+  guidance where affected.
+- Every security, privacy, compliance, data-model, or protocol decision updates
+  its ADR, threat model, standards register, data inventory, runbook, or policy
+  evidence in the same task.
+
+Documentation examples use synthetic data and are compiled, contract-tested, or
+executed where practical. CI validates internal links, generated references,
+OpenAPI drift, code examples, required workspace documentation, and stale
+version markers. Generated documentation is reproducible and must not contain
+credentials, personal data, internal-only details in public artifacts, or
+hosted promises that incorrectly apply to self-hosted installations.
+
+Documentation-only files remain exempt from the 250-line source-file limit, but
+they should still be structured for navigation and maintainability. Large
+guides may be split by audience or task without weakening the requirement that
+the complete behaviour is documented during implementation.
 
 ## 4. High-Level Structure
 

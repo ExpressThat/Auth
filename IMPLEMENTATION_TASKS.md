@@ -19,6 +19,13 @@ The default order is intentional: complete a task only after its listed dependen
   concurrency, authorization, outputs, and failure modes could be exploited.
 - Product changes discovered during implementation must be added to this backlog rather than hidden inside an unrelated task.
 - Architecture decisions must be recorded as short Architecture Decision Records under `docs/decisions/`.
+- Documentation is designed and written while each feature, package, adapter,
+  route, workflow, deployment path, or operational control is built. It must not
+  be deferred to a later documentation phase.
+- Every task identifies and updates its affected developer, API, administrator,
+  end-user, security/privacy, deployment, operations, migration, or support
+  documentation. If no documentation changes are appropriate, the task evidence
+  records why.
 
 ### 2.2 Commit Workflow
 
@@ -50,7 +57,12 @@ Unless a task explicitly concerns documentation only, it is complete when:
 - Tests cover applicable malicious, malformed, boundary, replay, race,
   downgrade, enumeration, injection, and fail-closed cases as well as success.
 - External inputs are runtime-validated and unsafe outputs are redacted.
-- OpenAPI and user or operator documentation are updated where relevant.
+- OpenAPI and affected developer, administrator, end-user, security/privacy,
+  deployment, operations, migration, and support documentation are updated in
+  the same task. Examples use synthetic data and are tested where practical.
+- New workspaces include purpose, boundaries, public exports, runtimes,
+  commands, tests, extension points, security considerations, and deeper
+  documentation links from their README.
 - Both Workers and Docker targets pass where runtime behaviour is affected.
 - Executable first-party TypeScript retains 100% line, statement, function, and branch coverage.
 - No applicable first-party file exceeds 250 physical lines.
@@ -368,7 +380,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [ ] **FND-018 — Add a TypeScript workspace generator.**  
   **Depends on:** FND-002, FND-003, FND-006, FND-014.  
-  **Done when:** new libraries, applications, providers, and routes are generated with tests, public exports, correct tasks, and policy-compliant file sizes.
+  **Done when:** new libraries, applications, providers, and routes are generated with tests, public exports, correct tasks, a starter README with required documentation sections, and policy-compliant file sizes.
 
 - [ ] **FND-019 — Add release and changelog conventions.**  
   **Depends on:** FND-001, DEC-011.  
@@ -389,6 +401,15 @@ These tasks prevent foundational security or compatibility decisions from being 
 - [ ] **FND-023 — Create the local shared-dependency Compose stack.**
   **Depends on:** FND-002, FND-014.
   **Done when:** one documented command starts pinned, health-checked, loopback-only RabbitMQ, S3-compatible object storage, Valkey, SMTP capture, and OpenTelemetry services; applications use local SQLite directly; host-run and container-run apps can use the same service endpoints; reset is deterministic; no real secrets are committed; and the stack refuses production mode.
+
+- [ ] **FND-024 — Enforce documentation-as-code quality.**
+  **Depends on:** FND-014, FND-018, FND-019.
+  **Done when:** CI verifies required workspace READMEs, internal links,
+  generated documentation drift, safe and executable examples where practical,
+  OpenAPI references, version markers, public/internal artifact separation, and
+  the hosted/self-hosted responsibility wording; failures identify an owner and
+  source file, and the contributor guide explains how every task updates docs
+  while implementation is in progress.
 
 ## 5. Phase 2 — Runtime-Neutral Platform Contracts
 
@@ -1940,7 +1961,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 Complete when:
 
 - DEC-001 through DEC-023 are either completed or explicitly scheduled before their first consumer.
-- FND-001 through FND-023 pass on a clean checkout.
+- FND-001 through FND-024 pass on a clean checkout.
 - RUN-001 through RUN-021 have conformance-tested implementations.
 - DB-001 through DB-026 pass against SQLite, PostgreSQL, and the applicable local Workers database path; the adapter kit proves the core is not tied to either dialect.
 - API-001 through API-019 run equivalently through Docker and Workers shells.
