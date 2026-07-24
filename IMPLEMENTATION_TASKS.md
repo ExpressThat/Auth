@@ -395,9 +395,21 @@ These tasks prevent foundational security or compatibility decisions from being 
   and branch coverage; the full repository test, coverage, build, policy,
   dependency, licence, and artifact gates pass.
 
-- [ ] **FND-019 — Add release and changelog conventions.**  
+- [x] **FND-019 — Add release and changelog conventions.**
   **Depends on:** FND-001, DEC-011.  
   **Done when:** package versions, application releases, OpenAPI versions, migration notes, and security advisories have an explicit workflow.
+  **Evidence:** ADR-0023 assigns independent SemVer histories to deployable
+  applications, intentional public packages/adapters/SDKs, and immutable
+  OpenAPI contracts while binding tested combinations, source, digests,
+  migrations, compatibility, documentation, and security evidence in a platform
+  release manifest. Private workspaces remain `0.0.0` and unpublished.
+  `docs/releases/release-process.md` defines task-time fragments, candidate
+  preparation, version selection, clean validation, immutable build and
+  publication, hosted rollout, self-hosted boundaries, rollback, revocation,
+  and required outputs. `.changes/` supplies the documented fragment format and
+  an FND-019 fragment; `CHANGELOG.md` establishes the release categories;
+  `SECURITY.md` defines private reporting, pre-GA support status, coordinated
+  disclosure, patched artifact requirements, and operator responsibility.
 
 - [ ] **FND-020 — Add contributor documentation.**  
   **Depends on:** FND-014, FND-016, FND-021.

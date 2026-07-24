@@ -36,6 +36,7 @@ platform's security, portability, operability, or public contracts.
 | [0020](0020-security-reliability-targets.md) | Use tiered SLOs and security response targets | Accepted |
 | [0021](0021-standards-register.md) | Pin and own protocol and security standards | Accepted |
 | [0022](0022-pluggable-database-adapters.md) | Keep database selection behind conforming adapters | Accepted |
+| [0023](0023-release-and-changelog.md) | Version public surfaces independently and bind platform releases with a manifest | Accepted |
 | [Template](TEMPLATE.md) | Standard ADR structure | Reference |
 
 ## Numbering
