@@ -34,6 +34,26 @@ export {
   WebCryptoRandomSource,
 } from "./random.js";
 export {
+  type CreateSecretRequest,
+  type DisableSecretRequest,
+  MAX_SECRET_BYTES,
+  type ResolvedSecret,
+  type ResolveSecretRequest,
+  type RotateSecretRequest,
+  SecretMaterial,
+  type SecretMetadata,
+  SecretPurpose,
+  SecretReference,
+  SecretStorageError,
+  type SecretStorageErrorCode,
+  type SecretStorageOperation,
+  type SecretStorageProvider,
+  SecretVersion,
+  type SecretVersionMetadata,
+  type SecretVersionRequest,
+  type SecretVersionState,
+} from "./secret.js";
+export {
   type Clock,
   EpochMilliseconds,
   MAX_EPOCH_MILLISECONDS,

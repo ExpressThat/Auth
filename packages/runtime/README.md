@@ -66,6 +66,35 @@ algorithms. RUN-005 adds custody, lifecycle, wrapping, and rotation. Current
 tests use isolated ephemeral RSA keys and a published AES-256-GCM vector; no
 process-generated key is permitted in deployable composition.
 
+## Secret storage
+
+`SecretStorageProvider` makes creation, explicit version lookup, purpose-bound
+resolution, optimistic rotation, and disablement separate asynchronous
+capabilities. A `SecretReference` is an opaque custody locator whose JSON form
+is redacted; a `SecretVersion` is a positive integer suitable for concurrency
+checks and stable metadata.
+
+Callers supply `SecretMaterial`, which copies its input, returns only defensive
+copies through the deliberately named `copyForProvider()` boundary, serializes
+as a redaction marker, and can overwrite its retained bytes through
+`destroy()`. JavaScript cannot guarantee that engines immediately erase every
+transient copy, so callers still minimize lifetime and destroy values promptly.
+Management APIs will accept material only on write paths and never expose the
+runtime resolution operation.
+
+Version metadata records active, superseded, and disabled states plus creation,
+replacement, rotation, and disablement instants. Rotation uses an expected
+current version so adapters cannot silently overwrite a concurrent change.
+`SecretStorageError` exposes only a stable operation, code, and retryability;
+references, provider diagnostics, and material cannot enter its message or JSON
+form.
+
+The in-memory implementation used by the conformance suite is test-only. It
+demonstrates lifecycle and redaction behavior but cannot be selected by a
+deployable composition root. Production custody adapters arrive under OPS-010
+and must additionally prove access control, audit, residency, outage behavior,
+and durable multi-instance semantics.
+
 ## Identifiers
 
 `UuidV7Generator` combines an injected clock with ten bytes from an injected

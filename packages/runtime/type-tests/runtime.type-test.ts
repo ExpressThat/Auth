@@ -8,6 +8,11 @@ import {
   type PasswordHasher,
   PublicEntityId,
   type RandomSource,
+  SecretMaterial,
+  SecretPurpose,
+  SecretReference,
+  type SecretStorageProvider,
+  SecretVersion,
   type SigningProvider,
   SystemClock,
   UuidV7Generator,
@@ -46,6 +51,33 @@ export const encryptionProvider: AuthenticatedEncryptionProvider = {
   }),
 };
 export const keyHandle: KeyHandle = KeyHandle.parse("test:key");
+export const secretStorage: SecretStorageProvider = {
+  create: async (request) => ({
+    createdAt: deterministicClock.now(),
+    currentVersion: SecretVersion.parse(1),
+    purpose: request.purpose,
+    reference: SecretReference.parse("test:secret/one"),
+  }),
+  disable: async () => ({
+    createdAt: deterministicClock.now(),
+    currentVersion: SecretVersion.parse(1),
+    disabledAt: deterministicClock.now(),
+    purpose: SecretPurpose.parse("test.secret"),
+    reference: SecretReference.parse("test:secret/one"),
+  }),
+  metadata: async () => undefined,
+  resolve: async () => {
+    throw new Error("Type-only provider.");
+  },
+  rotate: async () => ({
+    createdAt: deterministicClock.now(),
+    currentVersion: SecretVersion.parse(2),
+    lastRotatedAt: deterministicClock.now(),
+    purpose: SecretPurpose.parse("test.secret"),
+    reference: SecretReference.parse("test:secret/one"),
+  }),
+};
+export const secretMaterial = SecretMaterial.fromBytes(new Uint8Array([1]));
 
 // @ts-expect-error -- public identifier prefixes come from the fixed registry.
 PublicEntityId.parse("account", "account_01234567-89ab-7001-8203-040506070809");
@@ -59,3 +91,5 @@ export const applicationId: PublicEntityId<"app"> = userId;
 signingProvider.sign({ algorithm: "none" });
 // @ts-expect-error -- password hash values cannot be substituted with raw strings.
 passwordHasher.verify("encoded", "password");
+// @ts-expect-error -- secret creation requires a redacting SecretMaterial value.
+secretStorage.create({ material: "raw", purpose: SecretPurpose.parse("test.secret") });

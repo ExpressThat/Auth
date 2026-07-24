@@ -562,9 +562,20 @@ These tasks prevent foundational security or compatibility decisions from being 
   Compile-time tests prove provider substitutability and explicit capability
   types; the full repository gates pass.
 
-- [ ] **RUN-004 — Create secret-storage contracts.**  
+- [x] **RUN-004 — Create secret-storage contracts.**
   **Depends on:** DEC-017, RUN-002.  
   **Done when:** write-only secret creation, version lookup, rotation metadata, disablement, and redacted errors are represented.
+  **Evidence:** `@expressthat-auth/runtime` exposes bounded, defensive-copying,
+  destructible, JSON-redacted `SecretMaterial`; purpose and reference value
+  objects; positive versions; active, superseded, and disabled metadata;
+  optimistic create, resolve, rotate, disable, and explicit-version operations;
+  and stable storage errors containing only operation, code, and retryability.
+  A test-only adapter exercises reference-only creation, defensive resolution,
+  rotation overlap, stale-version conflicts, purpose binding, disablement,
+  missing versions and references, and canary redaction. Thirty-two new tests
+  bring the runtime suite to 84 passing tests with 100% line, statement,
+  function, and branch coverage; compile-time tests reject raw secret material,
+  and the full repository gates pass.
 
 - [ ] **RUN-005 — Create key-management contracts.**  
   **Depends on:** DEC-008, RUN-003, RUN-004.  
