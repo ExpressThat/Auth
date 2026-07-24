@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 
 const WORKFLOW = new URL("../../../.github/workflows/security-ci.yml", import.meta.url);
 const CONFIG = new URL("../../../.gitleaks.toml", import.meta.url);
+const COMPOSE = new URL("../../../deploy/docker/compose.local.yaml", import.meta.url);
 
 describe("security CI workflow", () => {
   it("uses a complete read-only checkout and locked dependencies", async () => {
@@ -20,6 +21,35 @@ describe("security CI workflow", () => {
     expect(workflow).toContain("pnpm scan:dependencies");
     expect(workflow).toContain("pnpm scan:licenses");
     expect(workflow).toContain("pnpm scan:artifacts");
+    expect(workflow).toContain("pnpm check:security");
+    expect(workflow).toContain("pnpm typecheck");
+    expect(workflow).toContain("--reporter=sarif");
+  });
+
+  it("runs scheduled checksum-pinned repository and image scans", async () => {
+    const workflow = await readFile(WORKFLOW, "utf8");
+
+    expect(workflow).toContain('cron: "17 3 * * 1"');
+    expect(workflow).toContain("TRIVY_VERSION: 0.72.0");
+    expect(workflow).toContain("TRIVY_CHECKSUMS_SHA256:");
+    expect(workflow).toContain('"$RUNNER_TEMP/trivy" fs');
+    expect(workflow).toContain('"$RUNNER_TEMP/trivy" image');
+    expect(workflow).toContain("pnpm scan:sarif");
+    expect(workflow).toContain("actions/upload-artifact@v6");
+    expect(workflow).toContain("*.sarif");
+  });
+
+  it("scans every exact image used by the local Compose stack", async () => {
+    const [workflow, compose] = await Promise.all([
+      readFile(WORKFLOW, "utf8"),
+      readFile(COMPOSE, "utf8"),
+    ]);
+    const images = [...compose.matchAll(/^\s+image: (.+)$/gmu)].map((match) => match[1]);
+
+    expect(images).toHaveLength(5);
+    for (const image of images) {
+      expect(workflow).toContain(`image: "${image}"`);
+    }
   });
 
   it("verifies a pinned scanner and emits redacted review output", async () => {

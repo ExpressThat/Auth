@@ -82,6 +82,8 @@ pnpm test:types
 pnpm test
 pnpm test:coverage
 pnpm build
+pnpm check:security
+pnpm scan:static
 pnpm scan:artifacts
 pnpm scan:licenses
 pnpm scan:dependencies

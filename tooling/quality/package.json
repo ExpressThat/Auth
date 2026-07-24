@@ -12,6 +12,8 @@
     "check:documentation": "tsx src/check-documentation.ts",
     "check:licenses": "tsx src/check-licenses.ts",
     "check:lines": "tsx src/check-lines.ts",
+    "check:security": "tsx src/check-security-suppressions.ts",
+    "check:sarif": "tsx src/check-security-sarif.ts",
     "lint": "tsc --noEmit",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",

@@ -2,8 +2,9 @@ name: Security CI
 
 on:
   push:
-    branches:
-      - "**"
+    branches: ["**"]
+  schedule:
+    - cron: "17 3 * * 1"
   workflow_dispatch:
 
 permissions:
@@ -13,41 +14,47 @@ concurrency:
   group: security-ci-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  TRIVY_CHECKSUMS_SHA256: ebe9d19a774b950e240b1017a038e9b5a002ea068e02023369ff6d241c10c580
+  TRIVY_VERSION: 0.72.0
+
 jobs:
-  supply-chain:
-    name: Dependencies, licences, artifacts, and credentials
+  source:
+    name: Source, dependencies, and credentials
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
-      - name: Check out complete history
+      - &checkout
+        name: Check out complete history
         uses: actions/checkout@v6
         with:
           clean: true
           fetch-depth: 0
           persist-credentials: false
-
-      - name: Install Node.js
+      - &node
+        name: Install Node.js
         uses: actions/setup-node@v6
         with:
           node-version: 24.18.0
           package-manager-cache: false
-
-      - name: Enable pinned pnpm
-        run: corepack enable
-
       - name: Install locked dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Audit dependency advisories
-        run: pnpm scan:dependencies
-
-      - name: Enforce reviewed dependency licences
-        run: pnpm scan:licenses
-
-      - name: Inspect generated-source artifacts
-        run: pnpm scan:artifacts
-
-      - name: Install pinned Gitleaks
+        run: |
+          corepack enable
+          pnpm install --frozen-lockfile
+      - name: Validate security exceptions
+        run: pnpm check:security
+      - name: Run typed and static analysis
+        run: |
+          pnpm typecheck
+          pnpm exec biome check . --reporter=sarif \
+            --reporter-file="$RUNNER_TEMP/biome.sarif" || true
+          pnpm scan:sarif -- "$RUNNER_TEMP/biome.sarif" commit > "$RUNNER_TEMP/biome-policy.json"
+      - name: Audit dependencies, licences, and artifacts
+        run: |
+          pnpm scan:dependencies
+          pnpm scan:licenses
+          pnpm scan:artifacts
+      - name: Install checksum-pinned Gitleaks
         shell: bash
         env:
           GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
@@ -58,14 +65,104 @@ jobs:
           curl --fail --location --proto '=https' --tlsv1.2 "$url" --output "$archive"
           printf '%s  %s\n' "$GITLEAKS_SHA256" "$archive" | sha256sum --check
           tar --extract --gzip --file "$archive" --directory "$RUNNER_TEMP" gitleaks
-
-      - name: Scan complete Git history for credentials
+      - name: Scan complete history for credentials
         shell: bash
         run: |
-          "$RUNNER_TEMP/gitleaks" git \
-            --config .gitleaks.toml \
-            --no-banner \
-            --redact \
-            --report-format sarif \
-            --report-path "$RUNNER_TEMP/gitleaks.sarif" \
-            --verbose
+          "$RUNNER_TEMP/gitleaks" git --config .gitleaks.toml --no-banner --redact \
+            --exit-code 0 --report-format sarif \
+            --report-path "$RUNNER_TEMP/gitleaks.sarif" --verbose
+          pnpm scan:sarif -- "$RUNNER_TEMP/gitleaks.sarif" release \
+            > "$RUNNER_TEMP/gitleaks-policy.json"
+      - &upload-source
+        name: Preserve machine-readable findings
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: security-source-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/*.sarif
+            ${{ runner.temp }}/*-policy.json
+          if-no-files-found: warn
+          retention-days: 14
+
+  deployment:
+    name: Repository and deployment configuration
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - *checkout
+      - *node
+      - name: Install locked dependencies
+        run: |
+          corepack enable
+          pnpm install --frozen-lockfile
+      - &trivy
+        name: Install checksum-pinned Trivy
+        shell: bash
+        run: |
+          archive="trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz"
+          checksums="trivy_${TRIVY_VERSION}_checksums.txt"
+          base="https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}"
+          curl --fail --location --proto '=https' --tlsv1.2 "$base/$checksums" -o "$RUNNER_TEMP/$checksums"
+          printf '%s  %s\n' "$TRIVY_CHECKSUMS_SHA256" "$RUNNER_TEMP/$checksums" | sha256sum --check
+          curl --fail --location --proto '=https' --tlsv1.2 "$base/$archive" -o "$RUNNER_TEMP/$archive"
+          (cd "$RUNNER_TEMP" && grep " $archive$" "$checksums" | sha256sum --check)
+          tar --extract --gzip --file "$RUNNER_TEMP/$archive" --directory "$RUNNER_TEMP" trivy
+      - name: Scan files and deployment configuration
+        shell: bash
+        run: |
+          "$RUNNER_TEMP/trivy" fs --scanners vuln,misconfig,secret \
+            --severity MEDIUM,HIGH,CRITICAL --format sarif \
+            --output "$RUNNER_TEMP/trivy-repository.sarif" .
+          pnpm scan:sarif -- "$RUNNER_TEMP/trivy-repository.sarif" release \
+            > "$RUNNER_TEMP/trivy-repository-policy.json"
+      - name: Preserve machine-readable deployment findings
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: security-deployment-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/*.sarif
+            ${{ runner.temp }}/*-policy.json
+          if-no-files-found: warn
+          retention-days: 14
+
+  local-images:
+    name: Local image / ${{ matrix.name }}
+    if: github.event_name != 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: rabbitmq, image: "rabbitmq:4.3.1-management-alpine@sha256:b84c252f54ecd61522320135c2bfe19a8db3e49e8dd559737817e8429e84cb7e" }
+          - { name: seaweedfs, image: "chrislusf/seaweedfs:4.29@sha256:d47c7ee99fcb951351d7194915f4e3a5ea604a8e8871183d713907dec4fb9bf5" }
+          - { name: valkey, image: "valkey/valkey:8.1.8-alpine3.23@sha256:94365b275456ae14621001c03556c732b1d93a0cdeacc317d1bdd52eba680885" }
+          - { name: mailpit, image: "axllent/mailpit:v1.30.0@sha256:0059ef81e492a7192af3816281eed6859eb078bd7bdc58b76757c13e10e53a7d" }
+          - { name: otel, image: "otel/opentelemetry-collector-contrib:0.156.0@sha256:125bdbeb7590cc1952c5b3430ecf14063568980c2c93d5b38676cc0446ed8108" }
+    steps:
+      - *checkout
+      - *node
+      - name: Install locked dependencies
+        run: |
+          corepack enable
+          pnpm install --frozen-lockfile
+      - *trivy
+      - name: Scan pinned local-development image
+        shell: bash
+        run: |
+          "$RUNNER_TEMP/trivy" image --severity HIGH,CRITICAL --format sarif \
+            --output "$RUNNER_TEMP/trivy-image.sarif" "${{ matrix.image }}"
+          pnpm scan:sarif -- "$RUNNER_TEMP/trivy-image.sarif" commit \
+            > "$RUNNER_TEMP/trivy-image-policy.json"
+      - name: Preserve machine-readable image findings
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: security-image-${{ matrix.name }}-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/*.sarif
+            ${{ runner.temp }}/*-policy.json
+          if-no-files-found: warn
+          retention-days: 14

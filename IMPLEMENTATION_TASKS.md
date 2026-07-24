@@ -451,9 +451,19 @@ These tasks prevent foundational security or compatibility decisions from being 
   coverage; the full repository format, lint, type, test, coverage, build,
   artifact, licence, dependency-audit, and diff gates pass.
 
-- [ ] **FND-022 — Enforce continuous security analysis.**
+- [x] **FND-022 — Enforce continuous security analysis.**
   **Depends on:** FND-005, FND-015, FND-017.
   **Done when:** typed/static analysis, dependency and secret scans, lockfile integrity, generated-artifact checks, container and deployment-configuration scans, severity policy, expiring suppressions, scheduled runs, and machine-readable findings fail the appropriate quality or release gate.
+  **Evidence:** root commands enforce typed/static, advisory, licence,
+  generated-artifact, and suppression policy checks. Security CI uses a frozen
+  lockfile and full-history credential scan on every push; checksum-pinned
+  Trivy scans repository dependencies, secrets, deployment configuration, and
+  all digest-pinned local Compose images, with image campaigns scheduled
+  weekly. Typed SARIF processing applies commit and release severity thresholds,
+  permits only exact audited medium suppressions lasting at most 90 days, and
+  emits redacted policy JSON alongside retained SARIF. Focused policy,
+  entry-point, workflow, and parsing tests pass with 100% coverage; the full
+  repository quality gates pass.
 
 - [x] **FND-023 — Create the local shared-dependency Compose stack.**
   **Depends on:** FND-002, FND-014.

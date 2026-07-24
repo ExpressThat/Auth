@@ -1,76 +1,100 @@
-# Dependency and Credential Scanning
+# Continuous Security Analysis
 
 ## Purpose
 
-The repository rejects known high-severity dependency vulnerabilities,
-unreviewed dependency licences, suspicious files concealed as generated source,
-and credentials committed anywhere in Git history. These controls apply to the
-source project and are not a warranty about dependencies added or configuration
-chosen by a self-hosted operator.
+Security analysis is a continuous, fail-closed quality control. It covers
+first-party source, dependencies, credentials, generated artifacts, deployment
+configuration, and pinned local-development container images. These controls
+apply to this source project; they are not a warranty for dependencies,
+deployment choices, or availability in an operator's self-hosted installation.
 
-## CI gates
+## Local gates
 
-`Security CI` runs on every pushed branch and can be started manually. It uses a
-read-only, full-history checkout without persisted GitHub credentials and a
-frozen dependency installation.
+Run the same controls while developing:
 
-- `pnpm scan:dependencies` runs the pnpm advisory audit for production and
-  development dependencies and fails for high or critical findings.
-- `pnpm scan:licenses` inventories the installed dependency graph and applies
-  the reviewed licence policy below.
-- `pnpm scan:artifacts` rejects binary, archive, executable, database,
-  environment, and private-key material in generated-source paths.
-- Gitleaks scans complete Git history using its maintained rules. The executable
-  version and archive checksum are pinned, findings are redacted, and a SARIF
-  report is produced in the ephemeral runner directory.
+```bash
+pnpm check:security
+pnpm scan:static
+pnpm scan:dependencies
+pnpm scan:licenses
+pnpm scan:artifacts
+```
 
-Failures retain the package, version, licence, file path, rule, and commit
-context needed for review while redacting detected secret values.
+`check:security` validates the exception registry. `scan:static` runs Biome and
+the strict TypeScript compiler. The remaining commands audit dependency
+advisories, enforce the reviewed licence policy, and reject suspicious binary,
+archive, executable, database, environment, or private-key files concealed as
+generated source.
+
+CI also runs Gitleaks over complete Git history with redaction enabled. Its
+executable and archive checksum are pinned. A credential finding requires
+revocation and rotation before history cleanup and access investigation;
+deleting the current copy is not remediation.
+
+## CI and schedule
+
+`Security CI` runs source controls on every pushed branch and may be started
+manually. A weekly schedule additionally scans every digest-pinned image in the
+local Compose stack. Repository filesystem scanning inspects dependencies,
+secrets, and deployment misconfiguration with checksum-pinned Trivy.
+
+The checkout is read-only, includes complete history, does not persist GitHub
+credentials, and installs only the frozen lockfile. Scanner downloads use TLS,
+fixed versions, and independently pinned release checksums. Scanner actions
+that execute mutable third-party repository code are deliberately avoided.
+
+All scanners emit SARIF. The repository converts it into a minimized policy
+report containing only tool, rule, severity, path, suppression identifier, and
+gate outcome. Raw messages never appear in the policy summary. CI preserves
+available SARIF and policy JSON for 14 days even when a gate fails.
+
+## Severity policy
+
+The `commit` gate blocks critical and high findings. The `release` gate also
+blocks medium findings. Low and informational findings remain visible for
+triage. Scheduled third-party development-image scans block high and critical
+findings; repository and deployment scans use the release threshold.
+
+Security severity scores take precedence when a SARIF producer supplies them:
+9.0 or greater is critical, 7.0 high, 4.0 medium, and a positive lower score is
+low. Otherwise SARIF error, warning, note, and none map to high, medium, low,
+and informational.
+
+## Expiring suppressions
+
+Suppressions live in `.security/suppressions.json` and are deny-by-default.
+Every entry requires:
+
+- an exact scanner, rule, and path without wildcards;
+- a unique identifier and scope;
+- a named owner, substantive reason, and compensating control;
+- a tracking URL;
+- creation and expiry dates no more than 90 days apart.
+
+Expired entries fail every gate. High and critical findings cannot be
+suppressed. A medium finding may be suppressed only at its exact registered
+scope; remediation and removal of the exception remain required.
 
 ## Licence policy
 
-The dependency gate is deny-by-default. The directly allowed permissive
-expressions are:
+The licence gate directly permits Apache-2.0, BlueOak-1.0.0, BSD-2-Clause,
+BSD-3-Clause, CC0-1.0, ISC, MIT, `MIT OR Apache-2.0`, and MIT-0. All other
+expressions are denied unless a package-and-version exception records a
+completed review.
 
-- Apache-2.0
-- BlueOak-1.0.0
-- BSD-2-Clause
-- BSD-3-Clause
-- CC0-1.0
-- ISC
-- MIT
-- MIT OR Apache-2.0
-- MIT-0
-
-The following non-permissive or weak-copyleft cases were reviewed for their
-current use and are encoded as package-and-version exceptions:
-
-- `@axe-core/playwright` and `axe-core` 4.12.1 under MPL-2.0.
-- `lightningcss` and its platform packages 1.33.0 under MPL-2.0.
-- Sharp libvips platform packages 1.3.1 under LGPL-3.0-or-later, and the
-  Windows Sharp platform binary 0.35.2 under its reported combined Apache-2.0
-  and LGPL-3.0-or-later expression.
-
-An upgrade, a new package under one of those licences, a changed licence
-expression, or an unknown licence fails the gate and requires a fresh review.
-The policy deliberately does not broadly allow LGPL, MPL, GPL, AGPL, SSPL, or
-unidentified licences.
+Current narrow exceptions cover the repository's reviewed MPL-2.0 Axe and
+Lightning CSS packages and the reported LGPL-based Sharp platform packages.
+An upgrade, new package, changed expression, or unknown licence requires a new
+review. There is no blanket LGPL, MPL, GPL, AGPL, SSPL, or unknown allowance.
 
 ## Triage
 
-Never suppress a finding merely to restore CI:
+Do not suppress a finding simply to restore CI. Establish reachability, update
+or remove the component, and test the remediation. For a deployment finding,
+correct the checked-in configuration and verify Docker behavior. For a
+generated artifact, remove it and make its generator emit safe deterministic
+text. Record false positives only through the expiring registry.
 
-1. For an advisory, establish reachability and update, replace, or remove the
-   dependency. A temporary exception requires a documented security decision,
-   owner, expiry, and compensating control.
-2. For a licence failure, verify the package's authoritative licence and usage.
-   Add only the narrowest reviewed package-and-version exception.
-3. For a generated artifact, remove it and change the generator to emit safe,
-   deterministic text. Store release binaries outside generated source.
-4. For a credential, revoke and rotate it first, then remove it from the entire
-   Git history and investigate access. Deleting it only from the latest commit
-   is insufficient.
-
-Scanner versions and policies are reviewed during dependency updates and every
-release. Scheduled and machine-readable security reporting is added by the
-later continuous-security backlog tasks.
+Scanner versions, checksums, policies, and exceptions are reviewed during
+dependency updates and every release. Self-hosted operators remain responsible
+for scanning their chosen images, adapters, infrastructure, and configuration.
