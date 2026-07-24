@@ -1,0 +1,88 @@
+name: Full Clean CI
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: full-clean-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  clean-checkout:
+    name: Complete clean-checkout gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Check out a clean repository
+        uses: actions/checkout@v6
+        with:
+          clean: true
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24.18.0
+          package-manager-cache: false
+
+      - name: Enable pinned pnpm
+        run: corepack enable
+
+      - name: Install locked dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate every deterministic artifact
+        run: |
+          pnpm generate
+          pnpm generate:contracts
+          pnpm generate:sdk
+          pnpm db:generate
+
+      - name: Run repository and contract checks
+        run: |
+          pnpm format:check
+          pnpm check
+          pnpm check:contracts
+          pnpm db:check
+          pnpm check:deployment
+
+      - name: Run static and compile-time checks
+        run: |
+          pnpm lint
+          pnpm typecheck
+          pnpm test:types
+
+      - name: Run all instrumented tests
+        run: |
+          pnpm test
+          pnpm test:coverage
+
+      - name: Install browser engines
+        run: pnpm --filter @expressthat-auth/test-config exec playwright install --with-deps chromium firefox webkit
+
+      - name: Run browser and deployment tests
+        run: |
+          pnpm test:e2e
+          pnpm test:deployment
+
+      - name: Build and package every artifact
+        run: |
+          pnpm build
+          pnpm package:deployment
+
+      - name: Prove checkout reproducibility
+        shell: bash
+        run: |
+          git diff --exit-code
+          undeclared_files="$(git status --porcelain --untracked-files=all)"
+          if [[ -n "$undeclared_files" ]]; then
+            printf '%s\n' "$undeclared_files"
+            exit 1
+          fi

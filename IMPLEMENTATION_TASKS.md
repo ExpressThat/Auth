@@ -344,9 +344,15 @@ These tasks prevent foundational security or compatibility decisions from being 
   dependants, while cancellation prevents obsolete branch runs from consuming
   capacity; workflow regression tests enforce these safety properties.
 
-- [ ] **FND-016 — Add a full clean-checkout CI job.**  
+- [x] **FND-016 — Add a full clean-checkout CI job.**
   **Depends on:** FND-015.  
   **Done when:** install, generation, lint, typecheck, all tests, all builds, and reproducibility checks pass without undeclared local files.
+  **Evidence:** the main/manual clean-checkout workflow installs only from the
+  frozen lockfile, runs every generation, contract, database, static,
+  compile-time, unit, coverage, Workers, browser, deployment-test, build, and
+  deployment-packaging task family, then rejects both tracked drift and
+  undeclared untracked files. It uses a clean read-only checkout with no
+  persisted credential, and workflow regression tests enforce the full gate.
 
 - [ ] **FND-017 — Add dependency and credential scanning.**  
   **Depends on:** FND-015.  
