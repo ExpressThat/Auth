@@ -34,8 +34,11 @@ describe("runtime dependency composition", () => {
 
     expect(dependencies.authenticatedEncryption).toBe(input.authenticatedEncryption.provider);
     expect(dependencies.cacheState).toBe(input.cacheState.provider);
+    expect(dependencies.certificateAutomation).toBe(input.certificateAutomation.provider);
     expect(dependencies.clock).toBe(input.clock);
+    expect(dependencies.dnsAutomation).toBe(input.dnsAutomation.provider);
     expect(dependencies.durableQueue).toBe(input.durableQueue.provider);
+    expect(dependencies.frontendDeployment).toBe(input.frontendDeployment.provider);
     expect(dependencies.identifiers).toBe(input.identifiers);
     expect(dependencies.keyManagement).toBe(input.keyManagement.provider);
     expect(dependencies.objectStorage).toBe(input.objectStorage.provider);
@@ -68,7 +71,10 @@ describe("runtime dependency composition", () => {
   it.each([
     ["authenticatedEncryption", "decrypt", "authenticated-encryption"],
     ["cacheState", "compareAndSet", "cache-state"],
+    ["certificateAutomation", "issue", "certificate-automation"],
+    ["dnsAutomation", "prepare", "dns-automation"],
     ["durableQueue", "acknowledge", "durable-queue"],
+    ["frontendDeployment", "deploy", "frontend-deployment"],
     ["keyManagement", "publish", "key-management"],
     ["objectStorage", "delete", "object-storage"],
     ["observability", "health", "observability"],

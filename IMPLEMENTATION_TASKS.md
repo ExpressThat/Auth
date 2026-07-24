@@ -836,9 +836,27 @@ These tasks prevent foundational security or compatibility decisions from being 
   workspace ownership and boundary policy classify the harness as test-only
   conformance infrastructure.
 
-- [ ] **RUN-019 — Create managed-domain automation contracts.**  
+- [x] **RUN-019 — Create managed-domain automation contracts.**
   **Depends on:** RUN-002, RUN-004, RUN-008, RUN-016.  
   **Done when:** DNS verification, certificate lifecycle, and frontend deployment are operator adapters rather than hosted-provider logic embedded in the domain.
+  **Evidence:** `@expressthat-auth/runtime` exposes separate tenant-scoped DNS,
+  certificate, and frontend-deployment ports with normalized redacting errors,
+  health, opaque references, optimistic revisions, and validated hostname,
+  ownership-challenge, artifact-reference, and SHA-256 digest values.
+  Certificate metadata retains its authorizing DNS verification reference and
+  deployment metadata retains its certificate and immutable artifact binding;
+  arbitrary artifact URLs are rejected. All three capabilities are required
+  through manifest-validated dependency composition. Test-only deterministic
+  adapters cover expiry, collision, verification, activation, renewal,
+  revocation, replacement, rollback, removal, outage, stale writes, and
+  cross-tenant substitution. Shared DNS, certificate, and deployment suites
+  execute all required success, failure, timeout, retry, concurrency,
+  redaction, runtime, health, and tenant-isolation/residency axes. ADR-0026,
+  the architecture guide, package documentation, compile-time misuse tests,
+  360 runtime tests, and 41 conformance tests pass with complete statement,
+  branch, function, and line coverage; full repository policy, type-contract,
+  build, runtime-neutrality, artifact, licence, dependency-audit, and diff
+  gates pass.
 
 - [ ] **RUN-020 — Enforce the no-cross-request-process-state rule.**  
   **Depends on:** RUN-012, RUN-016, FND-007.  

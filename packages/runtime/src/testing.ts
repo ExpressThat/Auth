@@ -2,7 +2,10 @@ import { type RandomSource, requireRandomByteLength } from "./random.js";
 import { type Clock, EpochMilliseconds } from "./time.js";
 
 export { TestCacheBackend, TestCacheStateAdapter } from "./testing-adapters/cache.js";
+export { TestCertificateAutomationAdapter } from "./testing-adapters/certificate-automation.js";
 export { TestWebCryptoAdapter } from "./testing-adapters/cryptography.js";
+export { TestFrontendDeploymentAdapter } from "./testing-adapters/deployment-automation.js";
+export { TestDnsAutomationAdapter } from "./testing-adapters/dns-automation.js";
 export {
   requireEcPublicMembers,
   requireRsaPublicMembers,

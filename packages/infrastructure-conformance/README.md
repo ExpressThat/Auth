@@ -7,7 +7,8 @@ runtime dependency.
 ## Capability suites
 
 The public API defines suites for cache, queue, object storage, observability,
-secret storage, and key management. Stateful capabilities require probes for:
+secret storage, key management, DNS automation, certificate automation, and
+frontend deployment automation. Stateful capabilities require probes for:
 
 - success and permanent failure;
 - bounded execution and retry classification;

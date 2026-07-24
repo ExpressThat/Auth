@@ -3,6 +3,9 @@ import {
   type ConformanceProbe,
   type CustodyConformanceProbes,
   defineCacheConformanceSuite,
+  defineCertificateConformanceSuite,
+  defineDeploymentConformanceSuite,
+  defineDnsConformanceSuite,
   defineKeyManagementConformanceSuite,
   defineObjectStorageConformanceSuite,
   defineObservabilityConformanceSuite,
@@ -37,6 +40,9 @@ function custody(): CustodyConformanceProbes {
 describe("capability conformance suite definitions", () => {
   it.each([
     ["cache", () => defineCacheConformanceSuite(stateful(), 1_000)],
+    ["certificate", () => defineCertificateConformanceSuite(stateful(), 1_000)],
+    ["deployment", () => defineDeploymentConformanceSuite(stateful(), 1_000)],
+    ["dns", () => defineDnsConformanceSuite(stateful(), 1_000)],
     ["key-management", () => defineKeyManagementConformanceSuite(custody(), 1_000)],
     ["object-storage", () => defineObjectStorageConformanceSuite(stateful(), 1_000)],
     ["observability", () => defineObservabilityConformanceSuite(stateful(), 1_000)],

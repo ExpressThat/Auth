@@ -16,6 +16,9 @@ const CUSTODY_AXES: readonly ConformanceAxis[] = STATEFUL_AXES.filter((axis) => 
 const CAPABILITY_AXES: Readonly<Record<InfrastructureCapabilityKind, readonly ConformanceAxis[]>> =
   {
     cache: STATEFUL_AXES,
+    certificate: STATEFUL_AXES,
+    deployment: STATEFUL_AXES,
+    dns: STATEFUL_AXES,
     "key-management": CUSTODY_AXES,
     "object-storage": STATEFUL_AXES,
     observability: STATEFUL_AXES,

@@ -1,5 +1,8 @@
 export type InfrastructureCapabilityKind =
   | "cache"
+  | "certificate"
+  | "deployment"
+  | "dns"
   | "key-management"
   | "object-storage"
   | "observability"

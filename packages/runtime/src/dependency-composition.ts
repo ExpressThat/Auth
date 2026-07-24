@@ -12,8 +12,11 @@ export type RuntimeDependencyName =
   | "authenticated-encryption"
   | "cache-state"
   | "capabilities"
+  | "certificate-automation"
   | "clock"
+  | "dns-automation"
   | "durable-queue"
+  | "frontend-deployment"
   | "identifiers"
   | "key-management"
   | "object-storage"
@@ -78,8 +81,11 @@ function requireBinding<TProvider>(
 export class RuntimeDependencySet implements RuntimeDependencyValues {
   public readonly authenticatedEncryption: RuntimeDependencyValues["authenticatedEncryption"];
   public readonly cacheState: RuntimeDependencyValues["cacheState"];
+  public readonly certificateAutomation: RuntimeDependencyValues["certificateAutomation"];
   public readonly clock: RuntimeDependencyValues["clock"];
+  public readonly dnsAutomation: RuntimeDependencyValues["dnsAutomation"];
   public readonly durableQueue: RuntimeDependencyValues["durableQueue"];
+  public readonly frontendDeployment: RuntimeDependencyValues["frontendDeployment"];
   public readonly identifiers: RuntimeDependencyValues["identifiers"];
   public readonly keyManagement: RuntimeDependencyValues["keyManagement"];
   public readonly objectStorage: RuntimeDependencyValues["objectStorage"];
@@ -92,8 +98,11 @@ export class RuntimeDependencySet implements RuntimeDependencyValues {
   private constructor(values: RuntimeDependencyValues) {
     this.authenticatedEncryption = values.authenticatedEncryption;
     this.cacheState = values.cacheState;
+    this.certificateAutomation = values.certificateAutomation;
     this.clock = values.clock;
+    this.dnsAutomation = values.dnsAutomation;
     this.durableQueue = values.durableQueue;
+    this.frontendDeployment = values.frontendDeployment;
     this.identifiers = values.identifiers;
     this.keyManagement = values.keyManagement;
     this.objectStorage = values.objectStorage;
@@ -146,13 +155,34 @@ function composeProviderValues(
       ["compareAndSet", "delete", "get", "health", "increment", "put"],
       "cache-state",
     ),
+    certificateAutomation: requireBinding(
+      input.capabilities,
+      capability.certificateAutomation,
+      input.certificateAutomation,
+      ["health", "issue", "renew", "revoke", "status"],
+      "certificate-automation",
+    ),
     clock: input.clock,
+    dnsAutomation: requireBinding(
+      input.capabilities,
+      capability.dnsAutomation,
+      input.dnsAutomation,
+      ["health", "prepare", "remove", "verify"],
+      "dns-automation",
+    ),
     durableQueue: requireBinding(
       input.capabilities,
       capability.durableQueue,
       input.durableQueue,
       ["acknowledge", "deadLetter", "health", "publish", "receive", "renewLease", "retry"],
       "durable-queue",
+    ),
+    frontendDeployment: requireBinding(
+      input.capabilities,
+      capability.frontendDeployment,
+      input.frontendDeployment,
+      ["deploy", "health", "remove", "rollback", "status", "verify"],
+      "frontend-deployment",
     ),
     identifiers: input.identifiers,
     keyManagement: requireBinding(

@@ -39,6 +39,7 @@ platform's security, portability, operability, or public contracts.
 | [0023](0023-release-and-changelog.md) | Version public surfaces independently and bind platform releases with a manifest | Accepted |
 | [0024](0024-organisation-database-placement.md) | Support shared and per-organisation database placement | Accepted |
 | [0025](0025-infrastructure-adapter-packaging.md) | Package infrastructure adapters by capability | Accepted |
+| [0026](0026-managed-domain-automation.md) | Separate managed-domain automation lifecycles | Accepted |
 | [Template](TEMPLATE.md) | Standard ADR structure | Reference |
 
 ## Numbering

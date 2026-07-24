@@ -74,7 +74,26 @@ export function runtimeDependencyInput(): RuntimeDependencyCompositionInput {
       })),
       runtime: { major: 24, minor: 18, patch: 0, runtime: "node" },
     }),
+    certificateAutomation: binding(
+      {
+        health: unavailable,
+        issue: unavailable,
+        renew: unavailable,
+        revoke: unavailable,
+        status: unavailable,
+      },
+      manifest,
+    ),
     clock,
+    dnsAutomation: binding(
+      {
+        health: unavailable,
+        prepare: unavailable,
+        remove: unavailable,
+        verify: unavailable,
+      },
+      manifest,
+    ),
     durableQueue: binding(
       {
         acknowledge: unavailable,
@@ -84,6 +103,17 @@ export function runtimeDependencyInput(): RuntimeDependencyCompositionInput {
         receive: unavailable,
         renewLease: unavailable,
         retry: unavailable,
+      },
+      manifest,
+    ),
+    frontendDeployment: binding(
+      {
+        deploy: unavailable,
+        health: unavailable,
+        remove: unavailable,
+        rollback: unavailable,
+        status: unavailable,
+        verify: unavailable,
       },
       manifest,
     ),

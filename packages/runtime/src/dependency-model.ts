@@ -1,7 +1,10 @@
 import type { CacheStateProvider } from "./cache.js";
 import type { RuntimeCapabilityManifest } from "./capability-manifest.js";
 import type { ValidatedCapabilityComposition } from "./capability-validation.js";
+import type { CertificateAutomationProvider } from "./certificate-automation.js";
 import type { AuthenticatedEncryptionProvider, SigningProvider } from "./cryptography.js";
+import type { FrontendDeploymentProvider } from "./deployment-automation.js";
+import type { DnsAutomationProvider } from "./dns-automation.js";
 import type { IdentifierGenerator } from "./identifier.js";
 import type { KeyManagementService } from "./key-management.js";
 import type { ObjectStorageProvider } from "./object-storage.js";
@@ -32,7 +35,10 @@ export interface CryptographicRuntimeDependencies {
 
 export interface StatefulRuntimeDependencies {
   readonly cacheState: CacheStateProvider;
+  readonly certificateAutomation: CertificateAutomationProvider;
+  readonly dnsAutomation: DnsAutomationProvider;
   readonly durableQueue: DurableQueueProvider;
+  readonly frontendDeployment: FrontendDeploymentProvider;
   readonly objectStorage: ObjectStorageProvider;
   readonly secretStorage: SecretStorageProvider;
 }
@@ -45,7 +51,10 @@ export interface RuntimeDependencyCompositionInput extends FoundationalRuntimeDe
   readonly authenticatedEncryption: BoundRuntimeProvider<AuthenticatedEncryptionProvider>;
   readonly cacheState: BoundRuntimeProvider<CacheStateProvider>;
   readonly capabilities: ValidatedCapabilityComposition;
+  readonly certificateAutomation: BoundRuntimeProvider<CertificateAutomationProvider>;
+  readonly dnsAutomation: BoundRuntimeProvider<DnsAutomationProvider>;
   readonly durableQueue: BoundRuntimeProvider<DurableQueueProvider>;
+  readonly frontendDeployment: BoundRuntimeProvider<FrontendDeploymentProvider>;
   readonly keyManagement: BoundRuntimeProvider<KeyManagementService>;
   readonly objectStorage: BoundRuntimeProvider<ObjectStorageProvider>;
   readonly observability: BoundRuntimeProvider<ObservabilityProvider>;

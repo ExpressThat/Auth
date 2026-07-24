@@ -21,6 +21,27 @@ export function defineCacheConformanceSuite(
   return defineCapabilitySuite("cache", probes, timeoutMilliseconds);
 }
 
+export function defineCertificateConformanceSuite(
+  probes: StatefulConformanceProbes,
+  timeoutMilliseconds: number,
+): InfrastructureConformanceSuite {
+  return defineCapabilitySuite("certificate", probes, timeoutMilliseconds);
+}
+
+export function defineDeploymentConformanceSuite(
+  probes: StatefulConformanceProbes,
+  timeoutMilliseconds: number,
+): InfrastructureConformanceSuite {
+  return defineCapabilitySuite("deployment", probes, timeoutMilliseconds);
+}
+
+export function defineDnsConformanceSuite(
+  probes: StatefulConformanceProbes,
+  timeoutMilliseconds: number,
+): InfrastructureConformanceSuite {
+  return defineCapabilitySuite("dns", probes, timeoutMilliseconds);
+}
+
 export function defineKeyManagementConformanceSuite(
   probes: CustodyConformanceProbes,
   timeoutMilliseconds: number,

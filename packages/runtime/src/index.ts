@@ -93,6 +93,7 @@ export {
   type WrapKeyRequest,
   type WrappedKey,
 } from "./key-management.js";
+export * from "./managed-domain.js";
 export {
   type DeletedObject,
   type DeleteObjectRequest,

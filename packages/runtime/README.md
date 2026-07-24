@@ -446,6 +446,26 @@ failure normalization, defensive copying, isolation, lifecycle, and
 multi-instance-like semantics run through the same runtime suite as the
 interfaces they implement.
 
+## Managed-domain automation
+
+The runtime root exposes separate `DnsAutomationProvider`,
+`CertificateAutomationProvider`, and `FrontendDeploymentProvider` contracts.
+All operations use a validated organisation, environment, and application
+scope plus opaque redacting references and optimistic revisions. Certificate
+metadata retains its authorizing DNS verification reference; deployment
+metadata retains its certificate reference, immutable artifact reference, and
+SHA-256 digest.
+
+The composition root requires all three manifest-validated providers. Their
+deterministic testing adapters model expiry, collision, activation, renewal,
+revocation, deployment replacement, rollback, removal, dependency outage, and
+cross-tenant rejection. They are test-profile-only and are not hosted or
+self-hosted implementations.
+
+The full authorization chain and failure rules are documented in the
+[managed-domain automation architecture](../../docs/architecture/managed-domain-automation.md)
+and [ADR-0026](../../docs/decisions/0026-managed-domain-automation.md).
+
 ## Operator adapter registry
 
 `@expressthat-auth/runtime/operator` owns the startup-only selection and
