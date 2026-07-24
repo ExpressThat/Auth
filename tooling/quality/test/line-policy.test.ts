@@ -8,6 +8,7 @@ describe("line policy exemptions", () => {
   it.each([
     ["README.md", "documentation"],
     ["guide.mdx", "documentation"],
+    ["tsconfig.tsbuildinfo", "generated content"],
     ["worker-configuration.d.ts", "generated content"],
     ["src/client.generated.ts", "generated content"],
     ["pnpm-lock.yaml", "lockfile"],

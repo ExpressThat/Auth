@@ -1,7 +1,12 @@
 import { Buffer } from "node:buffer";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { combineCommandOutput, readRepositoryFiles } from "../src/repository-files.js";
+import {
+  combineCommandOutput,
+  readFileIfPresent,
+  readRepositoryFiles,
+} from "../src/repository-files.js";
 
 describe("repository file discovery", () => {
   it("normalizes every command-output combination", () => {
@@ -43,6 +48,27 @@ describe("repository file discovery", () => {
         runGit: () => ({ output: "src/a.ts\0", status: 0 }),
       }),
     ).rejects.toThrow("unreadable");
+  });
+
+  it("skips a tracked path deleted from the working tree", async () => {
+    const files = await readRepositoryFiles("C:\\repository", {
+      read: async () => undefined,
+      runGit: () => ({ output: "deleted.ts\0", status: 0 }),
+    });
+
+    expect(files).toEqual([]);
+  });
+
+  it("distinguishes present, missing, and unreadable paths", async () => {
+    const repositoryRoot = fileURLToPath(new URL("../../../", import.meta.url));
+
+    await expect(readFileIfPresent(join(repositoryRoot, "package.json"))).resolves.toBeInstanceOf(
+      Buffer,
+    );
+    await expect(
+      readFileIfPresent(join(repositoryRoot, "definitely-missing.file")),
+    ).resolves.toBeUndefined();
+    await expect(readFileIfPresent(repositoryRoot)).rejects.toThrow();
   });
 
   it("reads this repository through the default dependencies", async () => {

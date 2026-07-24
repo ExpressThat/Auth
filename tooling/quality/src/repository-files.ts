@@ -10,7 +10,7 @@ type GitResult = {
 };
 
 export type RepositoryFileDependencies = {
-  read: (path: string) => Promise<Buffer>;
+  read: (path: string) => Promise<Buffer | undefined>;
   runGit: () => GitResult;
 };
 
@@ -37,12 +37,23 @@ function runGitFileListing(repositoryRoot: string): GitResult {
   };
 }
 
+export async function readFileIfPresent(path: string): Promise<Buffer | undefined> {
+  try {
+    return await readFile(path);
+  } catch (error: unknown) {
+    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
+      return undefined;
+    }
+    throw error;
+  }
+}
+
 export async function readRepositoryFiles(
   repositoryRoot: string,
   dependencies?: RepositoryFileDependencies,
 ): Promise<RepositoryFile[]> {
   const selectedDependencies = dependencies ?? {
-    read: readFile,
+    read: readFileIfPresent,
     runGit: () => runGitFileListing(repositoryRoot),
   };
   const result = selectedDependencies.runGit();
@@ -53,10 +64,12 @@ export async function readRepositoryFiles(
 
   const paths = result.output.split("\0").filter((path) => path.length > 0);
 
-  return Promise.all(
-    paths.map(async (path) => ({
-      content: await selectedDependencies.read(join(repositoryRoot, path)),
-      path,
-    })),
-  );
+  const files: RepositoryFile[] = [];
+  for (const path of paths) {
+    const content = await selectedDependencies.read(join(repositoryRoot, path));
+    if (content !== undefined) {
+      files.push({ content, path });
+    }
+  }
+  return files;
 }

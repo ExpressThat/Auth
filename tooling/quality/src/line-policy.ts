@@ -21,6 +21,7 @@ const EXEMPT_FILENAMES = new Map<string, LineExemption>([
 const EXEMPT_EXTENSIONS = new Map<string, LineExemption>([
   [".md", "documentation"],
   [".mdx", "documentation"],
+  [".tsbuildinfo", "generated content"],
 ]);
 
 const EXEMPT_DIRECTORY_SEGMENTS = new Map<string, LineExemption>([
