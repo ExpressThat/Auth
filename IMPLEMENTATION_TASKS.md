@@ -411,9 +411,20 @@ These tasks prevent foundational security or compatibility decisions from being 
   `SECURITY.md` defines private reporting, pre-GA support status, coordinated
   disclosure, patched artifact requirements, and operator responsibility.
 
-- [ ] **FND-020 — Add contributor documentation.**  
+- [x] **FND-020 — Add contributor documentation.**
   **Depends on:** FND-014, FND-016, FND-021.
   **Done when:** setup, commands, architecture boundaries, defensive-programming rules, security-impact checks, testing expectations, file-size policy, and review requirements are reproducible by a new contributor.
+  **Evidence:** `CONTRIBUTING.md` gives a new contributor the pinned setup,
+  task-selection workflow, workspace dependency rules, adapter and statelessness
+  boundaries, defensive-programming standard, test matrix, 250-line rule,
+  continuous documentation workflow, local gates, evidence requirements, and
+  task-sized commit convention. `docs/contributing/task-review-checklist.md`
+  makes architecture, security, privacy, compatibility, test, maintainability,
+  documentation, and hosted/self-hosted review repeatable even without pull
+  requests. The root README links both entry points and the internal change
+  fragment records the workflow. Format, repository policy, typecheck, test,
+  and diff gates pass; documented generator usage links to its tested command
+  reference.
 
 - [x] **FND-021 — Add the adversarial testing toolkit.**
   **Depends on:** DEC-016, FND-008, FND-011, FND-013.

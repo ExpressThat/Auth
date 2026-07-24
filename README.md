@@ -217,6 +217,10 @@ not the production self-hosted topology.
 
 ## Getting Started
 
+New contributors should follow [`CONTRIBUTING.md`](CONTRIBUTING.md) for the
+complete task, architecture, defensive-programming, testing, documentation,
+review, and commit workflow.
+
 ### Prerequisites
 
 - Node.js `>=24.18.0 <27`
@@ -299,6 +303,8 @@ Start here:
 - [Changelog](CHANGELOG.md)
 - [Release and changelog process](docs/releases/release-process.md)
 - [Security policy and private reporting](SECURITY.md)
+- [Contributor guide](CONTRIBUTING.md)
+- [Task review checklist](docs/contributing/task-review-checklist.md)
 - [Workspace ownership and boundaries](docs/architecture/workspace-ownership.md)
 - [Living platform threat model](docs/security/threat-model.md)
 - [Adversarial testing toolkit](docs/security/adversarial-testing-toolkit.md)
