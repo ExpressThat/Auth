@@ -278,9 +278,13 @@ These tasks prevent foundational security or compatibility decisions from being 
   clock/random helpers, and schema valid/invalid case assertions; its own
   package consumes the preset and passes 12 tests at complete coverage.
 
-- [ ] **FND-009 — Configure compile-time type tests.**  
+- [x] **FND-009 — Configure compile-time type tests.**  
   **Depends on:** DEC-004, FND-003.  
   **Done when:** exported contracts can assert valid inference and expected compile failures.
+  **Evidence:** the shared `type-tests.json` profile and root
+  `pnpm test:types` Turbo task compile public package imports, exact return-type
+  assertions, valid configuration, and five documented `@ts-expect-error`
+  rejection cases.
 
 - [ ] **FND-010 — Configure React component testing.**  
   **Depends on:** DEC-004, FND-003.  

@@ -11,6 +11,7 @@
     "./node.json": "./node.json",
     "./react.json": "./react.json",
     "./tooling.json": "./tooling.json",
+    "./type-tests.json": "./type-tests.json",
     "./workers.json": "./workers.json"
   }
 }

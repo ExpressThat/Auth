@@ -23,6 +23,7 @@
     "lint:fix": "biome lint --write .",
     "test": "turbo run test",
     "test:coverage": "turbo run test:coverage",
+    "test:types": "turbo run test:types",
     "typecheck": "turbo run typecheck"
   },
   "devDependencies": {
