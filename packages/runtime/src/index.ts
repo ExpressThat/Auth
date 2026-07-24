@@ -26,6 +26,7 @@ export {
   CacheVersion,
   MAX_CACHE_VALUE_BYTES,
 } from "./cache-values.js";
+export * from "./capabilities.js";
 export {
   type AuthenticatedEncryptionAlgorithm,
   type AuthenticatedEncryptionProvider,

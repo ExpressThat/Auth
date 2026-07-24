@@ -327,6 +327,36 @@ trusted context and predicate tenant ownership in the same storage operation.
 No default, global, request-header-selected, or process-local tenant context
 exists.
 
+## Runtime capability manifests
+
+Every infrastructure adapter supplies an immutable `RuntimeCapabilityManifest`
+at the deployment composition root. A manifest names the adapter and each
+capability with validated namespaced identifiers, records independent adapter
+SemVer and capability-contract versions, and binds configuration and optional
+secret schemas to identifiers, positive versions, and lowercase SHA-256
+digests. It also declares supported Node major versions, deployment profiles,
+failure behavior, state durability and coordination, and residency support.
+Health behavior is explicit for startup, readiness, or genuinely stateless
+capabilities where dependency health is not applicable.
+Generic manifest and validated-composition serialization is redacted.
+
+`validateCapabilityComposition()` compares an operator-owned binding set with
+the application's complete requirements before serving traffic. It rejects
+missing, duplicate, unexpected, or undeclared capabilities; incompatible Node
+versions or deployment profiles; process-local or ephemeral state where shared
+durable state is required; and an operator-defined location where hosted
+verified-European residency is required. Test and local-development adapters
+cannot enter hosted or self-hosted composition unless their manifest explicitly
+and truthfully declares those profiles and passes later conformance evidence.
+
+Manifests describe compatibility; they do not validate adapter configuration,
+prove health, grant authority, or certify a self-hosted operator's residency or
+availability. Configuration parsing, composition roots, health/readiness,
+adapter packaging, selection, and conformance suites are separate tasks.
+Database engine capabilities and shared, dedicated, or hybrid organisation
+placement will use the same negotiation primitives while remaining separate
+operator choices.
+
 ## Identifiers
 
 `UuidV7Generator` combines an injected clock with ten bytes from an injected

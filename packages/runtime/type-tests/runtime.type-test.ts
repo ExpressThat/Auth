@@ -1,4 +1,5 @@
 import {
+  AdapterIdentifier,
   type AuthenticatedEncryptionProvider,
   CacheKey,
   CachePolicyVersion,
@@ -25,11 +26,17 @@ import {
   PublicEntityId,
   QueueScope,
   type RandomSource,
+  RuntimeCapability,
+  RuntimeCapabilityManifest,
+  SchemaDigest,
+  SchemaIdentifier,
+  SchemaVersion,
   SecretMaterial,
   SecretPurpose,
   SecretReference,
   type SecretStorageProvider,
   SecretVersion,
+  SemanticVersion,
   ServicePrincipalId,
   type SigningProvider,
   SystemClock,
@@ -127,6 +134,28 @@ export const managementOrganisationId = ManagementOrganisationId.fromPublicId(
   PublicEntityId.parse("org", "org_01234567-89ab-7001-8203-040506070809"),
 );
 export const workerServiceId = ServicePrincipalId.parse("platform/jobs.worker");
+export const capability = RuntimeCapability.parse("infrastructure/durable-queue");
+export const adapterManifest = RuntimeCapabilityManifest.create({
+  adapter: AdapterIdentifier.parse("reference/durable-queue"),
+  adapterVersion: SemanticVersion.parse("1.0.0"),
+  capabilities: [
+    {
+      capability,
+      failureBehavior: "reject-operation",
+      healthBehavior: "startup-and-readiness",
+      residency: "operator-defined",
+      state: { coordination: "shared", durability: "durable", kind: "stateful" },
+    },
+  ],
+  configurationSchema: {
+    digest: SchemaDigest.parse("1".repeat(64)),
+    identifier: SchemaIdentifier.parse("durable-queue.config"),
+    version: SchemaVersion.parse(1),
+  },
+  contractVersion: SchemaVersion.parse(1),
+  node: { maximumMajorExclusive: 27, minimumMajor: 24, runtime: "node" },
+  profiles: ["self-hosted"],
+});
 
 // @ts-expect-error -- public identifier prefixes come from the fixed registry.
 PublicEntityId.parse("account", "account_01234567-89ab-7001-8203-040506070809");
@@ -162,6 +191,24 @@ TelemetryAttribute.create(
 );
 // @ts-expect-error -- management and customer organisation brands are distinct.
 export const wrongOrganisationBrand: CustomerOrganisationId = managementOrganisationId;
+RuntimeCapabilityManifest.create({
+  adapter: adapterManifest.adapter,
+  adapterVersion: adapterManifest.adapterVersion,
+  capabilities: [
+    {
+      // @ts-expect-error -- manifest capabilities cannot be caller-provided strings.
+      capability: "infrastructure/durable-queue",
+      failureBehavior: "reject-operation",
+      healthBehavior: "startup-and-readiness",
+      residency: "operator-defined",
+      state: { kind: "stateless" },
+    },
+  ],
+  configurationSchema: adapterManifest.configurationSchema,
+  contractVersion: adapterManifest.contractVersion,
+  node: adapterManifest.node,
+  profiles: adapterManifest.profiles,
+});
 keyManagement.rotate({
   // @ts-expect-error -- lifecycle algorithms are a closed allow-list.
   algorithm: "none",

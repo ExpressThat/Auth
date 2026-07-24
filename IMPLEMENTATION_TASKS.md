@@ -694,9 +694,22 @@ These tasks prevent foundational security or compatibility decisions from being 
   statement, function, and branch coverage; compile-time tests reject
   management/customer brand substitution, and the full repository gates pass.
 
-- [ ] **RUN-011 — Create runtime capability manifests.**  
-  **Depends on:** RUN-003 through RUN-009.  
+- [x] **RUN-011 — Create runtime capability manifests.**
+  **Depends on:** RUN-003 through RUN-009.
   **Done when:** startup can prove that each deployment supplies every required capability and can reject incompatible adapters.
+  **Evidence:** `@expressthat-auth/runtime` exposes immutable redacting adapter
+  manifests with validated namespaced adapter/capability identifiers, adapter
+  SemVer, contract/configuration/secret schema versions and SHA-256 digests,
+  supported Node major range, deployment profiles, failure and health behavior,
+  residency, and stateless or stateful durability/coordination declarations. Fail-closed
+  startup validation rejects missing, duplicate, unexpected, or undeclared
+  capability bindings; unsupported profiles or Node versions; process-local or
+  ephemeral state where durable shared state is required; and unverified
+  residency for hosted European requirements. Thirty-five new hostile-input,
+  immutability, redaction, profile, runtime, state, residency, and composition
+  tests bring the runtime suite to 217 passing tests with 100% statement,
+  branch, function, and line coverage. Compile-time tests reject raw capability
+  strings, and the full repository gates pass.
 
 - [ ] **RUN-012 — Create dependency composition roots.**  
   **Depends on:** RUN-011.  
