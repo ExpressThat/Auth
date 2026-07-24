@@ -247,6 +247,13 @@ These tasks prevent foundational security or compatibility decisions from being 
   Docker-only contract spikes, and repository-wide prohibited-reference and
   dependency-lock checks.
 
+- [x] **DEC-025 — Define shared and per-organisation database placement.**
+  **Depends on:** DEC-013, DEC-014, DEC-023.
+  **Done when:** shared, dedicated, and hybrid placement; control-plane
+  authority; trusted routing; provisioning; migration; rollback; schema fleet
+  management; isolation; residency; and self-hosted responsibility are explicit.
+  **Evidence:** [ADR-0024](docs/decisions/0024-organisation-database-placement.md).
+
 ## 4. Phase 1 — Monorepo and Quality Foundation
 
 - [x] **FND-001 — Initialise the workspace root.**
@@ -734,6 +741,43 @@ These tasks prevent foundational security or compatibility decisions from being 
 - [ ] **DB-026 — Publish the pluggable database-adapter contract and kit.**
   **Depends on:** DB-003, DB-022, RUN-017.
   **Done when:** hosted and self-hosted composition can select a registered database adapter through validated operator configuration; the kit defines schema, migration, transaction, repository, health, backup/restore capability, runtime, and conformance requirements; SQLite and PostgreSQL are initial first-party implementations; and additional Drizzle-supported or independently implemented adapters require no domain/API fork.
+
+- [ ] **DB-027 — Define the database-placement registry and router.**
+  **Depends on:** DEC-025, DB-001, DB-006, DB-026.
+  **Done when:** the control database stores versioned shared or dedicated
+  placement records, adapter and connection references, lifecycle state, schema
+  compatibility, and health; trusted tenant context resolves them without
+  accepting caller-selected database identifiers or authoritative process
+  caches.
+
+- [ ] **DB-028 — Implement the shared-database placement profile.**
+  **Depends on:** DB-015 through DB-021, DB-027.
+  **Done when:** the control plane and multiple customer organisations can use
+  one selected supported database while every query, constraint, transaction,
+  job, export, and migration preserves organisation and environment isolation.
+
+- [ ] **DB-029 — Implement dedicated per-organisation database lifecycle.**
+  **Depends on:** DB-022, DB-027, JOB-003.
+  **Done when:** organisation creation can idempotently provision, migrate,
+  verify, activate, diagnose, disable, and decommission a dedicated database
+  using distinct credentials, auditable state, retry, reconciliation, and no
+  cross-database transaction assumption.
+
+- [ ] **DB-030 — Implement organisation database placement migration.**
+  **Depends on:** DB-028, DB-029, DX-018.
+  **Done when:** an organisation can move shared-to-dedicated,
+  dedicated-to-shared, or dedicated-to-dedicated through target preparation,
+  resumable copy, invariant and count verification, bounded write transition,
+  atomic placement-revision cutover, stale-job handling, rollback, retention,
+  and evidenced source deletion.
+
+- [ ] **DB-031 — Add database-topology conformance and fleet migration tests.**
+  **Depends on:** DB-022, DB-028 through DB-030.
+  **Done when:** shared, dedicated, and hybrid profiles pass identical
+  repository behavior plus hostile routing, cross-placement denial, stale
+  revision, provisioning race, interrupted migration, bounded pool,
+  multi-replica, schema fleet, backup/restore, export, erasure, and recovery
+  scenarios.
 
 ## 7. Phase 4 — API Contracts and Deployable Shells
 
@@ -1795,7 +1839,12 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [ ] **OPS-003 — Create the self-hosted Compose example.**  
   **Depends on:** OPS-001, OPS-002, DB-005, DB-026, JOB-003.  
-  **Done when:** APIs, frontends, jobs, an operator-selected supported shared-database adapter, operator-selected queue/cache/object/secret adapters, health, migrations, and TLS guidance start reproducibly; the PostgreSQL reference profile works but is not mandatory architecture, and production composition is clearly separated from the local-development stack.
+  **Done when:** APIs, frontends, jobs, an operator-selected supported database
+  adapter and shared or per-organisation placement profile, operator-selected
+  queue/cache/object/secret adapters, health, migrations, and TLS guidance start
+  reproducibly; the PostgreSQL reference profile works but is not mandatory
+  architecture, and production composition is clearly separated from the
+  local-development stack.
 
 - [ ] **OPS-004 — Create hosted Docker deployment packages.**
   **Depends on:** API-018, UI-020, MGT-012.
@@ -1852,16 +1901,22 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Done when:** sign-in peaks, refresh, switching, audit ingestion, webhooks, connection limits, memory, timers, and resource leaks meet targets.
 
 - [ ] **OPS-017 — Create the dedicated migration release task.**  
-  **Depends on:** DB-024, OPS-005, OPS-006.  
-  **Done when:** applications never migrate independently, readiness checks schema compatibility, and rolling versions tolerate current and previous schemas.
+  **Depends on:** DB-024, DB-027, OPS-005, OPS-006.
+  **Done when:** applications never migrate independently, shared and dedicated
+  placement fleets migrate with bounded concurrency and resumable per-placement
+  status, readiness checks schema compatibility, and rolling versions tolerate
+  current and previous schemas.
 
 - [ ] **OPS-018 — Implement zero-downtime rolling deployment checks.**  
   **Depends on:** OPS-017, OPS-014, OPS-015.  
   **Done when:** old/new APIs and workers overlap with versioned messages, graceful shutdown, schema compatibility, and rollback.
 
 - [ ] **OPS-019 — Implement backup and restore automation.**  
-  **Depends on:** OPS-005, OPS-009, DEC-018.  
-  **Done when:** encrypted European backups, retention, restore drills, integrity checks, key access, personal-data expiry, and documented RPO/RTO work.
+  **Depends on:** DB-027, OPS-005, OPS-009, DEC-018.
+  **Done when:** encrypted European backups for the control database and every
+  shared or dedicated placement, retention, organisation-scoped restore drills,
+  integrity checks, key access, personal-data expiry, and documented RPO/RTO
+  work.
 
 - [ ] **OPS-020 — Create disaster-recovery and regional-failure runbooks.**  
   **Depends on:** OPS-019, DEC-021.  
@@ -1900,6 +1955,14 @@ These tasks prevent foundational security or compatibility decisions from being 
 - [ ] **OPS-028 — Publish and enforce the self-hosted responsibility boundary.**
   **Depends on:** OPS-025, OPS-026, DEC-018, DEC-021.
   **Done when:** installation guides, configuration UI, deployment reports, benchmarks, support policy, and release profiles state that self-hosted operators choose infrastructure and regions and own compliance, security, availability, backups, recovery, RPO/RTO, subprocessors, and privacy operations; hosted commitments are never presented as inherited guarantees.
+
+- [ ] **OPS-029 — Operationalise per-organisation database fleets.**
+  **Depends on:** DB-031, OPS-013, OPS-017, OPS-019.
+  **Done when:** operator configuration, admission limits, least-privilege
+  credentials, bounded pools, backpressure, health, schema inventory, migration
+  progress, backup/restore, residency evidence, capacity, alerting, and
+  runbooks work for shared, dedicated, and hybrid placement without making
+  process-local routing authoritative.
 
 ## 19. Phase 16 — Privacy, Audit, Analytics, and Commercial Controls
 
@@ -2098,10 +2161,12 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 Complete when:
 
-- DEC-001 through DEC-024 are either completed or explicitly scheduled before their first consumer.
+- DEC-001 through DEC-025 are either completed or explicitly scheduled before their first consumer.
 - FND-001 through FND-024 pass on a clean checkout.
 - RUN-001 through RUN-021 have conformance-tested implementations.
-- DB-001 through DB-026 pass against SQLite and PostgreSQL; the adapter kit proves the core is not tied to either dialect.
+- DB-001 through DB-031 pass against SQLite and PostgreSQL; the adapter kit
+  proves the core is not tied to either dialect, while shared, dedicated, and
+  hybrid organisation placement pass the same isolation and migration suites.
 - API-001 through API-019 pass through the Docker shell, trusted proxy, and multiple-instance suites.
 
 ### M1 — Core Authentication MVP

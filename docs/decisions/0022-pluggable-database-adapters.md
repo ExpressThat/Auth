@@ -21,6 +21,12 @@ Domain and API packages depend on database-neutral repository contracts.
 Deployment composition selects a registered database adapter through validated
 operator configuration.
 
+Database-engine selection and database placement are separate concerns. A
+deployment may use one shared database or route top-level customer
+organisations to dedicated databases under
+[ADR-0024](0024-organisation-database-placement.md). Every placement still uses
+a registered adapter and the same repository contracts.
+
 SQLite and PostgreSQL are the initial first-party implementations. SQLite is the
 default local-development database. PostgreSQL is the initial shared-production
 reference, not a permanent hosted or self-hosted requirement.
@@ -83,6 +89,7 @@ provides shared durable state and the required concurrency semantics.
 ## Consequences
 
 - Database selection occurs at the composition root.
+- Shared and per-organisation placement do not change domain or HTTP contracts.
 - Core packages cannot import a database driver or dialect-specific schema.
 - Support is claimed per adapter and runtime, not for every database in the
   abstract.

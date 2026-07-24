@@ -692,6 +692,51 @@ contracts for that database. "Pluggable" does not mean an arbitrary database
 works without such an implementation or that a non-SQL database is supported by
 Drizzle automatically.
 
+#### Shared and Per-Organisation Database Placement
+
+Database-engine selection is independent from tenant placement. Operators can
+run:
+
+- one shared database containing the control plane and every customer
+  organisation;
+- a control database plus one dedicated database for every top-level customer
+  organisation; or
+- a hybrid fleet where selected organisations use dedicated databases and the
+  remainder use one or more shared placements.
+
+The protected system organisation, installation state, management identities,
+customer-organisation registry, administrator memberships, and durable
+placement map remain in the control database. Customer environment data,
+applications, end users, credentials, sessions, consent, providers, audit,
+outbox, and jobs live in the organisation's selected placement. End-user
+organisations are tenant data inside that placement; they do not select their
+own database.
+
+Routing starts from authenticated, server-verified customer-organisation
+context and resolves an operator-owned placement ID and revision. A request
+header, hostname, resource identifier, or unverified token claim can never name
+a database or connection string. Placement state is durable and shared;
+process-local routing caches are not authoritative. Connection pools are
+bounded runtime resources with fleet-wide limits and backpressure.
+
+Provisioning and movement between shared and dedicated placement use
+idempotent, auditable state machines rather than cross-database transactions.
+They prepare and migrate the target, verify records and invariants, perform a
+bounded write transition, atomically switch the control-plane placement
+revision, reconcile stale jobs, and retain a controlled rollback window before
+destroying the source. Fleet migrations, readiness, backup, restore, export,
+erasure, residency, and disaster recovery cover every organisation database
+and the control database.
+
+Dedicated databases strengthen physical separation and independent lifecycle
+operations, but never replace tenant predicates, authorization, encryption, or
+repository isolation tests. Hosted placements and copies remain within the
+European policy. Self-hosted operators choose and are responsible for their
+topology, locations, credentials, backups, recovery, and compliance.
+
+The binding routing, migration, security, and operational rules are recorded in
+[ADR-0024](docs/decisions/0024-organisation-database-placement.md).
+
 #### Schema and Repository Design
 
 The domain and application layers depend on repository interfaces rather than a Drizzle database object. Drizzle types are contained inside database implementation packages.
@@ -1499,7 +1544,7 @@ The following decisions now form part of the intended product design:
 16. API contracts will be schema-driven and strongly typed, generating runtime validation, TypeScript types, full OpenAPI specifications, interactive Swagger-compatible documentation, contract tests, and SDK inputs from one source.
 17. The entire product will use a Turborepo monorepo with explicit package boundaries, a dependency-aware task graph, affected-package CI, cacheable build outputs, and independently deployable application workspaces.
 18. External delivery, infrastructure, federation, risk, and streaming integrations will use strongly typed provider contracts with schema-driven configuration, tenant-scoped instances, inherited bindings, capability discovery, secret references, normalized errors, and reusable conformance suites.
-19. SQL access and migrations will use Drizzle ORM. SQLite is the initial local and single-instance database; PostgreSQL is the initial shared-production reference adapter; hosted and self-hosted operators select any registered, supported database adapter that meets their deployment profile.
+19. SQL access and migrations will use Drizzle ORM. SQLite is the initial local and single-instance database; PostgreSQL is the initial shared-production reference adapter; hosted and self-hosted operators select any registered, supported database adapter that meets their deployment profile. Deployments support one shared database, dedicated databases per top-level customer organisation, or a hybrid of shared and dedicated placement behind a trusted control-plane routing registry.
 20. Database portability will be enforced through repository contracts, versioned adapter registration, separate dialect schemas and migrations, and shared conformance tests rather than assuming Drizzle makes databases behaviourally interchangeable.
 21. API, frontend-serving, and job instances will be stateless and horizontally scalable. No cross-request security, tenant, session, cache, lock, rate-limit, job, or authorization state may exist only in process memory.
 22. Every first-party production behaviour will have automated tests, every bug fix will include a regression test, and executable TypeScript will maintain complete line, statement, function, and branch coverage.

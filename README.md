@@ -64,7 +64,9 @@ capabilities include:
 - webhooks, action hooks, risk, bot challenges, observability, and deployment
   automation; and
 - database repositories and migrations behind selectable adapters, with Drizzle
-  SQLite and PostgreSQL as the initial first-party implementations.
+  SQLite and PostgreSQL as the initial first-party implementations, supporting
+  one shared database or dedicated databases per top-level customer
+  organisation.
 
 Every adapter declares capabilities, runtime support, configuration and secret
 schemas, failure behavior, tenant scope, and residency guarantees. Hosted
