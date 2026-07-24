@@ -262,9 +262,13 @@ These tasks prevent foundational security or compatibility decisions from being 
   registry, reports sorted violations above 250 physical lines, and has complete
   statement, branch, function, and line coverage.
 
-- [ ] **FND-007 — Implement package-boundary and cycle checks.**  
+- [x] **FND-007 — Implement package-boundary and cycle checks.**  
   **Depends on:** FND-002, FND-003.  
   **Done when:** application-to-package direction, runtime-neutrality, API/data separation, public exports, deep imports, and workspace cycles are enforced.
+  **Evidence:** `pnpm check:boundaries` validates Zod-decoded workspace
+  manifests, layer direction, API/UI data separation, missing workspaces,
+  dependency cycles, declared source dependencies, package exports, and deep
+  imports; 87 quality tests retain complete coverage.
 
 - [ ] **FND-008 — Configure unit and schema testing.**  
   **Depends on:** DEC-004, FND-003.  
