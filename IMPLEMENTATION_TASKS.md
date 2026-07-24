@@ -858,9 +858,28 @@ These tasks prevent foundational security or compatibility decisions from being 
   build, runtime-neutrality, artifact, licence, dependency-audit, and diff
   gates pass.
 
-- [ ] **RUN-020 — Enforce the no-cross-request-process-state rule.**  
+- [x] **RUN-020 — Enforce the no-cross-request-process-state rule.**
   **Depends on:** RUN-012, RUN-016, FND-007.  
   **Done when:** automated architecture checks and multi-instance tests reject tenant caches, sessions, nonces, locks, rate limits, job ownership, or authorization state held only in application memory.
+  **Evidence:** the required workspace-boundary command parses production API,
+  job, domain, authorization, and protocol source and rejects module-scope
+  mutation, mutable module containers, persistent service collections,
+  sensitive locally constructed stores, and known in-process cache,
+  memoization, mutex, semaphore, and lock packages. It permits request-local
+  memoization and explicitly frozen non-sensitive metadata while leaving
+  infrastructure connection pools and test doubles to their adapter gates.
+  `ReplicaStateConformanceSuite` requires bounded primary/secondary probes for
+  authorization, job ownership, locks, nonces, rate limits, sessions, and
+  tenant caches; definitions fail closed and execution normalizes false,
+  rejected, or timed-out probes without retaining provider diagnostics. The
+  deterministic proof reports every category failed when two replicas receive
+  separate memory backends and passes all categories through one shared
+  backend. ADR-0027, the stateless-service architecture guide, adversarial
+  toolkit, threat model, package docs, and type contracts record the required
+  feature and later built-Docker evidence. The test-config suite has 73 tests
+  and the quality suite has 246 tests with complete statement, branch,
+  function, and line coverage; full repository policy, type-contract, build,
+  artifact, licence, dependency-audit, and diff gates pass.
 
 - [ ] **RUN-021 — Implement the initial local resource-backed adapter profile.**
   **Depends on:** RUN-003 through RUN-009, RUN-017, RUN-018, FND-023.

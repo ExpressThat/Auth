@@ -40,6 +40,7 @@ platform's security, portability, operability, or public contracts.
 | [0024](0024-organisation-database-placement.md) | Support shared and per-organisation database placement | Accepted |
 | [0025](0025-infrastructure-adapter-packaging.md) | Package infrastructure adapters by capability | Accepted |
 | [0026](0026-managed-domain-automation.md) | Separate managed-domain automation lifecycles | Accepted |
+| [0027](0027-stateless-service-enforcement.md) | Enforce stateless service instances | Accepted |
 | [Template](TEMPLATE.md) | Standard ADR structure | Reference |
 
 ## Numbering

@@ -19,6 +19,13 @@ explicit root and manifest exports, a production runtime-contract dependency,
 and unique Node, operating-system, Docker-architecture, and external-capability
 support declarations.
 
+Stateless-service inspection covers production API, job, domain,
+authorization, and protocol source. It rejects mutable module state, persistent
+service collections, sensitive in-process stores, and local cache/lock
+packages. Request-scoped values and explicitly frozen metadata remain allowed.
+The rule prevents common singleton mistakes; replica conformance remains
+required to prove an injected backend is genuinely shared.
+
 Each rule has focused tests for accepted and rejected inputs. Run:
 
 ```bash

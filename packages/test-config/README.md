@@ -9,8 +9,8 @@ utilities; production code must not depend on this workspace.
 
 - `.` — fixtures, deterministic utilities, schemas, and adversarial harnesses.
 - `./adversarial` — hostile corpora, property campaigns, parser limits,
-  concurrency/replay drivers, redaction assertions, and Docker replica
-  differential runners.
+  concurrency/replay drivers, redaction assertions, replica-state conformance,
+  and Docker replica differential runners.
 - `./component` — accessible React component-test configuration.
 - `./playwright` — cross-browser Playwright defaults.
 - `./setup-dom` — DOM matcher setup.
@@ -38,6 +38,13 @@ Redaction assertions use `SyntheticSecret` canaries and never include a leaked
 value in their own failure message. Runtime security cases send fresh requests
 to independent Docker targets, normalize explicitly allowed dynamic fields, and
 fail on observable differences.
+
+`ReplicaStateConformanceSuite` requires bounded primary/secondary probes for
+authorization, job ownership, locks, nonces, rate limits, sessions, and tenant
+caches. It rejects incomplete definitions, separate process-local behavior,
+thrown probes, and timeouts with normalized diagnostics. Feature packages wrap
+their public service behavior; the deterministic shared/separate memory fixture
+only proves the harness itself.
 
 ## Commands and tests
 

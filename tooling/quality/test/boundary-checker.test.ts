@@ -39,4 +39,23 @@ describe("boundary checker", () => {
       "unknown-workspace",
     ]);
   });
+
+  it("includes stateless-service process-state violations", async () => {
+    const app = {
+      name: "@expressthat-auth/auth-api",
+    };
+    const violations = await findBoundaryViolations([
+      file("apps/auth-api/package.json", JSON.stringify(app)),
+      file("apps/auth-api/src/session.ts", "export const sessions = new Map();"),
+    ]);
+
+    expect(violations).toEqual([
+      {
+        code: "module-process-state",
+        message:
+          "sessions can retain cross-request process state; inject a shared adapter instead.",
+        path: "apps/auth-api/src/session.ts",
+      },
+    ]);
+  });
 });

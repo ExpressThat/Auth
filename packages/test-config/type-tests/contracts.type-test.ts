@@ -9,6 +9,9 @@ import {
 import {
   DeterministicRandom,
   type DockerSecurityTarget,
+  type ReplicaIdentity,
+  ReplicaStateConformanceSuite,
+  type ReplicaStateProbes,
   type RuntimeSecurityCase,
   runConcurrentAttempts,
 } from "@expressthat-auth/test-config/adversarial";
@@ -45,6 +48,9 @@ export const dockerSecurityTarget = {
   fetch: async () => new Response("ok"),
   instance: "primary",
 } satisfies DockerSecurityTarget;
+export declare const replicaStateProbes: ReplicaStateProbes;
+export const replicaStateSuite = ReplicaStateConformanceSuite.define(replicaStateProbes, 1_000);
+export const primaryReplica: ReplicaIdentity = { instance: "primary" };
 
 // @ts-expect-error -- clock instants cannot be strings.
 new ControlledClock("10");
@@ -62,3 +68,9 @@ export const invalidProviderOutcome: ProviderOutcome<number> = providerOutcome;
 export const invalidConcurrentResult = runConcurrentAttempts("2", async () => undefined);
 // @ts-expect-error -- runtime cases create Request objects.
 export const invalidRuntimeCase: RuntimeSecurityCase = { name: "bad", request: () => "request" };
+// @ts-expect-error -- every protected cross-replica state category is required.
+export const invalidReplicaProbes: ReplicaStateProbes = {
+  sessions: { name: "session visibility", run: async () => true },
+};
+// @ts-expect-error -- replica identities are a closed primary/secondary pair.
+export const invalidReplicaIdentity: ReplicaIdentity = { instance: "tertiary" };

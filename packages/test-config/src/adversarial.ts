@@ -12,6 +12,17 @@ export type { PropertyCampaign, PropertyContext } from "./property-harness.js";
 export { DeterministicRandom, runPropertyCampaign } from "./property-harness.js";
 export type { RedactionOptions } from "./redaction-harness.js";
 export { assertRedactedOutput } from "./redaction-harness.js";
+export {
+  REPLICA_STATE_CATEGORIES,
+  type ReplicaIdentity,
+  type ReplicaStateCategory,
+  ReplicaStateConformanceError,
+  ReplicaStateConformanceSuite,
+  ReplicaStateDefinitionError,
+  type ReplicaStateProbe,
+  type ReplicaStateProbeContext,
+  type ReplicaStateProbes,
+} from "./replica-state-harness.js";
 export type {
   DockerSecurityTarget,
   NormalizedSecurityResponse,

@@ -131,6 +131,19 @@ semantic differences is prohibited.
 The runner is suitable for in-process Node adapters and black-box deployed
 Docker targets. Runtime setup remains owned by the consuming package.
 
+## Replica-state conformance
+
+`ReplicaStateConformanceSuite` gives each probe distinct primary and secondary
+replica identities and requires complete authorization, job-ownership, lock,
+nonce, rate-limit, session, and tenant-cache coverage. False, rejected, and
+timed-out probes are normalized without retaining the thrown diagnostic.
+
+Feature probes must call the public repository, service, API, or job behavior
+being qualified. The deterministic shared-backend fixture proves the harness;
+it does not qualify a production adapter. A feature that depends on shared
+state also runs outage, restart, eviction, atomic race, tenant-isolation, and
+built-Docker variants before its deployment gate is complete.
+
 ## Resource safety and evidence
 
 - Commit campaigns are deterministic, bounded, and offline.
