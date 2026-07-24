@@ -43,7 +43,7 @@ entry points, database implementations, or provider implementations.
 | `packages/database-postgres` | Data platform | Drizzle PostgreSQL schema, migrations, and repository adapters |
 | `packages/database-conformance` | Data quality | Shared repository, transaction, migration, and dialect parity suites |
 | `packages/ui` | Design system | Shared HeroUI components and design tokens; never server repositories or secrets |
-| `packages/providers/*` | Integrations | Independently packaged provider and infrastructure adapter implementations |
+| `packages/providers/*` | Integrations | Independently packaged provider and infrastructure adapter implementations; selectable infrastructure packages follow the [adapter package contract](infrastructure-adapter-packages.md) |
 
 Implementations depend on runtime-neutral contracts. Conformance packages may
 depend on contracts and implementations only to test them.

@@ -614,6 +614,17 @@ Every adapter package declares its supported Node version, operating systems,
 container architectures, and required external capabilities. A deployment fails
 validation when an active binding refers to an unavailable adapter.
 
+Selectable infrastructure implementations use the singular queue, cache,
+object-storage, secret, key-management, observability, DNS, certificate, or
+deployment category and live in separate
+`packages/providers/<category>-<implementation>` workspaces. Their package name
+matches that directory, they expose explicit root and side-effect-free manifest
+exports, and they depend on the runtime contracts as a production dependency.
+Repository policy reserves these prefixes and validates the statically readable
+runtime-support metadata before an adapter can enter an operator registry. See
+the [infrastructure adapter package contract](docs/architecture/infrastructure-adapter-packages.md)
+and [ADR-0025](docs/decisions/0025-infrastructure-adapter-packaging.md).
+
 #### Provider Conformance Testing
 
 Each provider category owns a reusable conformance suite. An adapter is releasable only when it passes:

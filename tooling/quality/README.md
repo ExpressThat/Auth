@@ -11,6 +11,14 @@ module protocols. A neutral workspace with source must provide a
 `build:runtime-neutral` task, and `check:runtime-neutrality` runs those tasks
 without selecting an application or deployment composition root.
 
+Infrastructure adapter inspection reserves the queue, cache, object-storage,
+secret, key-management, observability, DNS, certificate, and deployment
+provider prefixes. Each selectable implementation must be a direct provider
+workspace with validated package metadata, matching identity and category,
+explicit root and manifest exports, a production runtime-contract dependency,
+and unique Node, operating-system, Docker-architecture, and external-capability
+support declarations.
+
 Each rule has focused tests for accepted and rejected inputs. Run:
 
 ```bash

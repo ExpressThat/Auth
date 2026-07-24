@@ -781,9 +781,23 @@ These tasks prevent foundational security or compatibility decisions from being 
   bring the quality suite to 219 passing tests with 100% statement, branch,
   function, and line coverage; full repository gates pass.
 
-- [ ] **RUN-016 — Define infrastructure-adapter packaging rules.**  
-  **Depends on:** RUN-011, FND-007.  
+- [x] **RUN-016 — Define infrastructure-adapter packaging rules.**
+  **Depends on:** RUN-011, FND-007.
   **Done when:** queue, cache, object-storage, secret, key-management, observability, DNS, certificate, and deployment adapters live in separate packages with explicit public exports and runtime support.
+  **Evidence:** ADR-0025 and the infrastructure-adapter package contract reserve
+  singular category prefixes under direct `packages/providers/*` workspaces.
+  Selectable implementations must match the canonical package scope and
+  directory, expose explicit root and side-effect-free manifest exports, depend
+  on runtime contracts in production, and statically declare a valid Node major
+  range, operating systems, Docker architectures, and namespaced external
+  capabilities. The boundary gate rejects undeclared reserved packages,
+  misplaced or mismatched metadata, combined category identity, missing exports
+  or runtime dependencies, empty Node ranges, duplicates, unknown fields,
+  unsupported targets, and malformed capability names. Deterministic runtime
+  test doubles remain non-selectable and test-profile-only. Packaging,
+  integration, reader-schema, all-category, and hostile-manifest tests bring
+  the quality suite to 236 passing tests with 100% statement, branch, function,
+  and line coverage; full repository gates pass.
 
 - [ ] **RUN-017 — Implement operator-controlled adapter selection.**  
   **Depends on:** RUN-001, RUN-011, RUN-016.  

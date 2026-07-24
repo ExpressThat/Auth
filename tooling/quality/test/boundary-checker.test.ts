@@ -22,4 +22,21 @@ describe("boundary checker", () => {
       "unknown-import",
     ]);
   });
+
+  it("includes adapter packaging violations", async () => {
+    const adapter = {
+      dependencies: { "@expressthat-auth/runtime": "workspace:*" },
+      exports: { ".": "./src/index.ts" },
+      name: "@expressthat-auth/queue-reference",
+    };
+
+    const violations = await findBoundaryViolations([
+      file("packages/providers/queue-reference/package.json", JSON.stringify(adapter)),
+    ]);
+
+    expect(violations.map((violation) => violation.code)).toEqual([
+      "missing-adapter-metadata",
+      "unknown-workspace",
+    ]);
+  });
 });

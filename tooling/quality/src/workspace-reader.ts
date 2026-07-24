@@ -5,9 +5,41 @@ import type { RepositoryFile } from "./line-checker.js";
 
 const dependencySchema = z.record(z.string(), z.string()).optional();
 const scriptSchema = z.record(z.string(), z.string()).optional();
+const identifierSchema = z
+  .string()
+  .regex(/^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*(?:\/[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*)+$/u)
+  .max(96);
+const infrastructureAdapterSchema = z
+  .object({
+    category: z.enum([
+      "cache",
+      "certificate",
+      "deployment",
+      "dns",
+      "key-management",
+      "object-storage",
+      "observability",
+      "queue",
+      "secret",
+    ]),
+    runtimeSupport: z.object({
+      containerArchitectures: z.array(z.enum(["amd64", "arm64"])).min(1),
+      externalCapabilities: z.array(identifierSchema),
+      node: z.object({
+        maximumMajorExclusive: z.number().int().positive(),
+        minimumMajor: z.number().int().positive(),
+      }),
+      operatingSystems: z.array(z.enum(["darwin", "linux", "win32"])).min(1),
+    }),
+  })
+  .strict();
 const manifestSchema = z.object({
   dependencies: dependencySchema,
   devDependencies: dependencySchema,
+  expressthatAuth: z
+    .object({ infrastructureAdapter: infrastructureAdapterSchema })
+    .strict()
+    .optional(),
   exports: z.unknown().optional(),
   name: z.string().min(1),
   optionalDependencies: dependencySchema,
@@ -48,9 +80,11 @@ function decodeWorkspace(file: RepositoryFile): Workspace {
   }
 
   const path = file.path.replaceAll("\\", "/").replace(/\/package\.json$/u, "");
+  const infrastructureAdapter = manifest.expressthatAuth?.infrastructureAdapter;
   return {
     dependencies,
     exports: readExports(manifest.exports),
+    ...(infrastructureAdapter === undefined ? {} : { infrastructureAdapter }),
     kind: classifyWorkspace(path, manifest.name),
     name: manifest.name,
     path,

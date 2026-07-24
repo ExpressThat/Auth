@@ -42,6 +42,31 @@ describe("workspace manifest reader", () => {
     ]);
   });
 
+  it("reads validated infrastructure adapter metadata", () => {
+    const manifest = {
+      dependencies: { "@expressthat-auth/runtime": "workspace:*" },
+      expressthatAuth: {
+        infrastructureAdapter: {
+          category: "queue",
+          runtimeSupport: {
+            containerArchitectures: ["amd64", "arm64"],
+            externalCapabilities: ["network/tls"],
+            node: { maximumMajorExclusive: 27, minimumMajor: 24 },
+            operatingSystems: ["linux"],
+          },
+        },
+      },
+      exports: { ".": "./src/index.ts", "./manifest": "./src/manifest.ts" },
+      name: "@expressthat-auth/queue-reference",
+    };
+
+    expect(
+      readWorkspaces([
+        file("packages/providers/queue-reference/package.json", JSON.stringify(manifest)),
+      ])[0]?.infrastructureAdapter,
+    ).toEqual(manifest.expressthatAuth.infrastructureAdapter);
+  });
+
   it.each([
     ['{"name":"@expressthat-auth/string","exports":"./index.js"}', ["."]],
     ['{"name":"@expressthat-auth/array","exports":["./index.js"]}', ["."]],
@@ -55,5 +80,26 @@ describe("workspace manifest reader", () => {
   it("rejects malformed and structurally invalid manifests", () => {
     expect(() => readWorkspaces([file("packages/example/package.json", "{")])).toThrow();
     expect(() => readWorkspaces([file("packages/example/package.json", '{"name":""}')])).toThrow();
+    expect(() =>
+      readWorkspaces([
+        file(
+          "packages/providers/queue-bad/package.json",
+          JSON.stringify({
+            expressthatAuth: {
+              infrastructureAdapter: {
+                category: "queue",
+                runtimeSupport: {
+                  containerArchitectures: [],
+                  externalCapabilities: ["not-namespaced"],
+                  node: { maximumMajorExclusive: 27, minimumMajor: 24 },
+                  operatingSystems: [],
+                },
+              },
+            },
+            name: "@expressthat-auth/queue-bad",
+          }),
+        ),
+      ]),
+    ).toThrow();
   });
 });
