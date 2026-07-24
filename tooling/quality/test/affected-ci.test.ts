@@ -16,8 +16,10 @@ describe("affected CI workflow", () => {
     const workflow = await readFile(WORKFLOW, "utf8");
 
     expect(workflow).toContain("pnpm format:check && pnpm check && pnpm check:runtime-neutrality");
-    expect(workflow).toContain(
-      "turbo run lint typecheck test:types test test:coverage build --affected",
+    expect(workflow).toContain("turbo run lint typecheck test:types build --affected");
+    expect(workflow).toContain("turbo run test:coverage --affected");
+    expect(workflow.indexOf("turbo run lint")).toBeLessThan(
+      workflow.indexOf("turbo run test:coverage"),
     );
   });
 

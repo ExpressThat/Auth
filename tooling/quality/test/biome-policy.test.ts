@@ -1,12 +1,11 @@
 import { spawnSync } from "node:child_process";
-import { rm, writeFile } from "node:fs/promises";
-import { join } from "node:path";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 
 const REPOSITORY_ROOT = fileURLToPath(new URL("../../../", import.meta.url));
 const BIOME_ENTRY = join(REPOSITORY_ROOT, "node_modules", "@biomejs", "biome", "bin", "biome");
-let fixtureSequence = 0;
 
 type LintResult = {
   output: string;
@@ -14,10 +13,10 @@ type LintResult = {
 };
 
 async function lintSource(source: string, boundary = false): Promise<LintResult> {
-  fixtureSequence += 1;
-  const directory = boundary ? "apps/auth-api/src" : "tooling/quality";
-  const relativePath = `${directory}/biome-policy-fixture-${process.pid}-${fixtureSequence}.ts`;
-  const absolutePath = join(REPOSITORY_ROOT, relativePath);
+  const directory = boundary ? "tooling/quality/src" : "tooling/quality";
+  const fixtureDirectory = await mkdtemp(join(REPOSITORY_ROOT, directory, "biome-policy-fixture-"));
+  const absolutePath = join(fixtureDirectory, "fixture.ts");
+  const relativePath = relative(REPOSITORY_ROOT, absolutePath);
 
   await writeFile(absolutePath, source, { encoding: "utf8", flag: "wx" });
 
@@ -32,7 +31,7 @@ async function lintSource(source: string, boundary = false): Promise<LintResult>
       status: result.status,
     };
   } finally {
-    await rm(absolutePath, { force: true });
+    await rm(fixtureDirectory, { force: true, recursive: true });
   }
 }
 

@@ -43,7 +43,6 @@ describe("full clean-checkout CI workflow", () => {
     const workflow = await readWorkflow();
 
     for (const command of [
-      "pnpm test",
       "pnpm test:coverage",
       "playwright install --with-deps chromium firefox webkit",
       "pnpm test:e2e",
@@ -53,6 +52,7 @@ describe("full clean-checkout CI workflow", () => {
     ]) {
       expect(workflow, command).toContain(command);
     }
+    expect(workflow).not.toContain("\n          pnpm test\n");
   });
 
   it("rejects tracked drift and undeclared local files", async () => {

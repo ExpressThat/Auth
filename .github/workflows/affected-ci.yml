@@ -54,4 +54,6 @@ jobs:
         run: pnpm format:check && pnpm check && pnpm check:runtime-neutrality
 
       - name: Run affected package graph
-        run: pnpm exec turbo run lint typecheck test:types test test:coverage build --affected
+        run: |
+          pnpm exec turbo run lint typecheck test:types build --affected
+          pnpm exec turbo run test:coverage --affected

@@ -61,9 +61,7 @@ jobs:
           pnpm test:types
 
       - name: Run all instrumented tests
-        run: |
-          pnpm test
-          pnpm test:coverage
+        run: pnpm test:coverage
 
       - name: Install browser engines
         run: pnpm --filter @expressthat-auth/test-config exec playwright install --with-deps chromium firefox webkit

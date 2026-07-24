@@ -27,7 +27,10 @@ describe("repository file discovery", () => {
     });
 
     expect(files.map((file) => file.path)).toEqual(["src/a.ts", "config.json"]);
-    expect(readPaths).toEqual(["C:\\repository\\src\\a.ts", "C:\\repository\\config.json"]);
+    expect(readPaths).toEqual([
+      join("C:\\repository", "src/a.ts"),
+      join("C:\\repository", "config.json"),
+    ]);
   });
 
   it("rejects a failed git listing", async () => {

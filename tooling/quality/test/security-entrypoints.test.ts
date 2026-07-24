@@ -39,7 +39,7 @@ describe("security command entry points", () => {
     vi.doMock("../src/security-command.js", () => ({ runSarifPolicyCommand: run }));
     vi.spyOn(process.stderr, "write").mockImplementation(() => true);
     vi.spyOn(process.stdout, "write").mockImplementation(() => true);
-    process.argv = [...process.argv, ".security/suppressions.json", "commit"];
+    process.argv = [...process.argv, "--", ".security/suppressions.json", "commit"];
 
     await import("../src/check-security-sarif.js");
 
