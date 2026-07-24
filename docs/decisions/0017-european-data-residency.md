@@ -29,8 +29,8 @@ support, failover, key, and onward-transfer jurisdictions plus evidence and
 expiry. Composition fails closed when a non-public path is global, unknown,
 best-effort, unsupported, or conflicts with policy.
 
-For the Workers profile, configure EU Regional Services, EU Customer Metadata
-Boundary, approved EU TLS-key custody, EU PostgreSQL, and EU object/log paths
+For hosted Docker, configure EU-only ingress and compute, approved EU TLS-key
+custody, EU PostgreSQL, and EU object/log paths
 separately. Regional Services is not treated as covering subrequests or bindings.
 Cloud services without an explicit current EU guarantee remain disabled for
 non-public workloads; the portable EU Docker/service adapter is used instead.
@@ -79,7 +79,7 @@ Customer-directed transfers remain visible and purpose-limited.
 ## Portability and Self-Hosting Impact
 
 Residency is expressed through adapter capabilities and deployment policy.
-Workers can use compliant platform features where proven; Docker and external
+Hosted deployments can use compliant platform features where proven; portable
 EU services remain permanent alternatives. Self-hosters receive the same
 validator without a false hosted guarantee. The validator is not legal advice,
 certification, an SLA, or proof of undisclosed operator practice.
@@ -94,7 +94,7 @@ Cloud services remain unavailable until they publish sufficient guarantees.
 
 - A European edge does not implicitly approve any subrequest or binding.
 - Hosted failover and disaster recovery remain inside the EU.
-- Unsupported Cloudflare capabilities use portable EU adapters.
+- Unsupported hosting capabilities use portable EU adapters.
 - Provider changes can disable a capability until requalified.
 - Legal/privacy review remains necessary in addition to technical enforcement.
 

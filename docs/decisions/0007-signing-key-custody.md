@@ -13,7 +13,7 @@ The platform signs ID tokens, JWT access tokens, authorization responses, logout
 tokens, assertions, and other security artifacts. Compromise or accidental loss
 of a signing key can affect every application trusting its issuer. Key custody
 must support a European hosted service and horizontally scaled self-hosted
-Docker deployments without making Workers and Docker different products.
+Docker deployments without making hosted and self-hosted editions different products.
 
 Private-key storage, remote signing, metadata, JWKS publication, and lifecycle
 coordination have different responsibilities. Combining them in a provider SDK
@@ -32,8 +32,8 @@ Separate the key system into two platform contracts:
    optimistic-concurrency versions in shared transactional storage.
 
 Runtime-neutral lifecycle services own selection, publication, rotation, and
-retirement. JOSE serialization and validation use `jose` per ADR-0005. Workers
-and Node/Docker call the same contracts and lifecycle code; only custody adapter
+retirement. JOSE serialization and validation use `jose` per ADR-0005. Hosted
+and self-hosted Docker deployments call the same contracts and lifecycle code; only custody adapter
 configuration differs.
 
 ### Key Rings and Isolation
@@ -250,7 +250,7 @@ European retention.
 
 ## Portability and Self-Hosting Impact
 
-Workers and Docker/Node share key metadata, lifecycle, JOSE, and conformance
+All Docker/Node deployments share key metadata, lifecycle, JOSE, and conformance
 tests indefinitely. The portable software-custody profile requires only shared
 storage and a protected deployment master key. Hosted HSM acceleration never
 becomes a prerequisite for self-hosted correctness.
@@ -278,7 +278,7 @@ EU multi-region recovery or an explicit forced-rotation/token-revocation plan.
 
 ## Validation
 
-- Run sign/verify and negative algorithm vectors for every adapter in Workers and
+- Run sign/verify and negative algorithm vectors for every adapter in
   Node/Docker where applicable.
 - Prove identical public JWKs and RFC 7638 `kid` values across custody adapters.
 - Model every allowed and denied lifecycle transition.

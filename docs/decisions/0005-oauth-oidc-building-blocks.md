@@ -12,12 +12,12 @@
 The platform is an OAuth 2.0 Authorization Server and OpenID Provider, and it is
 also an OAuth/OpenID client when connecting enterprise or social identity
 providers. Protocol mistakes can expose accounts, clients, tokens, and consent.
-At the same time, the complete issuer must run on Cloudflare Workers and
-Node/Docker indefinitely. A Node-only server framework therefore cannot be the
-production implementation for either deployment target.
+The complete issuer must run consistently in horizontally scaled Node.js
+containers. A framework that relies on process-local correctness therefore
+cannot be the production implementation.
 
 No reviewed, certified authorization-server library currently provides the
-required Hono/Web API architecture across both target runtimes. We must combine
+required Hono/Web API architecture and product scope. We must combine
 reviewed cryptographic and client-protocol building blocks with a deliberately
 small local issuer implementation, then prove the complete behavior with
 independent conformance suites.
@@ -34,7 +34,7 @@ Use the following maintained, standards-focused building blocks:
 | Hono and Zod contracts | HTTP routing, boundary parsing, documented error shapes, and OpenAPI | ADR-0004 |
 
 Both selected protocol libraries are ESM, dependency-free, Web API based, and
-support Workers and Node. Pin exact versions in the lockfile, review security
+support modern Node.js. Pin exact versions in the lockfile, review security
 advisories and changelogs before upgrades, and rerun protocol plus runtime
 compatibility suites for every upgrade.
 
@@ -59,8 +59,8 @@ The platform owns issuer behavior that the selected libraries do not implement:
 
 These behaviors live in runtime-neutral domain services with repositories,
 clock, identifier, cryptography, queue, cache, and lock contracts. Hono handlers
-only translate HTTP requests and responses. Neither target runtime may bypass the
-same domain and protocol test suites.
+only translate HTTP requests and responses. No deployment profile may bypass
+the same domain and protocol test suites.
 
 ### Initial Standards Profile
 
@@ -80,30 +80,29 @@ The secure baseline supports:
 Implicit Grant and Resource Owner Password Credentials are not implemented.
 OAuth Security BCP deprecates the former and says the latter must not be used.
 New draft features remain disabled until a versioned capability, threat review,
-both-runtime tests, and migration policy exist.
+  built-image tests, and migration policy exist.
 
 ### Algorithms
 
-- Use an asymmetric signature baseline that is supported identically by Workers
-  and supported Node versions; begin with ES256 and RS256 interoperability tests.
+- Use an asymmetric signature baseline supported by the selected Node.js
+  versions; begin with ES256 and RS256 interoperability tests.
 - Reject `none`, algorithm confusion, caller-selected algorithms, weak symmetric
   client secrets, unknown critical headers, and keys that violate policy.
 - Keep the accepted algorithm set in issuer/application policy, never in request
   input.
 - Treat additional algorithms as explicit capabilities. They cannot be enabled
-  until test vectors pass in both Workers and Node/Docker.
+  until test vectors pass in Node.js and the built Docker image.
 - Use `jose` APIs for JOSE serialization and verification; do not implement
   cryptographic primitives locally.
 
 ## Alternatives Considered
 
-### Node-Only Certified Authorization-Server Framework
+### High-Level Certified Authorization-Server Framework
 
 The mature Node implementation has broad certified protocol support and is a
-valuable behavior reference. It depends on Node HTTP semantics and its maintainer
-states that non-Node runtimes are unsupported. Using it in production would make
-the Docker deployment materially different from Workers and break the permanent
-dual-runtime requirement.
+valuable behavior reference. Adopting it would surrender important application,
+tenant, storage, and contract boundaries to framework-specific behavior. It may
+remain a differential reference but is not the production core.
 
 ### Implementing JOSE Locally
 
@@ -145,10 +144,10 @@ fixtures contain synthetic identities only.
 
 ## Portability and Self-Hosting Impact
 
-Workers and Node/Docker are equal, permanent release targets. Production issuer
-code relies on Web APIs and platform contracts, not Node-only HTTP, filesystem,
-process memory, or Cloudflare-only bindings. Every protocol milestone must pass
-the same behavioral suite in Workerd and the built Docker image.
+Hosted and self-hosted editions use the same Docker/Node.js release artifacts.
+Production issuer code relies on platform contracts, not local filesystem or
+process memory for correctness. Every protocol milestone must pass the same
+behavioral suite directly and against the built Docker image.
 
 Optional provider acceleration can exist behind capabilities, but it cannot
 replace a portable implementation required by the self-hosted baseline.
@@ -166,8 +165,8 @@ overlap during deployment.
 - We retain responsibility for authorization-server correctness.
 - The local issuer surface is kept smaller by delegating JOSE and upstream client
   behavior.
-- Docker cannot gain protocol features by adopting a Node-only issuer unless the
-  same behavior is implemented and released for Workers.
+- Deployment profiles cannot gain protocol features unless the same behavior is
+  implemented and released in the shared Docker artifact.
 - Exact dependency upgrades require security review and conformance evidence.
 - A portable implementation requires more domain-level protocol tests than a
   runtime-specific framework wrapper.
@@ -176,7 +175,7 @@ overlap during deployment.
 
 1. Add RFC and OpenID test vectors for JOSE, PKCE, token claims, redirect matching,
    client authentication, refresh rotation, and negative cases.
-2. Run identical black-box journeys against Node/Docker and Workers deployments.
+2. Run identical black-box journeys against direct Node.js and Docker deployments.
 3. Integrate the open-source OpenID Foundation Conformance Suite in CI; retain
    plan identifiers and results as release evidence.
 4. Test the platform as both an OpenID Provider and a Relying Party.
@@ -189,11 +188,11 @@ overlap during deployment.
 
 ## Review Triggers
 
-- A maintained, certified issuer becomes available for both Workers and Node.
-- A selected library drops either production runtime.
+- A maintained, certified issuer becomes available for the required architecture.
+- A selected library drops a supported Node.js version.
 - A security advisory, maintainer change, or unpatched vulnerability affects a
   selected library.
-- A required algorithm differs between runtime implementations.
+- A required algorithm differs between supported architectures.
 - The OpenID Foundation updates or retires a target conformance profile.
 - A new OAuth/OIDC specification reaches a maturity level proposed for default
   enablement.

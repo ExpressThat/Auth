@@ -63,7 +63,8 @@ Unless a task explicitly concerns documentation only, it is complete when:
 - New workspaces include purpose, boundaries, public exports, runtimes,
   commands, tests, extension points, security considerations, and deeper
   documentation links from their README.
-- Both Workers and Docker targets pass where runtime behaviour is affected.
+- Docker, reverse-proxy, and multi-instance behavior passes where deployment
+  behavior is affected.
 - Executable first-party TypeScript retains 100% line, statement, function, and branch coverage.
 - No applicable first-party file exceeds 250 physical lines.
 - No focused, skipped, flaky, quarantined, or nondeterministic test is introduced.
@@ -112,7 +113,7 @@ Security work happens during every task and throughout the product lifetime.
 - Track findings by severity, owner, remediation target, affected releases, and
   verification evidence. A finding is not closed until a regression test or
   equivalent durable control proves the fix where technically possible.
-- Reassess both Workers and Docker, hosted and self-hosted profiles, SQLite and
+- Reassess hosted and self-hosted Docker profiles, SQLite and
   PostgreSQL paths, and all adapter implementations wherever behaviour differs.
 
 When convenience conflicts with a security invariant, preserve the invariant
@@ -144,7 +145,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 
   **Done when:** an ADR records the choice, version pinning, workspace layout, lockfile policy, and CI installation command. Start by evaluating the recommended `pnpm` option.
 
-- [x] **DEC-003 — Define supported Node.js, browser, Workers, and TypeScript versions.**
+- [x] **DEC-003 — Define supported Node.js, browser, Docker, and TypeScript versions.**
 
   **Depends on:** DEC-001.
 
@@ -154,11 +155,11 @@ These tasks prevent foundational security or compatibility decisions from being 
 
   **Depends on:** DEC-003.
 
-  **Done when:** unit, type, component, end-to-end, coverage, and Workers-runtime test tools are selected; start by evaluating Vitest and Playwright.
+  **Done when:** unit, type, component, end-to-end, coverage, container, and browser test tools are selected; start by evaluating Vitest and Playwright.
 
 - [x] **DEC-005 — Validate the Hono contract approach.**
   **Depends on:** DEC-003.  
-  **Done when:** a spike proves Zod-based Hono routes can generate complete OpenAPI, run on Workers and Node, and produce usable inferred client types.
+  **Done when:** a spike proves Zod-based Hono routes can generate complete OpenAPI, run on Node in Docker, and produce usable inferred client types.
 
 - [x] **DEC-006 — Select reviewed OAuth 2.0 and OpenID Connect building blocks.**
   **Depends on:** DEC-003.  
@@ -166,7 +167,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [x] **DEC-007 — Select the password-hashing implementations.**
   **Depends on:** DEC-003.  
-  **Done when:** compatible Workers and Node implementations, Argon2id parameters, hash versioning, rehash rules, test vectors, and latency limits are recorded.
+  **Done when:** compatible native Node and portable TypeScript implementations, Argon2id parameters, hash versioning, rehash rules, test vectors, and latency limits are recorded.
 
 - [x] **DEC-008 — Define signing-key custody and rotation.**
   **Depends on:** DEC-006.  
@@ -202,7 +203,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [x] **DEC-016 — Produce the first platform threat model.**
   **Depends on:** DEC-006, DEC-008, DEC-009, DEC-013.  
-  **Done when:** assets, actors, trust boundaries, abuse cases, mitigations, and residual risks cover authentication, tenancy, providers, support access, jobs, and both runtimes.
+  **Done when:** assets, actors, trust boundaries, abuse cases, mitigations, and residual risks cover authentication, tenancy, providers, support access, jobs, and Docker deployment.
 
 - [x] **DEC-017 — Classify platform data.**
   **Depends on:** DEC-016.  
@@ -236,6 +237,16 @@ These tasks prevent foundational security or compatibility decisions from being 
   and the limits of ORM portability are explicit.
   **Evidence:** [ADR-0022](docs/decisions/0022-pluggable-database-adapters.md).
 
+- [x] **DEC-024 — Adopt Docker as the sole supported deployment method.**
+  **Depends on:** DEC-003, DEC-004, DEC-005.
+  **Done when:** hosted and self-hosted editions use the same Node.js Docker
+  artifacts; platform-specific deployment workspaces, dependencies,
+  configuration, tests, and documentation are removed; and direct execution,
+  built-image, reverse-proxy, and multi-replica validation are required.
+  **Evidence:** amended [ADR-0002](docs/decisions/0002-supported-runtimes.md),
+  Docker-only contract spikes, and repository-wide prohibited-reference and
+  dependency-lock checks.
+
 ## 4. Phase 1 — Monorepo and Quality Foundation
 
 - [x] **FND-001 — Initialise the workspace root.**
@@ -247,12 +258,12 @@ These tasks prevent foundational security or compatibility decisions from being 
 - [x] **FND-002 — Create the initial Turborepo directory structure.**  
   **Depends on:** FND-001.  
   **Done when:** all planned `apps/`, `packages/`, `deploy/`, and `tooling/` workspaces exist with clear ownership and no placeholder production logic.
-  **Evidence:** 29 uniquely named pnpm projects are registered; ownership and dependency direction are defined in [the workspace register](docs/architecture/workspace-ownership.md), and new production workspaces contain metadata only.
+  **Evidence:** 28 uniquely named pnpm projects are registered; ownership and dependency direction are defined in [the workspace register](docs/architecture/workspace-ownership.md), and new production workspaces contain metadata only.
 
 - [x] **FND-003 — Add strict shared TypeScript configurations.**
   **Depends on:** FND-002.  
-  **Done when:** base, library, Node, Workers, React, and tooling configurations enable every strictness rule required by the architecture.
-  **Evidence:** all six profiles extend the strict base, resolve through the `@expressthat-auth/typescript-config` workspace, pass `tsc --showConfig`, and type-check the Node and Workers spikes without local strictness duplication.
+  **Done when:** base, library, Node, React, and tooling configurations enable every strictness rule required by the architecture.
+  **Evidence:** all five profiles extend the strict base, resolve through the `@expressthat-auth/typescript-config` workspace, pass `tsc --showConfig`, and type-check Node applications without local strictness duplication.
 
 - [x] **FND-004 — Add repository formatting.**
   **Depends on:** FND-001.  
@@ -361,7 +372,7 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Done when:** install, generation, lint, typecheck, all tests, all builds, and reproducibility checks pass without undeclared local files.
   **Evidence:** the main/manual clean-checkout workflow installs only from the
   frozen lockfile, runs every generation, contract, database, static,
-  compile-time, unit, coverage, Workers, browser, deployment-test, build, and
+  compile-time, unit, coverage, browser, deployment-test, build, and
   deployment-packaging task family, then rejects both tracked drift and
   undeclared untracked files. It uses a clean read-only checkout with no
   persisted credential, and workflow regression tests enforce the full gate.
@@ -428,14 +439,14 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [x] **FND-021 — Add the adversarial testing toolkit.**
   **Depends on:** DEC-016, FND-008, FND-011, FND-013.
-  **Done when:** reusable property/fuzz harnesses, hostile input corpora, parser limits, two-tenant/two-environment fixtures, concurrency/replay drivers, redaction assertions, and Workers/Docker security-test runners can be used by every feature package.
+  **Done when:** reusable property/fuzz harnesses, hostile input corpora, parser limits, two-tenant/two-environment fixtures, concurrency/replay drivers, redaction assertions, and Docker replica security-test runners can be used by every feature package.
   **Evidence:** `@expressthat-auth/test-config/adversarial` exposes a stable
   hostile-input corpus, generated limit cases, deterministic seeded property
   campaigns, UTF-8 byte and matched-nesting parser constraints, two-tenant and
   two-environment fixtures, bounded concurrency and replay drivers, secret
-  redaction assertions, and a Workers/Docker differential HTTP harness.
+  redaction assertions, and a Docker replica differential HTTP harness.
   `docs/security/adversarial-testing-toolkit.md` documents mandatory feature
-  use, failure reproduction, runtime parity, and hosted/self-hosted boundaries.
+  use, failure reproduction, Docker replica parity, and hosted/self-hosted boundaries.
   Fifty-nine focused tests pass with 100% line, statement, function, and branch
   coverage; the full repository format, lint, type, test, coverage, build,
   artifact, licence, dependency-audit, and diff gates pass.
@@ -517,7 +528,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [ ] **RUN-012 — Create dependency composition roots.**  
   **Depends on:** RUN-011.  
-  **Done when:** domain and route code receives explicit interfaces and contains no Node, Workers, filesystem, process, or platform imports.
+  **Done when:** domain code receives explicit interfaces and contains no Node, filesystem, process, or deployment-platform imports.
 
 - [ ] **RUN-013 — Implement local deterministic adapters.**  
   **Depends on:** RUN-002 through RUN-009.  
@@ -529,7 +540,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [ ] **RUN-015 — Prove runtime neutrality automatically.**  
   **Depends on:** RUN-012, FND-007.  
-  **Done when:** CI rejects runtime-specific imports and builds runtime-neutral packages against both Workers and Node type environments.
+  **Done when:** CI rejects deployment-specific imports and builds runtime-neutral packages independently from Node application entry points.
 
 - [ ] **RUN-016 — Define infrastructure-adapter packaging rules.**  
   **Depends on:** RUN-011, FND-007.  
@@ -653,9 +664,11 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** DB-022.  
   **Done when:** destructive SQL or schema changes require an explicit expand-and-contract plan and cannot run as an ordinary application startup side effect.
 
-- [ ] **DB-025 — Add the local Workers D1/SQLite-compatible database adapter.**  
-  **Depends on:** DB-004, DB-015 through DB-021, RUN-017.  
-  **Done when:** local Workers development runs the shared repository conformance suite through the D1-compatible binding without making D1 a required hosted-production database.
+- [ ] **DB-025 — Add the local Docker SQLite database profile.**
+  **Depends on:** DB-004, DB-015 through DB-021, RUN-017.
+  **Done when:** local host-run and container-run development use the same
+  SQLite repository conformance suite, paths are explicit and durable, and no
+  shared-production database choice is implied.
 
 - [ ] **DB-026 — Publish the pluggable database-adapter contract and kit.**
   **Depends on:** DB-003, DB-022, RUN-017.
@@ -717,7 +730,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [ ] **API-014 — Add response contract verification.**  
   **Depends on:** API-010.  
-  **Done when:** undocumented routes, statuses, content types, headers, and schema-invalid responses fail against both runtimes.
+  **Done when:** undocumented routes, statuses, content types, headers, and schema-invalid responses fail directly and against the built Docker image.
 
 - [ ] **API-015 — Generate and compile the first TypeScript client.**  
   **Depends on:** API-010.  
@@ -727,13 +740,15 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** API-007 through API-009, RUN-012.  
   **Done when:** the same application routes run through the Node server adapter with graceful shutdown.
 
-- [ ] **API-017 — Add the Cloudflare Workers Hono entry points.**  
-  **Depends on:** API-007 through API-009, RUN-012.  
-  **Done when:** the same application routes run through Workers-compatible bindings with no Node-only bundle content.
+- [ ] **API-017 — Add trusted reverse-proxy handling to Docker entry points.**
+  **Depends on:** API-016, RUN-012.
+  **Done when:** forwarded host, scheme, address, and request metadata are used
+  only from configured trusted proxies and spoofing tests fail closed.
 
-- [ ] **API-018 — Add Docker and Workers smoke suites.**  
-  **Depends on:** API-016, API-017.  
-  **Done when:** health, validation, errors, OpenAPI, security headers, and runtime capability failures behave equivalently.
+- [ ] **API-018 — Add Docker black-box and replica smoke suites.**
+  **Depends on:** API-016, API-017.
+  **Done when:** health, validation, errors, OpenAPI, security headers, graceful
+  termination, proxy behavior, and instance switching pass against built images.
 
 - [ ] **API-019 — Implement distributed idempotency middleware.**  
   **Depends on:** DB-002, API-003, API-006.  
@@ -833,7 +848,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [ ] **AUTH-002 — Implement password hashing and verification adapters.**  
   **Depends on:** DEC-007, RUN-003.  
-  **Done when:** Workers and Node produce compatible versioned hashes, share vectors, enforce resource limits, and trigger rehash when parameters change.
+  **Done when:** native Node and portable TypeScript implementations produce compatible versioned hashes, share vectors, enforce resource limits, and trigger rehash when parameters change.
 
 - [ ] **AUTH-003 — Implement user creation rules.**  
   **Depends on:** AUTH-001, DB-017, TEN-018.  
@@ -1047,7 +1062,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [ ] **OIDC-025 — Add protocol conformance suites.**  
   **Depends on:** OIDC-002 through OIDC-024.  
-  **Done when:** positive, negative, malformed, replay, mix-up, downgrade, redirect, PKCE, nonce, client, key-rotation, and error-response tests pass on Workers and Docker.
+  **Done when:** positive, negative, malformed, replay, mix-up, downgrade, redirect, PKCE, nonce, client, key-rotation, and error-response tests pass against Docker and multiple instances.
 
 - [ ] **OIDC-026 — Document unsupported unsafe grants.**  
   **Depends on:** OIDC-002.  
@@ -1137,7 +1152,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [ ] **UI-020 — Package hosted frontend deployment artifacts.**  
   **Depends on:** UI-019.  
-  **Done when:** one static build works behind Workers assets and an unprivileged Docker web server with SPA fallback and no embedded secrets.
+  **Done when:** one static build works behind an unprivileged Docker web server with SPA fallback and no embedded secrets.
 
 ## 12. Phase 9 — Management Dashboard
 
@@ -1187,7 +1202,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [ ] **MGT-012 — Package management frontend deployment artifacts.**  
   **Depends on:** MGT-003 through MGT-011.  
-  **Done when:** one static build works behind Workers assets and an unprivileged Docker web server with SPA fallback and no embedded secrets.
+  **Done when:** one static build works behind an unprivileged Docker web server with SPA fallback and no embedded secrets.
 
 - [ ] **MGT-013 — Add management end-to-end journeys.**  
   **Depends on:** MGT-012.  
@@ -1423,7 +1438,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [ ] **SEC-031 — Add continuous dynamic and fuzz security campaigns.**
   **Depends on:** FND-021, FND-022, SEC-025.
-  **Done when:** authenticated API/UI dynamic tests, protocol and parser fuzzing, property/invariant tests, race/replay campaigns, malformed HTTP, and tenant/environment escape attempts run on commits where feasible, on a schedule at scale, and against both Workers and Docker artifacts.
+  **Done when:** authenticated API/UI dynamic tests, protocol and parser fuzzing, property/invariant tests, race/replay campaigns, malformed HTTP, and tenant/environment escape attempts run on commits where feasible, on a schedule at scale, and against built Docker artifacts and multiple instances.
 
 - [ ] **SEC-032 — Operate vulnerability intake and remediation.**
   **Depends on:** FND-019, FND-022, SEC-030.
@@ -1553,7 +1568,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [ ] **ENT-016 — Add enterprise end-to-end and conformance suites.**  
   **Depends on:** ENT-015.  
-  **Done when:** domain discovery, OIDC, SAML, JIT, enforcement, break-glass, SCIM users/groups, deprovisioning, switching, and role claims pass both runtimes.
+  **Done when:** domain discovery, OIDC, SAML, JIT, enforcement, break-glass, SCIM users/groups, deprovisioning, switching, and role claims pass direct and built-image suites.
 
 ## 16. Phase 13 — Support View and Controlled Impersonation
 
@@ -1721,21 +1736,23 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** OPS-001, OPS-002, DB-005, DB-026, JOB-003.  
   **Done when:** APIs, frontends, jobs, an operator-selected supported shared-database adapter, operator-selected queue/cache/object/secret adapters, health, migrations, and TLS guidance start reproducibly; the PostgreSQL reference profile works but is not mandatory architecture, and production composition is clearly separated from the local-development stack.
 
-- [ ] **OPS-004 — Create Cloudflare Workers deployment packages.**  
-  **Depends on:** API-017, UI-020, MGT-012.  
-  **Done when:** each application builds independently, binds only declared capabilities, excludes Node adapters, and passes preview smoke tests.
+- [ ] **OPS-004 — Create hosted Docker deployment packages.**
+  **Depends on:** API-018, UI-020, MGT-012.
+  **Done when:** each application builds independently into immutable images,
+  binds only declared capabilities, and passes hosted staging smoke tests.
 
 - [ ] **OPS-005 — Implement PostgreSQL connectivity for Node.**  
   **Depends on:** DB-005, OPS-001.  
   **Done when:** bounded pools, timeouts, health, backpressure, transaction cleanup, graceful shutdown, and saturation tests work.
 
-- [ ] **OPS-006 — Implement PostgreSQL connectivity for Workers.**  
-  **Depends on:** DB-005, OPS-004.  
-  **Done when:** the selected compatible connection path has bounded use, transaction semantics, health, failover behaviour, and European residency review.
+- [ ] **OPS-006 — Implement SQLite connectivity for Node.**
+  **Depends on:** DB-004, OPS-001.
+  **Done when:** file paths, locking, busy timeouts, transactions, health,
+  backup, graceful shutdown, and single-writer scaling limits are explicit.
 
 - [ ] **OPS-007 — Implement production queue adapters.**  
   **Depends on:** RUN-007, RUN-017, RUN-018, JOB-003.  
-  **Done when:** separately packaged Workers-hosted and production self-hosted choices pass queue conformance, duplicate delivery, lease expiry, dead-letter, scale, configuration, and selected-policy residency tests; hosted choices meet the European policy.
+  **Done when:** separately packaged hosted and production self-hosted choices pass queue conformance, duplicate delivery, lease expiry, dead-letter, scale, configuration, and selected-policy residency tests; hosted choices meet the European policy.
 
 - [ ] **OPS-008 — Implement production distributed cache/rate-limit adapters.**  
   **Depends on:** RUN-006, RUN-017, RUN-018, SEC-014.  
@@ -1789,9 +1806,11 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** OPS-019, DEC-021.  
   **Done when:** detection, authority, database, object, queue, keys, DNS, communications, recovery order, validation, and post-incident steps are exercised.
 
-- [ ] **OPS-021 — Complete Cloudflare data-localisation validation.**  
-  **Depends on:** DEC-018, OPS-004, OPS-006 through OPS-012.  
-  **Done when:** request execution, subrequests, queues, scheduled work, logs, analytics, storage, secrets, support, and fallbacks have evidence for European processing or move to approved European infrastructure.
+- [ ] **OPS-021 — Complete hosted European data-localisation validation.**
+  **Depends on:** DEC-018, OPS-004 through OPS-012.
+  **Done when:** container execution, network paths, databases, queues, scheduled
+  work, logs, analytics, storage, secrets, support, backups, and fallbacks have
+  evidence for European processing.
 
 - [ ] **OPS-022 — Implement hosted custom-domain onboarding.**  
   **Depends on:** ENT-001, OPS-004, RUN-019.  
@@ -1969,7 +1988,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [ ] **REL-001 — Define supported deployment profiles.**  
   **Depends on:** OPS-004, OPS-026, OPS-028.
-  **Done when:** hosted Workers, hosted European containers where required, and self-hosted Docker profiles list supported adapters, dependencies, scaling limits, exclusions, operator responsibilities, and whether each target is a hosted commitment or reference result.
+  **Done when:** hosted European Docker and self-hosted Docker profiles list supported adapters, dependencies, scaling limits, exclusions, operator responsibilities, and whether each target is a hosted commitment or reference result.
 
 - [ ] **REL-002 — Freeze and review the first stable public API.**  
   **Depends on:** API-013, DX-021.  
@@ -1977,7 +1996,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [ ] **REL-003 — Complete end-to-end acceptance coverage.**  
   **Depends on:** UI-019, MGT-013, OIDC-025, ENT-016, SUP-012.  
-  **Done when:** every supported primary journey and denied counterpart runs against Workers and Docker using SQLite where supported and PostgreSQL production paths.
+  **Done when:** every supported primary journey and denied counterpart runs against Docker using SQLite where supported and PostgreSQL production paths, including multiple API and job instances.
 
 - [ ] **REL-004 — Complete scale and failure acceptance.**  
   **Depends on:** OPS-016, OPS-018, OPS-020.  
@@ -1989,7 +2008,7 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 - [ ] **REL-006 — Complete independent penetration testing.**  
   **Depends on:** REL-003, REL-005.  
-  **Done when:** scoped external testing covers APIs, hosted UI, management UI, OAuth/OIDC, SSO/SCIM, tenancy, impersonation, Workers, Docker, and retesting of resolved findings.
+  **Done when:** scoped external testing covers APIs, hosted UI, management UI, OAuth/OIDC, SSO/SCIM, tenancy, impersonation, Docker, and retesting of resolved findings.
 
 - [ ] **REL-007 — Complete privacy and residency acceptance.**  
   **Depends on:** GOV-015, OPS-021.  
@@ -2018,11 +2037,11 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 Complete when:
 
-- DEC-001 through DEC-023 are either completed or explicitly scheduled before their first consumer.
+- DEC-001 through DEC-024 are either completed or explicitly scheduled before their first consumer.
 - FND-001 through FND-024 pass on a clean checkout.
 - RUN-001 through RUN-021 have conformance-tested implementations.
-- DB-001 through DB-026 pass against SQLite, PostgreSQL, and the applicable local Workers database path; the adapter kit proves the core is not tied to either dialect.
-- API-001 through API-019 run equivalently through Docker and Workers shells.
+- DB-001 through DB-026 pass against SQLite and PostgreSQL; the adapter kit proves the core is not tied to either dialect.
+- API-001 through API-019 pass through the Docker shell, trusted proxy, and multiple-instance suites.
 
 ### M1 — Core Authentication MVP
 

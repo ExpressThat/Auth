@@ -1,6 +1,6 @@
-export type SecurityRuntime = {
+export type DockerSecurityTarget = {
   fetch(request: Request): Promise<Response>;
-  name: "docker" | "workers";
+  instance: "primary" | "secondary";
 };
 
 export type NormalizedSecurityResponse = {
@@ -10,7 +10,7 @@ export type NormalizedSecurityResponse = {
 };
 
 export type RuntimeSecurityCase = {
-  assert?(response: NormalizedSecurityResponse, runtime: SecurityRuntime["name"]): void;
+  assert?(response: NormalizedSecurityResponse, instance: DockerSecurityTarget["instance"]): void;
   name: string;
   normalize?(response: NormalizedSecurityResponse): NormalizedSecurityResponse;
   request(): Request;
@@ -39,24 +39,24 @@ async function normalizeResponse(response: Response): Promise<NormalizedSecurity
   };
 }
 
-export async function runDualRuntimeSecurityCases(
-  runtimes: { docker: SecurityRuntime; workers: SecurityRuntime },
+export async function runDockerReplicaSecurityCases(
+  targets: readonly [DockerSecurityTarget, DockerSecurityTarget],
   cases: ReadonlyArray<RuntimeSecurityCase>,
 ): Promise<void> {
-  if (runtimes.docker.name !== "docker" || runtimes.workers.name !== "workers") {
-    throw new Error("Security runtimes must use their matching target names.");
+  if (targets[0].instance !== "primary" || targets[1].instance !== "secondary") {
+    throw new Error("Docker security targets must use primary and secondary instance names.");
   }
 
   for (const testCase of cases) {
     const results: NormalizedSecurityResponse[] = [];
-    for (const runtime of [runtimes.workers, runtimes.docker]) {
-      const normalized = await normalizeResponse(await runtime.fetch(testCase.request()));
+    for (const target of targets) {
+      const normalized = await normalizeResponse(await target.fetch(testCase.request()));
       const selected = testCase.normalize?.(normalized) ?? normalized;
-      testCase.assert?.(selected, runtime.name);
+      testCase.assert?.(selected, target.instance);
       results.push(selected);
     }
     if (JSON.stringify(results[0]) !== JSON.stringify(results[1])) {
-      throw new Error(`Workers and Docker differ for security case: ${testCase.name}.`);
+      throw new Error(`Docker replicas differ for security case: ${testCase.name}.`);
     }
   }
 }

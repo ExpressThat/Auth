@@ -69,12 +69,7 @@
       "cache": false,
       "dependsOn": ["check:deployment", "package:deployment", "test:deployment"],
       "description": "Perform an externally stateful deployment.",
-      "passThroughEnv": [
-        "CLOUDFLARE_ACCOUNT_ID",
-        "CLOUDFLARE_API_TOKEN",
-        "DATABASE_URL",
-        "DOCKER_CONFIG"
-      ]
+      "passThroughEnv": ["DATABASE_URL", "DOCKER_CONFIG"]
     },
     "generate": {
       "dependsOn": ["^generate"],
@@ -97,7 +92,7 @@
     },
     "package:deployment": {
       "dependsOn": ["build"],
-      "description": "Create immutable Workers or Docker deployment artifacts.",
+      "description": "Create immutable Docker deployment artifacts.",
       "outputs": ["artifacts/**", "dist/**"]
     },
     "test": {

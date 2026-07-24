@@ -63,7 +63,7 @@ Run the clean-checkout gate plus release-specific validation:
 
 - all format, lint, type, boundary, file-size, test, coverage, build, package,
   dependency, licence, credential, artifact, and deployment checks;
-- Docker and Workers runtime and deployment conformance;
+- Docker runtime, built-image, and multi-replica conformance;
 - OpenAPI linting, breaking-change analysis, response verification, generated
   SDK compilation, and safe examples;
 - empty install and supported upgrade paths for SQLite and PostgreSQL;
@@ -87,7 +87,7 @@ release credentials:
 2. Record content digests, software bill of materials, provenance, signatures,
    and dependency/security evidence.
 3. Apply immutable versions and tags; never base promotion on a mutable tag.
-4. Publish versioned documentation, OpenAPI, SDKs, images, Workers metadata,
+4. Publish versioned documentation, OpenAPI, SDKs, images, deployment metadata,
    migrations, checksums, release manifest, changelog, and known limits as one
    coordinated release.
 5. Publish security advisories only when patched supported artifacts are
@@ -97,7 +97,7 @@ release credentials:
 8. Mark the release available only after verification succeeds.
 
 The repository automation can prepare and validate artifacts without
-credentials. It must not claim that registries, Workers, images, signatures, or
+credentials. It must not claim that registries, images, signatures, or
 advisories were published when live credentials were unavailable.
 
 ## Hosted rollout
@@ -129,7 +129,7 @@ or support guarantee for their infrastructure.
 - Git tag and source commit
 - Platform release manifest and digests
 - Changelog and release notes
-- Versioned Docker, Workers, frontend, job, and deployment artifacts
+- Versioned Docker, frontend, job, and deployment artifacts
 - Versioned OpenAPI documents and Swagger-compatible documentation
 - Generated SDKs and tested examples
 - Migration files, checksums, compatibility, and recovery notes

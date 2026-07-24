@@ -12,7 +12,7 @@ The platform must create its first administrator and recover from loss or
 compromise of ordinary management authentication without a permanent backdoor.
 The process must:
 
-- work on Workers and Docker without a runtime-specific authentication bypass;
+- work across Docker replicas without a deployment-specific authentication bypass;
 - keep the protected system organisation, management issuer, and management
   application non-deletable;
 - require explicit deployment authority and short-lived one-time artifacts;
@@ -323,10 +323,10 @@ authority is issued.
 
 ## 7. Runtime Profiles
 
-Workers and Docker use the same challenge schemas, signature validation, state
+All Docker replicas use the same challenge schemas, signature validation, state
 machines, policy, repositories, and tests.
 
-- Workers exposes installation control only through a separate restricted route/
+- The application exposes installation control only through a separate restricted route/
   service binding and approved EU operations identity, never the public Hono app.
 - Docker binds installation control to loopback/private control network by
   default, requires mTLS/operator credential, and ships no open recovery port.
@@ -349,8 +349,7 @@ machines, policy, repositories, and tests.
 - Exercise first-admin creation, second-admin readiness, authenticator loss,
   compromised admin/provider/key, normal and emergency custodian rotation,
   database restore, audit-sink outage, and total management-UI outage.
-- Run black-box ceremonies against Workers and the built Docker image using
+- Run black-box ceremonies against the built Docker image and multiple replicas using
   production-equivalent networking and synthetic identities.
 - Conduct a quarterly recovery-signature drill and annual full break-glass/
   restore exercise; remediate all evidence gaps.
-

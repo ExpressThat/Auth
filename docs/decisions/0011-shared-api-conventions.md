@@ -275,7 +275,7 @@ logs, and traces remain in the selected European region with bounded retention.
 
 Contracts use HTTP/JSON standards. Cursor signing, idempotency, rate limits, and
 concurrency use adapters/repositories with deterministic conformance suites on
-Workers and Docker.
+Docker replicas.
 
 ## Operational Impact
 
@@ -300,7 +300,7 @@ pagination requires deliberate indexes for every supported filter/sort.
 - Prove cursor rejection across tenant, environment, operation, filter, key
   rotation, expiry, and tampering boundaries.
 - Verify pagination under concurrent insert/delete and both SQL dialects.
-- Run identical HTTP suites against Workers and Docker.
+- Run identical HTTP suites against built Docker images and multiple replicas.
 
 ## Review Triggers
 

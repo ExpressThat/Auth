@@ -224,20 +224,21 @@ The frontends should use these APIs rather than bypassing them and accessing the
 
 All application, test, migration, build-tooling, job, SDK, and infrastructure-automation code will use TypeScript. JavaScript source files will not be maintained alongside the TypeScript codebase.
 
-Declarative files required by a platform, such as Dockerfiles, package manifests, Wrangler configuration, Compose files, and CI workflow files, are unavoidable exceptions rather than a second implementation language. Configuration should use TypeScript wherever the relevant tool supports it.
+Declarative files required by a platform, such as Dockerfiles, package manifests, Compose files, and CI workflow files, are unavoidable exceptions rather than a second implementation language. Configuration should use TypeScript wherever the relevant tool supports it.
 
 All TypeScript projects will share a strict base configuration. At minimum, strict type checking, `noImplicitAny`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, and unused-code checks should be enabled. Unsafe `any`, unchecked type assertions, and unvalidated external data are not acceptable at API or security boundaries.
 
 #### APIs
 
-The APIs will use [Hono](https://hono.dev/docs/getting-started/basic). Hono is built around Web-standard `Request`, `Response`, `Headers`, `URL`, and `fetch` APIs, allowing the same core application to run on Cloudflare Workers and Node.js.
+The APIs will use [Hono](https://hono.dev/docs/getting-started/basic) on Node.js
+through [`@hono/node-server`](https://hono.dev/docs/getting-started/nodejs).
+Hono's Web-standard request and response model keeps routes straightforward to
+test without introducing another supported deployment runtime.
 
 Persistence and SQL access will use [Drizzle ORM](https://orm.drizzle.team/docs/). Drizzle schemas, queries, migration configuration, and database tooling will be written in TypeScript.
 
-Each API will have a thin runtime-specific entry point:
-
-- **Cloudflare Workers** exports the Hono application through the Workers `fetch` handler.
-- **Docker** runs the same Hono application on Node.js using [`@hono/node-server`](https://hono.dev/docs/getting-started/nodejs).
+Each API has a thin Node.js entry point and is packaged in an unprivileged
+Docker image.
 
 Business rules, routes, validation, authorization, token logic, and API contracts must remain runtime-neutral. Platform-specific behaviour is provided through explicit interfaces rather than imported directly into domain code.
 
@@ -246,17 +247,16 @@ Business rules, routes, validation, authorization, token logic, and API contract
 The user-facing authentication and account application and the management dashboard will use:
 
 - React with TypeScript.
-- [Vite](https://developers.cloudflare.com/workers/framework-guides/web-apps/react/) for development and production builds.
+- [Vite](https://vite.dev/guide/) for development and production builds.
 - [HeroUI](https://beta.heroui.com/docs/guide/installation) for accessible React components.
 - [Tailwind CSS](https://tailwindcss.com/docs/installation/using-vite) for layout, design tokens, responsive styling, and application-specific presentation.
 - Framer Motion where required by HeroUI or where animation materially improves the interface.
 
 HeroUI currently requires React 18 or later and Tailwind CSS 4. Tailwind should be integrated using its Vite plugin, and the HeroUI provider should be mounted at the root of each React application.
 
-The frontends will be client-side applications initially. The production Vite build produces static assets that can be deployed in either form:
-
-- **Cloudflare Workers** serves the assets through a Workers static-assets binding, with SPA fallback routing.
-- **Docker** serves the same assets from an unprivileged static web-server container.
+The frontends will be client-side applications initially. The production Vite
+build produces static assets served from an unprivileged static web-server
+container with SPA fallback routing.
 
 No secret or privileged configuration may be embedded in a frontend build. Public runtime configuration, application branding, enabled login methods, and organisation discovery are loaded from safe API endpoints.
 
@@ -295,7 +295,6 @@ packages/
   lint-config/              Custom lint-policy support beyond root Biome
   test-config/              Shared test defaults and helpers
 deploy/
-  cloudflare/               Wrangler configuration and Worker entry points
   docker/                   Dockerfiles, Compose examples, and container entry points
 tooling/
   generators/               TypeScript generators for packages, routes, and migrations
@@ -316,7 +315,7 @@ The root `turbo.json` will define at least:
 - `test:coverage` — enforces complete coverage of first-party executable TypeScript.
 - `test:integration` — runs integration tests and is not cached when external state is involved.
 - `test:contract` — generates specifications and verifies real API behaviour against them.
-- `test:workers` and `test:docker` — run target-specific conformance suites.
+- `test:deployment` — runs Docker, reverse-proxy, and multi-instance conformance suites.
 - `openapi:generate` — produces versioned OpenAPI documents from route contracts.
 - `openapi:lint` — validates, lints, and checks the generated documents.
 - `sdk:generate` — generates clients from released OpenAPI contracts.
@@ -337,7 +336,7 @@ Turborepo's [package and task graph](https://turbo.build/repo/docs/core-concepts
 #### Package Boundaries
 
 - Applications can depend on packages, but packages must not depend on applications.
-- Runtime-neutral packages must not import from `deploy/cloudflare`, `deploy/docker`, or runtime-specific application entry points.
+- Runtime-neutral packages must not import from `deploy/docker` or application entry points.
 - API contract packages must not depend on database entities or persistence implementations.
 - UI packages can depend on public API contracts and design tokens, but not server repositories or secrets.
 - Runtime adapters implement interfaces defined by runtime-neutral packages.
@@ -345,51 +344,57 @@ Turborepo's [package and task graph](https://turbo.build/repo/docs/core-concepts
 - Each package owns its public exports and does not permit arbitrary deep imports.
 - TypeScript project references and compiled declaration outputs should be used where they improve editor performance and prevent excessively deep inferred Hono route types.
 
-#### Docker and Cloudflare Builds
+#### Docker Builds
 
 Each deployable application remains an independently addressable Turborepo workspace. A change to one frontend should not require rebuilding an unrelated API image.
 
 Docker builds should use [`turbo prune`](https://turborepo.com/docs/reference/prune) to create a minimal workspace containing only the target application and its transitive internal dependencies. Multi-stage Dockerfiles then install from the pruned lockfile, build the selected target, and copy only production artifacts into the final unprivileged image.
 
-Cloudflare builds should filter to the selected Worker or frontend workspace and its dependency graph. Generated Worker bundles must not contain Node-only adapters or unrelated applications.
-
 Local caching is enabled from the beginning. Remote caching can be introduced for CI once access control, cache signing, retention, and the risk of sensitive generated artifacts have been reviewed.
 
-### 3.6 Dual-Runtime Architecture
+### 3.6 Docker Runtime Architecture
 
-Shared application code must target the common Web-platform surface supported by Workers and modern Node.js. Node-specific filesystem, process, socket, and crypto APIs must not appear in shared domain or route packages.
+Domain and contract packages remain independent of the deployment composition.
+Node-specific filesystem, process, socket, and crypto APIs appear only in
+explicit application or adapter boundaries.
 
 Runtime interfaces should cover:
 
-| Capability | Cloudflare deployment | Docker deployment |
-| --- | --- | --- |
-| HTTP server | Workers `fetch` handler | `@hono/node-server` |
-| Static frontend assets | Workers static-assets binding | Unprivileged static web server |
-| Local development database | Local D1/SQLite-compatible binding | Local SQLite file |
-| Shared production database | Selected supported EU shared-database adapter through a compatible Worker connection | Selected supported shared-database adapter |
-| Secrets | Workers secrets and bindings | Container secrets or an external secrets manager |
-| Queue | Cloudflare Queues | Pluggable queue such as a PostgreSQL-backed queue, Redis-compatible queue, or message broker |
-| Scheduled work | Cron Triggers where residency permits | Dedicated scheduler container |
-| Cache and rate-limit state | Appropriate Workers binding or external regional store | Redis-compatible or database-backed implementation |
-| Object storage | EU-jurisdiction object storage binding | S3-compatible EU object storage |
-| Cryptography | Web Crypto and reviewed compatible implementations | Web Crypto with reviewed Node-compatible implementations |
-| Observability | Workers logs, traces, and exported events | OpenTelemetry-compatible logs, metrics, and traces |
+| Capability | Docker deployment |
+| --- | --- |
+| HTTP server | `@hono/node-server` in an unprivileged container |
+| Static frontend assets | Unprivileged static web server |
+| Local development database | Local SQLite file |
+| Shared production database | Selected supported shared-database adapter |
+| Secrets | Container secrets or an external secrets manager |
+| Queue | Pluggable database-backed, Redis-compatible, or message-broker adapter |
+| Scheduled work | Dedicated scheduler container |
+| Cache and rate-limit state | Redis-compatible or database-backed implementation |
+| Object storage | S3-compatible object storage or another conforming adapter |
+| Cryptography | Web Crypto and reviewed Node-compatible implementations |
+| Observability | OpenTelemetry-compatible logs, metrics, and traces |
 
-The [Cloudflare Hyperdrive documentation](https://developers.cloudflare.com/hyperdrive/) confirms that Workers can connect to existing PostgreSQL and compatible databases. Local development defaults to SQLite. PostgreSQL is the initial first-party shared-production adapter and hosted reference profile, but it is not a domain dependency or permanent hosted requirement. Cloudflare-specific stores may still be used for caches, rate limits, or other replaceable infrastructure.
+Local development defaults to SQLite. PostgreSQL is the initial first-party
+shared-production adapter and hosted reference profile, but it is not a domain
+dependency or permanent hosted requirement.
 
-Database, queue, cache, object-storage, email, SMS, and secret-manager choices should be injected as adapters. The application must not assume a Cloudflare binding exists, and the Docker edition must not emulate Cloudflare-specific APIs throughout the business logic.
+Database, queue, cache, object-storage, email, SMS, and secret-manager choices
+are injected as adapters. Product code must not assume a proprietary platform
+binding exists.
 
 ### 3.7 Authentication-Specific Runtime Rules
 
-- Use Web Crypto as the common API for random values, signing, verification, encryption, and key derivation where its supported algorithms are suitable. Cloudflare documents its Workers implementation of [Web Crypto](https://developers.cloudflare.com/workers/runtime-apis/web-crypto/).
-- Password hashing remains behind a `PasswordHasher` interface because Argon2id is not a standard Web Crypto algorithm. Worker and Docker implementations must produce compatible hashes, use the same versioned parameters, pass shared test vectors, and receive dedicated performance and security review.
+- Use Web Crypto for random values, signing, verification, encryption, and key derivation where its supported algorithms are suitable.
+- Password hashing remains behind a `PasswordHasher` interface because Argon2id is not a standard Web Crypto algorithm. Native Node and portable TypeScript implementations must produce compatible hashes, use the same versioned parameters, pass shared test vectors, and receive dedicated performance and security review.
 - Use a `Clock` and secure `RandomSource` interface in domain code so expiry, replay, and rotation behaviour can be tested deterministically.
 - Do not depend on in-memory process state for sessions, replay detection, rate limits, keys, or authorization data.
 - Keep HTTP requests short. Email delivery, webhooks, audit streaming, SCIM synchronization, imports, exports, deletion, and cleanup must run as durable jobs.
 - Use transactional outbox or equivalent durable event publication so a successful identity change cannot silently lose its corresponding audit event or webhook.
 - Publish a standard OpenAPI contract for external integrations and SDK generation. Hono's internal type sharing can improve first-party development, but customers must not be required to use a TypeScript-only RPC client.
-- Run protocol and API conformance tests against both a Workers-compatible local runtime and the Docker image.
-- Maintain a CI compatibility matrix so code cannot be merged when it works on only one deployment target.
+- Run protocol and API conformance tests against the Docker image, trusted
+  reverse-proxy configurations, and multiple instances.
+- Maintain a Node, container architecture, browser, database, and adapter CI
+  compatibility matrix.
 
 ### 3.8 Strongly Typed API Contracts and Documentation
 
@@ -436,7 +441,7 @@ Contract quality is enforced in CI:
 - Generate the OpenAPI documents from a clean checkout.
 - Validate and lint each document.
 - Fail when undocumented routes or response statuses exist.
-- Run request and response contract tests on both Workers and Docker.
+- Run request and response contract tests against built Docker images.
 - Detect breaking API changes against the last released specification.
 - Require an explicit versioning or deprecation decision for breaking changes.
 - Generate first-party clients and compile representative SDK examples.
@@ -448,7 +453,9 @@ Schemas must not be duplicated manually between the API implementation, frontend
 
 External services and deployment-specific capabilities will use strongly typed adapter contracts. This allows hosted-service operators, self-hosted operators, customer administrators, and application administrators to select an appropriate provider without changing core authentication code.
 
-Examples include selecting between managed email services or SMTP, managed SMS services or a custom gateway, different CAPTCHA services, and different storage or queue implementations for Cloudflare and Docker deployments.
+Examples include selecting between managed email services or SMTP, managed SMS
+services or a custom gateway, different CAPTCHA services, and different storage
+or queue implementations for hosted and self-hosted Docker deployments.
 
 #### Core Principle
 
@@ -474,9 +481,9 @@ This prevents provider behaviour from becoming a hidden part of the platform's s
 | CAPTCHA and bot challenge | Managed CAPTCHA, privacy-focused challenge, self-hosted challenge | Challenge configuration and server-side verification results. |
 | Risk and fraud | Built-in engine, IP reputation, device intelligence, external fraud provider | Normalized signals and assessments; the core policy engine makes the final allow, deny, or step-up decision. |
 | Security intelligence | Breached-password, disposable-email, IP-reputation, or domain-intelligence providers | Normalized signals with source, confidence, and expiry. |
-| Object storage | Cloudflare R2, Amazon S3, compatible EU object storage, filesystem for development | Put, get, delete, signed access, retention, and residency metadata. |
-| Queue and jobs | Cloudflare Queues, PostgreSQL-backed queue, Redis-compatible queue, message broker | Publish, consume, retry, dead-letter, delay, and idempotency metadata. |
-| Cache and rate-limit state | Workers-compatible binding, Redis-compatible service, database fallback | Atomic counters, expiry, compare-and-set where required, and health. |
+| Object storage | S3-compatible storage, compatible EU object storage, filesystem for development | Put, get, delete, signed access, retention, and residency metadata. |
+| Queue and jobs | PostgreSQL-backed queue, Redis-compatible queue, message broker | Publish, consume, retry, dead-letter, delay, and idempotency metadata. |
+| Cache and rate-limit state | Redis-compatible service, database fallback | Atomic counters, expiry, compare-and-set where required, and health. |
 | Secret storage | Platform secrets, container secrets, external vault, cloud secret manager | Secret references, retrieval, versioning, and rotation metadata. |
 | Key management | Software keys, cloud KMS, HSM-backed KMS, customer-managed keys | Sign, verify, encrypt, decrypt, wrap, unwrap, rotate, and publish safe key metadata. |
 | Audit and log streaming | Webhook, HTTPS collector, syslog bridge, S3-compatible archive, SIEM connector | Batch delivery, cursoring, retry, signing, and acknowledgement. |
@@ -591,15 +598,17 @@ packages/
     email-smtp/
     sms-managed-api/
     captcha-managed/
-    storage-workers/
     storage-s3-compatible/
-    queue-workers/
     queue-postgres/
 ```
 
-Cloudflare Worker deployments require adapters to be selected and bundled at build time. Docker deployments may support additional operator-installed adapters later, but dynamic loading must not create a second incompatible provider model.
+Docker deployments select adapters at the composition root. Operator-installed
+adapters may be supported later, but dynamic loading must not create a second
+incompatible provider model.
 
-Every adapter package must declare whether it supports Workers, Node/Docker, or both. A deployment fails validation when an active provider binding refers to an adapter unavailable on the selected runtime.
+Every adapter package declares its supported Node version, operating systems,
+container architectures, and required external capabilities. A deployment fails
+validation when an active binding refers to an unavailable adapter.
 
 #### Provider Conformance Testing
 
@@ -611,7 +620,7 @@ Each provider category owns a reusable conformance suite. An adapter is releasab
 - Secret-redaction and log-safety tests.
 - Tenant-isolation tests.
 - Capability and configuration migration tests.
-- Workers and Docker runtime tests for every claimed target.
+- Docker and supported container-architecture tests for every claimed target.
 - Mock-provider tests that run without external credentials.
 - Opt-in sandbox or live integration tests.
 - Residency and data-transfer review.
@@ -650,38 +659,30 @@ This development stack is distinct from the production self-hosted Compose
 example. It carries no production hardening, availability, persistence, backup,
 residency, or security guarantee and must refuse production mode.
 
-### 3.10 European Residency on Cloudflare
+### 3.10 European Residency for Hosted Docker
 
-Running an ordinary Worker on Cloudflare's global network does not by itself prove that all processing stays in Europe.
+The hosted service runs its Docker workloads and supporting data paths in
+approved European locations. Container placement alone is not sufficient:
+databases, queues, object storage, logs, analytics, secrets, backups, support,
+network routing, and every subprocessor require separate residency evidence.
 
-Cloudflare's [Regional Services](https://developers.cloudflare.com/data-localization/regional-services/) can restrict TLS termination and Workers execution for a configured custom domain to the EU. This is currently an Enterprise add-on. The hosted service must include this requirement in its infrastructure and commercial planning if Cloudflare Workers process personal data.
-
-There are important limitations:
-
-- Regional Services applies to the configured custom domain.
-- It does not automatically regionalise Worker subrequests.
-- It does not apply to Queue consumers or Cron Triggers.
-- Logs, analytics, object storage, secrets, backups, and third-party processors require their own residency controls.
-
-Therefore, every Cloudflare binding and background execution path must be assessed separately. If a required Cloudflare service cannot provide the necessary European guarantees, that workload should run in European Docker infrastructure or use another verified European service. The same rule applies to email, SMS, observability, support, and security vendors.
+Self-hosted operators choose their own platforms and regions. The open-source
+software cannot enforce or promise their residency posture.
 
 ### 3.11 Drizzle and Database Portability
 
-[Drizzle ORM](https://orm.drizzle.team/docs/) is the standard SQL access layer for the application. Drizzle supports SQLite-family databases, Cloudflare D1, PostgreSQL, and other SQL engines, while keeping queries and schema definitions strongly typed.
+[Drizzle ORM](https://orm.drizzle.team/docs/) is the standard SQL access layer for the application. Drizzle supports SQLite-family databases, PostgreSQL, and other SQL engines, while keeping queries and schema definitions strongly typed.
 
 Drizzle reduces database-driver coupling, but it does not make SQL dialects identical. SQLite and PostgreSQL differ in column types, generated identifiers, JSON behaviour, locking, concurrency, constraints, indexes, transaction semantics, and migration syntax. Database portability therefore depends on repository contracts and conformance tests rather than assuming any Drizzle query can be moved unchanged between dialects.
 
 #### Initial and Future Database Targets
 
 - **Local development and early single-instance use:** SQLite.
-- **Cloudflare local development:** a local D1/SQLite-compatible database through the Workers development environment.
 - **Automated repository tests:** SQLite for fast feedback, plus PostgreSQL in CI for production-dialect verification.
 - **Hosted production:** an operator-selected, supported shared transactional database in approved European regions; PostgreSQL is the initial reference adapter.
 - **Horizontally scaled Docker production:** an operator-selected, supported shared transactional database; PostgreSQL is the initial first-party adapter.
 
 A local SQLite file is not a supported production database for multiple API or job instances. Each container would otherwise have a different file or require an unsafe shared filesystem, and SQLite write concurrency would become a scaling constraint.
-
-Cloudflare D1 can be supported through Drizzle's [D1 integration](https://orm.drizzle.team/docs/sqlite/connect-cloudflare-d1), but choosing D1 for hosted production requires a separate review of transaction, consistency, residency, backup, throughput, and migration requirements. It must not be treated as interchangeable with PostgreSQL merely because both are supported by Drizzle.
 
 The core does not choose a database vendor. A deployment selects a registered
 database adapter through validated operator configuration. Self-hosters may use
@@ -781,7 +782,7 @@ Job workers scale horizontally as competing consumers:
 #### Database Scaling
 
 - Docker instances use bounded connection pools sized against the shared database limit.
-- Workers use an appropriate connection service or HTTP-compatible driver rather than creating uncontrolled direct connections.
+- API and job containers use bounded connection pools rather than creating uncontrolled direct connections.
 - Queries are tenant-scoped, indexed, bounded, and paginated.
 - High-volume tables such as audit events, sessions, security signals, and webhook attempts have retention and partitioning strategies.
 - Read replicas can serve explicitly safe stale reads later, but security decisions and mutations use an authoritative transactional path.
@@ -838,7 +839,7 @@ Required test layers include:
 - **Protocol and security tests** for OAuth/OIDC, replay, rotation, revocation, CSRF, tenant isolation, authorization, and abuse controls.
 - **Migration tests** from an empty database and supported previous release states.
 - **Concurrency and scaling tests** for duplicate delivery, races, retries, failover, and multiple instances.
-- **Deployment smoke tests** for both Cloudflare Workers and Docker artifacts.
+- **Deployment smoke tests** for Docker artifacts, reverse proxies, and replicas.
 
 Every bug fix requires a regression test that demonstrates the failure before the fix and passes afterward.
 
@@ -859,7 +860,8 @@ Skipped, focused, quarantined, or nondeterministic tests fail CI. A flaky test i
 - Tenant-isolation tests always include at least two tenants and attempt cross-tenant access.
 - Destructive and retryable operations test idempotency.
 - Test fixtures use builders or factories rather than large duplicated objects.
-- Critical test suites run against both Workers and Docker where runtime behaviour can differ.
+- Critical test suites run against Docker, supported architectures, reverse
+  proxies, and multiple instances where behavior can differ.
 
 #### Maximum File Length
 
@@ -889,11 +891,11 @@ CI will require:
 - File-length and package-boundary checks.
 - Unit, type, schema, component, contract, integration, security, migration, and conformance tests.
 - Coverage thresholds.
-- Workers and Docker runtime tests.
+- Docker runtime and multi-instance tests.
 - OpenAPI generation, linting, and breaking-change checks.
 - Successful production builds for every affected deployable application.
 
-Turborepo will run the smallest safe affected task graph. Changes to shared domain, contract, security, runtime, database, or test packages trigger all downstream validation needed to protect both deployment targets.
+Turborepo will run the smallest safe affected task graph. Changes to shared domain, contract, security, runtime, database, or test packages trigger all downstream validation needed to protect direct Node.js execution and the released Docker artifacts.
 
 #### Definition of Done
 
@@ -1197,7 +1199,7 @@ deployment configuration change. It includes typed/static analysis, dependency
 and credential scanning, lockfile and artifact integrity, container and
 infrastructure configuration scanning, dynamic authenticated API/UI testing,
 protocol conformance, property testing, fuzzing, and concurrency campaigns.
-Workers and Docker receive equivalent testing.
+Hosted and self-hosted Docker compositions receive equivalent product testing.
 
 Tool findings are triaged rather than ignored. Every suppression has a narrow
 scope, reason, owner, and expiry. Findings record severity, affected versions,
@@ -1393,7 +1395,7 @@ The product should adopt these broader principles:
 
 - Establish the TypeScript monorepo, shared packages, and runtime boundaries.
 - Configure Turborepo workspaces, task dependencies, declared outputs, affected-package CI, and local caching.
-- Add `turbo prune` based Docker builds and filtered Cloudflare application builds.
+- Add `turbo prune` based Docker builds.
 - Enable strict TypeScript rules across application, test, migration, job, SDK, and build-tooling packages.
 - Add mandatory coverage, file-length, package-boundary, dependency-cycle, and skipped-test checks.
 - Enforce the 250-line maximum for first-party code, tests, configuration, and tooling.
@@ -1402,8 +1404,8 @@ The product should adopt these broader principles:
 - Generate complete OpenAPI documents, `/openapi.json` endpoints, and Swagger-compatible `/docs` interfaces for every API.
 - Add OpenAPI linting, breaking-change detection, contract tests, and first-party typed-client generation to CI.
 - Create the Vite, React, HeroUI, and Tailwind frontend foundations for both web applications.
-- Add CI builds and conformance tests for Cloudflare Workers and Docker deployments.
-- Establish shared PostgreSQL migrations and data-access adapters for Workers and Node.
+- Add CI builds and conformance tests for Docker deployments.
+- Establish shared PostgreSQL migrations and data-access adapters for Node.
 - Add Drizzle ORM with separate SQLite and PostgreSQL schema, migration, and repository packages.
 - Use SQLite for local development while running the shared repository conformance suite against SQLite and PostgreSQL in CI.
 - Establish queue, secrets, object-storage, clock, random-source, and password-hasher interfaces.
@@ -1488,10 +1490,10 @@ The following decisions now form part of the intended product design:
 8. Both hosted and self-hosted editions will be offered. The hosted edition adds managed deployments, custom-domain and DNS verification, certificates, enterprise-domain workflows, and managed operations.
 9. Hosted data will remain in Europe, and the product and its operating model will be designed to support GDPR obligations.
 10. Server-rendered web, single-page, native, API, machine-to-machine, and device applications are all supported product targets.
-11. APIs will use Hono and share runtime-neutral TypeScript application code between Cloudflare Workers and Node.js Docker deployments.
-12. Browser applications will use Vite, React, HeroUI, and Tailwind CSS and will deploy as static assets through Cloudflare Workers or an unprivileged Docker web server.
+11. APIs will use Hono on Node.js and deploy in unprivileged Docker containers.
+12. Browser applications will use Vite, React, HeroUI, and Tailwind CSS and will deploy as static assets through an unprivileged Docker web server.
 13. Platform-specific storage, queues, scheduling, caches, secrets, object storage, observability, and cryptography will be accessed through explicit runtime adapters.
-14. Both deployment targets must pass the same API, protocol, security, migration, and runtime-conformance test suites.
+14. Direct Node.js execution and released Docker artifacts must pass the same API, protocol, security, migration, and runtime-conformance test suites.
 15. All application, testing, job, migration, SDK, build-tooling, and infrastructure-automation code will be TypeScript, except for platform-required declarative files.
 16. API contracts will be schema-driven and strongly typed, generating runtime validation, TypeScript types, full OpenAPI specifications, interactive Swagger-compatible documentation, contract tests, and SDK inputs from one source.
 17. The entire product will use a Turborepo monorepo with explicit package boundaries, a dependency-aware task graph, affected-package CI, cacheable build outputs, and independently deployable application workspaces.

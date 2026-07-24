@@ -12,7 +12,7 @@
 Customer administrators need development, staging, and production environments.
 They need to test identity flows and promote configuration without test users,
 keys, sessions, callbacks, provider effects, or weak policies reaching
-production. Hosted Workers and self-hosted Docker instances must enforce the
+production. Hosted and self-hosted Docker instances must enforce the
 same boundary even when all environments share one physical database and shared
 adapter infrastructure.
 
@@ -166,13 +166,13 @@ cross-environment action.
 
 ### Runtime and Deployment Rules
 
-Workers and Docker receive an explicit deployment stage such as local, test, or
+Docker deployments receive an explicit deployment stage such as local, test, or
 production, but that process setting is not customer environment context. One
 production API deployment can safely serve many customer environments because
 trusted request context selects the environment for every operation.
 
 No instance-local cache, filesystem, singleton, environment variable, or
-Cloudflare binding stores the authoritative active customer environment.
+deployment binding stores the authoritative active customer environment.
 Adapters receive a typed environment scope and use shared, durable,
 horizontally-safe state.
 
@@ -253,7 +253,7 @@ lineage and promotion plans make that cost visible and prevent unsafe copying.
   provisioning, reconciliation, rollback, and audit.
 - Verify mock/test providers and synthetic-data/reset tools cannot target
   production.
-- Run the same environment and promotion suites on Workers and Docker.
+- Run the same environment and promotion suites across Docker replicas.
 - Verify exports, retention, and data-subject workflows never infer identity
   across environments from matching personal data.
 
@@ -264,4 +264,3 @@ lineage and promotion plans make that cost visible and prevent unsafe copying.
 - A new configuration type needs promotion.
 - Production needs reversible configuration deployment or staged rollout.
 - A provider cannot isolate credentials or external resources by environment.
-

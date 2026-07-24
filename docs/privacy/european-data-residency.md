@@ -14,9 +14,9 @@ Internal, Confidential, Personal, Credential, and Secret data in the European
 Union. Approved disaster-recovery locations also remain in the EU. Public data
 can be distributed globally when publication is its intended purpose.
 
-"The application is deployed on Cloudflare" or "the vendor has a European
-region" is not evidence. Every data path needs a specific contractual and
-technical guarantee for:
+"The application runs in a European container region" or "the vendor has a
+European region" is not evidence. Every data path needs a specific contractual
+and technical guarantee for:
 
 - request decryption and application execution;
 - primary storage, indexes, replicas, caches, queues, objects, and backups;
@@ -58,12 +58,11 @@ transfer impact and supplementary measures still require assessment.
 | Path | Data | Approved EU rule | Prohibited/default failure |
 | --- | --- | --- | --- |
 | DNS | Public hostnames and routing records | Global authoritative DNS may serve deliberately public records; account logs follow EU metadata controls | Personal data, secrets, tenant/user identifiers in DNS names/records |
-| TLS termination and request execution | Request path/body/cookies/tokens/IP metadata | Hosted/custom identity and management origins use EU Regional Services on supported zone/custom domains; verify continuously | `workers.dev`, unregionalized host, unsupported protocol/product, or silent global fallback |
+| TLS termination and request execution | Request path/body/cookies/tokens/IP metadata | Hosted/custom identity and management origins terminate and execute in approved EU infrastructure; verify continuously | Unregionalized ingress, unsupported proxy/product, or silent global fallback |
 | Static public assets/discovery/JWKS | Public | May use global cache/CDN with integrity, versioning, and no personal variants | Private/authenticated responses in shared/global cache |
 | Browser/API response | All classes needed by caller | Decrypt/process in EU, authorize/minimize, encrypted transit to the user wherever located | Proxy/edge feature that reprocesses content outside approved EU boundary |
 | Primary SQL database | Confidential, Personal, Credential, secret references | Supported shared-database adapter with EU primary, replicas, TLS, encryption, administration, support, backup, and failover evidence; PostgreSQL is the initial reference | Global replica, non-EU failover, copied production data, unsupported dialect/location, or unqualified adapter |
-| Database connection acceleration | Query text/parameters/results/credentials | Use only after the exact service/profile proves EU processing, cache, metadata, support, and subrequest behavior; otherwise direct approved EU path or EU data-access service | Assume Worker regionalization also regionalizes a database proxy/cache |
-| D1, if separately approved | Same as SQL scope | Create with immutable `jurisdiction=eu`; replicas remain inside jurisdiction; pass transaction/backup/restore review | Location hints without jurisdiction, existing non-jurisdiction DB, or automatic global placement |
+| Database connection acceleration | Query text/parameters/results/credentials | Use only after the exact service/profile proves EU processing, cache, metadata, support, and network behavior; otherwise use a direct approved EU path | Assume an EU application region also regionalizes a database proxy/cache |
 | Queue and workflow | Tenant context, events, job inputs/results | EU PostgreSQL-backed queue or other adapter with EU storage, processing, dead letter, metrics, support, backup, and consumer execution | Cloud/service queue without documented EU guarantee; payload minimization does not cure unsupported metadata |
 | Scheduled jobs | Schedule metadata and job effects | Scheduler and workers run in approved EU containers/services and enqueue through approved EU adapter | Global Cron/consumer execution without verified processing location |
 | Object storage | Exports, imports, templates, evidence, logs, backups | EU-jurisdiction bucket/endpoint or approved EU S3-compatible adapter; encrypted objects and lifecycle evidence | Location hint/best effort, global bucket, public development URL, or non-EU replication |
@@ -73,7 +72,7 @@ transfer impact and supplementary measures still require assessment.
 | Issuer/data encryption keys | Secret/Credential | EU KMS/HSM custody and signing/decryption; EU-contained software custody profile where approved | Export to application/backup/log, global signing operation, non-EU DR key copy |
 | TLS private keys | Secret | EU key storage/custody feature or approved keyless/custom-certificate custody | Globally stored exportable TLS key for hosted protected origins |
 | Application logs/traces/metrics | Internal, minimal Confidential/Personal | Redact before sink; EU collector/store/query/support; bounded retention; low-cardinality metrics | Raw bodies/headers/tokens, globally stored analytics, out-of-region dashboard/support access |
-| Edge traffic logs | IP, URL, request metadata | EU Customer Metadata Boundary and approved EU Logpush destination; disable out-of-region access | Default global metadata handling, unsupported log product, unverified dashboard retention |
+| Ingress traffic logs | IP, URL, request metadata | EU-controlled ingress and approved EU log destination; disable out-of-region access | Default global metadata handling, unsupported log product, unverified dashboard retention |
 | Audit/security evidence | Confidential/Personal | EU append-only store and EU archive, restricted EU access and retention | General debug log, non-EU SIEM/support, credentials or secrets |
 | Email/SMS/push | Recipient and message Personal data | Provider instance must declare approved European processing/storage/support; minimize content and retention | Undocumented region, hidden analytics/tracking, provider training/reuse, unsafe fallback |
 | Social/enterprise federation | Claims and identifiers | EU platform processing; customer-configured external transfer requires explicit provider metadata, DPA/transfer assessment, disclosure, minimization | Treat arbitrary upstream as part of platform EU residency or send unrelated profile data |
@@ -84,70 +83,7 @@ transfer impact and supplementary measures still require assessment.
 | Build/CI/test | Source, synthetic fixtures, artifacts | No production/customer data; EU artifact store where artifacts/config contain non-public data | Production database snapshots/logs/secrets in CI, support bundles, or public artifacts |
 | Backups and disaster recovery | All stored classes | Encrypted EU backup and EU recovery site; separate EU keys; retention and deletion tombstones | Non-EU copy/failover, untested restore, keys stored with ciphertext |
 
-## 4. Cloudflare Hosted Profile
-
-Cloudflare's controls are configured independently and revalidated on every
-material product or contract change.
-
-### Required Edge Controls
-
-- Identity, management, API, and account hostnames use a supported zone/custom
-  domain and EU Regional Services. `workers.dev` is not a hosted production
-  origin.
-- The EU region controls where Cloudflare decrypts and services HTTPS traffic.
-  Synthetic probes record `Cf-Ray`/colo evidence without sending personal data.
-- EU Customer Metadata Boundary is separately enabled for traffic logs and
-  analytics. Out-of-region access is disabled.
-- EU Geo Key Manager, an approved custom-certificate/keyless arrangement, or
-  another approved EU TLS-key custody path is required.
-- Product compatibility is checked feature-by-feature. Unsupported CDN, bot,
-  analytics, cache, AI, proxy, or protocol features remain disabled.
-
-Regional Services does not cover Worker subrequests. Every `fetch`, binding,
-queue, database proxy, object, secret, email, telemetry, and provider call needs
-its own residency decision.
-
-### Data Stores
-
-- Hosted production selects a supported shared-database adapter whose complete
-  path meets the EU policy. PostgreSQL is the initial reference adapter, not a
-  permanent product requirement.
-- Hyperdrive is not automatically approved merely because its origin database
-  is European. Before use with non-public data, qualification must cover query
-  processing, connection pools, caches, credentials, telemetry, support, and
-  failover. Cache-disabled behavior is required for authorization/current-state
-  reads even after residency approval.
-- D1 can be evaluated only with `jurisdiction=eu` set at creation. It is not
-  interchangeable with PostgreSQL and still needs consistency, transaction,
-  backup, migration, support, and production-scale approval.
-- R2 objects containing non-public data use an EU-jurisdiction bucket and
-  jurisdictional endpoint. Public assets use a separate public bucket.
-- Workers KV has no approved jurisdictional storage path for non-public hosted
-  data and is not used for sessions, authorization, credentials, personal data,
-  replay, rate limits, or durable jobs.
-- Durable Objects require explicit EU jurisdiction and a dedicated
-  storage/execution/backup review before use.
-- Cloudflare Queues, Cron Triggers, Workers Workflows, and any other service not
-  covered by a current explicit EU guarantee are not approved for non-public
-  hosted workloads. The portable EU queue/scheduler profile remains the default.
-
-### Logs and Observability
-
-- Application code emits only the classified, redacted schema defined by
-  ADR-0016.
-- Customer Metadata Boundary is not assumed to cover every product log. The
-  compatibility matrix and dataset list are checked individually.
-- Approved request logs use Logpush to an EU-jurisdiction object store or another
-  approved EU sink. Log Explorer is disabled when its managed storage location
-  cannot be selected.
-- Workers Logs, dashboard analytics, tailing, crash reporting, alerting, and
-  third-party observability are disabled for non-public production data unless
-  their exact path, retention, access, and EU guarantee are approved.
-- Operations access logs through EU-controlled identities and locations. Vendor
-  out-of-region support access requires incident-specific privacy/security
-  approval and an applicable transfer process; it is not routine.
-
-## 5. Docker Hosted Profile
+## 4. Docker Hosted Profile
 
 All production containers, ingress/TLS termination, API/job/scheduler processes,
 PostgreSQL, cache, queue, object store, KMS/secrets, logs, monitoring, backups,
@@ -163,12 +99,7 @@ approved EU facilities.
   control-plane/support access are included in vendor assessment.
 - Restore/failover tooling refuses a destination without the same region policy.
 
-Cloudflare-hosted Workers and EU Docker services may be combined only through
-encrypted, authenticated EU endpoints with an approved data-flow entry. A
-fallback from one runtime to the other cannot leave the EU or change data
-handling.
-
-## 6. Self-Hosted Profile
+## 5. Self-Hosted Profile
 
 Self-hosted operators may select any infrastructure, vendor, support model, and
 region, including locations outside Europe. They are responsible for their
@@ -258,35 +189,8 @@ provider change, new subprocessor, unexpected endpoint, out-of-region access,
 unregionalized request, or non-EU resource is a security/privacy finding and can
 disable the affected capability.
 
-## 10. Current Provider Facts Behind the Baseline
-
-As of the verification date:
-
-- Cloudflare documents Regional Services as controlling where HTTPS is decrypted
-  and processed, while Customer Metadata Boundary separately controls where
-  traffic logs/analytics are stored.
-- Cloudflare documents that Regional Services does not apply to Worker
-  subrequests.
-- Cloudflare documents EU jurisdiction options for D1 and R2. D1 jurisdiction is
-  immutable at creation; jurisdiction-constrained replicas remain within it.
-- Cloudflare's localization compatibility matrix states that Workers KV does not
-  have jurisdictional storage restrictions and that Log Explorer's managed R2
-  storage location cannot be chosen.
-- Services absent from a current explicit compatibility/contract guarantee are
-  treated as unapproved, not inferred safe.
-
-These facts are configuration inputs, not permanent architectural assumptions.
-The provider-fact review is repeated before enabling or upgrading a capability.
-
 ## References
 
 - [GDPR, including Chapter V transfers](https://eur-lex.europa.eu/eli/reg/2016/679/oj)
 - [European Commission Standard Contractual Clauses](https://commission.europa.eu/law/law-topic/data-protection/international-dimension-data-protection/standard-contractual-clauses-scc_en)
 - [EDPB Recommendations 01/2020 on supplementary measures](https://www.edpb.europa.eu/documents/recommendation/recommendations-012020-on-measures-that-supplement-transfer-tools-to_en)
-- [Cloudflare Data Localization Suite](https://developers.cloudflare.com/data-localization/)
-- [Cloudflare product compatibility](https://developers.cloudflare.com/data-localization/compatibility/)
-- [Cloudflare localization limitations](https://developers.cloudflare.com/data-localization/limitations/)
-- [Cloudflare Customer Metadata Boundary](https://developers.cloudflare.com/data-localization/metadata-boundary/)
-- [Cloudflare D1 data location](https://developers.cloudflare.com/d1/configuration/data-location/)
-- [Cloudflare R2 localization guide](https://developers.cloudflare.com/data-localization/how-to/r2/)
-- [Cloudflare Hyperdrive architecture](https://developers.cloudflare.com/hyperdrive/concepts/how-hyperdrive-works/)

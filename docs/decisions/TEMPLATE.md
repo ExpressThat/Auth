@@ -37,7 +37,7 @@ subprocessor implications.
 
 ## Portability and Self-Hosting Impact
 
-Describe Workers, Docker, adapter, database, and operator consequences. Identify
+Describe Docker, adapter, database, and operator consequences. Identify
 any new provider dependency or capability requirement.
 
 ## Operational Impact
@@ -62,4 +62,3 @@ change, security finding, end-of-life date, or failed performance target.
 ## References
 
 - Add primary specifications and official documentation.
-

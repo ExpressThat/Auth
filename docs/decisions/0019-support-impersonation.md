@@ -87,7 +87,7 @@ hosted support/evidence are explicit.
 ## Portability and Self-Hosting Impact
 
 Policies, actor tokens, sessions, signed claims, SDK middleware, audit, and
-conformance are runtime-neutral. Workers and Docker use shared state and tests;
+conformance are deployment-neutral. Docker replicas use shared state and tests;
 self-hosters receive no vendor support backdoor.
 
 ## Operational Impact
@@ -119,4 +119,3 @@ application opt-in/testing. Some issues will require customer/user coordination.
 - Evidence/notification requirements or legal investigation policy changes.
 - A support incident reveals excessive data or authority.
 - The maximum session/token lifetime or approval mode changes.
-

@@ -9,7 +9,7 @@
 
 ## Context
 
-Multiple Workers and Docker instances create users, organizations, applications,
+Multiple Docker instances create users, organizations, applications,
 sessions, grants, audit events, and jobs concurrently. Identifiers must be
 generated without a central sequence, index efficiently, remain portable between
 SQLite and PostgreSQL, and not be mistaken for authorization secrets.
@@ -124,7 +124,7 @@ revoked_at_ms
   is normally invalid when `now >= expiresAt`.
 
 Integer milliseconds avoid database/session timezone behavior and preserve the
-same value through SQLite, PostgreSQL, Workers, Node, and JSON conversion.
+same value through SQLite, PostgreSQL, Node, and JSON conversion.
 Database-native reporting views may convert them to timestamps but are not the
 authoritative stored value.
 
@@ -243,7 +243,7 @@ follows the data-classification and retention policies.
 ## Portability and Self-Hosting Impact
 
 Generation depends only on secure randomness and a clock available in both
-Workers and Node. Canonical text UUIDs and integer milliseconds behave the same
+Node replicas. Canonical text UUIDs and integer milliseconds behave the same
 in SQLite and PostgreSQL, at the cost of more storage than native compact types.
 
 ## Operational Impact
@@ -265,7 +265,7 @@ reporting tools through documented views.
 
 - Use RFC UUIDv7 vectors and property tests for version, variant, canonical form,
   timestamp bounds, uniqueness, and prefix round-trips.
-- Generate IDs concurrently in Workers, Node processes, and controlled
+- Generate IDs concurrently in Node processes and controlled
   same-millisecond/rollback tests.
 - Round-trip min/max supported instants through domain, SQLite, PostgreSQL,
   Drizzle, JSON, OpenAPI, and protocol codecs.

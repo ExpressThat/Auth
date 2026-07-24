@@ -13,8 +13,8 @@ export { DeterministicRandom, runPropertyCampaign } from "./property-harness.js"
 export type { RedactionOptions } from "./redaction-harness.js";
 export { assertRedactedOutput } from "./redaction-harness.js";
 export type {
+  DockerSecurityTarget,
   NormalizedSecurityResponse,
   RuntimeSecurityCase,
-  SecurityRuntime,
 } from "./runtime-security-harness.js";
-export { runDualRuntimeSecurityCases } from "./runtime-security-harness.js";
+export { runDockerReplicaSecurityCases } from "./runtime-security-harness.js";

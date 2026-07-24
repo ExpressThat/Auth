@@ -96,11 +96,10 @@ redaction rather than repeated allow-lists.
 - Add canary leak tests for all output/observability sinks.
 - Test retention and deletion across declared copies and restore.
 - Test ordinary and protected migration exports independently.
-- Run descriptor/conformance behavior on both runtimes and database dialects.
+- Run descriptor/conformance behavior directly, in Docker, and across database dialects.
 
 ## Review Triggers
 
 - Any trigger in the handling standard.
 - A class cannot express a new legal, protocol, or security requirement.
 - A generic serialization, analytics, or support feature is proposed.
-

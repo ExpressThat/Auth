@@ -20,7 +20,7 @@ This model covers the hosted and self-hosted authentication platform, including:
   exports, privacy workflows, and support impersonation;
 - databases, queues, jobs, caches, object storage, secrets, signing keys,
   adapters, audit, observability, backups, and deployment control;
-- Cloudflare Workers and Docker/Node runtime profiles; and
+- Docker/Node runtime and multi-replica deployment profiles; and
 - SQLite development/single-instance paths and PostgreSQL horizontally scaled
   production paths.
 
@@ -72,7 +72,7 @@ flowchart LR
   AD --> P["External providers"]
   S --> O["Transactional outbox"]
   O --> Q["Queue / scheduled jobs"]
-  Q --> W["Job workers"]
+  Q --> W["Job processors"]
   W --> R
   W --> AD
   S --> K["Key and secret custody"]
@@ -97,7 +97,7 @@ flowchart LR
 | TB-11 | Service to cache/rate-limit store | Untrusted acceleration only; tenant/version keys; atomic shared correctness state |
 | TB-12 | Service/job to object storage/export | Tenant/environment namespace, encryption, checksum, short delivery, retention, authorization |
 | TB-13 | Service to logs/traces/support tools | Data minimisation, structured redaction, access control, European routing, retention |
-| TB-14 | Hosted control plane to Workers/containers | Signed artifacts, least-privilege deploy identity, staged rollout, configuration validation |
+| TB-14 | Hosted control plane to containers | Signed artifacts, least-privilege deploy identity, staged rollout, configuration validation |
 | TB-15 | Operator to self-hosted deployment | Explicit shared-responsibility boundary, secure defaults, diagnostics, upgrade and recovery guidance |
 | TB-16 | Upstream identity/directory provider to callback | Issuer/signature/destination/state/replay checks; claims remain untrusted input |
 | TB-17 | Webhook consumer/caller to delivery endpoints | Signature, exact destination, replay/idempotency, SSRF and redirect controls |
@@ -270,13 +270,13 @@ flowchart LR
 
 | ID | Threat / abuse | Inherent | Required controls and evidence | Residual |
 | --- | --- | --- | --- | --- |
-| RUN-T01 | Workers and Docker parse hosts, headers, URLs, crypto, streams, or cookies differently | High | Normalize at runtime shell, shared Web API core, differential black-box suite, trusted-proxy tests | Low/Medium after runtime upgrades |
-| RUN-T02 | Cloudflare binding or Node API leaks into core and changes correctness | High | Adapter contracts, package boundaries, bundle inspection, equal conformance, no runtime conditionals in domain | Low |
+| RUN-T01 | Docker replicas or reverse proxies parse hosts, headers, URLs, crypto, streams, or cookies inconsistently | High | Normalize at runtime shell, shared Web API core, differential black-box suite, trusted-proxy tests | Low/Medium after runtime upgrades |
+| RUN-T02 | Node or deployment API leaks into core and changes correctness | High | Adapter contracts, package boundaries, bundle inspection, conformance tests, no deployment conditionals in domain | Low |
 | RUN-T03 | Docker trusts arbitrary forwarded headers or runs privileged/insecure | High | Explicit proxy allow-list, canonical public origins, unprivileged read-only image, dropped capabilities, secure defaults | Medium from operator misconfiguration |
-| RUN-T04 | Worker global reuse or Node singleton becomes authoritative cache/session/lock | Critical | No cross-request in-process correctness, static analysis/review, multi-instance and eviction tests | Low |
+| RUN-T04 | Node singleton becomes authoritative cache/session/lock | Critical | No cross-request in-process correctness, static analysis/review, multi-instance and eviction tests | Low |
 | RUN-T05 | A single-instance database is used as shared multi-instance production storage | High | Profile capability validation requires a supported shared transactional adapter; PostgreSQL is the initial reference, not the only possible implementation | Low |
 | RUN-T06 | Browser cookie/storage/privacy changes break CSRF/SSO or expose session | High | Host-only opaque cookies, no third-party-cookie dependency, browser matrix, fallback interactions, periodic review | Medium due ecosystem change |
-| RUN-T07 | Denial of service differs at Worker limits vs container resources | High | Per-profile measured limits, request budgets, queue offload, backpressure, autoscaling/load tests | Medium under provider-wide outage |
+| RUN-T07 | Container limits or replica sizing permit denial of service | High | Per-profile measured limits, request budgets, queue offload, backpressure, autoscaling/load tests | Medium under provider-wide outage |
 
 ## 8. Required Abuse Journeys
 
@@ -307,7 +307,7 @@ must attempt:
 11. signing-key rotation/compromise with multiple instances, stale JWKS caches,
     unavailable custody, wrong purpose/issuer, restore, and overlapping releases;
 12. malicious headers, paths, query encodings, JSON structures, archives, CSV,
-    XML, templates, logs, and provider error payloads against both runtimes.
+    XML, templates, logs, and provider error payloads through direct and built-image paths.
 
 ## 9. Control and Evidence Strategy
 
@@ -322,7 +322,7 @@ Security controls are complete only with durable evidence:
   redaction, and capability behavior;
 - protocol vectors and OpenID conformance plans with negative cases;
 - browser security journeys in Chromium, Firefox, and WebKit;
-- black-box differential tests against Workers and built Docker artifacts;
+- black-box differential tests against built Docker images and independent replicas;
 - multi-instance concurrency, replay, fault-injection, load, and soak campaigns;
 - static/type/security linting, dependency/secret/license/container/deployment
   scans, SBOM and artifact provenance;
@@ -389,7 +389,7 @@ At least quarterly and before production releases:
 3. expire or renew accepted risks and tool suppressions;
 4. run scheduled dynamic, fuzz, concurrency, dependency, artifact, and
    infrastructure campaigns;
-5. verify critical controls on both Workers and Docker;
+5. verify critical controls against built Docker images and multiple replicas;
 6. sample tenant/environment predicates and data-flow/redaction coverage;
 7. exercise one high-impact operational procedure; and
 8. publish owned remediation work without hiding it in unrelated tasks.

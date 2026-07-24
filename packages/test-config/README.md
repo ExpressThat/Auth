@@ -9,7 +9,7 @@ utilities; production code must not depend on this workspace.
 
 - `.` — fixtures, deterministic utilities, schemas, and adversarial harnesses.
 - `./adversarial` — hostile corpora, property campaigns, parser limits,
-  concurrency/replay drivers, redaction assertions, and Workers/Docker
+  concurrency/replay drivers, redaction assertions, and Docker replica
   differential runners.
 - `./component` — accessible React component-test configuration.
 - `./playwright` — cross-browser Playwright defaults.
@@ -36,7 +36,7 @@ tests.
 
 Redaction assertions use `SyntheticSecret` canaries and never include a leaked
 value in their own failure message. Runtime security cases send fresh requests
-to Workers and Docker targets, normalize explicitly allowed dynamic fields, and
+to independent Docker targets, normalize explicitly allowed dynamic fields, and
 fail on observable differences.
 
 ## Commands and tests
@@ -63,7 +63,7 @@ continuous-security tasks with preserved seeds and the same core harnesses.
 
 ## Runtime and extension boundaries
 
-The core utilities use Web-platform APIs and work in modern Node and Workers.
+The core utilities use Web-platform APIs supported by modern Node.js.
 Node-only DOM/browser setup remains in its named subpath. Add a shared harness
 only when several feature packages need the same invariant; keep product
 semantics and provider-specific behavior in their owning conformance packages.

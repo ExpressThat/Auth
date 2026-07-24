@@ -9,7 +9,7 @@ surfaces follow [Semantic Versioning](https://semver.org/).
 ### Added
 
 - Established the TypeScript Turborepo foundation, strict quality gates,
-  dual-runtime contract spikes, security scanning, and safe repository
+  Docker/Node contract spikes, security scanning, and safe repository
   scaffolding.
 
 ### Changed

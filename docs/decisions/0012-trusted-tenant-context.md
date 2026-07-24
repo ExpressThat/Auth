@@ -17,7 +17,7 @@ context clues, but none may let a caller choose a tenant they cannot access.
 
 Tenant confusion would expose identities, credentials, configuration, audit
 records, or provider resources across organisations. The resolution rules must
-therefore be explicit, identical on Workers and Docker, and unavoidable in data
+therefore be explicit, identical across Docker replicas, and unavoidable in data
 access.
 
 ## Decision
@@ -190,7 +190,7 @@ bucket, queue, sender, key, or namespace identifiers directly.
 ### Asynchronous and Event Context
 
 Jobs, scheduled work, webhooks, audit events, outbox records, and provider
-callbacks persist a versioned context envelope at creation. Workers resolve the
+callbacks persist a versioned context envelope at creation. Job processors resolve the
 envelope from shared storage and revalidate current resource ownership before
 effects. Queue message headers alone are not authority.
 
@@ -260,7 +260,7 @@ logs, jobs, and caches remain within the configured European processing region.
 
 Resolution uses application repositories and signed/opaque context codecs rather
 than platform routing globals. Verified host and proxy adapters normalize
-Workers and Docker inputs into the same trusted context and run the same
+all Docker request inputs into the same trusted context and run the same
 conformance suite.
 
 ## Operational Impact
@@ -280,7 +280,7 @@ without weakening revocation.
 
 ## Validation
 
-- Run the same context conformance suite against Workers and Docker.
+- Run the same context conformance suite against multiple Docker replicas.
 - Test every pair of mismatched host, issuer, client, token, route, API key,
   session, organisation, environment, and application.
 - Attempt horizontal and vertical access with valid identifiers from another
@@ -302,4 +302,3 @@ without weakening revocation.
   introduced.
 - Database row-level security or physical tenant partitioning is added.
 - Context checks materially prevent reliability or latency targets.
-

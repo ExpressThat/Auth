@@ -3,7 +3,7 @@
 Status: temporary executable compatibility evidence.
 
 Proves one Zod-backed Hono contract, inferred client typing, OpenAPI 3.1 output,
-Node/Docker execution, and Workerd execution from the same source.
+and Node/Docker execution.
 
 This is not a deployable product or supported public package. It will be removed
 when production API and contract workspaces absorb the evidence. See

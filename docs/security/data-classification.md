@@ -296,7 +296,7 @@ Tests verify:
 - retention transitions, legal holds, restored-backup tombstones, and all copy
   locations;
 - deterministic synthetic fixtures and absence of production data; and
-- identical policy on Workers, Docker, SQLite, PostgreSQL, and every adapter.
+- identical policy across Docker replicas, supported databases, and every adapter.
 
 ## 9. Classification Review Triggers
 
@@ -310,4 +310,3 @@ Tests verify:
   gains access to another data class.
 - A leak, scanner finding, data-subject request, or restore drill shows the
   declared policy and actual flow differ.
-

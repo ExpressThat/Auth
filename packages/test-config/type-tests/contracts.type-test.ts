@@ -8,6 +8,7 @@ import {
 } from "@expressthat-auth/test-config";
 import {
   DeterministicRandom,
+  type DockerSecurityTarget,
   type RuntimeSecurityCase,
   runConcurrentAttempts,
 } from "@expressthat-auth/test-config/adversarial";
@@ -40,6 +41,10 @@ export const runtimeSecurityCase = {
   name: "denied",
   request: () => new Request("https://security.test"),
 } satisfies RuntimeSecurityCase;
+export const dockerSecurityTarget = {
+  fetch: async () => new Response("ok"),
+  instance: "primary",
+} satisfies DockerSecurityTarget;
 
 // @ts-expect-error -- clock instants cannot be strings.
 new ControlledClock("10");

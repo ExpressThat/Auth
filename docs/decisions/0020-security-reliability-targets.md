@@ -30,8 +30,8 @@ burst capacity, at least 30% bottleneck headroom, queue start/hand-off targets b
 security priority, EU-contained RPO/RTO by failure scope, and SEV-0 through
 SEV-3 response/communication targets.
 
-Workers and Docker must meet the same user-facing behavior and security
-invariants. Hosted Workers and hosted Docker capacity must meet the target
+All Docker replicas must meet the same user-facing behavior and security
+invariants. Hosted Docker capacity must meet the target
 thresholds. Self-hosted releases publish measured reference topologies and
 include load/failure tools rather than promising performance for unknown
 hardware. Self-hosted operators set and prove their own uptime, availability,
@@ -99,7 +99,7 @@ staff and infrastructure. Error-budget exhaustion pauses risky delivery.
 - Meet latency and capacity targets under mixed sustained/burst workload.
 - Force every failure scope and verify RPO/RTO, safety, and communication.
 - Run incident and vulnerability exercises against the response clock.
-- Compare Workers and Docker results and publish self-hosted reference results.
+- Compare Docker replica results and publish self-hosted reference results.
 
 ## Review Triggers
 

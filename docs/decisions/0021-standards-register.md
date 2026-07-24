@@ -59,8 +59,8 @@ European transfer review.
 
 ## Portability and Self-Hosting Impact
 
-The same registered profile and black-box conformance applies to Workers and
-Docker. A runtime/library cannot add an unsupported protocol capability.
+The same registered profile and black-box conformance applies to every Docker
+deployment. A runtime/library cannot add an unsupported protocol capability.
 
 ## Operational Impact
 
@@ -80,7 +80,7 @@ advance.
 - Map every protocol/security capability in the backlog to a registered
   standard, explicit local contract, or rejected status.
 - Verify exact links/maturity and assign every row to an ownership area.
-- Run pinned vectors and external conformance plans on both runtimes.
+- Run pinned vectors and external conformance plans directly and in Docker.
 - Exercise the change process on the next standards/library update.
 
 ## Review Triggers
@@ -89,4 +89,3 @@ advance.
 - A library, browser, runtime, proxy, or conformance suite changes behavior.
 - A new protocol, extension, algorithm, grant, or application profile is
   proposed.
-

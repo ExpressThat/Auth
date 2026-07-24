@@ -37,7 +37,7 @@ business ownership, narrow affected scope, compensating controls, expiry, and
 monitoring; it cannot be hidden in a scanner configuration.
 
 The initial model explicitly covers authentication, tenancy, providers, support
-access, asynchronous work, Workers, Docker, shared databases, adapter
+access, asynchronous work, Docker replicas, shared databases, adapter
 infrastructure, data ownership, GDPR workflows, and European residency.
 
 ## Alternatives Considered
@@ -71,7 +71,7 @@ compliance notes outside engineering.
 
 ## Portability and Self-Hosting Impact
 
-The model treats Workers and Docker as equal targets and distinguishes product
+The model treats hosted and self-hosted Docker as equal products and distinguishes product
 controls from risks transferred to a self-hosted root operator. Adapter
 conformance and deployment-profile evidence prevent hosted-only assumptions.
 
@@ -93,7 +93,7 @@ learning creates new backlog work.
 - Map every current architecture component and planned feature group to at least
   one asset and trust boundary.
 - Confirm the register includes authentication, tenancy, providers, support,
-  jobs, Workers, Docker, privacy, and residency.
+  jobs, Docker, privacy, and residency.
 - Trace critical/high threats to backlog tasks or existing ADR controls.
 - Exercise the maintenance workflow on the next feature and security incident
   simulation.
@@ -104,4 +104,3 @@ learning creates new backlog work.
 - A security incident or external assessment finding.
 - A new runtime, database, provider category, protocol, or privileged role.
 - A material architecture, data-purpose, residency, or support-policy change.
-

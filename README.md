@@ -43,21 +43,15 @@ separate physical storage, credentials, sessions, issuers, and key scopes.
 
 ## Design Principles
 
-### Workers and Docker are permanent equal targets
+### Docker is the supported deployment target
 
-APIs use [Hono](https://hono.dev/) and Web APIs so the same domain and protocol
-behavior can run on:
+APIs use [Hono](https://hono.dev/) and Web APIs on Node.js in unprivileged
+Docker containers. Frontends use Vite and produce static assets packaged in
+unprivileged Docker images.
 
-- Cloudflare Workers; and
-- Node.js in unprivileged Docker containers.
-
-Frontends use Vite and produce deployable assets for both Workers and Docker.
-Runtime parity is tested; a feature is incomplete if it works on only one
-target.
-
-Runtime parity means compatible behavior, contracts, security invariants, and
-conformance—not identical operational guarantees. Hosted commitments apply only
-to infrastructure operated by the hosted service.
+The hosted service and self-hosted edition use the same Docker artifacts and
+application contracts. Multi-instance and reverse-proxy conformance is tested.
+Hosted commitments apply only to infrastructure operated by the hosted service.
 
 ### Infrastructure is adapter-based
 
@@ -156,16 +150,13 @@ flowchart TB
     services["Queue, object, cache, secret, key, and provider adapters"]
   end
 
-  subgraph targets["Permanent deployment targets"]
-    workers["Cloudflare Workers"]
-    docker["Docker / Node.js"]
-  end
+  docker["Docker / Node.js deployment"]
 
   clients --> api
   api --> core
   core --> infrastructure
-  api --> targets
-  infrastructure --> targets
+  api --> docker
+  infrastructure --> docker
 ```
 
 ## Technology
@@ -181,9 +172,8 @@ flowchart TB
 | Formatting and linting | Biome, installed and configured at the workspace root |
 | Unit/integration tests | Vitest |
 | Browser tests | Playwright |
-| Worker tests | Workerd through the Cloudflare Vitest pool |
 | Protocol crypto/client primitives | Web Crypto, `jose`, and `oauth4webapi` |
-| Deployment | Cloudflare Workers and Docker |
+| Deployment | Docker |
 
 Dependencies are pinned exactly and reviewed before upgrades.
 
@@ -195,14 +185,14 @@ The planned Turborepo layout is:
 apps/                       deployable APIs and React applications
 packages/                   runtime-neutral product and infrastructure packages
 packages/providers/         provider adapter implementations
-deploy/                     Workers and Docker composition/deployment workspaces
+deploy/                     Docker composition and deployment workspace
 tooling/                    repository tooling and temporary validation spikes
 docs/                       ADRs, security, privacy, and operator documentation
 ```
 
 The `tooling/*-spike` workspaces are temporary executable validation projects.
-They currently prove the dual-runtime Hono/OpenAPI contract and portable
-Argon2id approaches. Their useful conformance tests will move into production
+They currently prove the Hono/OpenAPI contract and portable Argon2id approaches.
+Their useful conformance tests will move into production
 packages, and the spike workspaces will be removed when those packages replace
 them.
 
@@ -278,7 +268,8 @@ Every non-documentation task must satisfy all applicable rules:
   contract, security, and production-build checks pass;
 - tenant tests use at least two tenants, and environment behavior uses multiple
   environments;
-- Workers and Docker conformance passes wherever runtime behavior can differ;
+- Docker, reverse-proxy, and multi-instance conformance passes where behavior
+  can differ;
 - no skipped, focused, quarantined, flaky, or nondeterministic test is accepted;
   and
 - every bug fix includes a regression test.

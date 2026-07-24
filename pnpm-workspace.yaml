@@ -11,12 +11,7 @@ engineStrict: true
 linkWorkspacePackages: true
 allowBuilds:
   esbuild: true
-  workerd: true
 preferWorkspacePackages: true
 saveExact: true
 sharedWorkspaceLockfile: true
 strictPeerDependencies: true
-minimumReleaseAgeExclude:
-  - "@cloudflare/vitest-pool-workers@0.18.8"
-  - miniflare@4.20260722.0
-  - wrangler@4.114.0

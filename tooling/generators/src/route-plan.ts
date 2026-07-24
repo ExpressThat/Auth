@@ -77,7 +77,7 @@ examples aligned with the implementation.
 ## Security, privacy, and operations
 
 Document untrusted inputs, abuse controls, data classification, audit events,
-redaction, dependency failures, observability, and Workers/Docker differences.
+redaction, dependency failures, observability, and Docker replica behavior.
 `;
 }
 

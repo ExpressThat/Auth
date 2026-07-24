@@ -15,7 +15,7 @@ requests as its internal progress unit.
 - [ ] Infrastructure remains behind capability contracts and does not make
       hosted infrastructure mandatory for self-hosting.
 - [ ] No authoritative cross-request state relies on one process instance.
-- [ ] Workers and Docker, supported database dialects, tenant environments,
+- [ ] Docker replicas, supported database dialects, tenant environments,
       and hosted/self-hosted boundaries were evaluated.
 - [ ] A changed binding decision has an added or superseding ADR.
 
@@ -45,7 +45,7 @@ requests as its internal progress unit.
       tests were added where relevant.
 - [ ] Public TypeScript and OpenAPI contracts have compile-time, runtime, and
       compatibility evidence.
-- [ ] Runtime-sensitive behavior has Workers/Docker parity evidence.
+- [ ] Runtime-sensitive behavior has built-image and multi-replica evidence.
 - [ ] Database behavior passes shared conformance against each supported
       adapter.
 - [ ] Every bug or security fix has a named regression test.
@@ -89,6 +89,6 @@ git diff --check
 ```
 
 Add `check:contracts`, generation drift, database, browser, deployment,
-container, and Workers/Docker commands when affected. Inspect the complete diff
+container, and Docker replica commands when affected. Inspect the complete diff
 and repository status before staging. A passing command does not waive a
 missing security, privacy, portability, or documentation review.

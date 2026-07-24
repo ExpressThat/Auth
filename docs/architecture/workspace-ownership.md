@@ -52,9 +52,9 @@ depend on contracts and implementations only to test them.
 
 | Workspace | Ownership | Responsibility |
 | --- | --- | --- |
-| `packages/typescript-config` | Engineering productivity | Strict base, library, Node, Workers, React, and tooling TypeScript profiles |
+| `packages/typescript-config` | Engineering productivity | Strict base, library, Node, React, and tooling TypeScript profiles |
 | `packages/lint-config` | Code quality | Custom repository lint-policy support beyond the root Biome configuration |
-| `packages/test-config` | Test engineering | Shared Vitest, Workers, component, coverage, fixture, and test utilities |
+| `packages/test-config` | Test engineering | Shared Vitest, component, coverage, fixture, and test utilities |
 
 Configuration packages cannot import product code.
 
@@ -62,13 +62,12 @@ Configuration packages cannot import product code.
 
 | Workspace | Ownership | Responsibility |
 | --- | --- | --- |
-| `deploy/cloudflare` | Cloud platform | Workers entry points, bindings, Wrangler configuration, and hosted composition |
 | `deploy/docker` | Container platform | Container entry points, local dependency Compose, production Dockerfiles, and self-hosted composition |
 
 Deployments select adapters and compose applications. Product packages never
-import deployment workspaces. Workers and Docker composition must expose the
-same contracts and security behavior; hosted operational commitments do not
-transfer to self-hosted Docker.
+import deployment workspaces. Hosted and self-hosted Docker compositions expose
+the same contracts and security behavior; hosted operational commitments do not
+transfer to self-hosted deployments.
 
 The local dependency Compose stack and production self-hosted example are
 separate profiles. Local dependencies default to loopback-only development

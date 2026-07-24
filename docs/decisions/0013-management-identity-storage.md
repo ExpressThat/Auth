@@ -192,7 +192,7 @@ their backups, logs, and events remain within the configured European region.
 Logical separation works in SQLite, a shared hosted SQL database, and future
 physical database partitions. It requires no provider-specific database
 feature. The same Drizzle schema invariants and repository conformance tests run
-for Workers and Docker deployments.
+for Docker deployments.
 
 ## Operational Impact
 
@@ -229,4 +229,3 @@ invalidating the other.
 - Management and end-user data move to separate databases or services.
 - An authentication feature cannot use the typed realm contracts.
 - A regulatory role requires different controller or retention treatment.
-

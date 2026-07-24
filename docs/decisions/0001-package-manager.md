@@ -98,7 +98,7 @@ validation.
 
 - Install from a clean checkout with `pnpm install --frozen-lockfile`.
 - Run the full Turborepo task graph after package-manager upgrades.
-- Build pruned Docker and filtered Workers workspaces before accepting upgrades.
+- Build pruned Docker workspaces before accepting upgrades.
 
 ## Review Triggers
 

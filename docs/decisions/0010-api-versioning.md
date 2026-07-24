@@ -70,7 +70,7 @@ Allowed additive changes include:
 - performance or implementation changes preserving documented semantics.
 
 Even additive changes require schema, contract, SDK, documentation, and
-Workers/Docker conformance updates.
+Docker conformance updates.
 
 Enums are closed by default. Adding a value to a closed response enum is treated
 as breaking because generated clients may exhaustively match it. A schema must
@@ -153,7 +153,7 @@ An approved major change includes:
 - dual-major routing and authorization tests;
 - SDK and example migrations;
 - deprecation/sunset plan for the prior major;
-- equivalent Workers and Docker behavior; and
+- equivalent behavior across Docker replicas; and
 - rollback evidence.
 
 ## Alternatives Considered
@@ -200,7 +200,7 @@ schemas and examples using synthetic data only and remain hosted in Europe.
 
 OpenAPI, comparison tools, generated SDKs, and compatibility suites are
 provider-neutral. The exact documents and supported-major routing ship with
-Docker and Workers artifacts.
+Docker artifacts.
 
 ## Operational Impact
 
@@ -225,7 +225,7 @@ during overlap.
   documents.
 - Replay previous-major contract and authorization suites on every release.
 - Verify `Deprecation`, `Sunset`, `Link`, gone responses, and usage telemetry.
-- Run equivalent version routing and rollback tests in Workers and Docker.
+- Run equivalent version routing and rollback tests across Docker replicas.
 
 ## Review Triggers
 

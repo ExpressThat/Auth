@@ -10,7 +10,7 @@
 ## Context
 
 The monorepo contains private implementation packages, independently deployable
-applications, Docker and Workers artifacts, public HTTP APIs, generated SDKs,
+applications, Docker artifacts, public HTTP APIs, generated SDKs,
 database migrations, and security fixes. One version counter cannot accurately
 describe all of those compatibility surfaces. Completely independent versions,
 however, would make it difficult for self-hosted operators to identify a tested
@@ -33,7 +33,7 @@ Each platform release publishes an immutable manifest that binds:
 - source commit and clean-tree status;
 - every application, image, Worker, frontend, job, and deployment artifact
   version and digest;
-- supported Node, Workers, browser, database, queue, cache, and object-store
+- supported Node, browser, database, queue, cache, and object-store
   compatibility;
 - OpenAPI, webhook, event, SDK, adapter, and migration versions;
 - included security advisories and dependency attestations;
@@ -53,7 +53,7 @@ Immutable artifacts include the application version, source commit, build
 provenance, and content digest. Rebuilding the same version with different
 content is forbidden; a correction receives a new patch version.
 
-Docker tags and Workers deployment metadata expose immutable version/digest
+Docker tags and deployment metadata expose immutable version/digest
 identities. Mutable convenience tags such as `latest` are never the evidence
 used for promotion, rollback, or incident analysis.
 
@@ -166,7 +166,7 @@ operator-selected self-hosted deployment uses the same regions or controls.
 
 ## Portability and Self-Hosting Impact
 
-The manifest binds both Docker and Workers artifacts and states their actual
+The manifest binds Docker artifacts and states their actual
 runtime and adapter support. Self-hosted operators receive explicit migration,
 backup, rollback, and compatibility information but no project SLA or
 availability guarantee.

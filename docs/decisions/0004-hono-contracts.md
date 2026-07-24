@@ -2,6 +2,7 @@
 
 - **Status:** Accepted
 - **Date:** 2026-07-23
+- **Last updated:** 2026-07-24
 - **Owners:** Platform engineering
 - **Related tasks:** DEC-005, API-001 through API-018
 - **Supersedes:** None
@@ -9,135 +10,90 @@
 
 ## Context
 
-The public, management, and internal APIs must share validation and response
-contracts across Cloudflare Workers and Node/Docker. They also require complete,
-versioned OpenAPI documents and useful TypeScript client types without maintaining
-parallel route, schema, and documentation definitions.
+The public, management, and internal APIs require shared runtime validation,
+strong TypeScript contracts, complete OpenAPI documentation, generated clients,
+and one production behavior in every Docker deployment. Maintaining separate
+route, schema, type, and documentation definitions would create dangerous drift.
 
 ## Decision
 
-Use Hono with `@hono/zod-openapi` and Zod 4 as the initial contract system:
+Use Hono with `@hono/zod-openapi` and Zod 4:
 
-- Define request parameters, query strings, headers, bodies, success responses,
-  and expected error responses with named Zod schemas.
+- Define path, query, header, body, success, and expected error schemas in Zod.
 - Register routes with `createRoute` and `OpenAPIHono.openapi`.
-- Give every operation a stable `operationId`, summary, tags, and descriptions.
-- Export the composed Hono application type for same-repository TypeScript
-  clients through Hono's `hc` client.
-- Generate OpenAPI 3.1 from the registered routes; the generated document is the
-  source for public SDK generation and breaking-change checks.
-- Export the same application as a Workers module and pass its `fetch` handler to
-  `@hono/node-server` for Node/Docker.
-- Keep runtime bindings and environment access outside route contracts.
+- Give every operation a stable `operationId`, summary, tags, and description.
+- Export the composed application type for same-repository clients through
+  Hono's inferred client.
+- Generate OpenAPI 3.1 from registered routes for public SDK generation and
+  breaking-change checks.
+- Serve the application on Node.js through `@hono/node-server`.
+- Package and run the same entry point in Docker for hosted and self-hosted use.
+- Keep deployment configuration and adapter selection outside route contracts.
 
-The executable regression proof lives in
-`tooling/hono-contract-spike`. It starts a real Node HTTP listener, runs the same
-route in Workerd, calls it through an inferred client, tests invalid input, and
-asserts the generated OpenAPI operation and component schema.
+The executable proof in `tooling/hono-contract-spike` starts a real Node.js HTTP
+listener, calls it through an inferred client, rejects invalid input, and checks
+the generated OpenAPI operation and named component schema.
 
-### Contract Rules
+## Contract Rules
 
-- Route schemas are explicit; undocumented success or failure bodies are defects.
-- Response status literals are preserved so typed clients can narrow response
-  unions before parsing a body.
-- Shared errors will replace the spike's framework validation shape before
+- Undocumented success or failure bodies are defects.
+- Literal response statuses remain available for typed narrowing.
+- Shared error contracts replace framework-specific validation shapes before
   production endpoints are added.
 - API packages export composed route types, not internal handlers or services.
-- OpenAPI remains the language-neutral public contract. Hono inference is a
-  TypeScript convenience and cannot be required by external consumers.
-- Large APIs are composed from small typed sub-applications to limit TypeScript
-  inference cost and keep source files under the repository line limit.
+- OpenAPI is the language-neutral public contract; inferred TypeScript clients
+  are a convenience.
+- Large APIs compose small typed sub-applications to keep inference fast and
+  source files within the repository line limit.
+- The same black-box suite runs directly against Node.js and the built image.
 
 ## Alternatives Considered
 
-### Plain Hono with Separate OpenAPI Files
+Plain Hono plus separate OpenAPI files duplicates schemas. Decorator-heavy
+controllers add metadata and lifecycle abstractions the platform does not need.
+Generating server routes from OpenAPI complicates domain composition and local
+type inference, although generated external clients remain required. A broader
+Standard Schema integration can be revisited if it offers materially stronger
+OpenAPI support.
 
-This avoids an integration dependency but duplicates schemas and makes runtime
-validation, inferred clients, and published documentation easier to drift.
+## Security, Privacy, and Portability
 
-### Decorator-Based Controller Framework
+Runtime validation occurs at the HTTP boundary. Explicit output contracts expose
+accidental data disclosure during review and documentation generation, but do
+not replace authorization, projection, or protocol conformance.
 
-Controller frameworks can generate documentation, but their runtime and metadata
-models are less natural for Workers and add abstractions the platform does not
-need.
-
-### OpenAPI-First Code Generation for Server Routes
-
-OpenAPI-first generation is attractive for external SDKs, but generated server
-layers complicate domain composition and local type inference. Generated clients
-remain part of the planned public SDK workflow.
-
-### Hono OpenAPI Middleware with Standard Schema
-
-The broader Standard Schema approach supports more validators. Zod OpenAPI was
-selected initially because the spike proves its route inference and named schema
-generation directly. This decision can be revisited if the package stalls or
-cannot express a required OpenAPI construct.
-
-## Security Impact
-
-Runtime validation occurs at the HTTP boundary. Explicit response contracts make
-accidental data exposure visible in review and generated documentation. Schemas
-do not replace authorization, output projection, or protocol conformance tests.
-
-## Privacy and Residency Impact
-
-Contracts identify where personal data crosses API boundaries and enable review
-of exported fields. The tooling runs locally and does not send fixtures or
-generated documents to a hosted service.
-
-## Portability and Self-Hosting Impact
-
-The contract application uses Web-standard request and response objects. Thin
-entry points adapt it to Workers or Node without changing route behaviour, and
-no provider binding appears in the route definition.
-
-## Operational Impact
-
-OpenAPI documents, inferred types, and runtime validation change together.
-Contract checks must run for both supported server runtimes. Public SDKs are
-released from versioned OpenAPI rather than importing monorepo source types.
+Contracts identify personal-data boundaries. Tooling runs locally. The Node.js
+application uses Web-standard requests and responses where practical, while the
+released Docker image defines the sole deployment contract for hosted and
+self-hosted installations.
 
 ## Consequences
 
-- Zod schemas become a compatibility-sensitive part of the HTTP layer.
-- Hono and its OpenAPI integration must be upgraded and tested together.
-- Typed client bodies can be unions across documented response statuses and must
-  be narrowed by status.
-- The current Cloudflare declarations conflict with TypeScript 7 library types.
-  Only the Workers spike tsconfig uses `skipLibCheck`; first-party files remain
-  strict, runtime tests still execute in Workerd, and the exception is temporary.
+- Zod schemas are compatibility-sensitive API assets.
+- Hono and its OpenAPI integration must be upgraded together.
+- Client bodies can be unions across response statuses and require narrowing.
+- Docker image and reverse-proxy tests are mandatory release evidence.
 
 ## Validation
 
-The retained spike proves:
-
-1. a Zod path schema rejects invalid input;
-2. OpenAPI 3.1 includes the path, operation identifier, parameters, response
-   statuses, and named response component;
-3. the inferred client is callable and returns a status-narrowed body type;
-4. the route works through a real Node HTTP server; and
-5. the same module executes inside the Workers Vitest integration.
-
-Run:
+The retained spike proves validation, OpenAPI 3.1 generation, stable operation
+metadata, inferred client types, and real Node.js HTTP execution:
 
 ```text
 pnpm --filter @expressthat-auth/hono-contract-spike build
 pnpm --filter @expressthat-auth/hono-contract-spike test:coverage
 ```
 
+Production API tasks add built-image and multi-replica black-box tests.
+
 ## Review Triggers
 
 - A required OpenAPI 3.1 feature cannot be represented accurately.
 - Hono inference materially degrades typecheck performance.
-- Node and Workers route behaviour diverges.
+- Direct Node.js and built-image behavior diverge.
 - A maintained Standard Schema integration offers stronger compatibility.
-- Cloudflare declaration files support TypeScript 7 without the scoped
-  `skipLibCheck` exception.
 
 ## References
 
 - [Hono Zod OpenAPI example](https://hono.dev/examples/zod-openapi)
 - [Hono Node adapter](https://hono.dev/docs/getting-started/nodejs)
-- [Cloudflare Workers Vitest integration](https://developers.cloudflare.com/workers/testing/vitest-integration/)
-- [Cloudflare first Workers test](https://developers.cloudflare.com/workers/testing/vitest-integration/write-your-first-test/)

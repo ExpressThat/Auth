@@ -7,7 +7,6 @@ All first-party TypeScript projects extend one of these root-owned profiles.
 | `base.json` | Runtime-neutral strictness and portable module behavior |
 | `library.json` | Composite runtime-neutral packages and declaration contracts |
 | `node.json` | Node.js applications, adapters, and tests |
-| `workers.json` | Workers applications and portable runtime packages |
 | `react.json` | Vite and React browser applications |
 | `tooling.json` | Repository automation, generators, and quality tools |
 

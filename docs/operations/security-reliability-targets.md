@@ -83,7 +83,7 @@ budget and never permits a fail-open response.
 
 Targets apply under the reference sustained load with less than 70% of the
 bottleneck resource consumed and exclude intentional client-facing rate-limit
-delay. Both Workers and Docker artifacts must meet the same user-facing
+delay. All Docker replicas must meet the same user-facing
 thresholds, even when their internal budgets differ.
 
 | Operation class | p50 | p95 | p99 |
@@ -131,7 +131,7 @@ Scaling acceptance proves:
   the preceding instance's contribution until a documented shared bottleneck;
 - an instance can terminate at any point without lost/duplicate unauthorized
   effects;
-- mixed Workers and Docker release overlap preserves contracts and state;
+- mixed-version Docker replica release overlap preserves contracts and state;
 - overload produces bounded 429/503 with `Retry-After`, no unbounded queue/memory,
   and no tenant monopolization; and
 - scale-down drains leases/connections and does not abandon authority-changing
@@ -256,7 +256,7 @@ Release evidence includes:
 - incident page/communication and security containment exercises;
 - current dependency/runtime/provider/residency qualification;
 - no unowned critical/high findings or expired exceptions; and
-- Workers/Docker comparison using the same black-box workload.
+- Docker replica comparison using the same black-box workload.
 
 An SLO miss creates owned remediation; repeated misses change capacity/design,
 not the metric definition. Product launch cannot claim these targets from local

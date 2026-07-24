@@ -2,6 +2,7 @@
 
 - **Status:** Accepted
 - **Date:** 2026-07-23
+- **Last updated:** 2026-07-24
 - **Owners:** Platform engineering
 - **Related tasks:** DEC-004, FND-008 through FND-012
 - **Supersedes:** None
@@ -9,146 +10,94 @@
 
 ## Context
 
-The platform requires deterministic tests across runtime-neutral packages,
-Cloudflare Workers, Node/Docker, React components, browsers, SQL dialects, and
-security protocols. Executable first-party TypeScript must maintain complete
-line, statement, function, and branch coverage, while skipped or flaky tests
-must fail rather than be hidden by retries.
+The platform requires deterministic tests across Node.js services, built Docker
+images, React components, browsers, SQL dialects, adapters, and security
+protocols. Executable first-party TypeScript must maintain complete line,
+statement, function, and branch coverage. Skipped, focused, retried, or flaky
+tests must fail rather than being hidden.
 
 ## Decision
 
-Use one TypeScript-first family of tools with separate environments:
+Use one TypeScript-first family of tools with purpose-specific environments:
 
 | Layer | Tool |
 | --- | --- |
-| Unit, schema, contract, adapter, and repository tests | Vitest 4.1.10 |
-| Node coverage | `@vitest/coverage-v8` 4.1.10 |
-| Workers runtime tests | `@cloudflare/vitest-pool-workers` 0.18.8 |
+| Unit, schema, contract, adapter, and repository tests | Vitest |
+| Node.js coverage | `@vitest/coverage-v8` |
 | React component tests | Vitest Browser Mode with Playwright |
-| End-to-end browser tests | Playwright Test 1.61.1 |
+| End-to-end browser tests | Playwright Test |
 | Compile-time contract tests | `tsc --noEmit` fixtures and Vitest `expectTypeOf` |
 | Accessibility assertions | Testing Library queries plus axe-core checks |
 
-### Unit and Package Tests
+Node.js tests cover domain, API, adapter, integration, and runtime behavior.
+Docker black-box projects run shared HTTP journeys against the exact built image.
+Multi-replica projects place at least two containers behind the supported reverse
+proxy and verify shared-state, concurrency, rollout, and trusted-proxy behavior.
 
-- Vitest projects separate Node, browser, Workers, integration, and type suites.
-- Tests import APIs explicitly; globals remain disabled.
-- Fake time, deterministic random sources, and fixture builders are shared
-  packages rather than ad hoc global mutation.
-- Unit tests have no network dependency.
-- Focused, skipped, todo, or concurrent tests that undermine deterministic
-  state fail repository policy checks.
+Vitest globals remain disabled. Unit tests have no network dependency. Shared
+fixtures control time, randomness, identifiers, external responses, namespaces,
+ports, and object keys. Live-provider tests are opt-in and never replace
+deterministic adapter conformance.
 
-### Coverage
+## Coverage and Browser Rules
 
-- V8 coverage is the primary Node and Chromium coverage provider.
+- V8 is the primary Node.js and Chromium coverage provider.
 - Thresholds are 100% for lines, statements, functions, and branches.
-- Coverage includes all executable first-party TypeScript, including files not
-  imported by a test.
-- Generated and third-party paths are the only automatic exclusions.
-- Workers-specific suites prove runtime behaviour separately because the
-  Workers runtime does not expose V8 coverage collection.
-- Runtime-neutral logic stays outside Workers entry points so its branches are
-  covered under Node or browser instrumentation as well as exercised in Workers.
+- Coverage includes unimported executable first-party TypeScript.
+- Only generated and third-party code receives automatic exclusions.
+- Component tests use real Chromium interactions and user-visible queries.
+- End-to-end projects cover Chromium, Firefox, and WebKit.
+- Keyboard, focus, reduced-motion, loading, empty, success, error, and automated
+  accessibility behavior are tested where relevant.
 
-### Component and Browser Tests
-
-- Component tests run in a real headless Chromium browser through Vitest Browser
-  Mode and the Playwright provider.
-- Playwright end-to-end projects cover Chromium, Firefox, and WebKit.
-- Component tests use user-visible queries and real interactions rather than
-  implementation details.
-- Keyboard, focus, loading, empty, success, error, reduced-motion, and automated
-  accessibility checks are required where relevant.
-
-### Reliability Rules
-
-- CI retries are disabled for unit, component, integration, and end-to-end tests.
-- Tests control time, randomness, identifiers, external responses, and data.
-- Parallel tests receive isolated databases, namespaces, ports, and object keys.
-- Failures retain bounded logs, Playwright traces, screenshots, and test reports
-  with secrets and personal data redacted.
-- Sandbox or live-provider tests are opt-in and never replace deterministic
-  conformance tests.
+CI retries are disabled. Bounded logs, traces, screenshots, and reports must
+redact secrets and personal data.
 
 ## Alternatives Considered
 
-### Jest
+Jest was not selected because Vitest aligns with Vite, ESM-first TypeScript,
+browser projects, and the repository task graph. DOM emulation alone cannot
+cover real focus, CSS, browser API, or accessibility behavior. Running every
+test in Playwright would make fast deterministic domain testing unnecessarily
+slow. Automatic retries were rejected because they conceal nondeterminism.
 
-Jest has a mature ecosystem but was not selected because Vitest aligns directly
-with Vite, provides ESM-first TypeScript support, browser projects, and a
-Workers integration maintained for the target runtime.
+## Security, Privacy, and Portability
 
-### DOM Emulation for All Components
+Built-image and multi-replica execution expose packaging, proxy, header, cookie,
+shared-state, and deployment mistakes. Complete coverage and denied-path
+assertions make missing authorization branches visible. Fixtures are synthetic;
+artifacts follow redaction and retention policy.
 
-Using only jsdom would be faster, but it cannot provide enough confidence for
-focus, browser APIs, CSS-dependent behaviour, or Workers-compatible Web APIs.
-Small pure UI utilities may still use a simulated DOM when no browser behaviour
-is involved.
-
-### Playwright for Every Test
-
-Running all logic through browsers would be slow and make deterministic domain
-testing harder. Playwright is reserved for component-browser and full journey
-coverage.
-
-### Automatic Test Retries
-
-Retries were rejected because they hide nondeterminism and conflict with the
-requirement that flaky tests are defects.
-
-## Security Impact
-
-Real Workers and browser execution exposes runtime-specific security mistakes.
-Complete coverage and denied-path assertions make missing authorization branches
-visible. Artifact redaction prevents traces and reports from becoming a secret
-or personal-data leak.
-
-## Privacy and Residency Impact
-
-Automated fixtures contain synthetic identities only. Live integration tests
-must use approved sandbox data and regions. CI artifacts follow retention and
-redaction policy.
-
-## Portability and Self-Hosting Impact
-
-The same behavioural suites run against Workers and Docker artifacts. Core
-tests do not require a hosted service, and self-hosted adapters use the same
-conformance harnesses.
-
-## Operational Impact
-
-Fast unit suites run on affected packages. Runtime, browser, database, and
-end-to-end suites run when their dependency graph changes and in the full
-milestone gate. Failure artifacts are reproducible locally.
+All core and adapter suites run locally without a hosted dependency. Hosted and
+self-hosted editions use the same Docker artifacts and conformance harnesses.
 
 ## Consequences
 
-- Most contributors learn one assertion and mocking API.
-- Browser and Workers suites add installation and CI runtime cost.
-- Complete coverage requires deliberate exclusion management and test design.
-- Runtime-neutral design is reinforced by testing logic outside entry points.
+- Contributors use one primary assertion and mocking API.
+- Browser, database, image, and replica suites add CI cost.
+- Complete coverage requires deliberate test design.
+- The built artifact, not an alternate development entry point, is the release
+  evidence.
 
 ## Validation
 
-- Prove a sample package fails each coverage threshold when a branch is removed.
-- Run a shared Hono route suite in Node and the Workers pool.
-- Run a React component in Vitest Browser Mode.
-- Run Playwright journeys in Chromium, Firefox, and WebKit.
-- Prove focused, skipped, and retried tests are rejected by repository policy.
+- Prove a sample package fails every coverage threshold when a branch is removed.
+- Run a shared Hono suite directly in Node.js and against the built Docker image.
+- Run the image behind a reverse proxy with multiple replicas.
+- Run component tests in browser mode and journeys in all supported browsers.
+- Prove focused, skipped, retried, and flaky tests are rejected.
 
 ## Review Triggers
 
-- A selected tool drops a supported runtime.
-- Workers integration cannot execute a required API.
-- Coverage mapping produces demonstrably incorrect results.
+- A selected tool drops a supported Node.js or browser version.
+- Coverage mapping is demonstrably incorrect.
 - Browser-mode limitations prevent required accessibility or interaction tests.
-- CI duration exceeds the reliability target after affected-task filtering.
+- Container tests do not reproduce the released artifact.
+- CI duration exceeds the target after affected-task filtering.
 
 ## References
 
 - [Vitest features](https://vitest.dev/guide/features)
 - [Vitest coverage](https://vitest.dev/guide/coverage)
 - [Vitest Browser Mode](https://vitest.dev/guide/browser/)
-- [Cloudflare Workers Vitest integration](https://developers.cloudflare.com/workers/testing/vitest-integration/)
 - [Playwright test configuration](https://playwright.dev/docs/test-configuration)

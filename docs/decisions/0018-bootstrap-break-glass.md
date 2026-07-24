@@ -38,7 +38,7 @@ and custodian changes are prohibited.
 
 Every request, signature, grant, action, and end is recorded in primary and
 independent EU audit sinks and notifies security/platform administrators.
-Workers and Docker share the same state machines and validators through a
+All Docker replicas share the same state machines and validators through a
 separate restricted installation-control channel.
 
 ## Alternatives Considered
@@ -82,7 +82,7 @@ support remain in the EU.
 ## Portability and Self-Hosting Impact
 
 Portable P-256 signatures, transactional repositories, `authctl`, and a
-restricted Hono control service work on Workers and Docker. Self-hosters control
+restricted Hono control service work in Docker. Self-hosters control
 their custodian and infrastructure identities without a vendor master key.
 
 ## Operational Impact
@@ -115,4 +115,3 @@ when quorum, trusted time/randomness, database, or evidence is unavailable.
   changes.
 - A real exercise or incident cannot recover within the target.
 - A runtime cannot isolate the installation-control channel.
-

@@ -20,7 +20,7 @@ Feature packages select the harnesses that match their trust boundaries:
   and replay attempts and assert exactly the allowed outcomes.
 - Logs, errors, events, audits, traces, exports, diagnostics, and provider
   failures use synthetic-secret redaction assertions.
-- Runtime-sensitive HTTP behavior uses the Workers/Docker differential runner
+- Runtime-sensitive HTTP behavior uses the Docker replica differential runner
   and compares denial, status, security headers, cookies, redirects, cache
   policy, and safe body behavior.
 
@@ -106,7 +106,7 @@ Feature assertions define the invariant, for example:
   outside its documented overlap.
 
 The in-process driver makes races reproducible but does not prove distributed
-correctness. Database, multiple-instance, queue-redelivery, Workers, and Docker
+correctness. Database, multiple-instance, queue-redelivery, and Docker
 campaigns remain required by their later tasks.
 
 ## Redaction assertions
@@ -120,16 +120,16 @@ Redaction tests must cover every new classified field at each output sink.
 Serialization failure is a test failure, not permission to log a fallback
 inspection string.
 
-## Workers and Docker differential runner
+## Docker replica differential runner
 
-`runDualRuntimeSecurityCases` requires correctly named Workers and Docker
-targets and creates a fresh `Request` for each target. It compares status, safe
+`runDockerReplicaSecurityCases` requires correctly named primary and secondary
+Docker targets and creates a fresh `Request` for each target. It compares status, safe
 body, and security-relevant response headers. A case can normalize an explicitly
 documented dynamic value such as a request ID; broad normalization that hides
 semantic differences is prohibited.
 
-The runner is suitable for in-process Workerd/Node adapters and black-box
-deployed targets. Runtime setup remains owned by the consuming package.
+The runner is suitable for in-process Node adapters and black-box deployed
+Docker targets. Runtime setup remains owned by the consuming package.
 
 ## Resource safety and evidence
 

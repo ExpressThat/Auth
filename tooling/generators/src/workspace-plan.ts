@@ -67,8 +67,8 @@ responsibilities and explicitly list responsibilities that remain outside it.
 
 ## Runtimes and dependencies
 
-Document supported Workers, Docker/Node, and browser runtimes and explain every
-runtime or infrastructure dependency.
+Document supported Docker/Node and browser runtimes and explain every runtime or
+infrastructure dependency.
 
 ## Commands and tests
 

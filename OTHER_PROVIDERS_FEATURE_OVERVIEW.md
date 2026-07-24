@@ -88,9 +88,9 @@ The authentication platform's adapter system can eventually support providers su
 | SMS and voice | Twilio, Amazon SNS, Vonage, and private gateways. |
 | Social identity | Google, Apple, Microsoft, GitHub, and generic OAuth/OIDC providers. |
 | Enterprise directories | Microsoft Entra ID, Okta, Google Workspace, and generic SCIM 2.0 directories. |
-| CAPTCHA and bot challenges | Cloudflare Turnstile, reCAPTCHA, hCaptcha, and compatible challenge services. |
-| Object storage | Cloudflare R2, Amazon S3, and compatible European object-storage services. |
-| Secret management | Cloudflare secrets, container secrets, HashiCorp Vault, and cloud secret managers. |
+| CAPTCHA and bot challenges | Managed and self-hostable challenge services through a common adapter. |
+| Object storage | S3-compatible and other European object-storage services through a common adapter. |
+| Secret management | Container secrets, dedicated vaults, and cloud secret managers through a common adapter. |
 | Key management | Cloud KMS products, HSM-backed services, software keys, and customer-managed keys. |
 | Audit and observability | OpenTelemetry, SIEM collectors, webhooks, object-storage archives, and managed event delivery. |
 

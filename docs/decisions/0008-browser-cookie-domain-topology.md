@@ -19,7 +19,7 @@ Hosted deployments offer platform domains and verified customer domains.
 Self-hosted deployments choose their own domains. Shared user-pool SSO requires a
 stable first-party origin, while application-specific domains, iframe embedding,
 and browser privacy controls can fragment cookie state. Domain and cookie choices
-must not weaken tenant resolution or make Workers and Docker behave differently.
+must not weaken tenant resolution or make Docker replicas behave differently.
 
 ## Decision
 
@@ -211,7 +211,7 @@ Self-hosters configure separate management and identity origins, trusted proxy
 ranges, public base URLs, and certificate adapters. Startup fails when origins
 collide, use insecure production schemes, resolve ambiguously, or disagree with
 issuer metadata. The same topology and browser conformance suite runs against
-the Docker image and Workers deployment.
+the Docker image and multi-replica deployment.
 
 ## Alternatives Considered
 
@@ -263,7 +263,7 @@ tracking and does not broaden cookies to parent domains.
 ## Portability and Self-Hosting Impact
 
 The rules use standard HTTP/browser behavior and a domain/certificate adapter,
-not a Workers-only feature. Docker reverse proxies and Workers routing must
+not a hosted-only feature. Docker reverse proxies and application routing must
 produce the same external origin, cookie attributes, headers, redirects, and
 failure behavior.
 
@@ -293,7 +293,7 @@ hosted, custom, and self-hosted domains.
 - Verify exact redirect and post-logout matching with malicious URL corpora.
 - Run domain verification, takeover, DNS drift, certificate failure, Host-header,
   trusted-proxy, and issuer-migration tests.
-- Execute the same browser journeys against Workers and the built Docker image.
+- Execute the same browser journeys against the built Docker image and multiple replicas.
 
 ## Review Triggers
 

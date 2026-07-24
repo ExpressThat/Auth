@@ -51,7 +51,7 @@ selected another task. Before writing code:
 3. Identify the owning workspace in the
    [workspace ownership register](docs/architecture/workspace-ownership.md).
 4. Read the affected package README and public contracts.
-5. Identify whether behavior differs between Workers and Docker, hosted and
+5. Identify whether behavior differs between Docker replicas, hosted and
    self-hosted operation, database dialects, or tenant environments.
 6. Identify documentation that must change with the implementation.
 
@@ -75,8 +75,8 @@ domain, contracts, authorization, data-access, runtime, and config
 
 Core behavior is runtime-neutral TypeScript. Applications compose packages;
 packages never import applications. Product packages depend on capability and
-repository contracts, not provider SDKs or deployment workspaces. Cloudflare
-Workers and Docker/Node.js are permanent equal targets.
+repository contracts, not provider SDKs or deployment workspaces. Docker with
+Node.js is the sole supported deployment target.
 
 Cross-request authority or coordination never lives only in process memory.
 Sessions, keys, replay state, idempotency, rate limits, jobs, locks, cache state,
@@ -136,7 +136,7 @@ As applicable, add:
 - hostile corpus, exact boundary, property, replay, concurrency, and redaction
   tests;
 - repository and database conformance tests;
-- Workers and Docker differential tests;
+- Docker replica and reverse-proxy differential tests;
 - browser accessibility and end-to-end journeys; and
 - a named regression test for every bug or discovered security weakness.
 
@@ -184,7 +184,7 @@ Every task evaluates these audiences:
 - administrators: configuration, permissions, provider and operational impact;
 - end users: flows, consent, account, privacy, and accessibility behavior;
 - security/privacy reviewers: threats, controls, data handling, and evidence;
-- operators: Workers/Docker setup, upgrades, backup, recovery, and diagnostics;
+- operators: Docker setup, upgrades, backup, recovery, and diagnostics;
 - support: safe troubleshooting and escalation boundaries.
 
 Document exact commands and safe examples. Clearly distinguish implemented

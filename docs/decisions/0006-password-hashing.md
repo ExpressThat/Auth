@@ -2,6 +2,7 @@
 
 - **Status:** Accepted
 - **Date:** 2026-07-23
+- **Last updated:** 2026-07-24
 - **Owners:** Security and platform engineering
 - **Related tasks:** DEC-007, IAM-007, IAM-008, SEC-005
 - **Supersedes:** None
@@ -9,36 +10,26 @@
 
 ## Context
 
-Password hashing must remain memory-hard, versioned, and portable between
-Cloudflare Workers and Node/Docker. Users and databases can move between those
-deployment models, and rolling deployments can contain both runtime artifacts.
-Hashes created by one implementation must therefore be verifiable by every
-supported implementation.
-
-Workers prohibit runtime WebAssembly compilation. A library that embeds a Wasm
-binary and calls `WebAssembly.compile` failed inside the retained Workerd test,
-even though it describes itself as browser and Web Worker compatible. Workers
-can load statically imported Wasm modules, but that library does not expose its
-Argon2 implementation that way.
+Password hashing must remain memory-hard, versioned, portable across supported
+CPU architectures, and safe during rolling Docker deployments. Users, data, and
+backups must move between hosted and self-hosted installations without making
+stored credentials unverifiable.
 
 ## Decision
 
-Use a `PasswordHasher` platform contract with:
+Use a `PasswordHasher` contract with:
 
-- `@noble/hashes` 2.2 as the portable TypeScript Argon2id implementation for the
-  mandatory Workers and Docker baseline; and
-- `@node-rs/argon2` 2.0 as an optional accelerated Node/Docker adapter.
+- `@node-rs/argon2` as the preferred Node.js adapter; and
+- `@noble/hashes` as the portable TypeScript compatibility adapter.
 
-The portable adapter is required even in Docker releases so self-hosters are not
-dependent on a native binary. The native adapter is selected by deployment
-capability, never imported by runtime-neutral or Workers bundles. Both consume
-and produce standard Argon2 PHC strings and must pass the same conformance suite.
+Both consume and produce standard Argon2 PHC strings and pass the same
+conformance suite. Selection is an explicit deployment capability. Domain code
+never imports either implementation directly. The portable adapter prevents a
+native package or CPU architecture from becoming a data-portability dependency.
 
 The executable evaluation in `tooling/password-hashing-spike` proves the RFC
-test vector, cross-adapter verification, malformed input rejection, approved
-parameters, latency ceilings, complete portable-code coverage, and real Workerd
-execution. Its tests move into the production adapter packages when those are
-created, after which the spike is removed.
+vector, cross-adapter verification, malformed-input rejection, approved
+parameters, latency ceilings, and complete first-party coverage.
 
 ### Initial Hash Policy
 
@@ -54,175 +45,97 @@ created, after which the spike is removed.
 | Encoding | Standard PHC string |
 | Maximum password input | 1,024 UTF-8 bytes |
 
-This is the OWASP minimum Argon2id profile and a compatibility floor, not a
-permanent upper bound. Increase work in a new named policy after representative
-Workers and Docker benchmarks. Organizations and applications may require a
-stronger policy but cannot weaken the platform minimum.
+This is the OWASP minimum Argon2id profile and a compatibility floor. Increase
+work through a new named policy after representative Docker architecture and
+concurrency benchmarks. Organizations and applications may require a stronger
+policy but cannot weaken the platform minimum.
 
-Passwords are hashed as the exact UTF-8 bytes supplied after transport decoding.
-Do not trim, truncate, case-fold, or silently normalize them. Password-policy
-checks are separate from hashing, and the maximum is measured in bytes.
+Passwords are the exact UTF-8 bytes supplied after transport decoding. Do not
+trim, truncate, case-fold, or silently normalize. The maximum is measured in
+bytes, and password-policy checks remain separate from hashing.
 
 ### Stored Format and Versioning
 
-The credential record stores:
+The credential stores the full PHC string, platform policy identifier, adapter
+identifier for diagnostics only, optional pepper-key identifier, and creation,
+verification, and rehash timestamps.
 
-- the full PHC string, including algorithm, version, work factors, salt, and hash;
-- a platform hash-policy identifier;
-- the hashing adapter identifier for diagnostics only;
-- an optional pepper key identifier, never the pepper; and
-- creation, successful verification, and rehash timestamps.
+Verification strictly allow-lists algorithms and policies. It parses and bounds
+all PHC parameters before allocation or expensive work. Unknown, malformed,
+oversized, or disabled formats fail safely.
 
-Verification dispatches by a strict allow-list of known algorithm and policy
-versions. It parses and bounds every PHC parameter before allocating memory or
-performing work so a modified database value cannot cause unbounded CPU or
-memory use. Unknown, malformed, oversized, or disabled formats fail safely.
+After successful verification, compare-and-swap rehashing uses the current
+policy when an algorithm, version, cost, salt, output, pepper, imported format,
+or policy identifier is stale. A rehash failure records a retryable security
+operation without turning a valid password into an ambiguous error.
 
-### Rehash Rules
-
-After a successful verification, rehash with the current policy when:
-
-- the algorithm or Argon2 version is no longer current;
-- any cost, salt, or output parameter is below current policy;
-- the active pepper key changed;
-- an imported legacy credential is accepted by a migration-only verifier; or
-- the stored policy identifier is missing or retired.
-
-Rehash uses a compare-and-swap update so concurrent logins cannot overwrite a
-newer credential. Failure to rehash does not turn a correctly verified login
-into an ambiguous password error, but it emits a retryable security operation
-and bounded operational alert.
-
-Never generate new bcrypt, scrypt, or PBKDF2 credentials in the standard
-profile. A separately reviewed migration or compliance adapter may verify a
-tagged legacy hash and immediately upgrade it after login.
+New standard credentials never use bcrypt, scrypt, or PBKDF2. A separately
+reviewed migration or compliance adapter may verify tagged legacy credentials
+and immediately upgrade them.
 
 ### Peppering
 
-Peppering is optional defense in depth and must use the secrets/cryptography
-adapter. When enabled:
-
-- use a versioned secret input supported identically by every active adapter;
-- keep pepper material outside the user database;
-- store only a non-secret key identifier with the credential;
-- support an overlap window for rotation; and
-- require a password reset if the only usable pepper is irrecoverably lost.
-
-Pepper behavior requires its own cross-adapter vectors before enablement. It is
-not part of the initial unpeppered PHC conformance spike.
+Peppering is optional defense in depth through the secret/cryptography adapter.
+Pepper material stays outside the user database; only a key identifier is
+stored. Rotation requires an overlap window. Irrecoverable loss of the last
+usable pepper requires password reset. Pepper behavior needs cross-adapter
+vectors before enablement.
 
 ## Alternatives Considered
 
-### Embedded Wasm Compiled at Runtime
+A native-only implementation was rejected because it makes credentials depend
+on binary availability and CPU architecture. A portable-only implementation was
+rejected because native code offers materially better production performance.
+PBKDF2 may be required by a future compliance profile but is not memory-hard.
+Runtime-specific hash formats were rejected because deployments and rolling
+upgrades must never invalidate credentials.
 
-Rejected after an executable Workerd test. Workers disallow
-`WebAssembly.compile` and buffer-based instantiation. A future statically
-imported Argon2 Wasm adapter may be added only with reproducible builds, source
-review, runtime tests, and cross-verification evidence.
+## Security and Privacy Impact
 
-### Native Argon2 Only
+Unique salts come from the cryptographic random adapter. Comparisons cover the
+complete fixed-length output. PHC parsing is bounded before expensive work.
+Passwords, transient salts, derived bytes, peppers, and PHC strings are never
+logged or traced.
 
-Rejected because it excludes Workers, complicates minimal Docker images, and
-makes hashes operationally dependent on native package availability.
+Authentication also requires distributed rate limits, credential-stuffing
+defenses, breached-password policy, generic responses, and admission control.
+In-process semaphores are not distributed protection. Plaintext passwords are
+never queued or persisted; hashing occurs inside the selected deployment.
 
-### Portable JavaScript Only
+## Portability and Operational Impact
 
-Rejected as the only adapter. The selected portable Argon2 implementation is
-materially slower than native code and its Argon2 code was not in the library's
-older independent audit scope. It provides the required compatibility baseline,
-but Docker should use the native adapter after conformance and platform checks.
+Every accepted hash is verified by both adapters in CI. Docker images include
+the portable fallback and report native-adapter readiness without exposing
+credential data. No hosted hashing service is required.
 
-### Web Crypto PBKDF2
-
-PBKDF2 is widely portable and may be required for a future FIPS profile, but it
-is not memory-hard and is not the standard password-storage choice. A compliance
-adapter must use a tagged format and cannot silently replace the Argon2 profile.
-
-### Runtime-Specific Hash Formats
-
-Rejected. Deployment migration and mixed rolling releases must never invalidate
-credentials or require plaintext password access.
-
-## Security Impact
-
-Unique salts come only from the cryptographic random adapter. Comparison covers
-the complete fixed-length output without early exit. PHC parsing is strict and
-bounded before expensive operations. Passwords, salts before persistence,
-derived bytes, peppers, and PHC strings are never logged or placed in traces.
-
-The portable implementation needs a focused cryptographic review before
-production because its Argon2 code was outside the older independent audit.
-The RFC vector and native cross-verification reduce interoperability risk but do
-not replace source review or an external assessment.
-
-Authentication endpoints combine hashing with distributed rate limits,
-credential-stuffing defenses, breached-password policy, and generic responses.
-Memory pressure is bounded through admission control; in-process semaphores are
-not treated as distributed protection.
-
-## Privacy and Residency Impact
-
-Only one-way password hashes are stored; plaintext passwords are never queued or
-persisted. Hashing occurs inside the selected European deployment. External
-breached-password checks must use privacy-preserving range queries and an
-approved outbound-data policy.
-
-## Portability and Self-Hosting Impact
-
-Workers and Node/Docker remain equal permanent targets. Every accepted hash is
-verified by both adapters in CI. Docker images include a portable fallback and
-report native-acceleration readiness without leaking credential data. No hosted
-hashing service is required.
-
-## Operational Impact
-
-The initial regression ceilings are below one second for native Node hashing and
-below two seconds for one portable Workerd hash in the controlled CI fixture.
-Production release tests record p50 and p95 hashing and verification latency,
-memory, CPU, concurrency, and cold-start behavior on representative Workers
-plans and Docker architectures.
-
-These ceilings catch regressions; they are not user-facing SLOs. Policy
-calibration aims for the strongest parameters compatible with the authentication
-latency and abuse-capacity budgets. Autoscaling does not remove the need for
-distributed admission control because each concurrent attempt consumes memory.
-
-## Consequences
-
-- Standard PHC strings allow adapter and deployment migration.
-- Docker gains native performance without becoming a different product.
-- The portable path adds CPU latency and requires further security review.
-- Parameter upgrades require successful-login rehash and long migration windows.
-- Strict parsing intentionally rejects arbitrary attacker-controlled PHC costs.
+Release tests record p50 and p95 hash/verify latency, memory, CPU, and concurrency
+on supported Docker architectures. Regression ceilings are evidence thresholds,
+not user-facing SLOs.
 
 ## Validation
 
-The production adapter packages must retain:
+Production packages retain:
 
 1. the Argon2id RFC 9106 vector;
-2. portable-to-native and native-to-portable PHC verification;
-3. correct-password, wrong-password, Unicode, maximum-length, and invalid-length
-   cases;
-4. malformed, unsupported, oversized, and downgraded PHC parameter cases;
+2. portable-to-native and native-to-portable verification;
+3. correct, incorrect, Unicode, maximum, and over-limit password cases;
+4. malformed, unsupported, oversized, and downgraded PHC cases;
 5. complete first-party coverage;
-6. Workers-runtime and built-Docker execution;
+6. direct Node.js and built-Docker execution;
 7. latency and memory regression measurements; and
 8. rehash, pepper rotation, concurrency, and legacy-import tests when added.
 
 ## Review Triggers
 
 - OWASP raises its minimum Argon2id profile.
-- A portable, independently audited static-Wasm implementation is available.
-- Either selected library is unmaintained or receives a security advisory.
-- Workers or Node changes relevant cryptographic or memory behavior.
+- Either selected library becomes unmaintained or vulnerable.
+- Supported Node.js or CPU architectures change cryptographic behavior.
 - Production measurements exceed latency, memory, or abuse-capacity budgets.
-- A FIPS deployment profile is required.
+- A compliance-specific hashing profile is required.
 
 ## References
 
 - [Argon2, RFC 9106](https://www.rfc-editor.org/rfc/rfc9106)
 - [OWASP Password Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html)
-- [`@noble/hashes` documentation and audit notes](https://github.com/paulmillr/noble-hashes)
-- [`@node-rs/argon2` repository](https://github.com/napi-rs/node-rs)
-- [Workers WebAssembly restrictions](https://developers.cloudflare.com/workers/runtime-apis/web-standards/)
-- [Workers static WebAssembly modules](https://developers.cloudflare.com/workers/runtime-apis/webassembly/javascript/)
+- [`@noble/hashes`](https://github.com/paulmillr/noble-hashes)
+- [`@node-rs/argon2`](https://github.com/napi-rs/node-rs)

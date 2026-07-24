@@ -35,7 +35,7 @@ feature. Each protocol package records:
 - exact library/spec/test-suite versions and relevant errata;
 - positive, negative, malformed, replay, mix-up, downgrade, and cross-context
   vectors;
-- Workers and Docker results plus external conformance evidence; and
+- Docker image and multi-replica results plus external conformance evidence; and
 - security/privacy/residency review owner and next review date.
 
 Later documents that obsolete or update a registered standard are not adopted
@@ -46,12 +46,12 @@ wire-format expansion follows the API compatibility policy.
 
 | Area | Primary owner | Required reviewers |
 | --- | --- | --- |
-| OAuth/OIDC/FAPI and JOSE | Protocol security | API, identity, SDK, Workers/Docker runtime |
+| OAuth/OIDC/FAPI and JOSE | Protocol security | API, identity, SDK, Docker runtime |
 | Authentication, passwords, OTP, WebAuthn | Identity security | UX, privacy, cryptography, recovery |
 | SAML, SCIM, enterprise federation | Enterprise identity | Protocol security, XML security, privacy |
 | HTTP, browser, cookies, CSRF, frontend | Browser security | Frontend, API, runtime, accessibility |
 | Webhooks/events/API conventions | API security | Jobs, SDK, cryptography, customer integrations |
-| Cryptography and key management | Cryptography/key custody | Protocol security, operations, both runtimes |
+| Cryptography and key management | Cryptography/key custody | Protocol security, operations, Docker runtime |
 | Privacy, assurance, and operational guidance | Privacy/security governance | Identity, operations, legal/qualified owner |
 
 Owners monitor errata, status changes, vulnerabilities, interoperability results,
@@ -238,4 +238,3 @@ rollout/rollback, interoperability, both-runtime results, and customer notice.
 Expired drafts remain pinned for reproducibility but cannot be newly enabled
 without renewal. Conformance fixtures and results are versioned release
 evidence, not generated secrets or real personal data.
-

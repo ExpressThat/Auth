@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
 import {
-  runDualRuntimeSecurityCases,
-  type SecurityRuntime,
+  type DockerSecurityTarget,
+  runDockerReplicaSecurityCases,
 } from "../src/runtime-security-harness.js";
 
-function runtime(name: SecurityRuntime["name"], body = "denied"): SecurityRuntime {
+function target(instance: DockerSecurityTarget["instance"], body = "denied"): DockerSecurityTarget {
   return {
     fetch: vi.fn(async (request: Request) => {
       expect(request.headers.get("x-test-case")).toBe("hostile");
@@ -17,29 +17,32 @@ function runtime(name: SecurityRuntime["name"], body = "denied"): SecurityRuntim
         status: 403,
       });
     }),
-    name,
+    instance,
   };
 }
 
-describe("Workers and Docker security runner", () => {
+describe("Docker replica security runner", () => {
   it("runs fresh requests, assertions, and matching normalized responses", async () => {
-    const workers = runtime("workers");
-    const docker = runtime("docker");
+    const primary = target("primary");
+    const secondary = target("secondary");
     const assertResponse = vi.fn();
 
-    await runDualRuntimeSecurityCases({ docker, workers }, [
-      {
-        assert: assertResponse,
-        name: "tenant escape",
-        request: () =>
-          new Request("https://security.test/denied", {
-            headers: { "x-test-case": "hostile" },
-          }),
-      },
-    ]);
+    await runDockerReplicaSecurityCases(
+      [primary, secondary],
+      [
+        {
+          assert: assertResponse,
+          name: "tenant escape",
+          request: () =>
+            new Request("https://security.test/denied", {
+              headers: { "x-test-case": "hostile" },
+            }),
+        },
+      ],
+    );
 
-    expect(workers.fetch).toHaveBeenCalledOnce();
-    expect(docker.fetch).toHaveBeenCalledOnce();
+    expect(primary.fetch).toHaveBeenCalledOnce();
+    expect(secondary.fetch).toHaveBeenCalledOnce();
     expect(assertResponse).toHaveBeenCalledTimes(2);
     expect(assertResponse).toHaveBeenCalledWith(
       {
@@ -56,11 +59,8 @@ describe("Workers and Docker security runner", () => {
 
   it("supports explicit normalization of safe dynamic fields", async () => {
     await expect(
-      runDualRuntimeSecurityCases(
-        {
-          docker: runtime("docker", "request-docker"),
-          workers: runtime("workers", "request-worker"),
-        },
+      runDockerReplicaSecurityCases(
+        [target("primary", "request-one"), target("secondary", "request-two")],
         [
           {
             name: "dynamic request id",
@@ -77,14 +77,14 @@ describe("Workers and Docker security runner", () => {
 
   it("rejects target-name mistakes and observable runtime differences", async () => {
     await expect(
-      runDualRuntimeSecurityCases({ docker: runtime("workers"), workers: runtime("workers") }, []),
-    ).rejects.toThrow("matching target names");
+      runDockerReplicaSecurityCases([target("secondary"), target("secondary")], []),
+    ).rejects.toThrow("primary and secondary");
     await expect(
-      runDualRuntimeSecurityCases({ docker: runtime("docker"), workers: runtime("docker") }, []),
-    ).rejects.toThrow("matching target names");
+      runDockerReplicaSecurityCases([target("primary"), target("primary")], []),
+    ).rejects.toThrow("primary and secondary");
     await expect(
-      runDualRuntimeSecurityCases(
-        { docker: runtime("docker", "different"), workers: runtime("workers") },
+      runDockerReplicaSecurityCases(
+        [target("primary", "different"), target("secondary")],
         [
           {
             name: "different denial",

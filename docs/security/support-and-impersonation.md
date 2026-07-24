@@ -327,11 +327,10 @@ short-lived tokens; the residual lifetime is shown in application enablement.
 - Replay actor and application tokens; attempt refresh, token exchange,
   delegation, changed audience/context, and nested impersonation.
 - Verify signed actor/subject claims and central protected-action denial in
-  Workers, Docker, platform APIs, SDK middleware, and opted-in applications.
+  Docker replicas, platform APIs, SDK middleware, and opted-in applications.
 - Assert permanent banner/exit behavior on every route/state and immediate
   server revocation even if client cleanup fails.
 - Assert complete correlated audit/notifications, delayed-notification policy,
   retention, data-subject export, and analytics/billing exclusion.
 - Conduct abuse review and penetration testing before enabling production
   impersonation.
-

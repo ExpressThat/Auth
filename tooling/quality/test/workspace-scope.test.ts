@@ -1,4 +1,5 @@
 import { spawnSync } from "node:child_process";
+import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
@@ -21,12 +22,24 @@ function runGit(arguments_: string[]): { output: string; status: number | null }
 
 describe("workspace package scope", () => {
   it("uses the canonical scope for every workspace manifest", async () => {
-    const result = runGit(["ls-files", "--", "*package.json"]);
+    const result = runGit([
+      "ls-files",
+      "--cached",
+      "--others",
+      "--exclude-standard",
+      "--",
+      "*package.json",
+    ]);
 
     expect(result.status).toBe(0);
     const manifests = result.output
       .split(/\r?\n/u)
-      .filter((path) => path.length > 0 && path !== "package.json");
+      .filter(
+        (path) =>
+          path.length > 0 &&
+          path !== "package.json" &&
+          existsSync(new URL(`../../../${path}`, import.meta.url)),
+      );
 
     expect(manifests.length).toBeGreaterThan(0);
 
