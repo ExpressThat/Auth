@@ -334,9 +334,15 @@ These tasks prevent foundational security or compatibility decisions from being 
   pass-through rules; see
   [the task-graph reference](docs/architecture/turborepo-task-graph.md).
 
-- [ ] **FND-015 — Add affected-package CI.**  
+- [x] **FND-015 — Add affected-package CI.**
   **Depends on:** FND-014.  
   **Done when:** ordinary changes run the smallest safe graph and changes to shared security, contracts, runtime, or database packages trigger all required downstream checks.
+  **Evidence:** commit-driven GitHub Actions checks out complete history, selects
+  explicit base/head commits, runs repository policy once, and invokes Turbo's
+  affected graph for lint, type checks, compile-time contracts, tests, complete
+  coverage, and builds. Turbo expands changed shared packages through their
+  dependants, while cancellation prevents obsolete branch runs from consuming
+  capacity; workflow regression tests enforce these safety properties.
 
 - [ ] **FND-016 — Add a full clean-checkout CI job.**  
   **Depends on:** FND-015.  

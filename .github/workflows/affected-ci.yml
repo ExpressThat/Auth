@@ -1,0 +1,57 @@
+name: Affected CI
+
+on:
+  push:
+    branches:
+      - "**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: affected-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Affected quality graph
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out complete history
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24.18.0
+          package-manager-cache: false
+
+      - name: Enable pinned pnpm
+        run: corepack enable
+
+      - name: Install locked dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Select comparison commits
+        shell: bash
+        env:
+          EVENT_BEFORE: ${{ github.event.before }}
+        run: |
+          if [[ -n "$EVENT_BEFORE" && "$EVENT_BEFORE" != "0000000000000000000000000000000000000000" ]]; then
+            comparison_base="$EVENT_BEFORE"
+          else
+            comparison_base="$(git rev-list --max-parents=0 HEAD)"
+          fi
+          echo "TURBO_SCM_BASE=$comparison_base" >> "$GITHUB_ENV"
+          echo "TURBO_SCM_HEAD=$GITHUB_SHA" >> "$GITHUB_ENV"
+
+      - name: Check repository policy
+        run: pnpm format:check && pnpm check
+
+      - name: Run affected package graph
+        run: pnpm exec turbo run lint typecheck test:types test test:coverage build --affected
