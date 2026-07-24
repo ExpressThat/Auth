@@ -312,9 +312,15 @@ These tasks prevent foundational security or compatibility decisions from being 
   and a repository policy test fails if a future executable workspace omits its
   test script, coverage script, or shared preset.
 
-- [ ] **FND-013 — Create shared test builders and redacted fixtures.**  
+- [x] **FND-013 — Create shared test builders and redacted fixtures.**
   **Depends on:** FND-008, DEC-017.  
   **Done when:** tenants, applications, users, sessions, time, identifiers, secrets, and provider outcomes can be created without real personal data.
+  **Evidence:** `FixtureFactory` creates linked tenant, application, user, and
+  session records from controlled clocks and deterministic UUIDv7-shaped public
+  identifiers; user fixtures require visibly synthetic names and reserved
+  `.test` email domains. `SyntheticSecret` requires an explicit test-only reveal
+  and emits only redacted metadata through JSON, while typed builders cover
+  provider success, rejection, retryable failure, and permanent failure.
 
 - [ ] **FND-014 — Define the Turborepo task graph.**  
   **Depends on:** FND-002, FND-004, FND-005, FND-008.  

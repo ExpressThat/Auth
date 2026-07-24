@@ -1,5 +1,7 @@
 import {
   ControlledClock,
+  FixtureFactory,
+  type ProviderOutcome,
   type RuntimeSchema,
   type SchemaCases,
   SequenceRandom,
@@ -25,6 +27,8 @@ export const runtimeSchema = {
   safeParse: () => ({ success: true }),
 } satisfies RuntimeSchema;
 export const unitConfig = createUnitTestConfig({ test: { environment: "node" } });
+export const fixtureFactory = new FixtureFactory(new ControlledClock());
+export const providerOutcome: ProviderOutcome<string> = fixtureFactory.providerSuccess("sent");
 
 // @ts-expect-error -- clock instants cannot be strings.
 new ControlledClock("10");
@@ -36,3 +40,5 @@ export const invalidCases: SchemaCases = { invalid: null, valid: [] };
 export const invalidSchema: RuntimeSchema = { safeParse: () => ({}) };
 // @ts-expect-error -- invalid Vitest environments must be rejected.
 createUnitTestConfig({ test: { environment: 123 } });
+// @ts-expect-error -- successful provider values retain their declared type.
+export const invalidProviderOutcome: ProviderOutcome<number> = providerOutcome;
