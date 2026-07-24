@@ -1,5 +1,11 @@
 import {
   type AuthenticatedEncryptionProvider,
+  CacheKey,
+  CachePolicyVersion,
+  CachePurpose,
+  CacheScope,
+  type CacheStateProvider,
+  CacheValue,
   type Clock,
   EntityId,
   type IdentifierGenerator,
@@ -83,6 +89,14 @@ export const secretStorage: SecretStorageProvider = {
 export const secretMaterial = SecretMaterial.fromBytes(new Uint8Array([1]));
 export declare const keyManagement: KeyManagementService;
 export const signingRing = KeyRingId.parse("issuer:ring/type-test");
+export declare const cacheState: CacheStateProvider;
+export const cacheScope = CacheScope.create({
+  customerOrganisationId: PublicEntityId.parse("org", "org_01234567-89ab-7001-8203-040506070809"),
+  environmentId: PublicEntityId.parse("env", "env_01234567-89ab-7001-8203-040506070809"),
+  policyVersion: CachePolicyVersion.parse(1),
+  purpose: CachePurpose.parse("type-test"),
+});
+export const cacheKey = CacheKey.create(cacheScope, "subject");
 
 // @ts-expect-error -- public identifier prefixes come from the fixed registry.
 PublicEntityId.parse("account", "account_01234567-89ab-7001-8203-040506070809");
@@ -98,6 +112,15 @@ signingProvider.sign({ algorithm: "none" });
 passwordHasher.verify("encoded", "password");
 // @ts-expect-error -- secret creation requires a redacting SecretMaterial value.
 secretStorage.create({ material: "raw", purpose: SecretPurpose.parse("test.secret") });
+// @ts-expect-error -- cache operations require a scoped key, not a raw provider key.
+cacheState.get({ failurePolicy: "deny-request", key: "tenant:subject" });
+cacheState.put({
+  expiresAt: deterministicClock.now(),
+  // @ts-expect-error -- cache outage behavior must use an explicit supported policy.
+  failurePolicy: "allow-request",
+  key: cacheKey,
+  value: CacheValue.fromBytes(new Uint8Array([1])),
+});
 keyManagement.rotate({
   // @ts-expect-error -- lifecycle algorithms are a closed allow-list.
   algorithm: "none",

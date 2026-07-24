@@ -1,4 +1,32 @@
 export {
+  type AtomicCounterResult,
+  type CacheErrorCode,
+  type CacheFailurePolicy,
+  type CacheHealth,
+  type CacheHealthStatus,
+  type CacheMutationOutcome,
+  type CacheMutationResult,
+  type CacheOperation,
+  CacheStateError,
+  type CacheStateProvider,
+  type CompareAndSetCacheRequest,
+  type DeleteCacheRequest,
+  type GetCacheRequest,
+  type IncrementCacheRequest,
+  type PutCacheRequest,
+} from "./cache.js";
+export {
+  type CacheEntry,
+  CacheKey,
+  CachePolicyVersion,
+  CachePurpose,
+  CacheScope,
+  type CacheScopeInput,
+  CacheValue,
+  CacheVersion,
+  MAX_CACHE_VALUE_BYTES,
+} from "./cache-values.js";
+export {
   type AuthenticatedEncryptionAlgorithm,
   type AuthenticatedEncryptionProvider,
   type DecryptBytesRequest,

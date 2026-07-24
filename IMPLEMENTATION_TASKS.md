@@ -594,9 +594,22 @@ These tasks prevent foundational security or compatibility decisions from being 
   statement, function, and branch coverage. Compile-time tests preserve the
   algorithm allow-list; the full repository gates pass.
 
-- [ ] **RUN-006 — Create cache and rate-limit-state contracts.**  
-  **Depends on:** DEC-013, RUN-002.  
+- [x] **RUN-006 — Create cache and rate-limit-state contracts.**
+  **Depends on:** DEC-013, RUN-002.
   **Done when:** tenant-scoped keys, expiry, atomic increment, compare-and-set, deletion, health, and explicit failure policy are modelled.
+  **Evidence:** `@expressthat-auth/runtime` exposes redacting keys constructed
+  only from customer-organisation, environment, optional application, purpose,
+  and policy-version scope; bounded defensive-copying byte values; exact
+  expiry; optimistic compare-and-set and deletion; atomic safe-integer
+  counters; provider health; and normalized errors. Every operation requires
+  an explicit deny-request, authoritative-source, or reject-operation outage
+  policy, with no generic fail-open mode. A test-only shared backend proves
+  cross-replica visibility and atomicity, version conflicts, expiry boundaries,
+  deletion, overflow, type conflicts, health degradation, outage redaction, and
+  defensive copies. Thirteen new tests bring the runtime suite to 117 passing
+  tests with 100% line, statement, function, and branch coverage; compile-time
+  tests reject raw keys and unsupported failure policy, and the full repository
+  gates pass.
 
 - [ ] **RUN-007 — Create durable queue contracts.**  
   **Depends on:** RUN-002.  

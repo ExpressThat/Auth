@@ -3,11 +3,10 @@
 ## Purpose and status
 
 `@expressthat-auth/runtime` owns provider-neutral capability contracts.
-RUN-002 implements time, secure randomness, and entity identifiers. RUN-003
-adds password hashing, exact-byte signatures, authenticated encryption, and key
-metadata. Later RUN tasks add secrets, custody, caches, queues, objects,
-observability, composition, and health without changing this dependency
-direction.
+RUN-002 implements time, secure randomness, and entity identifiers. Subsequent
+tasks add cryptography, secret custody, key management, and shared cache state.
+Later RUN tasks add queues, objects, observability, composition, and health
+without changing this dependency direction.
 
 The root export contains production-safe contracts and implementations.
 Deterministic implementations are isolated under
@@ -125,6 +124,42 @@ demonstrates lifecycle and redaction behavior but cannot be selected by a
 deployable composition root. Production custody adapters arrive under OPS-010
 and must additionally prove access control, audit, residency, outage behavior,
 and durable multi-instance semantics.
+
+## Cache and rate-limit state
+
+`CacheStateProvider` combines expiring byte values and atomic integer counters
+behind a provider-neutral asynchronous contract. It supports unconditional
+put, lookup, optimistic compare-and-set, optional version-checked deletion,
+atomic increment, and health reporting. Versions are positive integers, the
+exact expiry instant is expired, and counter overflow is an explicit error.
+
+A `CacheKey` can only be created from a `CacheScope`. The scope contains a
+trusted customer-organisation ID, environment ID, optional application ID,
+purpose, and policy version. Length-prefixed encoding prevents ambiguous
+component joins. Keys, scopes, and byte values serialize as redaction markers;
+provider-facing values are available only through deliberately named copy
+methods. The later trusted request-context task must construct scopes from
+verified routing and membership, never raw request headers.
+
+Every operation carries one explicit outage policy:
+
+- `deny-request` is for security and abuse controls that must fail closed.
+- `query-authoritative-source` bypasses acceleration only by consulting the
+  durable system of record.
+- `reject-operation` returns an availability failure without making an access
+  decision.
+
+Adapters report failures; they do not interpret these policies. Domain services
+must apply the selected behavior and emit the required operational or security
+telemetry. There is deliberately no generic fail-open mode.
+
+The conformance adapter is test-only and can share one synthetic backend across
+replicas. Deployable adapters must provide distributed atomicity, consistent
+expiry, health, residency-aware placement, and multi-instance semantics.
+Process-local caches are limited to immutable build-time data and must never
+become an authorization, revocation, rate-limit, or tenant-isolation authority.
+Cache scope is independent of database placement, so the same contract supports
+shared, per-organisation, and hybrid database deployments.
 
 ## Identifiers
 
