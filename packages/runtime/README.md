@@ -2,11 +2,10 @@
 
 ## Purpose and status
 
-`@expressthat-auth/runtime` owns provider-neutral capability contracts.
-RUN-002 implements time, secure randomness, and entity identifiers. Subsequent
-tasks add cryptography, secret custody, key management, and shared cache state.
-Later RUN tasks add queues, objects, observability, composition, and health
-without changing this dependency direction.
+`@expressthat-auth/runtime` owns provider-neutral capability contracts,
+validated capability manifests, trusted request context, and dependency
+composition. It contains no deployment-platform, filesystem, process, database
+driver, or named-provider imports.
 
 The root export contains production-safe contracts and implementations.
 Deterministic implementations are isolated under
@@ -356,6 +355,37 @@ adapter packaging, selection, and conformance suites are separate tasks.
 Database engine capabilities and shared, dedicated, or hybrid organisation
 placement will use the same negotiation primitives while remaining separate
 operator choices.
+
+## Dependency composition
+
+`composeRuntimeDependencies()` is the runtime-neutral boundary called by every
+API, job worker, and other Docker/Node composition root after configuration and
+capability validation. It requires explicit clock, identifier, randomness,
+password, signing, authenticated-encryption, key-management, secret, cache,
+queue, object-storage, and observability dependencies. There are no globals,
+service locators, implicit defaults, or environment/file reads.
+
+Each provider instance is paired with the exact manifest object selected by a
+`ValidatedCapabilityComposition`. Composition rejects a missing, forged, or
+substituted manifest and verifies the complete callable contract before
+returning a frozen, redacting `RuntimeDependencySet`. Capability validation
+cannot be bypassed through a public constructor. Provider objects themselves
+are not frozen because adapters may own bounded pools and health state; the
+composition container and authority binding are immutable.
+
+Domain and use-case constructors request the narrowest appropriate interface:
+`FoundationalRuntimeDependencies`, `CryptographicRuntimeDependencies`,
+`StatefulRuntimeDependencies`, or `OperationalRuntimeDependencies`. The full
+set is structurally compatible with each narrow interface, while a narrow
+interface cannot access unrelated providers. Domain code receives only these
+ports and never the capability manifests, adapter configuration, secrets,
+Node/process/filesystem APIs, or deployment composition.
+
+The canonical `RUNTIME_DEPENDENCY_CAPABILITIES` registry prevents spelling
+drift between application requirements and provider bindings. It covers the
+contracts implemented by RUN-003 through RUN-009. Database repositories and
+future infrastructure categories join through their own contracts as their
+backlog tasks are implemented.
 
 ## Identifiers
 

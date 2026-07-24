@@ -130,7 +130,7 @@ function validateBinding(
 export class ValidatedCapabilityComposition {
   readonly #bindings: ReadonlyMap<string, RuntimeCapabilityManifest>;
 
-  public constructor(bindings: readonly CapabilityBinding[]) {
+  private constructor(bindings: readonly CapabilityBinding[]) {
     this.#bindings = new Map(
       bindings.map((binding) => [binding.capability.toString(), binding.manifest]),
     );
@@ -141,6 +141,35 @@ export class ValidatedCapabilityComposition {
     return this.#bindings.get(capability.toString());
   }
 
+  public static validate(input: CapabilityCompositionInput): ValidatedCapabilityComposition {
+    validateRuntime(input.runtime);
+    ensureUnique(
+      input.requirements.map((entry) => entry.capability),
+      "duplicate-requirement",
+    );
+    ensureUnique(
+      input.bindings.map((entry) => entry.capability),
+      "duplicate-binding",
+    );
+    const requirements = new Map(
+      input.requirements.map((entry) => [entry.capability.toString(), entry]),
+    );
+    const bindings = new Map(input.bindings.map((entry) => [entry.capability.toString(), entry]));
+    for (const binding of input.bindings) {
+      if (!requirements.has(binding.capability.toString())) {
+        throw new CapabilityValidationError("unexpected-binding", binding.capability);
+      }
+    }
+    for (const requirement of input.requirements) {
+      const binding = bindings.get(requirement.capability.toString());
+      if (binding === undefined) {
+        throw new CapabilityValidationError("missing-capability", requirement.capability);
+      }
+      validateBinding(input, requirement, binding);
+    }
+    return new ValidatedCapabilityComposition(input.bindings);
+  }
+
   public toJSON(): Readonly<{ redacted: true }> {
     return { redacted: true };
   }
@@ -149,30 +178,5 @@ export class ValidatedCapabilityComposition {
 export function validateCapabilityComposition(
   input: CapabilityCompositionInput,
 ): ValidatedCapabilityComposition {
-  validateRuntime(input.runtime);
-  ensureUnique(
-    input.requirements.map((entry) => entry.capability),
-    "duplicate-requirement",
-  );
-  ensureUnique(
-    input.bindings.map((entry) => entry.capability),
-    "duplicate-binding",
-  );
-  const requirements = new Map(
-    input.requirements.map((entry) => [entry.capability.toString(), entry]),
-  );
-  const bindings = new Map(input.bindings.map((entry) => [entry.capability.toString(), entry]));
-  for (const binding of input.bindings) {
-    if (!requirements.has(binding.capability.toString())) {
-      throw new CapabilityValidationError("unexpected-binding", binding.capability);
-    }
-  }
-  for (const requirement of input.requirements) {
-    const binding = bindings.get(requirement.capability.toString());
-    if (binding === undefined) {
-      throw new CapabilityValidationError("missing-capability", requirement.capability);
-    }
-    validateBinding(input, requirement, binding);
-  }
-  return new ValidatedCapabilityComposition(input.bindings);
+  return ValidatedCapabilityComposition.validate(input);
 }

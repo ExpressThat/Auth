@@ -43,6 +43,7 @@ export {
   type VerifyBytesRequest,
 } from "./cryptography.js";
 export type { DataClassification } from "./data-classification.js";
+export * from "./dependencies.js";
 export {
   ENTITY_PREFIXES,
   EntityId,

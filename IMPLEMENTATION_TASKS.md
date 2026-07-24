@@ -711,9 +711,25 @@ These tasks prevent foundational security or compatibility decisions from being 
   branch, function, and line coverage. Compile-time tests reject raw capability
   strings, and the full repository gates pass.
 
-- [ ] **RUN-012 — Create dependency composition roots.**  
-  **Depends on:** RUN-011.  
+- [x] **RUN-012 — Create dependency composition roots.**
+  **Depends on:** RUN-011.
   **Done when:** domain code receives explicit interfaces and contains no Node, filesystem, process, or deployment-platform imports.
+  **Evidence:** `@expressthat-auth/runtime` defines narrow foundational,
+  cryptographic, durable-state, and operational dependency interfaces plus a
+  complete immutable redacting `RuntimeDependencySet`. Every API, job, and
+  later Docker entry point can call one runtime-neutral composition function
+  with explicit clock, identifier, randomness, password, signing, encryption,
+  key-management, secret, cache, queue, object, and observability ports. Each
+  provider is bound to the exact manifest selected by the already validated
+  capability composition; forged, substituted, malformed, or unvalidated
+  dependencies fail before startup. There is no public constructor bypass,
+  global locator, implicit default, environment/file read, Node/process import,
+  deployment import, or named-provider conditional. Sixteen new composition,
+  substitution, malformed-provider, immutability, redaction, and safe-error
+  tests bring the runtime suite to 233 passing tests with 100% statement,
+  branch, function, and line coverage. Compile-time tests prove the full set is
+  assignable to narrow interfaces while foundational dependencies cannot be
+  treated as durable state; boundary and full repository gates pass.
 
 - [ ] **RUN-013 — Implement local deterministic adapters.**  
   **Depends on:** RUN-002 through RUN-009.  

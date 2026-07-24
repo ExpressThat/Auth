@@ -9,8 +9,10 @@ import {
   CacheValue,
   type Clock,
   CustomerOrganisationId,
+  composeRuntimeDependencies,
   type DurableQueueProvider,
   EntityId,
+  type FoundationalRuntimeDependencies,
   type IdentifierGenerator,
   KeyHandle,
   KeyLifecycleVersion,
@@ -28,6 +30,7 @@ import {
   type RandomSource,
   RuntimeCapability,
   RuntimeCapabilityManifest,
+  type RuntimeDependencyCompositionInput,
   SchemaDigest,
   SchemaIdentifier,
   SchemaVersion,
@@ -39,6 +42,7 @@ import {
   SemanticVersion,
   ServicePrincipalId,
   type SigningProvider,
+  type StatefulRuntimeDependencies,
   SystemClock,
   TELEMETRY_FIELDS,
   TelemetryAttribute,
@@ -156,6 +160,9 @@ export const adapterManifest = RuntimeCapabilityManifest.create({
   node: { maximumMajorExclusive: 27, minimumMajor: 24, runtime: "node" },
   profiles: ["self-hosted"],
 });
+export declare const runtimeCompositionInput: RuntimeDependencyCompositionInput;
+export const runtimeDependencies = composeRuntimeDependencies(runtimeCompositionInput);
+export const foundationalDependencies: FoundationalRuntimeDependencies = runtimeDependencies;
 
 // @ts-expect-error -- public identifier prefixes come from the fixed registry.
 PublicEntityId.parse("account", "account_01234567-89ab-7001-8203-040506070809");
@@ -191,6 +198,8 @@ TelemetryAttribute.create(
 );
 // @ts-expect-error -- management and customer organisation brands are distinct.
 export const wrongOrganisationBrand: CustomerOrganisationId = managementOrganisationId;
+// @ts-expect-error -- narrow foundational dependencies do not expose durable state.
+export const invalidStatefulDependencies: StatefulRuntimeDependencies = foundationalDependencies;
 RuntimeCapabilityManifest.create({
   adapter: adapterManifest.adapter,
   adapterVersion: adapterManifest.adapterVersion,
