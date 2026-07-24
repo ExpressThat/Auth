@@ -506,9 +506,20 @@ These tasks prevent foundational security or compatibility decisions from being 
 
 ## 5. Phase 2 — Runtime-Neutral Platform Contracts
 
-- [ ] **RUN-001 — Create the validated configuration package.**  
+- [x] **RUN-001 — Create the validated configuration package.**
   **Depends on:** DEC-005, FND-003, FND-008.  
   **Done when:** configuration schemas distinguish public values, secrets, build-time values, and runtime bindings; invalid startup configuration fails safely.
+  **Evidence:** `@expressthat-auth/config` defines and infers four explicit Zod
+  schema sections for public, secret, immutable build-time, and opaque runtime
+  binding values. Its strict untrusted envelope parser returns a typed
+  `ValidatedConfiguration`, exposes secrets and bindings only through keyed
+  accessors, freezes safe public/build views, redacts JSON output, and converts
+  invalid input into stable area/code/path errors without rejected values or
+  Zod messages. Eleven valid, invalid, hostile-path, and redaction tests pass
+  with 100% line, statement, function, and branch coverage; compile-time tests
+  prove schema inference and reject undeclared secret, binding, and public
+  access. The full repository format, policy, lint, type, type-contract, test,
+  coverage, build, artifact, licence, dependency-audit, and diff gates pass.
 
 - [ ] **RUN-002 — Create `Clock`, `RandomSource`, and identifier contracts.**  
   **Depends on:** DEC-010, FND-008.  

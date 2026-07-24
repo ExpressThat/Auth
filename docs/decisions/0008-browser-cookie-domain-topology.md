@@ -38,7 +38,7 @@ https://<customer-identity-origin>/
 ```
 
 Static frontend assets can be served by a separate implementation internally,
-but the external reverse proxy or Worker routes UI and browser API through the
+but the external reverse proxy routes UI and browser API through the
 same origin. Public bearer-token APIs may use separate API origins and never
 accept browser session cookies.
 

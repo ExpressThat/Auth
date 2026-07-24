@@ -55,6 +55,7 @@ depend on contracts and implementations only to test them.
 | `packages/typescript-config` | Engineering productivity | Strict base, library, Node, React, and tooling TypeScript profiles |
 | `packages/lint-config` | Code quality | Custom repository lint-policy support beyond the root Biome configuration |
 | `packages/test-config` | Test engineering | Shared Vitest, component, coverage, fixture, and test utilities |
+| `packages/config` | Runtime platform | Classified, runtime-validated startup configuration contracts and safe failure reporting |
 
 Configuration packages cannot import product code.
 

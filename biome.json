@@ -16,7 +16,6 @@
       "!!**/playwright-report",
       "!!**/test-results",
       "!!**/*.generated.*",
-      "!!**/worker-configuration.d.ts",
       "!!pnpm-lock.yaml"
     ]
   },

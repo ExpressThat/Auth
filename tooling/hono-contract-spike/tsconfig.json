@@ -3,5 +3,5 @@
   "compilerOptions": {
     "lib": ["ES2024", "DOM"]
   },
-  "include": ["src/app.ts", "src/worker.ts", "test/app.test.ts", "vitest.node.config.ts"]
+  "include": ["src/app.ts", "test/app.test.ts", "vitest.node.config.ts"]
 }

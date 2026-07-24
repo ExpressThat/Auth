@@ -139,7 +139,7 @@ flowchart LR
 - **Supply-chain attacker:** compromises a package, build tool, image, action,
   registry, artifact, update channel, or adapter.
 - **Infrastructure attacker/failure:** compromises or partitions database,
-  cache, queue, object, DNS, certificate, KMS, proxy, Worker binding, container,
+  cache, queue, object, DNS, certificate, KMS, proxy, runtime binding, container,
   clock, or random source.
 - **Researcher/accidental user:** discovers a flaw without hostile intent; intake
   must make safe reporting and rapid containment possible.
@@ -277,6 +277,7 @@ flowchart LR
 | RUN-T05 | A single-instance database is used as shared multi-instance production storage | High | Profile capability validation requires a supported shared transactional adapter; PostgreSQL is the initial reference, not the only possible implementation | Low |
 | RUN-T06 | Browser cookie/storage/privacy changes break CSRF/SSO or expose session | High | Host-only opaque cookies, no third-party-cookie dependency, browser matrix, fallback interactions, periodic review | Medium due ecosystem change |
 | RUN-T07 | Container limits or replica sizing permit denial of service | High | Per-profile measured limits, request budgets, queue offload, backpressure, autoscaling/load tests | Medium under provider-wide outage |
+| RUN-T08 | Missing, malformed, or misclassified startup configuration leaks secrets or enables unsafe partial startup | Critical | Strict classified schemas, redacted stable errors, explicit secret/binding access, fail-before-listen composition, valid/invalid/redaction tests | Low; operator can still deliberately misclassify a value |
 
 ## 8. Required Abuse Journeys
 

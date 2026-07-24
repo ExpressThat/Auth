@@ -12,7 +12,6 @@ export type LineExemption =
   | "tool output";
 
 const EXEMPT_FILENAMES = new Map<string, LineExemption>([
-  ["worker-configuration.d.ts", "generated content"],
   ["pnpm-lock.yaml", "lockfile"],
   ["package-lock.json", "lockfile"],
   ["yarn.lock", "lockfile"],

@@ -221,7 +221,7 @@ European processing and retention rules.
 ## Portability and Self-Hosting Impact
 
 Isolation is expressed in domain, repository, and adapter contracts rather than
-a particular database schema, Worker binding, or container topology. Self-hosters
+a particular database schema, runtime binding, or container topology. Self-hosters
 can choose one shared database or stronger physical separation while passing the
 same conformance tests.
 

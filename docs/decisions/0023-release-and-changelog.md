@@ -31,7 +31,7 @@ the deliberate `v1.0.0` release after every release gate passes.
 Each platform release publishes an immutable manifest that binds:
 
 - source commit and clean-tree status;
-- every application, image, Worker, frontend, job, and deployment artifact
+- every application, image, frontend, job, and deployment artifact
   version and digest;
 - supported Node, browser, database, queue, cache, and object-store
   compatibility;

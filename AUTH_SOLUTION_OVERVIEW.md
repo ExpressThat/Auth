@@ -1399,7 +1399,8 @@ The product should adopt these broader principles:
 - Enable strict TypeScript rules across application, test, migration, job, SDK, and build-tooling packages.
 - Add mandatory coverage, file-length, package-boundary, dependency-cycle, and skipped-test checks.
 - Enforce the 250-line maximum for first-party code, tests, configuration, and tooling.
-- Create Hono Worker and Node/Docker entry points backed by the same route and domain packages.
+- Create Hono Node entry points and Docker images backed by the same route and
+  domain packages.
 - Establish schema-driven route contracts with typed request and response validation.
 - Generate complete OpenAPI documents, `/openapi.json` endpoints, and Swagger-compatible `/docs` interfaces for every API.
 - Add OpenAPI linting, breaking-change detection, contract tests, and first-party typed-client generation to CI.

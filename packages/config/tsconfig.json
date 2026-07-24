@@ -1,0 +1,4 @@
+{
+  "extends": "@expressthat-auth/typescript-config/library.json",
+  "include": ["src/**/*.ts", "test/**/*.ts", "vitest.config.ts"]
+}

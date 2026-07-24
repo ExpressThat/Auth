@@ -7,6 +7,15 @@ import { describe, expect, it } from "vitest";
 const REPOSITORY_ROOT = fileURLToPath(new URL("../../../", import.meta.url));
 const CANONICAL_SCOPE = "@expressthat-auth/";
 const RETIRED_SCOPE = ["@express", "that-auth"].join("-");
+const RETIRED_RUNTIME_PATTERNS = [
+  ["Cloud", "flare"].join(""),
+  ["wrang", "ler"].join(""),
+  ["worker", "-configuration.d.ts"].join(""),
+  ["Hono", " Worker"].join(""),
+  ["Worker", " binding"].join(""),
+  ["src/", "worker.ts"].join(""),
+  ["test/", "worker.test.ts"].join(""),
+];
 
 function runGit(arguments_: string[]): { output: string; status: number | null } {
   const result = spawnSync("git", arguments_, {
@@ -56,5 +65,14 @@ describe("workspace package scope", () => {
 
     expect(result.status).toBe(1);
     expect(result.output).toBe("");
+  });
+
+  it("does not retain retired edge-runtime implementation references", () => {
+    for (const pattern of RETIRED_RUNTIME_PATTERNS) {
+      const result = runGit(["grep", "-n", pattern, "--", "."]);
+
+      expect(result.status, pattern).toBe(1);
+      expect(result.output, pattern).toBe("");
+    }
   });
 });
