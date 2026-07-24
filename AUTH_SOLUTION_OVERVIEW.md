@@ -837,7 +837,14 @@ Job workers scale horizontally as competing consumers:
 
 - API and worker instances support graceful shutdown and stop accepting new work before termination.
 - Health endpoints distinguish liveness from readiness.
+- Liveness proves only that the process can execute and never probes a shared
+  dependency, preventing dependency outages from causing container restart
+  loops.
 - An instance is not ready until required shared dependencies and compatible schema versions are available.
+- Public readiness responses are aggregate and contain no topology,
+  configuration, connection, or error details. Per-dependency diagnostics are
+  exposed only through an explicitly authorised platform operation and use
+  bounded identifiers and normalized codes.
 - Database migrations run as a dedicated release task, not independently on every application instance.
 - Rolling releases use backward-compatible API and schema changes.
 - Queue messages and webhook payloads are versioned so old and new workers can overlap safely.

@@ -752,9 +752,20 @@ These tasks prevent foundational security or compatibility decisions from being 
   statement, branch, function, and line coverage, including the promoted
   adapter implementations; full repository gates pass.
 
-- [ ] **RUN-014 — Add liveness, readiness, and dependency diagnostics contracts.**  
-  **Depends on:** RUN-011, DEC-021.  
+- [x] **RUN-014 — Add liveness, readiness, and dependency diagnostics contracts.**
+  **Depends on:** RUN-011, DEC-021.
   **Done when:** liveness avoids dependency checks, readiness validates required dependencies and schema compatibility, and diagnostics are access controlled.
+  **Evidence:** `RuntimeHealthService` separates dependency-free liveness,
+  aggregate readiness, and protected detailed diagnostics. Required checks run
+  concurrently and fail readiness on unavailable, rejected, malformed, unknown,
+  or incompatible required-schema results; degraded checks remain ready and
+  optional checks do not gate traffic. Diagnostics authorize a validated
+  `RequestContext` before probing, fail closed on denied or failed policy, and
+  expose only validated identifiers, schema versions, and normalized codes.
+  Constructor, hostile-provider, authorization-order, schema-state,
+  aggregation, redaction, immutability, and compile-time contract tests bring
+  the runtime suite to 267 passing tests with 100% statement, branch, function,
+  and line coverage; full repository gates pass.
 
 - [ ] **RUN-015 — Prove runtime neutrality automatically.**  
   **Depends on:** RUN-012, FND-007.  

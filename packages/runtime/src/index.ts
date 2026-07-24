@@ -45,6 +45,26 @@ export {
 export type { DataClassification } from "./data-classification.js";
 export * from "./dependencies.js";
 export {
+  type DependencyDiagnostic,
+  type DiagnosticsAccessController,
+  type DiagnosticsReport,
+  HealthAccessError,
+  type HealthAccessErrorCode,
+  type LivenessReport,
+  type ReadinessReport,
+  type ReadinessStatus,
+  type RuntimeHealthCheck,
+  RuntimeHealthService,
+} from "./health.js";
+export {
+  DependencyHealthObservation,
+  type DependencyHealthStatus,
+  HealthCheckId,
+  type HealthDiagnosticCode,
+  SchemaHealth,
+  type SchemaHealthStatus,
+} from "./health-values.js";
+export {
   ENTITY_PREFIXES,
   EntityId,
   type EntityPrefix,

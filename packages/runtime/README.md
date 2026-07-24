@@ -387,6 +387,36 @@ contracts implemented by RUN-003 through RUN-009. Database repositories and
 future infrastructure categories join through their own contracts as their
 backlog tasks are implemented.
 
+## Liveness, readiness, and diagnostics
+
+`RuntimeHealthService` keeps process liveness, traffic readiness, and protected
+dependency diagnostics as separate contracts:
+
+- `liveness()` reads only the injected clock and reports that the process can
+  execute. It never invokes an infrastructure adapter, database, network, or
+  schema check, so a dependency outage cannot trigger a container restart loop.
+- `readiness()` probes required dependencies concurrently. An unavailable or
+  malformed dependency, a rejected probe, or any required schema state other
+  than `compatible` makes the instance not ready. Degraded dependencies remain
+  ready but are counted for operational alerting. Optional diagnostics do not
+  gate traffic.
+- `diagnostics()` returns bounded per-check identifiers, normalized status and
+  reason codes, and compatible current/required schema versions. It invokes an
+  injected `DiagnosticsAccessController` before running any probe and denies
+  access when the context is invalid, authorization returns anything other
+  than `true`, or authorization fails.
+
+Health check identifiers and schema states are validated immutable values.
+Duplicate checks are rejected at composition. Adapter exceptions, arbitrary
+objects, configuration, connection details, and secrets never enter a health
+report; failures normalize to `check-failed` or `invalid-response`.
+
+This runtime contract does not define public HTTP routes or grant diagnostic
+authority. Each Docker application maps the aggregate liveness/readiness
+reports to its minimal service endpoints and supplies an authorization policy
+for its protected platform diagnostics API. Probe implementations must be
+bounded by their adapter contract so readiness cannot wait indefinitely.
+
 ## Testing-only deterministic adapters
 
 `@expressthat-auth/runtime/testing` exposes controlled time and randomness plus
