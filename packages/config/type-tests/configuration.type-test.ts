@@ -6,6 +6,7 @@ import {
   parseStartupConfiguration,
   type SecretValues,
 } from "@expressthat-auth/config";
+import { parseOperatorAdapterConfiguration } from "@expressthat-auth/config/operator";
 import { z } from "zod";
 
 const definition = defineConfiguration({
@@ -40,3 +41,19 @@ configuration.secret("missing");
 configuration.binding("queue");
 // @ts-expect-error -- public configuration does not expose secret fields.
 configuration.publicValues.key;
+
+export const operatorSelection = parseOperatorAdapterConfiguration({
+  bindings: [
+    {
+      adapter: "reference/durable-state",
+      capability: "infrastructure/durable-queue",
+    },
+  ],
+  platform: {
+    containerArchitecture: "amd64",
+    externalCapabilities: ["network/tls"],
+    operatingSystem: "linux",
+  },
+  profile: "self-hosted",
+  runtime: { major: 24, minor: 18, patch: 0, runtime: "node" },
+});

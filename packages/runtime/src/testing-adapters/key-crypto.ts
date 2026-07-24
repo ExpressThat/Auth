@@ -26,14 +26,20 @@ async function thumbprint(canonicalJwk: string): Promise<string> {
   );
 }
 
-export function requireRsaPublicMembers(exported: JsonWebKey): Readonly<{ e: string; n: string }> {
+import type { PortablePublicJsonWebKey } from "../cryptography.js";
+
+export function requireRsaPublicMembers(
+  exported: PortablePublicJsonWebKey,
+): Readonly<{ e: string; n: string }> {
   if (!exported.e || !exported.n) {
     throw new Error("Generated RSA key lacks public members.");
   }
   return { e: exported.e, n: exported.n };
 }
 
-export function requireEcPublicMembers(exported: JsonWebKey): Readonly<{ x: string; y: string }> {
+export function requireEcPublicMembers(
+  exported: PortablePublicJsonWebKey,
+): Readonly<{ x: string; y: string }> {
   if (!exported.x || !exported.y) {
     throw new Error("Generated EC key lacks public members.");
   }

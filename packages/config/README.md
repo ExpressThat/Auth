@@ -18,6 +18,16 @@ container secrets itself.
 - Inference helpers expose each definition's public, secret, build, and binding
   types.
 
+The separate `@expressthat-auth/config/operator` export parses infrastructure
+adapter selection only at a Docker deployment composition root. It accepts a
+strict list of namespaced capability-to-adapter bindings, one of the hosted,
+self-hosted, or local-development profiles, and an exact Node runtime version.
+The target operating system, Docker architecture, and available namespaced
+external capabilities are explicit. It returns a validated, immutable,
+redacting `OperatorAdapterSelection`.
+Applications and product packages are forbidden from importing this subpath by
+the repository boundary gate.
+
 Definitions should use strict Zod object schemas. Public values may be returned
 to a browser only when the owning API contract explicitly permits them. Secret
 values and runtime bindings are available only through explicit typed
@@ -48,6 +58,12 @@ configuration.binding("clock");
 The composition root must catch `StartupConfigurationError`, record only its
 safe representation, and stop before opening a listener. It must never log the
 untrusted envelope.
+
+Operator configuration is startup input, not a customer resource. It is absent
+from public configuration values, provider-instance APIs, management routes,
+OpenAPI contracts, and the ordinary package root. Duplicate capabilities,
+unknown fields, malformed identifiers, test-profile selection, or invalid
+runtime versions fail before adapter lookup.
 
 ## Security, privacy, and operations
 

@@ -799,9 +799,24 @@ These tasks prevent foundational security or compatibility decisions from being 
   the quality suite to 236 passing tests with 100% statement, branch, function,
   and line coverage; full repository gates pass.
 
-- [ ] **RUN-017 — Implement operator-controlled adapter selection.**  
-  **Depends on:** RUN-001, RUN-011, RUN-016.  
+- [x] **RUN-017 — Implement operator-controlled adapter selection.**
+  **Depends on:** RUN-001, RUN-011, RUN-016.
   **Done when:** hosted and self-hosted composition roots select adapters through validated operator configuration, while customer APIs cannot replace platform infrastructure.
+  **Evidence:** strict startup parsing turns namespaced capability-to-adapter
+  bindings, deployment profile, and exact Node version into an immutable
+  redacting `OperatorAdapterSelection`. A static `OperatorAdapterRegistry`
+  rejects empty, forged, duplicate, or unavailable registrations and resolves
+  only manifests compiled into the Docker artifact before delegating declared
+  capability, profile, runtime, shared-state, and residency enforcement to the
+  existing fail-closed validator. The shared Docker resolver proves hosted and
+  self-hosted selection without dynamic module loading. Operator parsing and
+  resolution are absent from ordinary package roots, and source-boundary policy
+  restricts their `./operator` exports to configuration ownership and Docker
+  deployment composition; API applications, jobs, providers, and product
+  packages are rejected. Portable public-JWK typing removes an ambient-runtime
+  leak found by cross-package compilation. Runtime, configuration, Docker, and
+  quality suites pass 324, 24, 36, and 237 tests respectively with 100%
+  statement, branch, function, and line coverage; full repository gates pass.
 
 - [ ] **RUN-018 — Create infrastructure-adapter conformance harnesses.**  
   **Depends on:** RUN-003 through RUN-009, RUN-016.  

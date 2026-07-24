@@ -114,6 +114,32 @@ The rule is in the full and affected CI boundary gates. Future scaffolding and
 operator registries consume this same contract rather than maintaining a
 second provider list.
 
+## Operator Selection
+
+Operator selection has two restricted, non-root package exports:
+
+- `@expressthat-auth/config/operator` strictly parses startup-only bindings,
+  deployment profile, and the exact Node runtime; and
+- `@expressthat-auth/runtime/operator` resolves those bindings through the
+  manifests compiled into the Docker artifact.
+
+The hosted and self-hosted Docker composition uses the same resolver. Unknown,
+duplicate, forged, undeclared, profile-incompatible, runtime-incompatible,
+state-incompatible, or residency-incompatible selections fail before serving
+traffic. Each registry entry cross-checks the static package category and Node
+support with the runtime capability manifest; selection also proves the target
+operating system, Docker architecture, and every required external capability
+are available. Registries do not dynamically load a package named by
+configuration.
+
+Repository source policy allows these exports only inside their owning
+configuration/runtime packages and Docker deployment workspaces. API
+applications, jobs, provider implementations, and ordinary runtime-neutral
+product packages cannot import them. Consequently, customer-facing request
+schemas and management APIs can configure tenant provider integrations but
+cannot replace operator-owned queues, caches, object stores, secret stores, key
+management, observability, DNS, certificates, or deployment automation.
+
 ## Testing and Local Development
 
 Contract-only deterministic doubles under `@expressthat-auth/runtime/testing`

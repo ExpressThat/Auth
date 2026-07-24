@@ -18,6 +18,7 @@ export const cacheCapability = RuntimeCapability.parse("infrastructure/cache-sta
 
 export function manifest(
   overrides: Readonly<{
+    adapter?: AdapterIdentifier;
     capability?: RuntimeCapability;
     coordination?: "process" | "shared";
     durability?: "durable" | "ephemeral";
@@ -26,7 +27,7 @@ export function manifest(
   }> = {},
 ): RuntimeCapabilityManifest {
   return RuntimeCapabilityManifest.create({
-    adapter: AdapterIdentifier.parse("reference/durable-state"),
+    adapter: overrides.adapter ?? AdapterIdentifier.parse("reference/durable-state"),
     adapterVersion: SemanticVersion.parse("1.2.3"),
     capabilities: [
       {

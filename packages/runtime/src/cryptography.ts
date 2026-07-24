@@ -9,6 +9,19 @@ export type KeyPurpose =
   | "issuer-signing"
   | "webhook-signing";
 
+export interface PortablePublicJsonWebKey {
+  alg?: string;
+  crv?: string;
+  e?: string;
+  ext?: boolean;
+  key_ops?: string[];
+  kty?: string;
+  n?: string;
+  use?: string;
+  x?: string;
+  y?: string;
+}
+
 export class KeyHandle {
   readonly #value: string;
 
@@ -41,7 +54,7 @@ export interface SigningKeyMetadata {
   readonly algorithm: SigningAlgorithm;
   readonly createdAt: EpochMilliseconds;
   readonly keyId: string;
-  readonly publicJwk: JsonWebKey;
+  readonly publicJwk: PortablePublicJsonWebKey;
   readonly purpose: Extract<KeyPurpose, "issuer-signing" | "webhook-signing">;
 }
 

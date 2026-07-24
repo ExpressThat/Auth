@@ -12,6 +12,10 @@ const NODE_BUILTINS = new Set(
   ]),
 );
 const RUNTIME_PROTOCOL = /^(?:bun|cloudflare|deno):/u;
+const OPERATOR_EXPORTS = new Set([
+  "@expressthat-auth/config/operator",
+  "@expressthat-auth/runtime/operator",
+]);
 
 export async function findSourceViolations(
   workspaces: Workspace[],
@@ -145,6 +149,19 @@ function inspectInternalImport(
       path: sourcePath,
     });
     return;
+  }
+
+  if (
+    OPERATOR_EXPORTS.has(specifier) &&
+    importer.kind !== "deployment" &&
+    importer.name !== target.name &&
+    importer.name !== "@expressthat-auth/config"
+  ) {
+    violations.push({
+      code: "operator-control-import",
+      message: `${specifier} is restricted to operator configuration and deployment composition.`,
+      path: sourcePath,
+    });
   }
 
   if (

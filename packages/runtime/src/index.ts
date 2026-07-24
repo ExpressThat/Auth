@@ -36,6 +36,7 @@ export {
   type EncryptionKeyMetadata,
   KeyHandle,
   type KeyPurpose,
+  type PortablePublicJsonWebKey,
   type SignBytesRequest,
   type SigningAlgorithm,
   type SigningKeyMetadata,

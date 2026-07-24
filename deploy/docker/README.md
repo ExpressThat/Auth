@@ -5,6 +5,27 @@ health checks, and deployment conformance. The production application images
 and self-hosted composition remain planned; the local dependency stack is
 implemented and tested.
 
+## Operator-controlled adapter selection
+
+`resolveDockerAdapterConfiguration` is the common hosted and self-hosted
+selection boundary. It strictly parses startup-only operator input, resolves
+configured namespaced adapter identifiers from the registry compiled into the
+Docker artifact, and cross-checks the package declaration, runtime manifest,
+operating system, container architecture, available external capabilities,
+capability policy, profile, Node runtime, shared state, and residency before an
+application listener can start.
+
+The registry does not dynamically load packages and an unavailable identifier
+fails startup. Adapter configuration is not an HTTP resource, does not appear
+in application OpenAPI contracts, and cannot be supplied by a customer or
+application administrator. Repository boundaries prohibit API applications and
+ordinary product packages from importing the operator parser or registry.
+
+Hosted deployment configuration is controlled by ExpressThat operations.
+Self-hosted operators control their own selection and are responsible for the
+compatibility, security, infrastructure, region, availability, backups,
+recovery, and compliance consequences of those choices.
+
 ## Local shared dependencies
 
 From the repository root:

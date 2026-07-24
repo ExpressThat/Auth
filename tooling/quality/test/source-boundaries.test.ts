@@ -153,4 +153,58 @@ describe("source import boundaries", () => {
       },
     ]);
   });
+
+  it("keeps operator adapter control out of applications and product packages", async () => {
+    const runtime = workspace(
+      "@expressthat-auth/runtime",
+      "runtime-neutral",
+      [],
+      [".", "./operator"],
+    );
+    const config = workspace(
+      "@expressthat-auth/config",
+      "runtime-neutral",
+      [dependency("@expressthat-auth/runtime")],
+      [".", "./operator"],
+    );
+    const application = workspace("@expressthat-auth/auth-api", "application", [
+      dependency("@expressthat-auth/config"),
+    ]);
+    application.path = "apps/auth-api";
+    const domain = workspace("@expressthat-auth/domain", "runtime-neutral", [
+      dependency("@expressthat-auth/runtime"),
+    ]);
+    const deployment = workspace("@expressthat-auth/deploy-docker", "deployment", [
+      dependency("@expressthat-auth/config"),
+    ]);
+    deployment.path = "deploy/docker";
+
+    const violations = await findSourceViolations(
+      [runtime, config, application, domain, deployment],
+      [
+        file("apps/auth-api/src/startup.ts", 'import "@expressthat-auth/config/operator";'),
+        file("packages/domain/src/selection.ts", 'import "@expressthat-auth/runtime/operator";'),
+        file(
+          "packages/config/src/operator.ts",
+          'export * from "@expressthat-auth/runtime/operator";',
+        ),
+        file("deploy/docker/src/selection.ts", 'import "@expressthat-auth/config/operator";'),
+      ],
+    );
+
+    expect(violations.filter((item) => item.code === "operator-control-import")).toEqual([
+      {
+        code: "operator-control-import",
+        message:
+          "@expressthat-auth/config/operator is restricted to operator configuration and deployment composition.",
+        path: "apps/auth-api/src/startup.ts",
+      },
+      {
+        code: "operator-control-import",
+        message:
+          "@expressthat-auth/runtime/operator is restricted to operator configuration and deployment composition.",
+        path: "packages/domain/src/selection.ts",
+      },
+    ]);
+  });
 });

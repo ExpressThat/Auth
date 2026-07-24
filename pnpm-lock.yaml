@@ -37,6 +37,13 @@ importers:
   apps/platform-api: {}
 
   deploy/docker:
+    dependencies:
+      '@expressthat-auth/config':
+        specifier: workspace:*
+        version: link:../../packages/config
+      '@expressthat-auth/runtime':
+        specifier: workspace:*
+        version: link:../../packages/runtime
     devDependencies:
       '@expressthat-auth/test-config':
         specifier: workspace:*
@@ -65,6 +72,9 @@ importers:
 
   packages/config:
     dependencies:
+      '@expressthat-auth/runtime':
+        specifier: workspace:*
+        version: link:../runtime
       zod:
         specifier: 4.4.3
         version: 4.4.3

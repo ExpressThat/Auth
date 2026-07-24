@@ -625,6 +625,17 @@ runtime-support metadata before an adapter can enter an operator registry. See
 the [infrastructure adapter package contract](docs/architecture/infrastructure-adapter-packages.md)
 and [ADR-0025](docs/decisions/0025-infrastructure-adapter-packaging.md).
 
+Operator adapter selection is exposed only through dedicated configuration and
+runtime `./operator` subpaths. The shared Docker composition root strictly
+parses namespaced capability bindings, resolves only manifests statically
+registered with their package support declarations in the deployed artifact,
+and cross-checks Node range, operating system, Docker architecture, required
+external capabilities, profile, shared-state, and residency policy. Unknown or
+incompatible selection fails before traffic. Automated source boundaries
+reject these control-plane imports from API applications, jobs, provider
+implementations, and ordinary product packages, so customer-facing APIs cannot
+replace platform infrastructure.
+
 #### Provider Conformance Testing
 
 Each provider category owns a reusable conformance suite. An adapter is releasable only when it passes:

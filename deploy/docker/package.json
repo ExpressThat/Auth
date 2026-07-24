@@ -5,6 +5,10 @@
   "description": "Docker composition and deployment workspace.",
   "license": "MIT",
   "type": "module",
+  "dependencies": {
+    "@expressthat-auth/config": "workspace:*",
+    "@expressthat-auth/runtime": "workspace:*"
+  },
   "scripts": {
     "build": "tsc --noEmit",
     "check:deployment": "tsx src/local-stack-cli.ts validate",

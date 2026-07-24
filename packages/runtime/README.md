@@ -446,6 +446,36 @@ failure normalization, defensive copying, isolation, lifecycle, and
 multi-instance-like semantics run through the same runtime suite as the
 interfaces they implement.
 
+## Operator adapter registry
+
+`@expressthat-auth/runtime/operator` owns the startup-only selection and
+registry primitives. A validated selection binds each required runtime
+capability to one registered adapter identifier and records the Docker
+deployment profile and exact Node version. Bindings are immutable, unique by
+capability, and redact their identifiers when serialized.
+
+The registry is constructed from statically imported, validated
+`OperatorAdapterRegistration` objects. Each registration binds the package
+category and runtime-support declaration to its `RuntimeCapabilityManifest`,
+rejecting package identity errors or a different Node range between the two
+surfaces. It rejects empty, forged, or duplicate registrations and fails closed
+when configuration names an adapter that is not in the deployed artifact.
+Resolution first verifies the selected operating system, Docker architecture,
+and required external capabilities, then converts identifiers into manifest
+bindings and delegates profile, Node runtime, declared-capability, shared-state,
+and residency checks to `validateCapabilityComposition`. It never performs
+dynamic module loading or vendor-name branching.
+
+This subpath is absent from the ordinary runtime root. Repository import policy
+allows it only to the configuration package, its owning runtime package, and
+Docker deployment workspaces. Auth, management, platform, job, domain, and
+provider code cannot select infrastructure through this control surface.
+
+The exported JWK contract uses the explicit `PortablePublicJsonWebKey` shape
+rather than an ambient browser or Node type. Runtime-neutral consumers
+therefore compile independently without inheriting accidental test or platform
+globals.
+
 ## Identifiers
 
 `UuidV7Generator` combines an injected clock with ten bytes from an injected

@@ -7,6 +7,7 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
+    "./operator": "./src/operator.ts",
     "./testing": "./src/testing.ts"
   },
   "scripts": {

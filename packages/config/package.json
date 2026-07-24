@@ -6,7 +6,8 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./operator": "./src/operator.ts"
   },
   "scripts": {
     "build": "tsc --noEmit",
@@ -18,6 +19,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@expressthat-auth/runtime": "workspace:*",
     "zod": "4.4.3"
   },
   "devDependencies": {
