@@ -638,6 +638,17 @@ replace platform infrastructure.
 
 #### Provider Conformance Testing
 
+Infrastructure contracts share the
+`@expressthat-auth/infrastructure-conformance` harness. Capability-specific
+builders fail closed unless the adapter supplies every applicable success,
+permanent-failure, bounded-timeout, retry, concurrency, diagnostic-redaction,
+runtime, health, and residency or tenant-isolation probe. Secret storage and key
+management omit health only because their current contracts do not expose a
+health operation. Cases receive an `AbortSignal`, execute under a bounded
+deadline, and report only normalized, safely serializable diagnostics. The
+deterministic adapters run the same public suites used to qualify production
+implementations.
+
 Each provider category owns a reusable conformance suite. An adapter is releasable only when it passes:
 
 - Contract type and runtime-schema checks.

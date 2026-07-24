@@ -42,6 +42,7 @@ entry points, database implementations, or provider implementations.
 | `packages/database-sqlite` | Data platform | Drizzle SQLite schema, migrations, and repository adapters |
 | `packages/database-postgres` | Data platform | Drizzle PostgreSQL schema, migrations, and repository adapters |
 | `packages/database-conformance` | Data quality | Shared repository, transaction, migration, and dialect parity suites |
+| `packages/infrastructure-conformance` | Runtime quality | Reusable success, failure, timeout, retry, concurrency, redaction, runtime, health, and residency suites for infrastructure adapters |
 | `packages/ui` | Design system | Shared HeroUI components and design tokens; never server repositories or secrets |
 | `packages/providers/*` | Integrations | Independently packaged provider and infrastructure adapter implementations; selectable infrastructure packages follow the [adapter package contract](infrastructure-adapter-packages.md) |
 

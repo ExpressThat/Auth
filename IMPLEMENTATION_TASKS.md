@@ -818,9 +818,23 @@ These tasks prevent foundational security or compatibility decisions from being 
   quality suites pass 324, 24, 36, and 237 tests respectively with 100%
   statement, branch, function, and line coverage; full repository gates pass.
 
-- [ ] **RUN-018 — Create infrastructure-adapter conformance harnesses.**  
+- [x] **RUN-018 — Create infrastructure-adapter conformance harnesses.**
   **Depends on:** RUN-003 through RUN-009, RUN-016.  
   **Done when:** every infrastructure contract has reusable success, failure, timeout, retry, concurrency, redaction, runtime, health, and residency tests appropriate to that capability.
+  **Evidence:** `@expressthat-auth/infrastructure-conformance` exposes
+  fail-closed capability suites for cache, queue, object storage,
+  observability, secret storage, and key management. Definitions reject
+  missing, duplicate, unexpected, or malformed probes; every case receives an
+  abort signal, runs under a bounded deadline, and produces safe normalized
+  execution diagnostics. Shared assertions verify normalized permanent and
+  retryable failures, concurrent success, and secret-safe serialization.
+  Deterministic adapters execute real public-contract operations through all
+  applicable success, failure, timeout, retry, concurrency, redaction,
+  runtime, health, residency, and tenant-isolation axes. Secret and key
+  contracts omit health because they expose no health method. Package and type
+  tests pass with 100% statement, branch, function, and line coverage, and
+  workspace ownership and boundary policy classify the harness as test-only
+  conformance infrastructure.
 
 - [ ] **RUN-019 — Create managed-domain automation contracts.**  
   **Depends on:** RUN-002, RUN-004, RUN-008, RUN-016.  

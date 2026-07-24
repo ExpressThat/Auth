@@ -9,6 +9,11 @@ describe("workspace classification", () => {
     ["tooling/quality", "@expressthat-auth/quality", "tooling"],
     ["packages/typescript-config", "@expressthat-auth/typescript-config", "shared-config"],
     ["packages/database-conformance", "@expressthat-auth/database-conformance", "conformance"],
+    [
+      "packages/infrastructure-conformance",
+      "@expressthat-auth/infrastructure-conformance",
+      "conformance",
+    ],
     ["packages/database-sqlite", "@expressthat-auth/database-sqlite", "implementation"],
     ["packages/providers/email", "@expressthat-auth/provider-email", "implementation"],
     ["packages/domain", "@expressthat-auth/domain", "runtime-neutral"],

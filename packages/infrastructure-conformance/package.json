@@ -1,0 +1,28 @@
+{
+  "name": "@expressthat-auth/infrastructure-conformance",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Reusable infrastructure adapter conformance suites.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "lint": "tsc --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:types": "tsc --noEmit --project tsconfig.type-tests.json",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@expressthat-auth/runtime": "workspace:*"
+  },
+  "devDependencies": {
+    "@expressthat-auth/test-config": "workspace:*",
+    "@expressthat-auth/typescript-config": "workspace:*",
+    "@vitest/coverage-v8": "4.1.10",
+    "vitest": "4.1.10"
+  }
+}

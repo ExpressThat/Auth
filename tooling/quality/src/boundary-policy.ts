@@ -12,6 +12,10 @@ const IMPLEMENTATION_NAMES = new Set([
   "@expressthat-auth/database-sqlite",
   "@expressthat-auth/ui",
 ]);
+const CONFORMANCE_NAMES = new Set([
+  "@expressthat-auth/database-conformance",
+  "@expressthat-auth/infrastructure-conformance",
+]);
 
 const UI_FORBIDDEN_TARGETS = new Set([
   "@expressthat-auth/data-access",
@@ -35,7 +39,7 @@ export function classifyWorkspace(path: string, name: string): WorkspaceKind {
   if (SHARED_CONFIG_NAMES.has(name)) {
     return "shared-config";
   }
-  if (name === "@expressthat-auth/database-conformance") {
+  if (CONFORMANCE_NAMES.has(name)) {
     return "conformance";
   }
   if (IMPLEMENTATION_NAMES.has(name) || normalizedPath.startsWith("packages/providers/")) {
