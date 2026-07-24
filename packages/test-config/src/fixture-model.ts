@@ -14,6 +14,12 @@ export type ApplicationFixture = {
   tenantId: string;
 };
 
+export type EnvironmentFixture = {
+  id: string;
+  name: string;
+  tenantId: string;
+};
+
 export type UserFixture = {
   createdAtMs: number;
   displayName: string;
@@ -34,6 +40,21 @@ export type SessionFixture = {
 export type FixtureOverrides<T> = Partial<Omit<T, "createdAtMs" | "id">> & {
   createdAtMs?: number;
   id?: string;
+};
+
+export type IsolationFixture = {
+  primary: {
+    development: EnvironmentFixture;
+    production: EnvironmentFixture;
+    tenant: TenantFixture;
+    user: UserFixture;
+  };
+  secondary: {
+    development: EnvironmentFixture;
+    production: EnvironmentFixture;
+    tenant: TenantFixture;
+    user: UserFixture;
+  };
 };
 
 export type ProviderOutcome<T> =

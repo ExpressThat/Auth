@@ -330,6 +330,11 @@ Security controls are complete only with durable evidence:
   evidence drills; and
 - independent architecture review and penetration testing with verified retest.
 
+The reusable implementation and required feature-package workflow are defined
+in the [adversarial testing toolkit](adversarial-testing-toolkit.md). Small
+deterministic campaigns run with ordinary feature tests; SEC-031 scales the same
+invariants across scheduled dynamic, fuzz, race, and deployed-runtime campaigns.
+
 Coverage metrics prove execution, not security quality. Security assertions must
 verify denied outcomes, absence/redaction, unchanged state, audit evidence, and
 no external effect. A test that only checks a status code is insufficient where

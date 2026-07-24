@@ -1,8 +1,11 @@
+export * from "./adversarial.js";
 export { ControlledClock, SequenceRandom } from "./determinism.js";
 export { FixtureFactory } from "./fixture-factory.js";
 export type {
   ApplicationFixture,
+  EnvironmentFixture,
   FixtureOverrides,
+  IsolationFixture,
   ProviderOutcome,
   SessionFixture,
   TenantFixture,

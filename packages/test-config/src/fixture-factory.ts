@@ -1,6 +1,8 @@
 import type {
   ApplicationFixture,
+  EnvironmentFixture,
   FixtureOverrides,
+  IsolationFixture,
   ProviderOutcome,
   SessionFixture,
   TenantFixture,
@@ -55,6 +57,37 @@ export class FixtureFactory {
     }
     const suffix = sequence.toString(16).padStart(12, "0");
     return `${prefix}_019d2abc-0000-7000-8000-${suffix}`;
+  }
+
+  public environment(
+    tenant: TenantFixture,
+    overrides: Partial<EnvironmentFixture> = {},
+  ): EnvironmentFixture {
+    const sequence = this.nextSequence();
+    return {
+      id: overrides.id ?? this.identifier("env", sequence),
+      name: overrides.name ?? `Test Environment ${sequence}`,
+      tenantId: overrides.tenantId ?? tenant.id,
+    };
+  }
+
+  public isolationFixture(): IsolationFixture {
+    const primaryTenant = this.tenant();
+    const secondaryTenant = this.tenant();
+    return {
+      primary: {
+        development: this.environment(primaryTenant, { name: "Test Development" }),
+        production: this.environment(primaryTenant, { name: "Test Production" }),
+        tenant: primaryTenant,
+        user: this.user(primaryTenant),
+      },
+      secondary: {
+        development: this.environment(secondaryTenant, { name: "Test Development" }),
+        production: this.environment(secondaryTenant, { name: "Test Production" }),
+        tenant: secondaryTenant,
+        user: this.user(secondaryTenant),
+      },
+    };
   }
 
   public providerPermanentFailure(code = "test_permanent_failure"): ProviderOutcome<never> {

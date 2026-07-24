@@ -301,6 +301,7 @@ Start here:
 - [Security policy and private reporting](SECURITY.md)
 - [Workspace ownership and boundaries](docs/architecture/workspace-ownership.md)
 - [Living platform threat model](docs/security/threat-model.md)
+- [Adversarial testing toolkit](docs/security/adversarial-testing-toolkit.md)
 - [Data classification and handling](docs/security/data-classification.md)
 - [European residency and transfer map](docs/privacy/european-data-residency.md)
 - [Bootstrap and break-glass standard](docs/security/bootstrap-and-break-glass.md)

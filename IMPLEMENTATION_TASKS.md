@@ -415,9 +415,19 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** FND-014, FND-016, FND-021.
   **Done when:** setup, commands, architecture boundaries, defensive-programming rules, security-impact checks, testing expectations, file-size policy, and review requirements are reproducible by a new contributor.
 
-- [ ] **FND-021 — Add the adversarial testing toolkit.**
+- [x] **FND-021 — Add the adversarial testing toolkit.**
   **Depends on:** DEC-016, FND-008, FND-011, FND-013.
   **Done when:** reusable property/fuzz harnesses, hostile input corpora, parser limits, two-tenant/two-environment fixtures, concurrency/replay drivers, redaction assertions, and Workers/Docker security-test runners can be used by every feature package.
+  **Evidence:** `@expressthat-auth/test-config/adversarial` exposes a stable
+  hostile-input corpus, generated limit cases, deterministic seeded property
+  campaigns, UTF-8 byte and matched-nesting parser constraints, two-tenant and
+  two-environment fixtures, bounded concurrency and replay drivers, secret
+  redaction assertions, and a Workers/Docker differential HTTP harness.
+  `docs/security/adversarial-testing-toolkit.md` documents mandatory feature
+  use, failure reproduction, runtime parity, and hosted/self-hosted boundaries.
+  Fifty-nine focused tests pass with 100% line, statement, function, and branch
+  coverage; the full repository format, lint, type, test, coverage, build,
+  artifact, licence, dependency-audit, and diff gates pass.
 
 - [ ] **FND-022 — Enforce continuous security analysis.**
   **Depends on:** FND-005, FND-015, FND-017.

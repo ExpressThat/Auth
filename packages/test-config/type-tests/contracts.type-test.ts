@@ -6,6 +6,11 @@ import {
   type SchemaCases,
   SequenceRandom,
 } from "@expressthat-auth/test-config";
+import {
+  DeterministicRandom,
+  type RuntimeSecurityCase,
+  runConcurrentAttempts,
+} from "@expressthat-auth/test-config/adversarial";
 import { createUnitTestConfig } from "@expressthat-auth/test-config/vitest";
 
 type Equal<Left, Right> =
@@ -29,6 +34,12 @@ export const runtimeSchema = {
 export const unitConfig = createUnitTestConfig({ test: { environment: "node" } });
 export const fixtureFactory = new FixtureFactory(new ControlledClock());
 export const providerOutcome: ProviderOutcome<string> = fixtureFactory.providerSuccess("sent");
+export const propertyInteger: number = new DeterministicRandom(1).integer(0, 10);
+export const concurrentResult = runConcurrentAttempts(2, async (index) => index);
+export const runtimeSecurityCase = {
+  name: "denied",
+  request: () => new Request("https://security.test"),
+} satisfies RuntimeSecurityCase;
 
 // @ts-expect-error -- clock instants cannot be strings.
 new ControlledClock("10");
@@ -42,3 +53,7 @@ export const invalidSchema: RuntimeSchema = { safeParse: () => ({}) };
 createUnitTestConfig({ test: { environment: 123 } });
 // @ts-expect-error -- successful provider values retain their declared type.
 export const invalidProviderOutcome: ProviderOutcome<number> = providerOutcome;
+// @ts-expect-error -- concurrency attempt counts are numeric.
+export const invalidConcurrentResult = runConcurrentAttempts("2", async () => undefined);
+// @ts-expect-error -- runtime cases create Request objects.
+export const invalidRuntimeCase: RuntimeSecurityCase = { name: "bad", request: () => "request" };
