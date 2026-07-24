@@ -62,9 +62,40 @@ its algorithm, key ID, and nonce. Key handles are bounded opaque values whose
 JSON representation is always redacted.
 
 The contracts deliberately do not expose private keys or silently choose
-algorithms. RUN-005 adds custody, lifecycle, wrapping, and rotation. Current
-tests use isolated ephemeral RSA keys and a published AES-256-GCM vector; no
-process-generated key is permitted in deployable composition.
+algorithms. Current tests use isolated ephemeral RSA keys and a published
+AES-256-GCM vector; no process-generated key is permitted in deployable
+composition.
+
+## Key management
+
+`KeyManagementService` is the runtime-neutral lifecycle facade above low-level
+custody. It selects an active key by ring, purpose, and algorithm; signs and
+verifies exact bytes; wraps and unwraps ephemeral key material with authenticated
+context; rotates with an expected ring version; retires only keys already in
+the retiring state; and publishes a safe public key set.
+
+Key rings and lifecycle versions are bounded value objects. Managed metadata
+can contain a redacting custody handle and the complete
+`creating -> staged -> active -> retiring -> retired -> destroyed` lifecycle,
+plus the terminal compromised state. Published keys use a closed RSA or P-256
+shape containing only `alg`, `kid`, `kty`, `use`, and required public members.
+Custody handles, internal ring metadata, timestamps, and private JWK members are
+not representable in the published type.
+
+Rotation results expose the new active key and optional retiring predecessor.
+Optimistic ring versions make concurrent work fail with a conflict rather than
+silently creating multiple active keys. AES-256-GCM wrapping requires
+additional authenticated data so software custody can bind encrypted key
+material to its environment, issuer, ring, purpose, algorithm, key ID, and
+record version.
+
+The conformance implementation is test-only and uses ephemeral Web Crypto keys.
+It proves RS256/ES256 signing, RFC 7638-shaped SHA-256 key identifiers, safe
+publication, overlap, retirement, stale-version rejection, algorithm and
+purpose confusion rejection, AES-GCM wrapping, tamper detection, and redacted
+errors. Deployable adapters must keep private keys behind non-exportable or
+encrypted custody and pass the additional outage, audit, residency, recovery,
+and multi-instance suites required by ADR-0007 and OPS-011.
 
 ## Secret storage
 

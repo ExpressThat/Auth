@@ -577,9 +577,22 @@ These tasks prevent foundational security or compatibility decisions from being 
   function, and branch coverage; compile-time tests reject raw secret material,
   and the full repository gates pass.
 
-- [ ] **RUN-005 — Create key-management contracts.**  
+- [x] **RUN-005 — Create key-management contracts.**
   **Depends on:** DEC-008, RUN-003, RUN-004.  
   **Done when:** sign, verify, wrap, unwrap, rotate, retire, and publish-safe-metadata operations are covered by conformance tests.
+  **Evidence:** `@expressthat-auth/runtime` exposes bounded key-ring and
+  optimistic lifecycle-version values; complete staged, active, retiring,
+  retired, destroyed, and compromised states; managed metadata with redacting
+  custody handles; closed safe RSA and P-256 public JWK shapes; exact-byte
+  managed sign/verify; authenticated key wrap/unwrap; rotate, retire, and
+  publish operations; and normalized redacted errors. A test-only Web Crypto
+  manager proves RS256 and ES256 interoperability, SHA-256 JWK identifiers,
+  retiring-key publication overlap, retirement removal, stale-version and
+  state conflicts, algorithm/purpose isolation, missing rings, the NIST
+  AES-256-GCM vector, context tamper rejection, and wrapping-key binding. Twenty
+  new tests bring the runtime suite to 104 passing tests with 100% line,
+  statement, function, and branch coverage. Compile-time tests preserve the
+  algorithm allow-list; the full repository gates pass.
 
 - [ ] **RUN-006 — Create cache and rate-limit-state contracts.**  
   **Depends on:** DEC-013, RUN-002.  

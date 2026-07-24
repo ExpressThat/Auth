@@ -22,6 +22,26 @@ export {
   UuidV7Generator,
 } from "./identifier.js";
 export {
+  type KeyLifecycleState,
+  KeyLifecycleVersion,
+  KeyManagementError,
+  type KeyManagementErrorCode,
+  type KeyManagementOperation,
+  type KeyManagementService,
+  KeyRingId,
+  type KeyRotationResult,
+  type ManagedSigningKeyMetadata,
+  type ManagedSignRequest,
+  type ManagedVerifyRequest,
+  type PublishedKeySet,
+  type PublishedSigningJwk,
+  type RetireSigningKeyRequest,
+  type RotateSigningKeyRequest,
+  type UnwrapKeyRequest,
+  type WrapKeyRequest,
+  type WrappedKey,
+} from "./key-management.js";
+export {
   MAX_STORED_PASSWORD_HASH_BYTES,
   PasswordHash,
   type PasswordHasher,

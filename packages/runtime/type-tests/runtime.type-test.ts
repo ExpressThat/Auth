@@ -4,6 +4,9 @@ import {
   EntityId,
   type IdentifierGenerator,
   KeyHandle,
+  KeyLifecycleVersion,
+  type KeyManagementService,
+  KeyRingId,
   PasswordHash,
   type PasswordHasher,
   PublicEntityId,
@@ -78,6 +81,8 @@ export const secretStorage: SecretStorageProvider = {
   }),
 };
 export const secretMaterial = SecretMaterial.fromBytes(new Uint8Array([1]));
+export declare const keyManagement: KeyManagementService;
+export const signingRing = KeyRingId.parse("issuer:ring/type-test");
 
 // @ts-expect-error -- public identifier prefixes come from the fixed registry.
 PublicEntityId.parse("account", "account_01234567-89ab-7001-8203-040506070809");
@@ -93,3 +98,10 @@ signingProvider.sign({ algorithm: "none" });
 passwordHasher.verify("encoded", "password");
 // @ts-expect-error -- secret creation requires a redacting SecretMaterial value.
 secretStorage.create({ material: "raw", purpose: SecretPurpose.parse("test.secret") });
+keyManagement.rotate({
+  // @ts-expect-error -- lifecycle algorithms are a closed allow-list.
+  algorithm: "none",
+  expectedRingVersion: KeyLifecycleVersion.parse(0),
+  purpose: "issuer-signing",
+  ringId: signingRing,
+});
