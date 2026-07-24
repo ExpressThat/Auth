@@ -1,4 +1,4 @@
-import type { ObjectBody } from "../src/index.js";
+import type { ObjectBody } from "../index.js";
 
 export class TestObjectBody implements ObjectBody {
   readonly #chunks: readonly Uint8Array[];

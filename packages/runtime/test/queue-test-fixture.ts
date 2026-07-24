@@ -12,8 +12,12 @@ import {
   QueueScope,
   UuidV7Generator,
 } from "../src/index.js";
-import { ControlledClock, SequenceRandomSource } from "../src/testing.js";
-import { TestDurableQueueAdapter, TestQueueBackend } from "./queue-test-adapter.js";
+import {
+  ControlledClock,
+  SequenceRandomSource,
+  TestDurableQueueAdapter,
+  TestQueueBackend,
+} from "../src/testing.js";
 
 const entity = <TPrefix extends "app" | "env" | "org">(prefix: TPrefix, suffix: string) =>
   PublicEntityId.create(prefix, EntityId.parse(`01234567-89ab-7001-8203-${suffix}`));

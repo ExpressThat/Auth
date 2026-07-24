@@ -10,9 +10,7 @@ import {
   ObjectScope,
   PublicEntityId,
 } from "../src/index.js";
-import { ControlledClock } from "../src/testing.js";
-import { TestObjectStorageAdapter } from "./object-test-adapter.js";
-import { TestObjectBody } from "./object-test-body.js";
+import { ControlledClock, TestObjectBody, TestObjectStorageAdapter } from "../src/testing.js";
 
 const id = <TPrefix extends "app" | "env" | "org">(prefix: TPrefix, suffix: string) =>
   PublicEntityId.create(prefix, EntityId.parse(`01234567-89ab-7001-8203-${suffix}`));

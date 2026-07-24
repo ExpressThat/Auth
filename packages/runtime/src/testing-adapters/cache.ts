@@ -10,8 +10,8 @@ import type {
   GetCacheRequest,
   IncrementCacheRequest,
   PutCacheRequest,
-} from "../src/index.js";
-import { CacheStateError, CacheValue, CacheVersion } from "../src/index.js";
+} from "../index.js";
+import { CacheStateError, CacheValue, CacheVersion } from "../index.js";
 
 type ByteRecord = {
   expiresAt: CacheEntry["expiresAt"];

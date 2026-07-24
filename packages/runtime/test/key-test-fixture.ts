@@ -1,6 +1,5 @@
 import { KeyRingId } from "../src/index.js";
-import { ControlledClock, SequenceRandomSource } from "../src/testing.js";
-import { TestKeyManagementAdapter } from "./key-test-adapter.js";
+import { ControlledClock, SequenceRandomSource, TestKeyManagementAdapter } from "../src/testing.js";
 
 export async function keyFixture() {
   const wrappingKey = await crypto.subtle.importKey("raw", new Uint8Array(32), "AES-GCM", false, [

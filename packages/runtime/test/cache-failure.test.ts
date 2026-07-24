@@ -11,8 +11,7 @@ import {
   EpochMilliseconds,
   PublicEntityId,
 } from "../src/index.js";
-import { ControlledClock } from "../src/testing.js";
-import { TestCacheBackend, TestCacheStateAdapter } from "./cache-test-adapter.js";
+import { ControlledClock, TestCacheBackend, TestCacheStateAdapter } from "../src/testing.js";
 
 function fixture() {
   const clock = new ControlledClock(1_000);

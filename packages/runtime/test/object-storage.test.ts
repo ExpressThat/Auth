@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { EpochMilliseconds, ObjectChecksum, ObjectContentLength, ObjectKey } from "../src/index.js";
-import { readObjectBody } from "./object-test-body.js";
+import { readObjectBody } from "../src/testing.js";
 import { objectFixture, objectWrite } from "./object-test-fixture.js";
 
 describe("object storage contract", () => {

@@ -1,4 +1,4 @@
-import type { EpochMilliseconds, QueueMessage, QueueReceipt } from "../src/index.js";
+import type { EpochMilliseconds, QueueMessage, QueueReceipt } from "../index.js";
 
 export type QueueState = "acknowledged" | "dead-lettered" | "leased" | "queued";
 

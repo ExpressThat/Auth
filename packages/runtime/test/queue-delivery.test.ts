@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { EpochMilliseconds, QueueLeaseDuration, QueueMessageType } from "../src/index.js";
-import { TestDurableQueueAdapter } from "./queue-test-adapter.js";
+import { TestDurableQueueAdapter } from "../src/testing.js";
 import { publication, queueFixture } from "./queue-test-fixture.js";
 
 const lease = QueueLeaseDuration.milliseconds(100);

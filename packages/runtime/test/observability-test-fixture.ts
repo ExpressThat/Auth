@@ -7,8 +7,7 @@ import {
   TelemetryCode,
   TelemetryEventName,
 } from "../src/index.js";
-import { ControlledClock, SequenceRandomSource } from "../src/testing.js";
-import { TestObservabilityAdapter } from "./observability-test-adapter.js";
+import { ControlledClock, SequenceRandomSource, TestObservabilityAdapter } from "../src/testing.js";
 
 export function observabilityFixture() {
   const clock = new ControlledClock(1_000);

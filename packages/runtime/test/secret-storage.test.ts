@@ -6,8 +6,7 @@ import {
   SecretReference,
   SecretVersion,
 } from "../src/index.js";
-import { ControlledClock } from "../src/testing.js";
-import { TestSecretStorageAdapter } from "./secret-test-adapter.js";
+import { ControlledClock, TestSecretStorageAdapter } from "../src/testing.js";
 
 const CANARY_SECRET = "run004-canary-secret";
 
@@ -136,6 +135,13 @@ describe("secret storage contract", () => {
         version: SecretVersion.parse(99),
       }),
     ).resolves.toBeUndefined();
+    await expect(
+      adapter.resolve({
+        purpose,
+        reference: created.reference,
+        version: SecretVersion.parse(99),
+      }),
+    ).rejects.toMatchObject({ code: "not-found" });
 
     const missing = SecretReference.parse("test:secret/missing");
     await expect(adapter.metadata({ reference: missing })).resolves.toBeUndefined();
@@ -155,5 +161,16 @@ describe("secret storage contract", () => {
         reference: missing,
       }),
     ).rejects.toMatchObject({ code: "not-found" });
+  });
+
+  it("fails closed if a test fault corrupts the version invariant", async () => {
+    const { adapter, purpose } = fixture();
+    const created = await adapter.create({
+      material: SecretMaterial.fromUtf8(CANARY_SECRET),
+      purpose,
+    });
+    adapter.clearVersionsForTest(created.reference);
+
+    await expect(adapter.metadata({ reference: created.reference })).rejects.toThrow("no versions");
   });
 });

@@ -129,4 +129,25 @@ describe("durable queue failure and health contract", () => {
       adapter.retry({ availableAt: EpochMilliseconds.parse(1_000), receipt: delivery.receipt }),
     ).rejects.toMatchObject({ code: "invalid" });
   });
+
+  it("honors the requested receive batch bound", async () => {
+    const { adapter, scope } = queueFixture();
+    const queue = QueueName.parse("bounded-receive");
+    await adapter.publish(
+      publication(scope, {
+        idempotencyKey: QueueIdempotencyKey.parse("bounded/one"),
+        queue,
+      }),
+    );
+    await adapter.publish(
+      publication(scope, {
+        idempotencyKey: QueueIdempotencyKey.parse("bounded/two"),
+        queue,
+      }),
+    );
+
+    await expect(
+      adapter.receive({ leaseDuration: lease, maxMessages: 1, queue }),
+    ).resolves.toHaveLength(1);
+  });
 });

@@ -8,7 +8,7 @@ import type {
   SigningKeyMetadata,
   SigningProvider,
   VerifyBytesRequest,
-} from "../src/index.js";
+} from "../index.js";
 
 type SigningFixture = {
   readonly handle: string;
@@ -61,8 +61,12 @@ export class TestWebCryptoAdapter implements SigningProvider, AuthenticatedEncry
       request.keyHandle.opaqueValue(),
       this.#signing.handle,
     );
+    const parameters =
+      request.algorithm === "RS256"
+        ? { name: "RSASSA-PKCS1-v1_5" }
+        : { hash: "SHA-256", name: "ECDSA" };
     const signature = await crypto.subtle.sign(
-      { name: "RSASSA-PKCS1-v1_5" },
+      parameters,
       this.#signing.privateKey,
       webBytes(request.payload),
     );
@@ -77,18 +81,23 @@ export class TestWebCryptoAdapter implements SigningProvider, AuthenticatedEncry
     ) {
       return false;
     }
+    const importParameters =
+      request.key.algorithm === "RS256"
+        ? { hash: "SHA-256", name: "RSASSA-PKCS1-v1_5" }
+        : { name: "ECDSA", namedCurve: "P-256" };
+    const verificationParameters =
+      request.key.algorithm === "RS256"
+        ? { name: "RSASSA-PKCS1-v1_5" }
+        : { hash: "SHA-256", name: "ECDSA" };
     const publicKey = await crypto.subtle.importKey(
       "jwk",
       request.key.publicJwk,
-      {
-        hash: "SHA-256",
-        name: "RSASSA-PKCS1-v1_5",
-      },
+      importParameters,
       false,
       ["verify"],
     );
     return crypto.subtle.verify(
-      { name: "RSASSA-PKCS1-v1_5" },
+      verificationParameters,
       publicKey,
       webBytes(request.signature),
       webBytes(request.payload),

@@ -5,7 +5,7 @@ import {
   MAX_STORED_PASSWORD_HASH_BYTES,
   PasswordHash,
 } from "../src/index.js";
-import { TestWebCryptoAdapter } from "./crypto-test-adapter.js";
+import { TestWebCryptoAdapter } from "../src/testing.js";
 
 // biome-ignore lint/security/noSecrets: deliberately synthetic non-credential hash fixture.
 const SYNTHETIC_HASH = "$argon2id$synthetic";
@@ -16,17 +16,23 @@ function hex(bytes: Uint8Array): string {
   return [...bytes].map((byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
-async function fixture(): Promise<TestWebCryptoAdapter> {
-  const signingKeys = await crypto.subtle.generateKey(
-    {
-      hash: "SHA-256",
-      modulusLength: 2048,
-      name: "RSASSA-PKCS1-v1_5",
-      publicExponent: new Uint8Array([1, 0, 1]),
-    },
-    false,
-    ["sign", "verify"],
-  );
+async function fixture(algorithm: "ES256" | "RS256" = "RS256"): Promise<TestWebCryptoAdapter> {
+  const signingKeys =
+    algorithm === "RS256"
+      ? await crypto.subtle.generateKey(
+          {
+            hash: "SHA-256",
+            modulusLength: 2048,
+            name: "RSASSA-PKCS1-v1_5",
+            publicExponent: new Uint8Array([1, 0, 1]),
+          },
+          false,
+          ["sign", "verify"],
+        )
+      : await crypto.subtle.generateKey({ name: "ECDSA", namedCurve: "P-256" }, false, [
+          "sign",
+          "verify",
+        ]);
   const encryptionKey = await crypto.subtle.importKey("raw", new Uint8Array(32), "AES-GCM", false, [
     "encrypt",
     "decrypt",
@@ -35,7 +41,7 @@ async function fixture(): Promise<TestWebCryptoAdapter> {
     {
       handle: "test:rsa:key",
       metadata: {
-        algorithm: "RS256",
+        algorithm,
         createdAt: EpochMilliseconds.parse(1),
         keyId: "test-rsa-key",
         publicJwk: await crypto.subtle.exportKey("jwk", signingKeys.publicKey),
@@ -146,17 +152,73 @@ describe("cryptographic capability vectors", () => {
     ).rejects.toThrow();
   });
 
-  it("fails before cryptography when key purpose or handle does not match", async () => {
-    const adapter = await fixture();
+  it("signs and verifies ES256 through the same testing contract", async () => {
+    const adapter = await fixture("ES256");
+    const payload = new Uint8Array([1, 2, 3]);
+    const signature = await adapter.sign({
+      algorithm: "ES256",
+      keyHandle: KeyHandle.parse("test:rsa:key"),
+      keyId: "test-rsa-key",
+      payload,
+      purpose: "issuer-signing",
+    });
 
     await expect(
-      adapter.sign({
+      adapter.verify({ key: adapter.signingMetadata(), payload, signature }),
+    ).resolves.toBe(true);
+  });
+
+  it("fails before cryptography when key purpose or handle does not match", async () => {
+    const adapter = await fixture();
+    const mismatches = [
+      {
+        algorithm: "ES256",
+        keyHandle: KeyHandle.parse("test:rsa:key"),
+        keyId: "test-rsa-key",
+        purpose: "issuer-signing",
+      },
+      {
+        algorithm: "RS256",
+        keyHandle: KeyHandle.parse("test:rsa:key"),
+        keyId: "wrong-key",
+        purpose: "issuer-signing",
+      },
+      {
+        algorithm: "RS256",
+        keyHandle: KeyHandle.parse("test:rsa:key"),
+        keyId: "test-rsa-key",
+        purpose: "webhook-signing",
+      },
+      {
         algorithm: "RS256",
         keyHandle: KeyHandle.parse("test:wrong:key"),
         keyId: "test-rsa-key",
-        payload: new Uint8Array(),
         purpose: "issuer-signing",
-      }),
-    ).rejects.toThrow("metadata or purpose");
+      },
+    ] as const;
+    for (const mismatch of mismatches) {
+      await expect(adapter.sign({ ...mismatch, payload: new Uint8Array() })).rejects.toThrow(
+        "metadata or purpose",
+      );
+    }
+  });
+
+  it("rejects each mismatched verification metadata dimension", async () => {
+    const adapter = await fixture();
+    const metadata = adapter.signingMetadata();
+
+    for (const key of [
+      { ...metadata, algorithm: "ES256" as const },
+      { ...metadata, keyId: "wrong-key" },
+      { ...metadata, purpose: "webhook-signing" as const },
+    ]) {
+      await expect(
+        adapter.verify({
+          key,
+          payload: new Uint8Array(),
+          signature: new Uint8Array(),
+        }),
+      ).resolves.toBe(false);
+    }
   });
 });

@@ -731,9 +731,26 @@ These tasks prevent foundational security or compatibility decisions from being 
   assignable to narrow interfaces while foundational dependencies cannot be
   treated as durable state; boundary and full repository gates pass.
 
-- [ ] **RUN-013 — Implement local deterministic adapters.**  
-  **Depends on:** RUN-002 through RUN-009.  
+- [x] **RUN-013 — Implement local deterministic adapters.**
+  **Depends on:** RUN-002 through RUN-009.
   **Done when:** safe in-memory deterministic test doubles pass contracts and cannot be selected by interactive or production deployments.
+  **Evidence:** `@expressthat-auth/runtime/testing` now owns controlled clocks,
+  sequence randomness, and contract-tested in-memory cache, secret,
+  key-management, queue, object-storage, observability, signing, and
+  authenticated-encryption adapters. Injected time/random/identifier sources
+  and shareable explicit backends make state, expiry, lease, retry, version,
+  failure, and replica-like tests deterministic; cryptographic behavior uses
+  real Web Crypto and covers RS256, ES256, and A256GCM. The testing manifest
+  declares only supplied capabilities, marks stateful doubles process-local and
+  ephemeral, supports only `test`, and is rejected for local-development,
+  self-hosted, and hosted profiles. A deliberately weak fake password hasher is
+  not supplied; password tests use the real portable Argon2id adapter with
+  injected deterministic randomness. Testing exports are absent from the
+  production package root and compile-time tests retain that boundary. Ten new
+  profile, manifest, algorithm, batch-bound, malformed-metadata, and
+  fault-injection tests bring the runtime suite to 243 passing tests with 100%
+  statement, branch, function, and line coverage, including the promoted
+  adapter implementations; full repository gates pass.
 
 - [ ] **RUN-014 — Add liveness, readiness, and dependency diagnostics contracts.**  
   **Depends on:** RUN-011, DEC-021.  

@@ -10,8 +10,7 @@ import {
   EpochMilliseconds,
   PublicEntityId,
 } from "../src/index.js";
-import { ControlledClock } from "../src/testing.js";
-import { TestCacheBackend, TestCacheStateAdapter } from "./cache-test-adapter.js";
+import { ControlledClock, TestCacheBackend, TestCacheStateAdapter } from "../src/testing.js";
 
 const entity = <TPrefix extends "app" | "env" | "org">(prefix: TPrefix, suffix: string) =>
   PublicEntityId.create(prefix, EntityId.parse(`01234567-89ab-7001-8203-${suffix}`));

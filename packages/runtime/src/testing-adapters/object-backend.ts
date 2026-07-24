@@ -1,4 +1,4 @@
-import type { StoredObjectMetadata } from "../src/index.js";
+import type { StoredObjectMetadata } from "../index.js";
 
 export type TestStoredObject = {
   bytes: Uint8Array;

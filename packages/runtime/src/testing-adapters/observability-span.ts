@@ -1,5 +1,5 @@
-import type { EndSpanRequest, TraceContext, TraceEvent, TraceSpan } from "../src/index.js";
-import { ObservabilityError } from "../src/index.js";
+import type { EndSpanRequest, TraceContext, TraceEvent, TraceSpan } from "../index.js";
+import { ObservabilityError } from "../index.js";
 
 export class TestTraceSpan implements TraceSpan {
   public readonly context: TraceContext;

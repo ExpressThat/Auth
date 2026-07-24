@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { EpochMilliseconds, ObjectKey, ObjectStorageError } from "../src/index.js";
-import { TestObjectBackend, TestObjectStorageAdapter } from "./object-test-adapter.js";
+import { TestObjectBackend, TestObjectStorageAdapter } from "../src/testing.js";
 import { objectFixture, objectSignedWrite, objectWrite } from "./object-test-fixture.js";
 
 describe("object storage policy, health, and failures", () => {

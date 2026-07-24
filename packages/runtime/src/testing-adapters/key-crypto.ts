@@ -1,4 +1,4 @@
-import type { PublishedSigningJwk, SigningAlgorithm } from "../src/index.js";
+import type { PublishedSigningJwk, SigningAlgorithm } from "../index.js";
 
 export type SigningKeyPair = {
   privateKey: CryptoKey;
@@ -26,6 +26,20 @@ async function thumbprint(canonicalJwk: string): Promise<string> {
   );
 }
 
+export function requireRsaPublicMembers(exported: JsonWebKey): Readonly<{ e: string; n: string }> {
+  if (!exported.e || !exported.n) {
+    throw new Error("Generated RSA key lacks public members.");
+  }
+  return { e: exported.e, n: exported.n };
+}
+
+export function requireEcPublicMembers(exported: JsonWebKey): Readonly<{ x: string; y: string }> {
+  if (!exported.x || !exported.y) {
+    throw new Error("Generated EC key lacks public members.");
+  }
+  return { x: exported.x, y: exported.y };
+}
+
 export async function generateSigningKey(algorithm: SigningAlgorithm): Promise<SigningKeyPair> {
   if (algorithm === "RS256") {
     const pair = await crypto.subtle.generateKey(
@@ -39,18 +53,16 @@ export async function generateSigningKey(algorithm: SigningAlgorithm): Promise<S
       ["sign", "verify"],
     );
     const exported = await crypto.subtle.exportKey("jwk", pair.publicKey);
-    if (!exported.e || !exported.n) {
-      throw new Error("Generated RSA key lacks public members.");
-    }
-    const kid = await thumbprint(JSON.stringify({ e: exported.e, kty: "RSA", n: exported.n }));
+    const { e, n } = requireRsaPublicMembers(exported);
+    const kid = await thumbprint(JSON.stringify({ e, kty: "RSA", n }));
     return {
       privateKey: pair.privateKey,
       publicKey: {
         alg: "RS256",
-        e: exported.e,
+        e,
         kid,
         kty: "RSA",
-        n: exported.n,
+        n,
         use: "sig",
       },
     };
@@ -61,12 +73,8 @@ export async function generateSigningKey(algorithm: SigningAlgorithm): Promise<S
     "verify",
   ]);
   const exported = await crypto.subtle.exportKey("jwk", pair.publicKey);
-  if (!exported.x || !exported.y) {
-    throw new Error("Generated EC key lacks public members.");
-  }
-  const kid = await thumbprint(
-    JSON.stringify({ crv: "P-256", kty: "EC", x: exported.x, y: exported.y }),
-  );
+  const { x, y } = requireEcPublicMembers(exported);
+  const kid = await thumbprint(JSON.stringify({ crv: "P-256", kty: "EC", x, y }));
   return {
     privateKey: pair.privateKey,
     publicKey: {
@@ -75,8 +83,8 @@ export async function generateSigningKey(algorithm: SigningAlgorithm): Promise<S
       kid,
       kty: "EC",
       use: "sig",
-      x: exported.x,
-      y: exported.y,
+      x,
+      y,
     },
   };
 }

@@ -1,6 +1,33 @@
 import { type RandomSource, requireRandomByteLength } from "./random.js";
 import { type Clock, EpochMilliseconds } from "./time.js";
 
+export { TestCacheBackend, TestCacheStateAdapter } from "./testing-adapters/cache.js";
+export { TestWebCryptoAdapter } from "./testing-adapters/cryptography.js";
+export {
+  requireEcPublicMembers,
+  requireRsaPublicMembers,
+} from "./testing-adapters/key-crypto.js";
+export { TestKeyManagementAdapter } from "./testing-adapters/key-management.js";
+export {
+  createTestRuntimeCapabilityComposition,
+  TEST_RUNTIME_CAPABILITY_MANIFEST,
+} from "./testing-adapters/manifest.js";
+export {
+  readObjectBody,
+  TestObjectBody,
+} from "./testing-adapters/object-body.js";
+export {
+  TestObjectBackend,
+  TestObjectStorageAdapter,
+} from "./testing-adapters/object-storage.js";
+export { TestObservabilityAdapter } from "./testing-adapters/observability.js";
+export { TestTraceSpan } from "./testing-adapters/observability-span.js";
+export {
+  TestDurableQueueAdapter,
+  TestQueueBackend,
+} from "./testing-adapters/queue.js";
+export { TestSecretStorageAdapter } from "./testing-adapters/secret.js";
+
 export class ControlledClock implements Clock {
   #current: EpochMilliseconds;
 

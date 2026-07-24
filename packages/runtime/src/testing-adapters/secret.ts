@@ -9,13 +9,8 @@ import type {
   SecretStorageProvider,
   SecretVersionMetadata,
   SecretVersionRequest,
-} from "../src/index.js";
-import {
-  SecretMaterial,
-  SecretReference,
-  SecretStorageError,
-  SecretVersion,
-} from "../src/index.js";
+} from "../index.js";
+import { SecretMaterial, SecretReference, SecretStorageError, SecretVersion } from "../index.js";
 
 type MutableVersion = {
   material: Uint8Array;
@@ -62,6 +57,11 @@ export class TestSecretStorageAdapter implements SecretStorageProvider {
 
   public constructor(clock: Clock) {
     this.#clock = clock;
+  }
+
+  public clearVersionsForTest(reference: SecretReference): void {
+    const record = this.#requireRecord(reference, "resolve");
+    record.versions.splice(0);
   }
 
   public async create(request: CreateSecretRequest): Promise<SecretMetadata> {

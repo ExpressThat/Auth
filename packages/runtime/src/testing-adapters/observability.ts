@@ -8,9 +8,9 @@ import type {
   StartSpanRequest,
   StructuredLogEvent,
   TraceSpan,
-} from "../src/index.js";
-import { ObservabilityError, SpanId, TraceId } from "../src/index.js";
-import { TestTraceSpan } from "./observability-test-span.js";
+} from "../index.js";
+import { ObservabilityError, SpanId, TraceId } from "../index.js";
+import { TestTraceSpan } from "./observability-span.js";
 
 export class TestObservabilityAdapter implements ObservabilityProvider {
   readonly #clock: Clock;

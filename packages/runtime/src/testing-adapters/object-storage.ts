@@ -12,7 +12,7 @@ import type {
   SignObjectAccessRequest,
   StoredObject,
   StoredObjectMetadata,
-} from "../src/index.js";
+} from "../index.js";
 import {
   MAX_SIGNED_OBJECT_ACCESS_MILLISECONDS,
   ObjectChecksum,
@@ -20,14 +20,11 @@ import {
   ObjectStorageError,
   ObjectVersion,
   SignedObjectUrl,
-} from "../src/index.js";
-import { TestObjectBackend, type TestStoredObject } from "./object-test-backend.js";
-import { readObjectBody, TestObjectBody } from "./object-test-body.js";
+} from "../index.js";
+import { TestObjectBackend, type TestStoredObject } from "./object-backend.js";
+import { readObjectBody, TestObjectBody } from "./object-body.js";
 
 function equalBytes(left: Uint8Array, right: Uint8Array): boolean {
-  if (left.length !== right.length) {
-    return false;
-  }
   return left.every((byte, index) => byte === right[index]);
 }
 
@@ -203,4 +200,4 @@ export class TestObjectStorageAdapter implements ObjectStorageProvider {
   }
 }
 
-export { TestObjectBackend } from "./object-test-backend.js";
+export { TestObjectBackend } from "./object-backend.js";

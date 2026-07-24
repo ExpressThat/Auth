@@ -15,7 +15,7 @@ import type {
   ReceiveQueueRequest,
   RenewQueueLeaseRequest,
   RetryQueueMessageRequest,
-} from "../src/index.js";
+} from "../index.js";
 import {
   DurableQueueError,
   EpochMilliseconds,
@@ -23,11 +23,11 @@ import {
   QueueDeliveryAttempt,
   QueueLeaseToken,
   QueuePayload,
-} from "../src/index.js";
-import { type QueueRecord, TestQueueBackend } from "./queue-test-backend.js";
-import { copyQueueMessage, queuePublicationFingerprint } from "./queue-test-message.js";
+} from "../index.js";
+import { type QueueRecord, TestQueueBackend } from "./queue-backend.js";
+import { copyQueueMessage, queuePublicationFingerprint } from "./queue-message.js";
 
-export { TestQueueBackend } from "./queue-test-backend.js";
+export { TestQueueBackend } from "./queue-backend.js";
 
 export class TestDurableQueueAdapter implements DurableQueueProvider {
   readonly #backend: TestQueueBackend;

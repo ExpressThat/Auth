@@ -49,10 +49,21 @@ import {
   UuidV7Generator,
   WebCryptoRandomSource,
 } from "@expressthat-auth/runtime";
-import { ControlledClock, SequenceRandomSource } from "@expressthat-auth/runtime/testing";
+import {
+  ControlledClock,
+  createTestRuntimeCapabilityComposition,
+  SequenceRandomSource,
+  TestCacheStateAdapter,
+} from "@expressthat-auth/runtime/testing";
+
+type ProductionRuntime = typeof import("@expressthat-auth/runtime");
+// @ts-expect-error -- testing adapters are absent from the production root export.
+export type InvalidProductionTestAdapter = ProductionRuntime["TestCacheStateAdapter"];
 
 export const clock: Clock = new SystemClock();
 export const deterministicClock: Clock = new ControlledClock(0);
+export const testCacheState = new TestCacheStateAdapter(deterministicClock);
+export const testCapabilityComposition = createTestRuntimeCapabilityComposition();
 export const random: RandomSource = new WebCryptoRandomSource();
 export const deterministicRandom: RandomSource = new SequenceRandomSource([new Uint8Array(10)]);
 export const identifierGenerator: IdentifierGenerator = new UuidV7Generator(

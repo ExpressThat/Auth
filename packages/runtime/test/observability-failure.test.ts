@@ -78,6 +78,15 @@ describe("observability validation, health, and failure", () => {
       startedAt: EpochMilliseconds.parse(1_000),
     });
     await expect(
+      adapter.startSpan({
+        attributes: logAttributes,
+        correlationId,
+        kind: "internal",
+        name: eventName,
+        startedAt: EpochMilliseconds.parse(1_000),
+      }),
+    ).rejects.toMatchObject({ code: "invalid" });
+    await expect(
       span.addEvent({
         attributes: logAttributes,
         name: eventName,

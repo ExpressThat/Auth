@@ -387,6 +387,35 @@ contracts implemented by RUN-003 through RUN-009. Database repositories and
 future infrastructure categories join through their own contracts as their
 backlog tasks are implemented.
 
+## Testing-only deterministic adapters
+
+`@expressthat-auth/runtime/testing` exposes controlled time and randomness plus
+in-memory cache, secret, key-management, queue, object-storage, observability,
+signing, and authenticated-encryption adapters. State transitions, expiry,
+leases, retries, versions, failures, and replica-like shared backends are
+controlled by injected clocks, identifiers, randomness, and explicit backend
+objects. Cryptographic operations still use Web Crypto and exercise both RS256
+and ES256 rather than substituting fake cryptography.
+
+The testing manifest declares only the implementations actually supplied. It
+omits password hashing: password tests use the real portable Argon2id adapter
+with injected deterministic randomness rather than a weak implementation that
+falsely advertises Argon2id. Every stateful in-memory capability truthfully
+declares process-local, ephemeral state; signing and encryption declare
+stateless behavior.
+
+These exports are intentionally absent from `@expressthat-auth/runtime`.
+`TEST_RUNTIME_CAPABILITY_MANIFEST` supports only the `test` profile, so
+capability validation rejects it for local-development, self-hosted, and hosted
+startup. Local interactive development uses the Compose resource-backed
+adapters implemented by RUN-021, not these process-local doubles.
+
+Testing adapters include explicit fault-injection operations only where needed
+to prove corrupted invariant handling. Their generic contract behavior,
+failure normalization, defensive copying, isolation, lifecycle, and
+multi-instance-like semantics run through the same runtime suite as the
+interfaces they implement.
+
 ## Identifiers
 
 `UuidV7Generator` combines an injected clock with ten bytes from an injected

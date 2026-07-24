@@ -1,5 +1,5 @@
-import type { PublishQueueRequest, QueueMessage } from "../src/index.js";
-import { QueuePayload } from "../src/index.js";
+import type { PublishQueueRequest, QueueMessage } from "../index.js";
+import { QueuePayload } from "../index.js";
 
 export function copyQueueMessage(message: QueueMessage): QueueMessage {
   return {

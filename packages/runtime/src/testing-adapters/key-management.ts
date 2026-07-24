@@ -12,24 +12,19 @@ import type {
   UnwrapKeyRequest,
   WrapKeyRequest,
   WrappedKey,
-} from "../src/index.js";
-import {
-  KeyHandle,
-  KeyLifecycleVersion,
-  KeyManagementError,
-  SecretMaterial,
-} from "../src/index.js";
+} from "../index.js";
+import { KeyHandle, KeyLifecycleVersion, KeyManagementError, SecretMaterial } from "../index.js";
 import {
   cryptoBytes,
   generateSigningKey,
   type SigningKeyPair,
   signBytes,
   verifyBytes,
-} from "./key-test-crypto.js";
+} from "./key-crypto.js";
 
 type MutableKey = {
   metadata: {
-    activatedAt?: ManagedSigningKeyMetadata["activatedAt"];
+    activatedAt: NonNullable<ManagedSigningKeyMetadata["activatedAt"]>;
     algorithm: ManagedSigningKeyMetadata["algorithm"];
     createdAt: ManagedSigningKeyMetadata["createdAt"];
     handle: ManagedSigningKeyMetadata["handle"];
@@ -65,7 +60,7 @@ function copyMetadata(key: MutableKey): ManagedSigningKeyMetadata {
     ringId: metadata.ringId,
     state: metadata.state,
     version: metadata.version,
-    ...(metadata.activatedAt === undefined ? {} : { activatedAt: metadata.activatedAt }),
+    activatedAt: metadata.activatedAt,
     ...(metadata.retiredAt === undefined ? {} : { retiredAt: metadata.retiredAt }),
     ...(metadata.retiringAt === undefined ? {} : { retiringAt: metadata.retiringAt }),
   };
@@ -81,6 +76,15 @@ export class TestKeyManagementAdapter implements KeyManagementService {
     this.#clock = clock;
     this.#random = random;
     this.#wrapping = wrapping;
+  }
+
+  public clearActiveKeysForTest(ringId: RotateSigningKeyRequest["ringId"]): void {
+    const ring = this.#ring(ringId, "sign");
+    for (const key of ring.keys) {
+      if (key.metadata.state === "active") {
+        key.metadata.state = "retired";
+      }
+    }
   }
 
   public async publish(ringId: RotateSigningKeyRequest["ringId"]): Promise<PublishedKeySet> {

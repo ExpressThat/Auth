@@ -162,4 +162,30 @@ describe("signing-key lifecycle conformance", () => {
       }),
     ).rejects.toMatchObject({ code: "not-found" });
   });
+
+  it("fails closed if a test fault removes every active key", async () => {
+    const { adapter, ringId } = await keyFixture();
+    await adapter.rotate({
+      algorithm: "RS256",
+      expectedRingVersion: KeyLifecycleVersion.parse(0),
+      purpose: "issuer-signing",
+      ringId,
+    });
+    await adapter.rotate({
+      algorithm: "RS256",
+      expectedRingVersion: KeyLifecycleVersion.parse(1),
+      purpose: "issuer-signing",
+      ringId,
+    });
+    adapter.clearActiveKeysForTest(ringId);
+
+    await expect(
+      adapter.sign({
+        algorithm: "RS256",
+        payload: new Uint8Array(),
+        purpose: "issuer-signing",
+        ringId,
+      }),
+    ).rejects.toMatchObject({ code: "invalid-state" });
+  });
 });
