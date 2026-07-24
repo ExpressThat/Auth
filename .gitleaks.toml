@@ -1,0 +1,4 @@
+title = "ExpressThat Auth credential scanning"
+
+[extend]
+useDefault = true

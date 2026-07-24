@@ -354,9 +354,17 @@ These tasks prevent foundational security or compatibility decisions from being 
   undeclared untracked files. It uses a clean read-only checkout with no
   persisted credential, and workflow regression tests enforce the full gate.
 
-- [ ] **FND-017 — Add dependency and credential scanning.**  
+- [x] **FND-017 — Add dependency and credential scanning.**
   **Depends on:** FND-015.  
   **Done when:** vulnerable dependencies, committed secrets, suspicious generated artifacts, and disallowed licences produce reviewable CI failures.
+  **Evidence:** `Security CI` performs a frozen full-history checkout, fails on
+  high or critical pnpm advisories, enforces a deny-by-default versioned
+  dependency-licence policy, checks generated-source paths for binary and
+  secret-bearing artifacts, and runs a pinned SHA-256-verified Gitleaks 8.30.1
+  scan with redacted verbose output and SARIF. Unit and workflow regression
+  tests exercise passing, malformed, and denied cases at 100% per-file coverage.
+  A local checksum-verified scan of all 48 commits found no leaked credentials,
+  and the installed dependency audit and licence inventory pass.
 
 - [ ] **FND-018 — Add a TypeScript workspace generator.**  
   **Depends on:** FND-002, FND-003, FND-006, FND-014.  
