@@ -11,6 +11,7 @@ describe("workspace manifest reader", () => {
       name: "@expressthat-auth/example",
       optionalDependencies: { "@expressthat-auth/runtime": "workspace:*" },
       peerDependencies: { "@expressthat-auth/config": "workspace:*" },
+      scripts: { build: "tsc --noEmit", test: "vitest run" },
     };
     const workspaces = readWorkspaces([
       file("packages/example/package.json", JSON.stringify(manifest)),
@@ -26,6 +27,7 @@ describe("workspace manifest reader", () => {
     });
     expect(workspaces[0]?.dependencies).toHaveLength(4);
     expect(workspaces[0]?.exports).toEqual(new Set([".", "./public"]));
+    expect(workspaces[0]?.scripts).toEqual(new Set(["build", "test"]));
   });
 
   it("sorts multiple workspaces by package name", () => {

@@ -27,6 +27,7 @@ describe("full clean-checkout CI workflow", () => {
       "pnpm db:generate",
       "pnpm format:check",
       "pnpm check",
+      "pnpm check:runtime-neutrality",
       "pnpm check:contracts",
       "pnpm db:check",
       "pnpm check:deployment",

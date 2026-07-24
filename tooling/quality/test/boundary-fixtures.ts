@@ -23,6 +23,7 @@ export function workspace(
   kind: WorkspaceKind = "runtime-neutral",
   dependencies: WorkspaceDependency[] = [],
   exports: string[] = ["."],
+  scripts?: string[],
 ): Workspace {
   return {
     dependencies,
@@ -30,5 +31,6 @@ export function workspace(
     kind,
     name,
     path: `packages/${name.replace("@expressthat-auth/", "")}`,
+    scripts: new Set(scripts ?? (kind === "runtime-neutral" ? ["build:runtime-neutral"] : [])),
   };
 }

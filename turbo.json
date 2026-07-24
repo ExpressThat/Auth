@@ -14,6 +14,9 @@
       "env": ["NODE_ENV", "VITE_*"],
       "outputs": ["dist/**"]
     },
+    "build:runtime-neutral": {
+      "description": "Build runtime-neutral source without an application or deployment entry point."
+    },
     "check:contracts": {
       "dependsOn": ["generate:contracts"],
       "description": "Validate generated contracts and compatibility without mutation."

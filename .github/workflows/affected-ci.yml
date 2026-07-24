@@ -51,7 +51,7 @@ jobs:
           echo "TURBO_SCM_HEAD=$GITHUB_SHA" >> "$GITHUB_ENV"
 
       - name: Check repository policy
-        run: pnpm format:check && pnpm check
+        run: pnpm format:check && pnpm check && pnpm check:runtime-neutrality
 
       - name: Run affected package graph
         run: pnpm exec turbo run lint typecheck test:types test test:coverage build --affected

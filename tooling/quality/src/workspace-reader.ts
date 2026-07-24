@@ -4,6 +4,7 @@ import { classifyWorkspace } from "./boundary-policy.js";
 import type { RepositoryFile } from "./line-checker.js";
 
 const dependencySchema = z.record(z.string(), z.string()).optional();
+const scriptSchema = z.record(z.string(), z.string()).optional();
 const manifestSchema = z.object({
   dependencies: dependencySchema,
   devDependencies: dependencySchema,
@@ -11,6 +12,7 @@ const manifestSchema = z.object({
   name: z.string().min(1),
   optionalDependencies: dependencySchema,
   peerDependencies: dependencySchema,
+  scripts: scriptSchema,
 });
 const DEPENDENCY_SECTIONS: DependencySection[] = [
   "dependencies",
@@ -52,6 +54,7 @@ function decodeWorkspace(file: RepositoryFile): Workspace {
     kind: classifyWorkspace(path, manifest.name),
     name: manifest.name,
     path,
+    scripts: new Set(Object.keys(manifest.scripts ?? {})),
   };
 }
 

@@ -491,4 +491,9 @@ pnpm --filter @expressthat-auth/runtime typecheck
 pnpm --filter @expressthat-auth/runtime test
 pnpm --filter @expressthat-auth/runtime test:coverage
 pnpm --filter @expressthat-auth/runtime test:types
+pnpm check:runtime-neutrality
 ```
+
+The neutrality gate rejects Node built-ins and runtime-specific module protocols
+from production source, requires this workspace's dedicated neutral build task,
+and compiles it without selecting a Docker or application entry point.

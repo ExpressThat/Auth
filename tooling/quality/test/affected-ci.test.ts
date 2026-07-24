@@ -15,7 +15,7 @@ describe("affected CI workflow", () => {
   it("runs the safe affected graph after repository policy", async () => {
     const workflow = await readFile(WORKFLOW, "utf8");
 
-    expect(workflow).toContain("pnpm format:check && pnpm check");
+    expect(workflow).toContain("pnpm format:check && pnpm check && pnpm check:runtime-neutrality");
     expect(workflow).toContain(
       "turbo run lint typecheck test:types test test:coverage build --affected",
     );

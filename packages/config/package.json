@@ -10,6 +10,7 @@
   },
   "scripts": {
     "build": "tsc --noEmit",
+    "build:runtime-neutral": "tsc --noEmit",
     "lint": "tsc --noEmit",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",

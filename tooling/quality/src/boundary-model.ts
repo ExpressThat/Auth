@@ -24,6 +24,7 @@ export type Workspace = {
   kind: WorkspaceKind;
   name: string;
   path: string;
+  scripts: Set<string>;
 };
 
 export type BoundaryViolation = {

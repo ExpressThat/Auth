@@ -1,9 +1,17 @@
+import { builtinModules } from "node:module";
 import { parseSync, type Span } from "oxc-parser";
 import type { BoundaryViolation, Workspace } from "./boundary-model.js";
 import type { RepositoryFile } from "./line-checker.js";
 
 const SOURCE_EXTENSION = /\.(?:[cm]?[jt]sx?)$/u;
 const INTERNAL_SCOPE = "@expressthat-auth/";
+const NODE_BUILTINS = new Set(
+  builtinModules.flatMap((specifier) => [
+    specifier,
+    specifier.startsWith("node:") ? specifier.slice(5) : `node:${specifier}`,
+  ]),
+);
+const RUNTIME_PROTOCOL = /^(?:bun|cloudflare|deno):/u;
 
 export async function findSourceViolations(
   workspaces: Workspace[],
@@ -28,6 +36,7 @@ export async function findSourceViolations(
 
     const source = file.content.toString("utf8");
     for (const specifier of readModuleSpecifiers(normalizedPath, source)) {
+      inspectRuntimeNeutralImport(importer, specifier, normalizedPath, violations);
       if (!specifier.startsWith(INTERNAL_SCOPE)) {
         continue;
       }
@@ -35,10 +44,58 @@ export async function findSourceViolations(
     }
   }
 
+  inspectRuntimeNeutralBuilds(workspaces, files, violations);
   return violations.sort(
     (left, right) =>
       left.path.localeCompare(right.path) || left.message.localeCompare(right.message),
   );
+}
+
+function inspectRuntimeNeutralImport(
+  importer: Workspace,
+  specifier: string,
+  sourcePath: string,
+  violations: BoundaryViolation[],
+): void {
+  if (
+    importer.kind === "runtime-neutral" &&
+    sourcePath.startsWith(`${importer.path}/src/`) &&
+    (NODE_BUILTINS.has(specifier) || RUNTIME_PROTOCOL.test(specifier))
+  ) {
+    violations.push({
+      code: "deployment-import",
+      message: `${specifier} is unavailable to runtime-neutral production source.`,
+      path: sourcePath,
+    });
+  }
+}
+
+function inspectRuntimeNeutralBuilds(
+  workspaces: Workspace[],
+  files: RepositoryFile[],
+  violations: BoundaryViolation[],
+): void {
+  for (const workspace of workspaces) {
+    if (workspace.kind !== "runtime-neutral" && workspace.scripts.has("build:runtime-neutral")) {
+      violations.push({
+        code: "unexpected-neutral-build",
+        message: `${workspace.name} is not runtime-neutral but declares the neutral build task.`,
+        path: `${workspace.path}/package.json`,
+      });
+      continue;
+    }
+    if (
+      workspace.kind === "runtime-neutral" &&
+      !workspace.scripts.has("build:runtime-neutral") &&
+      files.some((file) => file.path.replaceAll("\\", "/").startsWith(`${workspace.path}/src/`))
+    ) {
+      violations.push({
+        code: "missing-neutral-build",
+        message: `${workspace.name} has source but no independent runtime-neutral build task.`,
+        path: `${workspace.path}/package.json`,
+      });
+    }
+  }
 }
 
 function readModuleSpecifiers(path: string, source: string): string[] {

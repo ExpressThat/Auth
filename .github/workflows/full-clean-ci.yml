@@ -49,6 +49,7 @@ jobs:
         run: |
           pnpm format:check
           pnpm check
+          pnpm check:runtime-neutrality
           pnpm check:contracts
           pnpm db:check
           pnpm check:deployment

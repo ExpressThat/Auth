@@ -17,6 +17,7 @@
     "check:documentation": "pnpm --filter @expressthat-auth/quality check:documentation",
     "check:fix": "biome check --write .",
     "check:lines": "pnpm --filter @expressthat-auth/quality check:lines",
+    "check:runtime-neutrality": "pnpm check:boundaries && turbo run build:runtime-neutral",
     "check:security": "pnpm --filter @expressthat-auth/quality check:security",
     "check:contracts": "turbo run check:contracts",
     "check:deployment": "turbo run check:deployment",

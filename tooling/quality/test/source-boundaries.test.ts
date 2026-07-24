@@ -87,4 +87,70 @@ describe("source import boundaries", () => {
       findSourceViolations([source], [file("packages/source/src/broken.ts", "export const = ;")]),
     ).rejects.toThrow("Cannot inspect imports");
   });
+
+  it("rejects deployment-specific imports in runtime-neutral production source", async () => {
+    const source = workspace(
+      "@expressthat-auth/source",
+      "runtime-neutral",
+      [],
+      ["."],
+      ["build:runtime-neutral"],
+    );
+    const files = [
+      file("packages/source/src/node.ts", 'import "node:fs"; import "cloudflare:workers";'),
+      file("packages/source/src/bare.ts", 'import "path";'),
+      file("packages/source/test/node.test.ts", 'import "node:test";'),
+    ];
+
+    const violations = await findSourceViolations([source], files);
+
+    expect(violations.map((item) => item.code)).toEqual([
+      "deployment-import",
+      "deployment-import",
+      "deployment-import",
+    ]);
+    expect(violations.map((item) => item.path)).not.toContain("packages/source/test/node.test.ts");
+  });
+
+  it("requires independent builds only for neutral workspaces with source", async () => {
+    const missing = workspace("@expressthat-auth/missing", "runtime-neutral", [], ["."], []);
+    const empty = workspace("@expressthat-auth/empty");
+    const application = workspace("@expressthat-auth/app", "application");
+
+    const violations = await findSourceViolations(
+      [missing, empty, application],
+      [
+        file("packages/missing/src/index.ts", "export {};"),
+        file("packages/app/src/index.ts", 'import "node:http";'),
+      ],
+    );
+
+    expect(violations).toEqual([
+      {
+        code: "missing-neutral-build",
+        message:
+          "@expressthat-auth/missing has source but no independent runtime-neutral build task.",
+        path: "packages/missing/package.json",
+      },
+    ]);
+  });
+
+  it("prevents deployable workspaces from joining the neutral build graph", async () => {
+    const application = workspace(
+      "@expressthat-auth/api",
+      "application",
+      [],
+      ["."],
+      ["build:runtime-neutral"],
+    );
+
+    await expect(findSourceViolations([application], [])).resolves.toEqual([
+      {
+        code: "unexpected-neutral-build",
+        message:
+          "@expressthat-auth/api is not runtime-neutral but declares the neutral build task.",
+        path: "packages/api/package.json",
+      },
+    ]);
+  });
 });

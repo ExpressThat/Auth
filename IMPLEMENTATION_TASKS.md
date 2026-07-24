@@ -767,9 +767,19 @@ These tasks prevent foundational security or compatibility decisions from being 
   the runtime suite to 267 passing tests with 100% statement, branch, function,
   and line coverage; full repository gates pass.
 
-- [ ] **RUN-015 — Prove runtime neutrality automatically.**  
-  **Depends on:** RUN-012, FND-007.  
+- [x] **RUN-015 — Prove runtime neutrality automatically.**
+  **Depends on:** RUN-012, FND-007.
   **Done when:** CI rejects deployment-specific imports and builds runtime-neutral packages independently from Node application entry points.
+  **Evidence:** the source-boundary parser rejects Node built-ins and
+  Node/Bun/Deno/platform-specific module protocols in runtime-neutral
+  production source. Neutral workspaces with source must declare
+  `build:runtime-neutral`; non-neutral workspaces cannot join that graph.
+  `pnpm check:runtime-neutrality` runs boundary validation and the dedicated
+  Turborepo builds without selecting application, provider-implementation, or
+  deployment entry points, and both full-clean and affected CI execute it.
+  Import, task-ownership, manifest-reading, Turbo graph, and workflow tests
+  bring the quality suite to 219 passing tests with 100% statement, branch,
+  function, and line coverage; full repository gates pass.
 
 - [ ] **RUN-016 — Define infrastructure-adapter packaging rules.**  
   **Depends on:** RUN-011, FND-007.  

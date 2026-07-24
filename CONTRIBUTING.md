@@ -79,6 +79,10 @@ packages never import applications. Product packages depend on capability and
 repository contracts, not provider SDKs or deployment workspaces. Docker with
 Node.js is the sole supported deployment target.
 
+Run `pnpm check:runtime-neutrality` when changing core packages. The gate rejects
+deployment-specific production imports and independently compiles every neutral
+workspace through the dedicated Turborepo task graph.
+
 Cross-request authority or coordination never lives only in process memory.
 Sessions, keys, replay state, idempotency, rate limits, jobs, locks, cache state,
 and authorization inputs require a shared durable implementation. Database,

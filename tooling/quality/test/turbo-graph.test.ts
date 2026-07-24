@@ -32,6 +32,7 @@ describe("Turborepo task graph", () => {
 
     expect(Object.keys(configuration.tasks).sort()).toEqual([
       "build",
+      "build:runtime-neutral",
       "check:contracts",
       "check:deployment",
       "db:check",

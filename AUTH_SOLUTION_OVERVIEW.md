@@ -337,6 +337,10 @@ Turborepo's [package and task graph](https://turbo.build/repo/docs/core-concepts
 
 - Applications can depend on packages, but packages must not depend on applications.
 - Runtime-neutral packages must not import from `deploy/docker` or application entry points.
+- Runtime-neutral production source must not import Node built-ins or
+  runtime-specific module protocols. Every neutral workspace containing source
+  owns a dedicated build task that CI runs without selecting applications,
+  provider implementations, or deployment workspaces.
 - API contract packages must not depend on database entities or persistence implementations.
 - UI packages can depend on public API contracts and design tokens, but not server repositories or secrets.
 - Runtime adapters implement interfaces defined by runtime-neutral packages.
