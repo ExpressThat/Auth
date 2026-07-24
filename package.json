@@ -1,5 +1,5 @@
 {
-  "name": "express-that-auth",
+  "name": "@expressthat-auth/root",
   "version": "0.0.0",
   "private": true,
   "description": "A portable, multi-tenant authentication and identity platform.",
