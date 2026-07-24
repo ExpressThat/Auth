@@ -161,6 +161,49 @@ become an authorization, revocation, rate-limit, or tenant-isolation authority.
 Cache scope is independent of database placement, so the same contract supports
 shared, per-organisation, and hybrid database deployments.
 
+## Durable queues
+
+`DurableQueueProvider` defines provider-neutral publication, competing-consumer
+receive, visibility leases, lease renewal, acknowledgement, scheduled retry,
+explicit dead-lettering, and health operations. Its declared delivery guarantee
+is at least once. Exactly-once effects are not claimed: every handler must use a
+persisted idempotency or effect ledger at its real side-effect boundary.
+
+Published messages contain a typed job ID, queue, message type, schema version,
+scheduled and optional expiry instants, bounded maximum delivery attempts,
+explicit data classifications, a bounded redacting payload, and an
+idempotency key with an explicit retention expiry. Equivalent publication
+retries return the existing job identity. Reusing a live key for different
+semantic input is a conflict, and retention cannot expire before the scheduled
+message or its message expiry.
+
+`QueueScope` always carries a trusted top-level customer-organisation ID.
+Environment is optional for management-plane work; application requires an
+environment. The scope is part of provider partitioning and generic
+serialization is redacted. A consumer must treat message bytes as untrusted,
+decode them with a version-specific bounded schema, verify the
+integrity-protected persisted context created by the jobs layer, reload current
+resources and authorization where required, and reject any scope mismatch.
+
+Receive returns a message with a single-use lease receipt containing delivery
+attempt, token, and expiry. A lease token must be checked atomically for renew,
+acknowledge, retry, and dead-letter operations. Abandoned leases become
+eligible for redelivery; stale workers cannot complete work after another
+replica acquires it. Retry is explicitly scheduled and becomes dead-lettered
+after the bounded final attempt. Payload expiry and idempotency retention use
+the exact-instant-is-expired convention.
+
+The conformance implementation is test-only. A shared synthetic backend proves
+competing replicas, abandoned-work redelivery, stale-token rejection,
+idempotent publication, semantic conflicts, delayed work, bounded retries,
+acknowledgement, explicit and automatic dead-lettering, expiry, health, and
+outage behavior. Deployable adapters must additionally prove durable
+acceptance, atomic lease transitions, backpressure, fairness, recovery,
+dead-letter operations, rolling message-version compatibility, and
+residency-aware storage and processing. Hosted queues remain in approved
+European infrastructure; self-hosted operators choose and operate their own
+queue location and guarantees.
+
 ## Identifiers
 
 `UuidV7Generator` combines an injected clock with ten bytes from an injected

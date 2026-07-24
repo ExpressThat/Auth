@@ -7,6 +7,7 @@ import {
   type CacheStateProvider,
   CacheValue,
   type Clock,
+  type DurableQueueProvider,
   EntityId,
   type IdentifierGenerator,
   KeyHandle,
@@ -16,6 +17,7 @@ import {
   PasswordHash,
   type PasswordHasher,
   PublicEntityId,
+  QueueScope,
   type RandomSource,
   SecretMaterial,
   SecretPurpose,
@@ -97,6 +99,11 @@ export const cacheScope = CacheScope.create({
   purpose: CachePurpose.parse("type-test"),
 });
 export const cacheKey = CacheKey.create(cacheScope, "subject");
+export declare const durableQueue: DurableQueueProvider;
+export const queueScope = QueueScope.create({
+  customerOrganisationId: PublicEntityId.parse("org", "org_01234567-89ab-7001-8203-040506070809"),
+  environmentId: PublicEntityId.parse("env", "env_01234567-89ab-7001-8203-040506070809"),
+});
 
 // @ts-expect-error -- public identifier prefixes come from the fixed registry.
 PublicEntityId.parse("account", "account_01234567-89ab-7001-8203-040506070809");
@@ -121,6 +128,8 @@ cacheState.put({
   key: cacheKey,
   value: CacheValue.fromBytes(new Uint8Array([1])),
 });
+// @ts-expect-error -- acknowledgements require a typed lease receipt.
+durableQueue.acknowledge({ receipt: "job:lease" });
 keyManagement.rotate({
   // @ts-expect-error -- lifecycle algorithms are a closed allow-list.
   algorithm: "none",

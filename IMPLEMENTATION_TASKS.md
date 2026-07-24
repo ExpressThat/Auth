@@ -611,9 +611,24 @@ These tasks prevent foundational security or compatibility decisions from being 
   tests reject raw keys and unsupported failure policy, and the full repository
   gates pass.
 
-- [ ] **RUN-007 — Create durable queue contracts.**  
-  **Depends on:** RUN-002.  
+- [x] **RUN-007 — Create durable queue contracts.**
+  **Depends on:** RUN-002.
   **Done when:** publish, consume, delay, lease, retry, dead-letter, acknowledgement, and idempotency metadata are modelled.
+  **Evidence:** `@expressthat-auth/runtime` exposes top-level-organisation,
+  optional environment, and application-scoped messages with typed job IDs,
+  message types, schema versions, classifications, bounded redacting payloads,
+  scheduling, message expiry, bounded attempts, and retained idempotency
+  metadata. The provider contract explicitly declares at-least-once delivery
+  and models idempotent publication, competing-consumer receive, expiring
+  single-use leases, renewal, acknowledgement, scheduled retry, explicit and
+  bounded automatic dead-lettering, health, and redacted normalized errors. A
+  test-only shared backend proves cross-replica exclusion, abandoned-work
+  redelivery, stale-token rejection, semantic idempotency conflicts and
+  retention expiry, defensive copies, delay, expiry, outage behavior, retry
+  bounds, dead-lettering, and acknowledgement. Sixteen new tests bring the
+  runtime suite to 133 passing tests with 100% line, statement, function, and
+  branch coverage; compile-time tests reject raw lease receipts, and the full
+  repository gates pass.
 
 - [ ] **RUN-008 — Create object-storage contracts.**  
   **Depends on:** DEC-017, DEC-018.  
