@@ -455,9 +455,23 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** FND-005, FND-015, FND-017.
   **Done when:** typed/static analysis, dependency and secret scans, lockfile integrity, generated-artifact checks, container and deployment-configuration scans, severity policy, expiring suppressions, scheduled runs, and machine-readable findings fail the appropriate quality or release gate.
 
-- [ ] **FND-023 — Create the local shared-dependency Compose stack.**
+- [x] **FND-023 — Create the local shared-dependency Compose stack.**
   **Depends on:** FND-002, FND-014.
   **Done when:** one documented command starts pinned, health-checked, loopback-only RabbitMQ, S3-compatible object storage, Valkey, SMTP capture, and OpenTelemetry services; applications use local SQLite directly; host-run and container-run apps can use the same service endpoints; reset is deterministic; no real secrets are committed; and the stack refuses production mode.
+  **Evidence:** `pnpm dev:dependencies` validates and starts the
+  `expressthat-auth-local` Compose project with digest-pinned RabbitMQ 4.3.1,
+  SeaweedFS 4.29, Valkey 8.1.8, Mailpit 1.30.0, and OpenTelemetry Collector
+  0.156.0 services. Every published port is loopback-only, every service has a
+  health check, persistent services use named volumes, and checked-in
+  host/container environment examples use the same application configuration
+  keys while SQLite remains application-local. The TypeScript lifecycle command
+  rejects unsafe Compose changes and production environment markers; its
+  `reset` removes volumes before recreating and waiting for healthy services.
+  Thirty-two tests pass with 100% line, statement, function, and branch
+  coverage. A real Docker acceptance run pulled all immutable manifests, reached
+  five healthy services, returned healthy Mailpit/collector endpoints and the
+  expected S3 authentication denial, cleared a Valkey sentinel across reset, and shut down
+  cleanly.
 
 - [x] **FND-024 — Enforce documentation-as-code quality.**
   **Depends on:** FND-014, FND-018, FND-019.

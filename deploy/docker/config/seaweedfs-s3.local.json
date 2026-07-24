@@ -1,0 +1,14 @@
+{
+  "identities": [
+    {
+      "name": "expressthat-local",
+      "credentials": [
+        {
+          "accessKey": "expressthat-local",
+          "secretKey": "local-development-only"
+        }
+      ],
+      "actions": ["Admin", "Read", "Write"]
+    }
+  ]
+}

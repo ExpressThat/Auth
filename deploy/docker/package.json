@@ -4,5 +4,27 @@
   "private": true,
   "description": "Docker composition and deployment workspace.",
   "license": "MIT",
-  "type": "module"
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "check:deployment": "tsx src/local-stack-cli.ts validate",
+    "dev:dependencies": "tsx src/local-stack-cli.ts up",
+    "lint": "tsc --noEmit",
+    "local:down": "tsx src/local-stack-cli.ts down",
+    "local:reset": "tsx src/local-stack-cli.ts reset",
+    "local:status": "tsx src/local-stack-cli.ts status",
+    "local:validate": "tsx src/local-stack-cli.ts validate",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:deployment": "tsx src/local-stack-cli.ts validate",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@expressthat-auth/test-config": "workspace:*",
+    "@expressthat-auth/typescript-config": "workspace:*",
+    "@types/node": "26.1.1",
+    "@vitest/coverage-v8": "4.1.10",
+    "tsx": "4.23.1",
+    "vitest": "4.1.10"
+  }
 }

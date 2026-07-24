@@ -196,9 +196,9 @@ Their useful conformance tests will move into production
 packages, and the spike workspaces will be removed when those packages replace
 them.
 
-The planned local-development profile uses SQLite directly and a single Docker
-Compose stack for shared dependencies such as RabbitMQ, S3-compatible object
-storage, Valkey, email capture, and OpenTelemetry. Initial
+The local-development profile uses SQLite directly and a single Docker Compose
+stack for RabbitMQ, S3-compatible object storage, Valkey, email capture, and
+OpenTelemetry. Initial
 interactive-development adapters connect to those local resources through the
 normal contracts; in-process adapters remain test doubles only. PostgreSQL is
 reserved for CI production-dialect conformance and optional database testing,
@@ -217,7 +217,7 @@ review, and commit workflow.
 - pnpm `11.16.0`
 - Git
 - Docker for local shared dependencies, container builds, and deployment
-  testing as those workspaces are introduced
+  testing
 
 Enable Corepack if pnpm is not already available:
 
@@ -231,6 +231,16 @@ Install the exact dependency graph:
 ```bash
 pnpm install --frozen-lockfile
 ```
+
+Start the pinned, loopback-only local shared dependencies:
+
+```bash
+pnpm dev:dependencies
+```
+
+See the [local stack guide](deploy/docker/README.md) for endpoints, container-run
+configuration, status, deterministic reset, and shutdown commands. SQLite is
+used directly by local applications and is not a Compose service.
 
 Run the current repository checks:
 

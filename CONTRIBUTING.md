@@ -31,10 +31,11 @@ pnpm build
 
 The pinned package manager and lockfile are authoritative. Do not change a
 dependency range, lockfile entry, runtime version, or tool version incidentally.
-Ordinary local development uses SQLite directly. The shared-dependency Compose
-stack will provide local queue, object storage, cache, email capture, and
-telemetry services under FND-023; PostgreSQL is not required for the normal
-local path.
+Ordinary local development uses SQLite directly. Start the pinned,
+loopback-only queue, object storage, cache, email capture, and telemetry
+services with `pnpm dev:dependencies`; PostgreSQL is not required for the normal
+local path. The [local stack guide](deploy/docker/README.md) documents endpoints,
+reset behavior, and host/container application configuration.
 
 Never use production credentials, customer data, or personal data for
 development or tests. Use the deterministic fixtures and synthetic secrets from
