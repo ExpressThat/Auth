@@ -12,8 +12,9 @@
   },
   "scripts": {
     "build": "turbo run build",
-    "check": "biome check . && pnpm check:lines && pnpm check:boundaries",
+    "check": "biome check . && pnpm check:lines && pnpm check:boundaries && pnpm check:documentation",
     "check:boundaries": "pnpm --filter @expressthat-auth/quality check:boundaries",
+    "check:documentation": "pnpm --filter @expressthat-auth/quality check:documentation",
     "check:fix": "biome check --write .",
     "check:lines": "pnpm --filter @expressthat-auth/quality check:lines",
     "check:contracts": "turbo run check:contracts",

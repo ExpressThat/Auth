@@ -9,6 +9,7 @@
     "build": "tsc --noEmit",
     "check:artifacts": "tsx src/check-artifacts.ts",
     "check:boundaries": "tsx src/check-boundaries.ts",
+    "check:documentation": "tsx src/check-documentation.ts",
     "check:licenses": "tsx src/check-licenses.ts",
     "check:lines": "tsx src/check-lines.ts",
     "lint": "tsc --noEmit",

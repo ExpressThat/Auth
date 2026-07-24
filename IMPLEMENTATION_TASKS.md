@@ -448,7 +448,7 @@ These tasks prevent foundational security or compatibility decisions from being 
   **Depends on:** FND-002, FND-014.
   **Done when:** one documented command starts pinned, health-checked, loopback-only RabbitMQ, S3-compatible object storage, Valkey, SMTP capture, and OpenTelemetry services; applications use local SQLite directly; host-run and container-run apps can use the same service endpoints; reset is deterministic; no real secrets are committed; and the stack refuses production mode.
 
-- [ ] **FND-024 — Enforce documentation-as-code quality.**
+- [x] **FND-024 — Enforce documentation-as-code quality.**
   **Depends on:** FND-014, FND-018, FND-019.
   **Done when:** CI verifies required workspace READMEs, internal links,
   generated documentation drift, safe and executable examples where practical,
@@ -456,6 +456,18 @@ These tasks prevent foundational security or compatibility decisions from being 
   the hosted/self-hosted responsibility wording; failures identify an owner and
   source file, and the contributor guide explains how every task updates docs
   while implementation is in progress.
+  **Evidence:** `tooling/quality` exposes an owner-aware documentation gate and
+  the root `check` command runs it in affected and clean CI. It verifies required
+  root and workspace documents, local links, known pnpm commands, prohibited
+  unsafe shell examples, source-hashed generated Markdown, immutable version
+  markers, API/OpenAPI references, public/internal separation, and explicit
+  hosted/self-hosted deployment wording. All existing workspaces now have an
+  implementation-status README. The documentation standard and contributor
+  guide define task-time audience updates, executable examples, generation,
+  versioning, visibility, ownership, and remediation. Twenty-seven quality test
+  files with 185 tests pass at 100% line, statement, function, and branch
+  coverage; the full repository format, policy, lint, type, contract-type, test,
+  coverage, build, artifact, licence, dependency-audit, and diff gates pass.
 
 ## 5. Phase 2 — Runtime-Neutral Platform Contracts
 

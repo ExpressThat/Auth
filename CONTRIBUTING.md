@@ -174,6 +174,10 @@ these rules.
 Documentation is part of the implementation, not a follow-up. Update it in the
 same task and commit as the behavior it describes.
 
+The [documentation-as-code standard](docs/contributing/documentation-standard.md)
+defines required workspace READMEs, links, examples, generation drift, version
+markers, public/internal separation, ownership, and the automated gate.
+
 Every task evaluates these audiences:
 
 - developers: package README, architecture, contracts, examples, migrations;
@@ -202,6 +206,7 @@ commit. At minimum, the full local gate for executable changes is:
 ```bash
 pnpm format:check
 pnpm check
+pnpm check:documentation
 pnpm lint
 pnpm typecheck
 pnpm test:types

@@ -7,6 +7,7 @@ describe("quality command entry points", () => {
     await import("../src/check-lines.js");
     await import("../src/check-boundaries.js");
     await import("../src/check-artifacts.js");
+    await import("../src/check-documentation.js");
 
     expect(write).toHaveBeenCalledWith("First-party files satisfy the 250-line policy.\n");
     expect(write).toHaveBeenCalledWith(
@@ -15,6 +16,7 @@ describe("quality command entry points", () => {
     expect(write).toHaveBeenCalledWith(
       "Generated artifacts satisfy the repository security policy.\n",
     );
+    expect(write).toHaveBeenCalledWith("Documentation satisfies the repository policy.\n");
     write.mockRestore();
   });
 
@@ -30,5 +32,23 @@ describe("quality command entry points", () => {
 
     expect(run).toHaveBeenCalledWith(expect.any(String), dependencies);
     vi.doUnmock("../src/license-command.js");
+  });
+
+  it("wires documentation findings to standard error", async () => {
+    vi.resetModules();
+    vi.doMock("../src/documentation-policy.js", () => ({
+      findDocumentationViolations: () => [
+        { owner: "documentation", path: "guide.md", reason: "test finding" },
+      ],
+    }));
+    const write = vi.spyOn(process.stderr, "write").mockImplementation(() => true);
+
+    await import("../src/check-documentation.js");
+
+    expect(write).toHaveBeenCalledWith(
+      "Documentation policy violations:\n" + "- guide.md [owner: documentation]: test finding\n",
+    );
+    write.mockRestore();
+    vi.doUnmock("../src/documentation-policy.js");
   });
 });

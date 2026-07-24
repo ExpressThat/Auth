@@ -304,6 +304,7 @@ Start here:
 - [Release and changelog process](docs/releases/release-process.md)
 - [Security policy and private reporting](SECURITY.md)
 - [Contributor guide](CONTRIBUTING.md)
+- [Documentation-as-code standard](docs/contributing/documentation-standard.md)
 - [Task review checklist](docs/contributing/task-review-checklist.md)
 - [Workspace ownership and boundaries](docs/architecture/workspace-ownership.md)
 - [Living platform threat model](docs/security/threat-model.md)
