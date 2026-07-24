@@ -378,9 +378,22 @@ These tasks prevent foundational security or compatibility decisions from being 
   A local checksum-verified scan of all 48 commits found no leaked credentials,
   and the installed dependency audit and licence inventory pass.
 
-- [ ] **FND-018 — Add a TypeScript workspace generator.**  
+- [x] **FND-018 — Add a TypeScript workspace generator.**
   **Depends on:** FND-002, FND-003, FND-006, FND-014.  
   **Done when:** new libraries, applications, providers, and routes are generated with tests, public exports, correct tasks, a starter README with required documentation sections, and policy-compliant file sizes.
+  **Evidence:** `pnpm scaffold` validates lowercase kebab-case inputs and
+  generates canonical `@expressthat-auth/*` application, library, or provider
+  workspaces with public exports, strict shared TypeScript/Vitest configuration,
+  standard tasks, executable tests, and structured READMEs. Route generation
+  updates a matching application manifest with exact dependencies, tasks, and a
+  public subpath export; preserves existing configuration or creates safe
+  defaults; and adds a typed Zod/OpenAPI Hono contract, test, and route guide.
+  Plans reject traversal, duplicate destinations, unsafe replacement, missing
+  update targets, duplicate route exports, and mismatched manifests before
+  writing. Thirty focused tests, including real temporary-filesystem
+  application-and-route generation, pass with 100% line, statement, function,
+  and branch coverage; the full repository test, coverage, build, policy,
+  dependency, licence, and artifact gates pass.
 
 - [ ] **FND-019 — Add release and changelog conventions.**  
   **Depends on:** FND-001, DEC-011.  
