@@ -286,9 +286,13 @@ These tasks prevent foundational security or compatibility decisions from being 
   assertions, valid configuration, and five documented `@ts-expect-error`
   rejection cases.
 
-- [ ] **FND-010 — Configure React component testing.**  
+- [x] **FND-010 — Configure React component testing.**  
   **Depends on:** DEC-004, FND-003.  
   **Done when:** DOM behaviour, keyboard use, accessibility, loading, empty, success, and error states can be tested.
+  **Evidence:** the shared jsdom component preset installs DOM matchers and
+  cleanup; the UI harness uses React Testing Library, user-event, and axe-core
+  to prove loading, empty, success, error, keyboard retry, and automated
+  accessibility checks in four passing component tests.
 
 - [ ] **FND-011 — Configure end-to-end browser testing.**  
   **Depends on:** DEC-004, FND-002.  

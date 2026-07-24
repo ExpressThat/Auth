@@ -73,4 +73,18 @@ describe("source import boundaries", () => {
 
     await expect(findSourceViolations([source], [sourceFile])).resolves.toEqual([]);
   });
+
+  it("parses TSX and rejects invalid source during boundary inspection", async () => {
+    const source = workspace("@expressthat-auth/source");
+
+    await expect(
+      findSourceViolations(
+        [source],
+        [file("packages/source/src/view.tsx", "export const View = () => <p>Ready</p>;")],
+      ),
+    ).resolves.toEqual([]);
+    await expect(
+      findSourceViolations([source], [file("packages/source/src/broken.ts", "export const = ;")]),
+    ).rejects.toThrow("Cannot inspect imports");
+  });
 });

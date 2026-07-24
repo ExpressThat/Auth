@@ -1,4 +1,4 @@
-import { init, parse } from "es-module-lexer";
+import { parseSync, type Span } from "oxc-parser";
 import type { BoundaryViolation, Workspace } from "./boundary-model.js";
 import type { RepositoryFile } from "./line-checker.js";
 
@@ -9,7 +9,6 @@ export async function findSourceViolations(
   workspaces: Workspace[],
   files: RepositoryFile[],
 ): Promise<BoundaryViolation[]> {
-  await init;
   const byName = new Map(workspaces.map((workspace) => [workspace.name, workspace]));
   const byLongestPath = [...workspaces].sort((left, right) => right.path.length - left.path.length);
   const violations: BoundaryViolation[] = [];
@@ -27,12 +26,8 @@ export async function findSourceViolations(
       continue;
     }
 
-    const [imports] = parse(file.content.toString("utf8"));
-    for (const importedFile of imports) {
-      const specifier = importedFile.n;
-      if (specifier === undefined) {
-        continue;
-      }
+    const source = file.content.toString("utf8");
+    for (const specifier of readModuleSpecifiers(normalizedPath, source)) {
       if (!specifier.startsWith(INTERNAL_SCOPE)) {
         continue;
       }
@@ -44,6 +39,35 @@ export async function findSourceViolations(
     (left, right) =>
       left.path.localeCompare(right.path) || left.message.localeCompare(right.message),
   );
+}
+
+function readModuleSpecifiers(path: string, source: string): string[] {
+  const result = parseSync(path, source);
+  const firstError = result.errors[0];
+  if (firstError !== undefined) {
+    throw new Error(`Cannot inspect imports in ${path}: ${firstError.message}`);
+  }
+
+  const staticImports = result.module.staticImports.map((item) => item.moduleRequest.value);
+  const staticExports = result.module.staticExports.flatMap((item) =>
+    item.entries.flatMap((entry) =>
+      entry.moduleRequest === null ? [] : [entry.moduleRequest.value],
+    ),
+  );
+  const dynamicImports = result.module.dynamicImports.flatMap((item) => {
+    const value = readStringLiteral(source, item.moduleRequest);
+    return value === undefined ? [] : [value];
+  });
+  return [...staticImports, ...staticExports, ...dynamicImports];
+}
+
+function readStringLiteral(source: string, span: Span): string | undefined {
+  const raw = source.slice(span.start, span.end);
+  const quote = raw.at(0);
+  if ((quote !== '"' && quote !== "'") || raw.at(-1) !== quote || raw.includes("\\")) {
+    return undefined;
+  }
+  return raw.slice(1, -1);
 }
 
 function inspectInternalImport(

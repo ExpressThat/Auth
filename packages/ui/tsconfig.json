@@ -1,0 +1,7 @@
+{
+  "extends": "@expressthat-auth/typescript-config/react.json",
+  "compilerOptions": {
+    "types": ["@testing-library/jest-dom"]
+  },
+  "include": ["test/**/*.ts", "test/**/*.tsx", "vitest.config.ts"]
+}
