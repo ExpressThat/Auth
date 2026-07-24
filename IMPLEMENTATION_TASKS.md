@@ -270,9 +270,13 @@ These tasks prevent foundational security or compatibility decisions from being 
   dependency cycles, declared source dependencies, package exports, and deep
   imports; 87 quality tests retain complete coverage.
 
-- [ ] **FND-008 — Configure unit and schema testing.**  
+- [x] **FND-008 — Configure unit and schema testing.**  
   **Depends on:** DEC-004, FND-003.  
   **Done when:** deterministic TypeScript tests, controlled clock/random helpers, coverage output, and per-package defaults work.
+  **Evidence:** `@expressthat-auth/test-config` exports a consumable Vitest
+  preset with deterministic isolation and per-file 100% thresholds, controlled
+  clock/random helpers, and schema valid/invalid case assertions; its own
+  package consumes the preset and passes 12 tests at complete coverage.
 
 - [ ] **FND-009 — Configure compile-time type tests.**  
   **Depends on:** DEC-004, FND-003.  
