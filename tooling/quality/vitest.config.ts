@@ -1,6 +1,6 @@
-import { defineConfig } from "vitest/config";
+import { createUnitTestConfig } from "@expressthat-auth/test-config/vitest";
 
-export default defineConfig({
+export default createUnitTestConfig({
   test: {
     include: ["test/**/*.test.ts"],
   },

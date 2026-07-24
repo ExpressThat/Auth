@@ -2,6 +2,7 @@ import { serve } from "@hono/node-server";
 import { hc } from "hono/client";
 import { afterEach, describe, expect, expectTypeOf, it } from "vitest";
 import { type AppType, app } from "../src/app.ts";
+import worker from "../src/worker.ts";
 
 const servers: Array<ReturnType<typeof serve>> = [];
 
@@ -17,6 +18,10 @@ afterEach(async () => {
 });
 
 describe("Hono contract", () => {
+  it("exports the same application from the runtime entry point", () => {
+    expect(worker).toBe(app);
+  });
+
   it("generates a complete OpenAPI operation", async () => {
     const response = await app.request("/openapi.json");
     const document = await response.json();

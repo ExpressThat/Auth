@@ -302,9 +302,15 @@ These tasks prevent foundational security or compatibility decisions from being 
   isolated tenant identifiers, failure diagnostics retain traces, screenshots,
   and videos, and all three projects pass the same axe accessibility scan.
 
-- [ ] **FND-012 — Enforce complete executable-code coverage.**  
+- [x] **FND-012 — Enforce complete executable-code coverage.**
   **Depends on:** FND-008, FND-010.  
   **Done when:** 100% line, statement, function, and branch thresholds fail locally and in CI, with only generated and third-party paths excluded.
+  **Evidence:** the shared Vitest preset non-optionally enforces 100% per-file
+  line, statement, function, and branch thresholds and limits exclusions to
+  declarations, generated code, and vendored third-party code. Every current
+  executable workspace uses that preset, the root `test:coverage` graph passes,
+  and a repository policy test fails if a future executable workspace omits its
+  test script, coverage script, or shared preset.
 
 - [ ] **FND-013 — Create shared test builders and redacted fixtures.**  
   **Depends on:** FND-008, DEC-017.  

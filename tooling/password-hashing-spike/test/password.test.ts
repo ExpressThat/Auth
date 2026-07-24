@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { nodeHash, nodeVerify } from "../src/node.ts";
 import { ARGON2_POLICY, MAX_PASSWORD_BYTES } from "../src/policy.ts";
 import { portableHash, portableVerify } from "../src/portable.ts";
+import worker from "../src/worker.ts";
 
 const PASSWORD = "correct horse battery staple 🐎";
 const SALT = Uint8Array.from([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
@@ -10,6 +11,12 @@ const ENCODED_SALT = "AAECAwQFBgcICQoLDA0ODw";
 const ENCODED_32_ZERO_BYTES = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
 describe("Argon2id adapters", () => {
+  it("loads the Workers entry point without Node-specific dependencies", async () => {
+    const response = worker.fetch();
+
+    await expect(response.text()).resolves.toBe("password hashing spike");
+  });
+
   it("matches the Argon2id RFC 9106 test vector", () => {
     const output = argon2id(new Uint8Array(32).fill(1), new Uint8Array(16).fill(2), {
       t: 3,

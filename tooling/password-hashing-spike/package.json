@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "0.18.8",
+    "@expressthat-auth/test-config": "workspace:*",
     "@expressthat-auth/typescript-config": "workspace:*",
     "@types/node": "26.1.1",
     "@vitest/coverage-v8": "4.1.10",
