@@ -43,7 +43,7 @@ describe("full clean-checkout CI workflow", () => {
     const workflow = await readWorkflow();
 
     for (const command of [
-      "pnpm test:coverage",
+      "turbo run test:coverage --concurrency=1",
       "playwright install --with-deps chromium firefox webkit",
       "pnpm test:e2e",
       "pnpm test:deployment",

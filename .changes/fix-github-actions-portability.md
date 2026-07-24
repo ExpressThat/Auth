@@ -10,3 +10,5 @@ Make GitHub Actions and repository-policy tests deterministic on Linux.
 - Isolate generated Biome fixtures under an existing tracked source directory.
 - Run affected static work before coverage and avoid duplicate uninstrumented
   test execution in clean CI.
+- Serialize instrumented workspace suites so memory-hard cryptography is not
+  starved by unrelated coverage processes on shared runners.

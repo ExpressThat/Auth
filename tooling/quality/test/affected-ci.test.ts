@@ -17,7 +17,7 @@ describe("affected CI workflow", () => {
 
     expect(workflow).toContain("pnpm format:check && pnpm check && pnpm check:runtime-neutrality");
     expect(workflow).toContain("turbo run lint typecheck test:types build --affected");
-    expect(workflow).toContain("turbo run test:coverage --affected");
+    expect(workflow).toContain("turbo run test:coverage --affected --concurrency=1");
     expect(workflow.indexOf("turbo run lint")).toBeLessThan(
       workflow.indexOf("turbo run test:coverage"),
     );

@@ -56,4 +56,4 @@ jobs:
       - name: Run affected package graph
         run: |
           pnpm exec turbo run lint typecheck test:types build --affected
-          pnpm exec turbo run test:coverage --affected
+          pnpm exec turbo run test:coverage --affected --concurrency=1
