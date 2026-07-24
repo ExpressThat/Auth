@@ -322,9 +322,17 @@ These tasks prevent foundational security or compatibility decisions from being 
   and emits only redacted metadata through JSON, while typed builders cover
   provider success, rejection, retryable failure, and permanent failure.
 
-- [ ] **FND-014 — Define the Turborepo task graph.**  
+- [x] **FND-014 — Define the Turborepo task graph.**
   **Depends on:** FND-002, FND-004, FND-005, FND-008.  
   **Done when:** every build, quality, test, contract, SDK, database, development, and deployment task from the architecture has correct inputs, outputs, caching, and dependencies.
+  **Evidence:** the root graph defines and describes all 21 task types, uses
+  conservative workspace inputs plus shared root configuration, declares
+  generated/build/coverage/browser/database/deployment artifacts, and separates
+  cacheable deterministic work from uncached database, development, black-box,
+  and deployment work. Turbo 2.10.6 accepts a dry run and repository tests
+  enforce task families, dependencies, outputs, persistence, and secret
+  pass-through rules; see
+  [the task-graph reference](docs/architecture/turborepo-task-graph.md).
 
 - [ ] **FND-015 — Add affected-package CI.**  
   **Depends on:** FND-014.  

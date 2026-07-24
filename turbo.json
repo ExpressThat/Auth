@@ -1,35 +1,133 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [
+    "biome.json",
+    "package.json",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml",
+    "tsconfig.json"
+  ],
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "generate"],
+      "description": "Build a deployable or publishable workspace artifact.",
+      "env": ["NODE_ENV", "VITE_*"],
       "outputs": ["dist/**"]
+    },
+    "check:contracts": {
+      "dependsOn": ["generate:contracts"],
+      "description": "Validate generated contracts and compatibility without mutation."
+    },
+    "check:deployment": {
+      "dependsOn": ["build"],
+      "description": "Validate deployment configuration and packaged artifacts."
+    },
+    "db:check": {
+      "dependsOn": ["^build", "db:generate"],
+      "description": "Check database schemas, generated migrations, and drift."
+    },
+    "db:generate": {
+      "dependsOn": ["^build"],
+      "description": "Generate deterministic database schema and migration artifacts.",
+      "outputs": ["migrations/**", "src/generated/**"]
+    },
+    "db:migrate": {
+      "cache": false,
+      "dependsOn": ["build", "db:check"],
+      "description": "Apply migrations to an explicitly selected database.",
+      "passThroughEnv": ["DATABASE_URL"]
+    },
+    "db:reset": {
+      "cache": false,
+      "dependsOn": ["build", "db:check"],
+      "description": "Reset an explicitly selected disposable local database.",
+      "interactive": true,
+      "passThroughEnv": ["DATABASE_URL"]
     },
     "dev": {
       "cache": false,
+      "dependsOn": ["^build"],
+      "description": "Run a restartable long-lived development process.",
+      "interruptible": true,
+      "passThroughEnv": [
+        "DATABASE_URL",
+        "EMAIL_URL",
+        "OBJECT_STORAGE_URL",
+        "OTEL_EXPORTER_OTLP_ENDPOINT",
+        "QUEUE_URL",
+        "VALKEY_URL"
+      ],
       "persistent": true
     },
+    "dev:dependencies": {
+      "cache": false,
+      "description": "Run local shared dependency services.",
+      "interruptible": true,
+      "persistent": true
+    },
+    "deploy": {
+      "cache": false,
+      "dependsOn": ["check:deployment", "package:deployment", "test:deployment"],
+      "description": "Perform an externally stateful deployment.",
+      "passThroughEnv": [
+        "CLOUDFLARE_ACCOUNT_ID",
+        "CLOUDFLARE_API_TOKEN",
+        "DATABASE_URL",
+        "DOCKER_CONFIG"
+      ]
+    },
+    "generate": {
+      "dependsOn": ["^generate"],
+      "description": "Generate deterministic workspace-owned source artifacts.",
+      "outputs": ["generated/**", "src/generated/**"]
+    },
+    "generate:contracts": {
+      "dependsOn": ["^build"],
+      "description": "Generate deterministic OpenAPI and other public contract artifacts.",
+      "outputs": ["generated/openapi/**", "openapi/**"]
+    },
+    "generate:sdk": {
+      "dependsOn": ["^build", "^generate:contracts", "generate:contracts"],
+      "description": "Generate clients from validated public contracts.",
+      "outputs": ["generated/sdk/**", "src/generated/**"]
+    },
     "lint": {
-      "dependsOn": ["^lint"]
+      "dependsOn": ["^lint", "generate"],
+      "description": "Run package-local static policy checks."
+    },
+    "package:deployment": {
+      "dependsOn": ["build"],
+      "description": "Create immutable Workers or Docker deployment artifacts.",
+      "outputs": ["artifacts/**", "dist/**"]
     },
     "test": {
-      "dependsOn": ["^build"],
-      "outputs": ["coverage/**"]
+      "dependsOn": ["^build", "generate"],
+      "description": "Run deterministic package tests without coverage artifacts."
     },
     "test:coverage": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "generate"],
+      "description": "Run complete per-file executable-code coverage.",
       "outputs": ["coverage/**"]
     },
     "test:e2e": {
       "cache": false,
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "build"],
+      "description": "Run isolated cross-browser journeys with failure diagnostics.",
       "outputs": ["playwright-report/**", "test-results/**"]
     },
+    "test:deployment": {
+      "cache": false,
+      "dependsOn": ["package:deployment"],
+      "description": "Run black-box checks against local deployment artifacts.",
+      "passThroughEnv": ["DATABASE_URL"]
+    },
     "test:types": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build", "generate"],
+      "description": "Compile public type-contract fixtures."
     },
     "typecheck": {
-      "dependsOn": ["^typecheck"]
+      "dependsOn": ["^typecheck", "generate"],
+      "description": "Type-check a workspace and its generated source."
     }
   }
 }
