@@ -187,6 +187,7 @@ export {
   type RandomSource,
   WebCryptoRandomSource,
 } from "./random.js";
+export * from "./request.js";
 export {
   type CreateSecretRequest,
   type DisableSecretRequest,

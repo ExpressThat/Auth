@@ -671,9 +671,28 @@ These tasks prevent foundational security or compatibility decisions from being 
   compile-time tests reject raw telemetry strings, and the full repository
   gates pass.
 
-- [ ] **RUN-010 — Create request and actor context.**  
-  **Depends on:** DEC-013, RUN-002, RUN-009.  
+- [x] **RUN-010 — Create request and actor context.**
+  **Depends on:** DEC-013, RUN-002, RUN-009.
   **Done when:** correlation, actor, subject, tenant, application, active organisation, assurance level, network metadata, and impersonation state are request-scoped.
+  **Evidence:** `@expressthat-auth/runtime` exposes an immutable redacting
+  request context containing request/correlation IDs, namespaced action, actor,
+  subject, trusted tenant hierarchy, active organisation, assurance, minimized
+  network metadata, receive time, and explicit impersonation state. Protected
+  management and customer organisations have distinct runtime/compile-time
+  brands. Customer contexts require organisation/environment/application;
+  management contexts require the protected management organisation and only
+  accept a complete consistent selected hierarchy. Anonymous, end-user,
+  management-user, application, and opaque service principals are distinct.
+  Actor and subject can differ only for an unexpired active impersonation that
+  binds the same management actor, end-user subject, grant, session, and exact
+  action. IPv4/IPv6 addresses, proxy provenance, and fixed digest fingerprints
+  replace raw forwarded/user-agent data. Eighteen new tests prove brand and
+  prefix confusion rejection, plane isolation, hierarchy rules, active
+  selections, ranked assurance, network validation/redaction, impersonation
+  attribution/action/expiry, immutable copies, anonymous rules, and forged
+  value rejection. The runtime suite has 182 passing tests with 100% line,
+  statement, function, and branch coverage; compile-time tests reject
+  management/customer brand substitution, and the full repository gates pass.
 
 - [ ] **RUN-011 — Create runtime capability manifests.**  
   **Depends on:** RUN-003 through RUN-009.  

@@ -7,6 +7,7 @@ import {
   type CacheStateProvider,
   CacheValue,
   type Clock,
+  CustomerOrganisationId,
   type DurableQueueProvider,
   EntityId,
   type IdentifierGenerator,
@@ -14,6 +15,7 @@ import {
   KeyLifecycleVersion,
   type KeyManagementService,
   KeyRingId,
+  ManagementOrganisationId,
   ObjectKey,
   ObjectScope,
   type ObjectStorageProvider,
@@ -28,6 +30,7 @@ import {
   SecretReference,
   type SecretStorageProvider,
   SecretVersion,
+  ServicePrincipalId,
   type SigningProvider,
   SystemClock,
   TELEMETRY_FIELDS,
@@ -117,6 +120,13 @@ export const objectScope = ObjectScope.create({
 });
 export const objectKey = ObjectKey.parse("type-test/object");
 export declare const observability: ObservabilityProvider;
+export const customerOrganisationId = CustomerOrganisationId.fromPublicId(
+  PublicEntityId.parse("org", "org_01234567-89ab-7001-8203-040506070809"),
+);
+export const managementOrganisationId = ManagementOrganisationId.fromPublicId(
+  PublicEntityId.parse("org", "org_01234567-89ab-7001-8203-040506070809"),
+);
+export const workerServiceId = ServicePrincipalId.parse("platform/jobs.worker");
 
 // @ts-expect-error -- public identifier prefixes come from the fixed registry.
 PublicEntityId.parse("account", "account_01234567-89ab-7001-8203-040506070809");
@@ -150,6 +160,8 @@ TelemetryAttribute.create(
   // @ts-expect-error -- raw strings cannot enter registered telemetry fields.
   "canary-secret-value",
 );
+// @ts-expect-error -- management and customer organisation brands are distinct.
+export const wrongOrganisationBrand: CustomerOrganisationId = managementOrganisationId;
 keyManagement.rotate({
   // @ts-expect-error -- lifecycle algorithms are a closed allow-list.
   algorithm: "none",

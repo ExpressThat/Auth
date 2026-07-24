@@ -285,6 +285,48 @@ prove European routing, access, and retention for hosted non-public telemetry.
 Self-hosted operators control their collectors, destinations, regions, and
 retention.
 
+## Request and actor context
+
+`RequestContext` is the immutable trusted value passed from authentication and
+context resolution into handlers, repositories, jobs, adapters, audit, and
+observability. It contains request and correlation IDs, action, actor, subject,
+tenant hierarchy, active organisation selection, authentication assurance,
+minimized network metadata, receive time, and explicit impersonation state.
+Generic serialization returns one redaction marker.
+
+The protected management organisation and customer organisations have distinct
+runtime and TypeScript brands even though both persist as `org_` public IDs.
+Customer-plane context requires customer organisation, environment, and
+application together and can carry an active end-user organisation.
+Management-plane context always carries the protected management organisation
+and may select a complete customer/environment/application hierarchy. An active
+organisation is only a verified selection; authorization still reloads current
+membership, ownership, role, consent, session, and policy.
+
+Principals distinguish anonymous callers, end users, management users, customer
+applications, and opaque platform/customer services. Applications and services
+are separate actor kinds. Actor and subject must be identical unless an active
+impersonation context names the same management actor and end-user subject,
+includes the exact request action, and remains unexpired. Impersonation grant
+and session references redact themselves; request context never converts an
+impersonated action into an ordinary user session.
+
+Assurance records a closed level, distinct authentication methods, original
+authentication time, and optional step-up expiry. Anonymous actors require
+anonymous assurance and authenticated actors cannot use it. Network context
+accepts validated IPv4/IPv6, direct or trusted-proxy provenance, and an optional
+fixed-size non-reversible user-agent fingerprint. Raw user-agent text and
+forwarded headers are not representable; addresses and the whole network
+context redact during generic serialization.
+
+Constructing these values does not authenticate a credential or prove database
+ownership. Resolvers must first validate the credential/protocol, load
+authoritative bindings, cross-check every route/host/token/session signal, and
+fail closed on disagreement. Repositories later accept only the resulting
+trusted context and predicate tenant ownership in the same storage operation.
+No default, global, request-header-selected, or process-local tenant context
+exists.
+
 ## Identifiers
 
 `UuidV7Generator` combines an injected clock with ten bytes from an injected
