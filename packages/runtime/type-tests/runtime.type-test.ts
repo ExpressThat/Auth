@@ -14,6 +14,9 @@ import {
   KeyLifecycleVersion,
   type KeyManagementService,
   KeyRingId,
+  ObjectKey,
+  ObjectScope,
+  type ObjectStorageProvider,
   PasswordHash,
   type PasswordHasher,
   PublicEntityId,
@@ -104,6 +107,12 @@ export const queueScope = QueueScope.create({
   customerOrganisationId: PublicEntityId.parse("org", "org_01234567-89ab-7001-8203-040506070809"),
   environmentId: PublicEntityId.parse("env", "env_01234567-89ab-7001-8203-040506070809"),
 });
+export declare const objectStorage: ObjectStorageProvider;
+export const objectScope = ObjectScope.create({
+  customerOrganisationId: PublicEntityId.parse("org", "org_01234567-89ab-7001-8203-040506070809"),
+  environmentId: PublicEntityId.parse("env", "env_01234567-89ab-7001-8203-040506070809"),
+});
+export const objectKey = ObjectKey.parse("type-test/object");
 
 // @ts-expect-error -- public identifier prefixes come from the fixed registry.
 PublicEntityId.parse("account", "account_01234567-89ab-7001-8203-040506070809");
@@ -130,6 +139,8 @@ cacheState.put({
 });
 // @ts-expect-error -- acknowledgements require a typed lease receipt.
 durableQueue.acknowledge({ receipt: "job:lease" });
+// @ts-expect-error -- object lookups require a validated, redacting key.
+objectStorage.get({ key: "exports/file", scope: objectScope });
 keyManagement.rotate({
   // @ts-expect-error -- lifecycle algorithms are a closed allow-list.
   algorithm: "none",

@@ -630,9 +630,25 @@ These tasks prevent foundational security or compatibility decisions from being 
   branch coverage; compile-time tests reject raw lease receipts, and the full
   repository gates pass.
 
-- [ ] **RUN-008 — Create object-storage contracts.**  
-  **Depends on:** DEC-017, DEC-018.  
+- [x] **RUN-008 — Create object-storage contracts.**
+  **Depends on:** DEC-017, DEC-018.
   **Done when:** put, get, delete, retention, checksums, signed access, classification, and residency metadata are modelled.
+  **Evidence:** `@expressthat-auth/runtime` exposes traversal-safe redacting
+  object keys, trusted organisation/environment/application scope, streaming
+  bodies, bounded length, defensive SHA-256 checksums, media types,
+  classifications, encryption mode, exact retention expiry, selected and
+  actual residency metadata, opaque optimistic versions, and normalized
+  errors. The provider models create-only or conditional put, current or
+  historical get, conditional delete, health, and fifteen-minute redacting
+  signed access. Signed writes are contractually bound to checksum, length,
+  media type, classification, encryption, object expiry, residency, scope, key,
+  and optional version. A test-only adapter proves streaming and defensive
+  copies, scope isolation, length/checksum rejection, version conflicts,
+  historical reads, deletion, exact expiry, constrained read/write signing,
+  EU-policy rejection, operator-managed reporting, health, and outages. Sixteen
+  new tests bring the runtime suite to 149 passing tests with 100% line,
+  statement, function, and branch coverage; compile-time tests reject raw
+  object keys, and the full repository gates pass.
 
 - [ ] **RUN-009 — Create observability contracts.**  
   **Depends on:** DEC-017.  

@@ -204,6 +204,48 @@ residency-aware storage and processing. Hosted queues remain in approved
 European infrastructure; self-hosted operators choose and operate their own
 queue location and guarantees.
 
+## Object storage
+
+`ObjectStorageProvider` defines streaming put and get, optimistic versioned
+delete, health, and short-lived signed read/write access. `ObjectBody` exposes
+an `AsyncIterable<Uint8Array>` so large imports, exports, evidence bundles, and
+archives do not require whole-object process memory or local durable files.
+
+Every write supplies a trusted organisation/environment/application scope,
+redacting traversal-safe object key, media type, one or more data
+classifications, exact content length, SHA-256 checksum, encryption mode,
+retention expiry, and selected residency policy. A missing expected version is
+create-only; replacement names the current opaque version. Adapters must verify
+length and checksum before committing success and return actual version,
+classification, encryption, retention, and storage/processing residency
+metadata.
+
+Retention expiry uses the exact-instant-is-expired convention. It is the
+automatic deletion deadline, not a legal-hold or minimum-retention lock.
+Governance tasks later coordinate early erasure, legal obligations, backup
+tombstones, and verified lifecycle deletion without weakening this per-object
+deadline.
+
+Signed object URLs are bearer credentials. Their value is available only
+through `valueForClient()` and generic serialization is redacted. Access is
+bounded to fifteen minutes. Read access binds key, scope, and optional version.
+Write access additionally binds checksum, length, media type, classification,
+encryption, object expiry, required residency, and optional expected version;
+an adapter must not issue an unconstrained upload URL.
+
+The conformance adapter is test-only. It proves chunked streaming, defensive
+copies, tenant namespaces, create-only and optimistic replacement, historical
+version reads, checksum and length rejection, exact expiry, deletion conflicts,
+signed-access limits and redaction, constrained signed writes, policy-selected
+residency, health, and normalized outage errors. Production adapters must also
+prove atomic commit, multipart failure cleanup, encryption/key custody,
+provider-side checksum enforcement, lifecycle deletion, backup/replication
+location, signed-request binding, restore, and multi-instance behavior.
+
+Hosted non-public objects require verified European storage and processing.
+Self-hosted operators may select `operator-managed`; that accurately reports
+their chosen location without inheriting hosted EU or GDPR claims.
+
 ## Identifiers
 
 `UuidV7Generator` combines an injected clock with ten bytes from an injected

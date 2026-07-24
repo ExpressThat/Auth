@@ -41,6 +41,7 @@ export {
   type SigningProvider,
   type VerifyBytesRequest,
 } from "./cryptography.js";
+export type { DataClassification } from "./data-classification.js";
 export {
   ENTITY_PREFIXES,
   EntityId,
@@ -69,6 +70,42 @@ export {
   type WrapKeyRequest,
   type WrappedKey,
 } from "./key-management.js";
+export {
+  type DeletedObject,
+  type DeleteObjectRequest,
+  type GetObjectRequest,
+  type ObjectBody,
+  type ObjectEncryptionMode,
+  type ObjectHealthStatus,
+  type ObjectOperation,
+  type ObjectResidencyMetadata,
+  type ObjectResidencyPolicy,
+  type ObjectSignedAction,
+  ObjectStorageError,
+  type ObjectStorageErrorCode,
+  type ObjectStorageHealth,
+  type ObjectStorageProvider,
+  type PutObjectRequest,
+  type SignedObjectAccess,
+  type SignObjectAccessRequest,
+  type SignObjectReadAccessRequest,
+  type SignObjectWriteAccessRequest,
+  type StoredObject,
+  type StoredObjectMetadata,
+} from "./object-storage.js";
+export {
+  MAX_OBJECT_CONTENT_LENGTH,
+  MAX_SIGNED_OBJECT_ACCESS_MILLISECONDS,
+  ObjectChecksum,
+  ObjectContentLength,
+  ObjectKey,
+  ObjectMediaType,
+  ObjectRegion,
+  ObjectScope,
+  type ObjectScopeInput,
+  ObjectVersion,
+  SignedObjectUrl,
+} from "./object-values.js";
 export {
   MAX_STORED_PASSWORD_HASH_BYTES,
   PasswordHash,

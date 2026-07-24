@@ -1,3 +1,4 @@
+import type { DataClassification } from "./data-classification.js";
 import type { PublicEntityId } from "./identifier.js";
 import type {
   QueueDeliveryAttempt,
@@ -13,13 +14,7 @@ import type {
 } from "./queue-values.js";
 import type { EpochMilliseconds } from "./time.js";
 
-export type QueueDataClassification =
-  | "confidential"
-  | "credential"
-  | "internal"
-  | "personal"
-  | "public"
-  | "secret";
+export type QueueDataClassification = DataClassification;
 export type QueueDeliveryGuarantee = "at-least-once";
 export type QueueHealthStatus = "degraded" | "healthy" | "unavailable";
 export type QueueOperation =
