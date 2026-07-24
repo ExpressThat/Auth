@@ -94,6 +94,34 @@ importers:
 
   packages/lint-config: {}
 
+  packages/providers/password-argon2:
+    dependencies:
+      '@expressthat-auth/runtime':
+        specifier: workspace:*
+        version: link:../../runtime
+      '@noble/hashes':
+        specifier: 2.2.0
+        version: 2.2.0
+      '@node-rs/argon2':
+        specifier: 2.0.2
+        version: 2.0.2
+    devDependencies:
+      '@expressthat-auth/test-config':
+        specifier: workspace:*
+        version: link:../../test-config
+      '@expressthat-auth/typescript-config':
+        specifier: workspace:*
+        version: link:../../typescript-config
+      '@types/node':
+        specifier: 26.1.1
+        version: 26.1.1
+      '@vitest/coverage-v8':
+        specifier: 4.1.10
+        version: 4.1.10(vitest@4.1.10)
+      vitest:
+        specifier: 4.1.10
+        version: 4.1.10(@types/node@26.1.1)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@26.1.1)(esbuild@0.28.1)(tsx@4.23.1)(yaml@2.9.0))
+
   packages/runtime:
     devDependencies:
       '@expressthat-auth/test-config':
@@ -236,31 +264,6 @@ importers:
       zod:
         specifier: 4.4.3
         version: 4.4.3
-    devDependencies:
-      '@expressthat-auth/test-config':
-        specifier: workspace:*
-        version: link:../../packages/test-config
-      '@expressthat-auth/typescript-config':
-        specifier: workspace:*
-        version: link:../../packages/typescript-config
-      '@types/node':
-        specifier: 26.1.1
-        version: 26.1.1
-      '@vitest/coverage-v8':
-        specifier: 4.1.10
-        version: 4.1.10(vitest@4.1.10)
-      vitest:
-        specifier: 4.1.10
-        version: 4.1.10(@types/node@26.1.1)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@26.1.1)(esbuild@0.28.1)(tsx@4.23.1)(yaml@2.9.0))
-
-  tooling/password-hashing-spike:
-    dependencies:
-      '@noble/hashes':
-        specifier: 2.2.0
-        version: 2.2.0
-      '@node-rs/argon2':
-        specifier: 2.0.2
-        version: 2.0.2
     devDependencies:
       '@expressthat-auth/test-config':
         specifier: workspace:*

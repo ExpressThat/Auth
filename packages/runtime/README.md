@@ -3,9 +3,11 @@
 ## Purpose and status
 
 `@expressthat-auth/runtime` owns provider-neutral capability contracts.
-RUN-002 implements time, secure randomness, and entity identifiers. Later RUN
-tasks add cryptography, secrets, keys, caches, queues, objects, observability,
-composition, and health without changing this dependency direction.
+RUN-002 implements time, secure randomness, and entity identifiers. RUN-003
+adds password hashing, exact-byte signatures, authenticated encryption, and key
+metadata. Later RUN tasks add secrets, custody, caches, queues, objects,
+observability, composition, and health without changing this dependency
+direction.
 
 The root export contains production-safe contracts and implementations.
 Deterministic implementations are isolated under
@@ -34,6 +36,35 @@ lengths, and fails on exhaustion.
 
 Consumers define their required entropy. Bearer secrets require at least 256
 bits under ADR-0009; an entity UUID is never accepted as a bearer secret.
+
+## Password hashing
+
+`PasswordHasher` exposes asynchronous hash and verify operations with stable
+adapter, algorithm, and policy metadata. The result is `PasswordHash`, whose
+JSON form is always redacted and whose PHC text requires the explicit
+`encodedForStorage()` operation.
+
+The native and portable Argon2id implementations live in the production
+`@expressthat-auth/password-argon2` provider package. Both use the injected
+`RandomSource` for 16-byte salts, enforce the accepted Argon2id policy before
+expensive verification, produce identical PHC output for identical input and
+salt, cross-verify, and pass the same contract plus RFC 9106 vector.
+
+## Cryptographic capabilities
+
+`SigningProvider` signs exact bytes using an opaque handle, key ID, explicit
+purpose, and allow-listed `RS256` or `ES256` algorithm. Verification uses public
+`SigningKeyMetadata`; it never needs a private handle.
+
+`AuthenticatedEncryptionProvider` exposes purpose-bound `A256GCM` encryption
+and decryption with mandatory additional authenticated data. Ciphertext carries
+its algorithm, key ID, and nonce. Key handles are bounded opaque values whose
+JSON representation is always redacted.
+
+The contracts deliberately do not expose private keys or silently choose
+algorithms. RUN-005 adds custody, lifecycle, wrapping, and rotation. Current
+tests use isolated ephemeral RSA keys and a published AES-256-GCM vector; no
+process-generated key is permitted in deployable composition.
 
 ## Identifiers
 
@@ -68,9 +99,10 @@ move backwards. SQLite and PostgreSQL will store the same canonical UUID text
 and integer millisecond values.
 
 The package contains no process environment access, tenant state, provider SDK,
-or cross-request cache. Hosted operators monitor clock drift and random-source
-health. Self-hosted operators control their Docker host and infrastructure and
-own the resulting security, availability, recovery, region, and compliance.
+private-key store, or cross-request cache. Hosted operators monitor clock drift,
+random-source health, and custody adapters. Self-hosted operators control their
+Docker host and infrastructure and own the resulting security, availability,
+recovery, region, and compliance.
 
 ## Development
 

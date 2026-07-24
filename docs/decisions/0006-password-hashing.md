@@ -27,8 +27,8 @@ conformance suite. Selection is an explicit deployment capability. Domain code
 never imports either implementation directly. The portable adapter prevents a
 native package or CPU architecture from becoming a data-portability dependency.
 
-The executable evaluation in `tooling/password-hashing-spike` proves the RFC
-vector, cross-adapter verification, malformed-input rejection, approved
+The production provider package in `packages/providers/password-argon2` proves
+the RFC vector, cross-adapter verification, malformed-input rejection, approved
 parameters, latency ceilings, and complete first-party coverage.
 
 ### Initial Hash Policy

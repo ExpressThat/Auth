@@ -538,9 +538,22 @@ These tasks prevent foundational security or compatibility decisions from being 
   statement, function, and branch coverage. Compile-time tests preserve
   capability and prefix inference; the full repository gates pass.
 
-- [ ] **RUN-003 — Create cryptography and password-hasher contracts.**  
+- [x] **RUN-003 — Create cryptography and password-hasher contracts.**
   **Depends on:** DEC-007, DEC-008, RUN-002.  
   **Done when:** hashing, verification, random bytes, signing, verification, encryption, and key metadata are explicit capabilities with test vectors.
+  **Evidence:** `@expressthat-auth/runtime` exposes asynchronous password
+  hashing and verification, exact-byte `RS256`/`ES256` signing and
+  verification, purpose-bound `A256GCM` authenticated encryption, public
+  signing metadata, and bounded opaque key and password-hash values whose JSON
+  forms are redacted. The production `@expressthat-auth/password-argon2`
+  package supplies native Node and portable TypeScript implementations using
+  injected secure randomness, an allow-listed Argon2id PHC policy, compatible
+  output, cross-verification, and the RFC 9106 vector. Runtime RSA,
+  tamper-detection, and NIST AES-256-GCM tests plus Argon2 contract, malformed
+  input, Unicode, length, resource-policy, and compatibility tests total 67
+  passing tests with 100% line, statement, function, and branch coverage.
+  Compile-time tests prove provider substitutability and explicit capability
+  types; the full repository gates pass.
 
 - [ ] **RUN-004 — Create secret-storage contracts.**  
   **Depends on:** DEC-017, RUN-002.  

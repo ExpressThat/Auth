@@ -1,5 +1,7 @@
+import type { PasswordHasher } from "@expressthat-auth/runtime";
 import { argon2id } from "@noble/hashes/argon2.js";
 import { describe, expect, it } from "vitest";
+import { NodeArgon2PasswordHasher, PortableArgon2PasswordHasher } from "../src/adapters.ts";
 import { nodeHash, nodeVerify } from "../src/node.ts";
 import { ARGON2_POLICY, MAX_PASSWORD_BYTES } from "../src/policy.ts";
 import { portableHash, portableVerify } from "../src/portable.ts";
@@ -8,6 +10,25 @@ const PASSWORD = "correct horse battery staple 🐎";
 const SALT = Uint8Array.from([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
 const ENCODED_SALT = "AAECAwQFBgcICQoLDA0ODw";
 const ENCODED_32_ZERO_BYTES = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+
+function saltSource() {
+  return { bytes: () => Uint8Array.from(SALT) };
+}
+
+async function expectHasherContract(hasher: PasswordHasher): Promise<void> {
+  const hash = await hasher.hash(PASSWORD);
+
+  await expect(hasher.verify(hash, PASSWORD)).resolves.toEqual({
+    rehashRequired: false,
+    valid: true,
+  });
+  await expect(hasher.verify(hash, "incorrect")).resolves.toEqual({
+    rehashRequired: false,
+    valid: false,
+  });
+  expect(JSON.stringify(hash)).toBe('"[REDACTED PASSWORD HASH]"');
+  expect(hasher.metadata).toMatchObject({ algorithm: "argon2id" });
+}
 
 describe("Argon2id adapters", () => {
   it("matches the Argon2id RFC 9106 test vector", () => {
@@ -42,11 +63,20 @@ describe("Argon2id adapters", () => {
 
   it("cross-verifies Node hashes with the portable adapter", async () => {
     const startedAt = performance.now();
-    const encoded = await nodeHash(PASSWORD);
+    const encoded = await nodeHash(PASSWORD, SALT);
     const elapsedMs = performance.now() - startedAt;
 
     await expect(portableVerify(encoded, PASSWORD)).resolves.toBe(true);
     expect(elapsedMs).toBeLessThan(1_000);
+  });
+
+  it("passes one contract through native and portable adapters", async () => {
+    await expectHasherContract(new NodeArgon2PasswordHasher(saltSource()));
+    await expectHasherContract(new PortableArgon2PasswordHasher(saltSource()));
+  });
+
+  it("produces portable PHC output from the same password and salt", async () => {
+    await expect(nodeHash(PASSWORD, SALT)).resolves.toBe(await portableHash(PASSWORD, SALT));
   });
 
   it("uses the approved policy and rejects excessive input", async () => {
@@ -64,6 +94,10 @@ describe("Argon2id adapters", () => {
     await expect(portableHash(PASSWORD, new Uint8Array(15))).rejects.toThrow(
       "Argon2id salts must contain exactly 16 bytes.",
     );
+    await expect(nodeHash(PASSWORD, new Uint8Array(15))).rejects.toThrow(
+      "Argon2id salts must contain exactly 16 bytes.",
+    );
+    await expect(nodeVerify("not-a-phc-string", PASSWORD)).resolves.toBe(false);
   });
 
   // biome-ignore-start lint/security/noSecrets: deliberately malformed non-secret PHC fixtures
