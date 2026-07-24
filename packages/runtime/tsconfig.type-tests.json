@@ -1,0 +1,7 @@
+{
+  "extends": "@expressthat-auth/typescript-config/type-tests.json",
+  "compilerOptions": {
+    "lib": ["ES2024", "DOM"]
+  },
+  "include": ["type-tests/**/*.ts"]
+}

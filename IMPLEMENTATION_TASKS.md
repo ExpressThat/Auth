@@ -521,9 +521,22 @@ These tasks prevent foundational security or compatibility decisions from being 
   access. The full repository format, policy, lint, type, type-contract, test,
   coverage, build, artifact, licence, dependency-audit, and diff gates pass.
 
-- [ ] **RUN-002 — Create `Clock`, `RandomSource`, and identifier contracts.**  
+- [x] **RUN-002 — Create `Clock`, `RandomSource`, and identifier contracts.**
   **Depends on:** DEC-010, FND-008.  
   **Done when:** production and deterministic test implementations pass shared contract tests.
+  **Evidence:** `@expressthat-auth/runtime` exposes validated integer
+  `EpochMilliseconds`, injected `Clock`, `RandomSource`, and
+  `IdentifierGenerator` contracts; production `SystemClock` and
+  `WebCryptoRandomSource`; and deterministic `ControlledClock` and
+  copy-safe/exhaustion-safe `SequenceRandomSource` through a testing-only
+  subpath. `UuidV7Generator` implements the RFC 9562 timestamp, version,
+  variant, and random fields without process-local coordination, rejects a
+  non-conforming random adapter, and round-trips canonical `EntityId` plus the
+  fixed `app`, `env`, `evt`, `job`, `org`, `uorg`, and `usr` public prefixes.
+  Thirty-eight shared-contract, boundary, rollback, replica-like uniqueness, RFC-vector,
+  prefix-confusion, hostile-adapter, and mutation tests pass with 100% line,
+  statement, function, and branch coverage. Compile-time tests preserve
+  capability and prefix inference; the full repository gates pass.
 
 - [ ] **RUN-003 — Create cryptography and password-hasher contracts.**  
   **Depends on:** DEC-007, DEC-008, RUN-002.  

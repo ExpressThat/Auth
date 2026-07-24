@@ -4,5 +4,23 @@
   "private": true,
   "description": "Runtime-neutral infrastructure and provider contracts.",
   "license": "MIT",
-  "type": "module"
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./testing": "./src/testing.ts"
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "lint": "tsc --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:types": "tsc --noEmit --project tsconfig.type-tests.json",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@expressthat-auth/test-config": "workspace:*",
+    "@expressthat-auth/typescript-config": "workspace:*",
+    "@vitest/coverage-v8": "4.1.10",
+    "vitest": "4.1.10"
+  }
 }

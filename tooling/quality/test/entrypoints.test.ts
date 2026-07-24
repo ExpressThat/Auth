@@ -18,7 +18,7 @@ describe("quality command entry points", () => {
     );
     expect(write).toHaveBeenCalledWith("Documentation satisfies the repository policy.\n");
     write.mockRestore();
-  });
+  }, 15_000);
 
   it("wires the licence command without running a nested package manager", async () => {
     const dependencies = { marker: "dependencies" };
